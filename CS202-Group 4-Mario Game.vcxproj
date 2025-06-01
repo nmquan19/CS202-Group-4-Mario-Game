@@ -18,6 +18,22 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Characters\Character.h" />
+    <ClInclude Include="include\Entities\Block.h" />
+    <ClInclude Include="include\Scenes\Scene.h" />
+    <ClInclude Include="include\System\Interface.h" />
+    <ClInclude Include="include\System\PhysicsManager.h" />
+    <ClInclude Include="include\System\QuadTree.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Characters\Character.cpp" />
+    <ClCompile Include="src\Entities\Block.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Scenes\Scene.cpp" />
+    <ClCompile Include="src\System\PhysicsManager.cpp" />
+    <ClCompile Include="src\System\QuadTree.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -122,9 +138,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
