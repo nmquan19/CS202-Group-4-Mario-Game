@@ -9,7 +9,7 @@ protected:
     float scale;
 
 public:
-    Item(Vector2 pos, const char* imagePath, float scale = 0.1f);
+    Item(Vector2 pos, const char* imagePath, float scale = 0.04f);
     virtual ~Item();
     virtual void Update(float deltaTime) = 0;
     virtual void Draw() const;

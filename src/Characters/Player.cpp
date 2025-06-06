@@ -18,8 +18,9 @@ void Player::Update(float deltaTime) {
     rect.y += velocity.y * deltaTime;
 
     // Va chạm mặt đất
-    if (rect.y + rect.height >= 600) {
-        rect.y = 600 - rect.height;
+    int screenHeight = GetScreenHeight();
+    if (rect.y + rect.height >= screenHeight) {
+        rect.y = screenHeight - rect.height;
         velocity.y = 0;
         onGround = true;
     }

@@ -20,7 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
+    <ClInclude Include="include\Characters\Player.h" />
     <ClInclude Include="include\Entities\Block.h" />
+    <ClInclude Include="include\Item\Item.h" />
     <ClInclude Include="include\Scenes\Scene.h" />
     <ClInclude Include="include\System\Interface.h" />
     <ClInclude Include="include\System\PhysicsManager.h" />
@@ -28,8 +30,6 @@
     <ClInclude Include="include\UI\Menu.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
     <ClInclude Include="include\UI\UI.h" />
-    <ClInclude Include="Item.h" />
-    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp" />

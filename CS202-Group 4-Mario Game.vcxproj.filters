@@ -42,10 +42,10 @@
     <ClInclude Include="include\UI\UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="include\Item\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
+    <ClInclude Include="include\Characters\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
