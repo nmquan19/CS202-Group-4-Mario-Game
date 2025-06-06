@@ -33,6 +33,15 @@
     <ClInclude Include="include\System\PhysicsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\UI\Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\SoundEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">
@@ -53,5 +62,72 @@
     <ClCompile Include="src\System\PhysicsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\UI\Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\SoundEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\romulus.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Super Mario Bros.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\sound\2-108080.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\click.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\gain2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\jsyd_mario_slide-93009.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\jump.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\jump2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\level up.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\movement1.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\movement2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\next1.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\next2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\next3.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\notice1.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\notice2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\point.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="assets\sound\strike.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>
