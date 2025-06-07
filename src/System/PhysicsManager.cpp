@@ -16,12 +16,26 @@ void PhysicsManager::addCollidable(ICollidable* collidable) {
 	}
 }
 
-void PhysicsManager::removeCollidable(ICollidable* collidable) {
-	collidables.erase(std::remove(collidables.begin(), collidables.end(), collidable), collidables.end());
+void PhysicsManager::markForDeletion(ICollidable* collidable) {
+	if (collidable) {
+		if (collidable->isActive()) collidable->setActive(false);
+		toDelete.push_back(collidable);
+	}
+}
+
+void PhysicsManager::deleteObjects() {
+	for (auto* obj : toDelete) {;
+		auto it = std::find(collidables.begin(), collidables.end(), obj);
+		if (it != collidables.end()) {
+			collidables.erase(it);
+		}
+		delete obj;
+	}
+	toDelete.clear();
 }
 
 void PhysicsManager::update() {
-	collidables.erase(std::remove_if(collidables.begin(), collidables.end(), [](ICollidable* c) { return !c->isActive(); }), collidables.end());
+	deleteObjects();
 
 	frameCounter++;
 	if (frameCounter >= REBUILD_FREQUENCY) {
@@ -35,17 +49,35 @@ void PhysicsManager::update() {
 		}
 	}
 	for (auto* collidable : collidables) {
-		if (!collidable->isActive()) continue;
+		if (!collidable) continue;
+		if (collidable && !collidable->isActive()) {
+			markForDeletion(collidable);
+			continue;
+		}
+
+		auto targetLayer = collidable->getCollisionTargets();
+		if (targetLayer.empty()) continue;
 
 		std::vector<ICollidable*> candidates = quadTree->retrieve(collidable);
+		std::vector<ICollidable*> filterdCandidates;
+		filterdCandidates.reserve(candidates.size());
+
 		for (auto* candidate : candidates) {
-			if (candidate != collidable && candidate->isActive()) {
-				if (checkCollision(collidable->getHitBox(), candidate->getHitBox())) {
-					collidable->onCollision(candidate);
-					candidate->onCollision(collidable);
+			if (candidate && candidate != collidable && candidate->isActive()) {
+				if (std::find(targetLayer.begin(), targetLayer.end(), candidate->getCollisionLayer()) != targetLayer.end()
+					&& PhysicsManager::getInstance().checkCollision(collidable->getHitBox(), candidate->getHitBox())) {
+					filterdCandidates.push_back(candidate);
 				}
 			}
 		}
+
+		if (!filterdCandidates.empty()) {
+			collidable->checkCollision(filterdCandidates);
+			// set bool onCollidable true
+		}
+		//else {
+		//	// set false;
+		//}
 	}
 }
 

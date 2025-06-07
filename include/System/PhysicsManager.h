@@ -11,7 +11,8 @@ public:
 	static void cleanup();
 
 	void addCollidable(ICollidable* collidable);
-	void removeCollidable(ICollidable* collidable);
+	void markForDeletion(ICollidable* collidable);
+	void deleteObjects();
 	void update();
 	bool checkCollision(const Rectangle& rect1, const Rectangle& rect2);
 	std::vector<ICollidable*> getCollidablesInLayer(CollissionLayer layer);
@@ -25,6 +26,7 @@ public:
 private:
 	PhysicsManager() = default;
 	std::vector<ICollidable*> collidables;
+	std::vector<ICollidable*> toDelete;
 	std::unique_ptr<QuadTree> quadTree;
 	static PhysicsManager* instance;
 	const int REBUILD_FREQUENCY = 2;
