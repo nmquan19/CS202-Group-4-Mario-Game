@@ -2,17 +2,22 @@
 #include "..\..\include\Characters\IdleState.h"
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
+#include <iostream>
 
 Character::Character(CharacterType type, Vector2 startPosition, float scale) 
     : characterType(type), velocity({0, 0}), scale(scale),
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
-
+		std::cout << "constructor \n";
 	setPosition(startPosition);
     loadCharacterData(type);
 
     if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
         setCurrentStateRow(0);
+		std::cout << stateFrameData[currentStateRow].size() << '\n';
     }
+	else {
+		std::cout << "deo duoc" << '\n';
+	}
 
     currentState = &IdleState::getInstance();
     currentState->enter(this);
@@ -179,12 +184,20 @@ Rectangle Character::getHitBox() const {
 	return {position.x, position.y, hitBoxWidth, hitBoxHeight};
 }
 
-bool Character::isActive() {
+bool Character::isActive() const {
 	return active;
 }
 
 void Character::setActive(bool flag) {
 	active = flag;
+}
+
+bool Character::isCollided() const {
+	return collided;
+}
+
+void Character::setCollided(bool flag) {
+	collided = flag;
 }
 
 ObjectCategory Character::getObjectCategory() const {

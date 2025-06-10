@@ -5,11 +5,12 @@
 #include "../include/System/PhysicsManager.h"
 #include "../include/System/LevelEditor.h"
 #include "../include/System/TextureManager.h"
+#include "../include/Characters/Character.h"
 
 int main() {
     InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
     InitAudioDevice();
-    SetTargetFPS(120);
+    SetTargetFPS(60);
 
     AudioManager audioManager;
     UIManager uiManager;
@@ -24,7 +25,11 @@ int main() {
     GameState state = GameState::MENU;
     GameState previousState = GameState::MENU;
 
+    std::unique_ptr<Character> character;
+
     while (!WindowShouldClose()) {
+
+        float deltaTime = GetFrameTime();
 
         if (state != previousState) {
             if (previousState == GameState::GAME) {
@@ -34,6 +39,7 @@ int main() {
             
             if (state == GameState::GAME) {
                 PhysicsManager::getInstance().setWorldBounds({0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()});
+                character = std::make_unique<Character>(CharacterType::MARIO, Vector2{ 500, 500 });
             }
             
             previousState = state;
@@ -72,6 +78,8 @@ int main() {
             DrawText("Press Enter", 500, 100, 20, BLACK);
             PhysicsManager::getInstance().update();
             LevelEditor::getInstance().update();
+            if (character) character->update(deltaTime);
+            if (character) character->draw();
             if (IsKeyPressed(KEY_TAB)) {
                 LevelEditor::getInstance().toggleEditMode();
             }

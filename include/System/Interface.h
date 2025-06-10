@@ -62,3 +62,16 @@ public:
 	virtual void checkCollision(const std::vector<Object*>& candidates) = 0;
 	virtual void onCollision(Object* other) = 0;
 };
+
+class IUpdatable {
+public:
+	virtual ~IUpdatable() = default;
+	virtual void update(float deltaTime) = 0;
+};
+
+class IMovable {
+public:
+	virtual ~IMovable() = default;
+	virtual void setVelocity(Vector2 newVelocity) = 0;
+	virtual Vector2 getVelocity() = 0;
+};
