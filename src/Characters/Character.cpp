@@ -7,7 +7,6 @@
 Character::Character(CharacterType type, Vector2 startPosition, float scale) 
     : characterType(type), velocity({0, 0}), scale(scale),
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
-		std::cout << "constructor \n";
 	setPosition(startPosition);
     loadCharacterData(type);
 
@@ -15,9 +14,6 @@ Character::Character(CharacterType type, Vector2 startPosition, float scale)
         setCurrentStateRow(0);
 		std::cout << stateFrameData[currentStateRow].size() << '\n';
     }
-	else {
-		std::cout << "deo duoc" << '\n';
-	}
 
     currentState = &IdleState::getInstance();
     currentState->enter(this);
