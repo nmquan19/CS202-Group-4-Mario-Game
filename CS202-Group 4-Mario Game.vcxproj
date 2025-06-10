@@ -20,22 +20,29 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
-    <ClInclude Include="include\Entities\Block.h" />
+    <ClInclude Include="include\Objects\Block.h" />
+    <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Scenes\Scene.h" />
+    <ClInclude Include="include\System\Grid.h" />
     <ClInclude Include="include\System\Interface.h" />
+    <ClInclude Include="include\System\LevelEditor.h" />
     <ClInclude Include="include\System\PhysicsManager.h" />
     <ClInclude Include="include\System\QuadTree.h" />
+    <ClInclude Include="include\System\TextureManager.h" />
     <ClInclude Include="include\UI\Menu.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
     <ClInclude Include="include\UI\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp" />
-    <ClCompile Include="src\Entities\Block.cpp" />
+    <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Objects\ObjectFactory.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
+    <ClCompile Include="src\System\LevelEditor.cpp" />
     <ClCompile Include="src\System\PhysicsManager.cpp" />
     <ClCompile Include="src\System\QuadTree.cpp" />
+    <ClCompile Include="src\System\TextureManager.cpp" />
     <ClCompile Include="src\UI\Menu.cpp" />
     <ClCompile Include="src\UI\SoundEffect.cpp" />
     <ClCompile Include="src\UI\UI.cpp" />
