@@ -6,6 +6,8 @@
 #include "../include/System/LevelEditor.h"
 #include "../include/System/TextureManager.h"
 #include "../include/Characters/Character.h"
+#include "../include/Enemy/Goomba/Goomba.h"
+#include "../include/System/Resources.h"
 
 int main() {
     InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
@@ -24,9 +26,10 @@ int main() {
     enum class GameState { MENU, GAME, GAME_OVER };
     GameState state = GameState::MENU;
     GameState previousState = GameState::MENU;
-
+    
     std::unique_ptr<Character> character;
-
+    Resources::Load();
+    //Goomba goomba({ 800,500 }, { 0,0 }, { 0,0 });
     while (!WindowShouldClose()) {
 
         float deltaTime = GetFrameTime();
@@ -74,6 +77,7 @@ int main() {
             // KEY_U, KEY_UP: 1 player, KEY_D, KEY_DOWN: 2 players, Enter for next state
             break;
         case GameState::GAME:
+
             ClearBackground(WHITE);
             DrawText("Press Enter", 500, 100, 20, BLACK);
             PhysicsManager::getInstance().update();
@@ -103,7 +107,7 @@ int main() {
         PhysicsManager::getInstance().cleanup();
     }
     TextureManager::getInstance().unloadTextures();
-
+    Resources::UnLoad();
     CloseAudioDevice();
     CloseWindow();
     return 0;

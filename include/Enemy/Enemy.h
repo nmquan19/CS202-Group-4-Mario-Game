@@ -1,0 +1,71 @@
+#pragma once
+#include "..\System\Interface.h"
+#include "raylib.h"
+#include "EnemyState.h"
+#include "../Objects/ObjectFactory.h"
+#include <vector>
+class EnemyState; 
+class Enemy : public Object, public IUpdatable, public IMovable {
+public:
+	Enemy(Vector2 startPos,Vector2 velocity, Vector2 accelleration, Texture2D texture);
+	~Enemy();
+	void update(float deltaTime);
+	virtual void draw();
+	Rectangle getHitBox() const override;
+	ObjectCategory getObjectCategory() const override;
+	virtual void onCollision(Object* other) override ;
+	std::vector<ObjectCategory> getCollisionTargets() const override;
+	 void checkCollision(const std::vector<Object*>& candidates) override;
+	bool isActive() const override;
+	void changeState(EnemyState* other);
+	int curFrame; 	
+public :  
+	void setActive(bool flag) override ;
+	void setPosition(Vector2 newPosition) ;
+	Vector2 getPosition() const override ;
+	void setVelocity(Vector2 newVelocity) override ;
+	Vector2 getVelocity() override ;
+	bool isCollided() const override ;
+	void setCollided(bool flag) override;
+	void setSpeed(float newSpeed);
+	float getSpeed();
+
+	float getWidth() const;
+	float getHeight() const;
+	float getBottom() const;
+	float getCenterX() const;
+	float getCenterY() const;
+	Vector2 getCenter() const;
+protected:
+	void handleEnvironmentCollision(Object* other);
+    int HP ;
+	bool isGrounded;
+	EnemyState* currentState;
+	float speed; 
+	std::vector<int> numSprites; 	
+	std::vector<std::pair<int,int>> num_sprites; 
+	float scale;  
+	Rectangle hitbox; 
+	bool isFacingRight; 
+	int max_numSprites; 
+	Vector2 position;
+	bool active;
+	Texture2D texture; 
+	Rectangle spritebox;  
+	float hitBoxWidth;
+	float hitBoxHeight;
+	Vector2 velocity;  
+	Vector2 accelleration; 
+};
+
+
+class LedgeDetector {
+public:
+    LedgeDetector(float offsetX, float castLength);
+    void update(Enemy* enemy, float deltaTime);
+    bool isNearLedge() const;
+private:
+    bool nearLedge;
+    float offsetX;
+    float castLength;	
+};
