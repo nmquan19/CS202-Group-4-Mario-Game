@@ -9,4 +9,5 @@ class Goomba: public Enemy
       friend class GoombaStompedState;
       friend class GoombaJumpingState;
       void onCollision(Object* other) override;
+      void update(float deltaTime); 
 }; 

@@ -9,7 +9,7 @@ class Enemy : public Object, public IUpdatable, public IMovable {
 public:
 	Enemy(Vector2 startPos,Vector2 velocity, Vector2 accelleration, Texture2D texture);
 	~Enemy();
-	void update(float deltaTime);
+	virtual void update(float deltaTime) override = 0 ;
 	virtual void draw();
 	Rectangle getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;

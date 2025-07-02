@@ -9,6 +9,7 @@ Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D
     num_sprites ={};
     currentState = nullptr;
     PhysicsManager::getInstance().addObject(this);
+
 }
 
 Enemy::~Enemy() {
@@ -23,29 +24,7 @@ std::vector<ObjectCategory> Enemy::getCollisionTargets() const
 	return { ObjectCategory::CHARACTER, ObjectCategory::ENEMY, ObjectCategory::BLOCK };
 }
 
-void Enemy::update(float deltaTime) {
-	// Find Mario (player) in the physics manager
-    auto players = PhysicsManager::getInstance().getObjectsInLayer(ObjectCategory::CHARACTER);
-    currentState->update(this,deltaTime);
-    currentState->checkCondition(this);
-    position += velocity; 
-    hitbox.x = position.x;
-    hitbox.y = position.y;
-    // Keep enemies within screen bounds
-    if (position.x < 0)
-    {
-        position.x = 0;
-        velocity *= -1;
-    } 
-    if (position.y < 0) position.y = 0;
-    if (position.x > 1920 - hitbox.width)
-    {
-        position.x = 1920 - hitbox.width;
-        velocity *= -1;
-    } 
-    
-    if (position.y > 1080 - hitBoxHeight) position.y = 1080 - hitBoxHeight;
-}
+
 
 void Enemy::draw() {
 	 float  scale =5.0f;

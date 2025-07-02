@@ -82,7 +82,6 @@ std::vector<Object*> QuadTree::retrieve(Object* object) {
 
 std::vector<Object*> QuadTree::retrieve(Rectangle area) { 
 	std::vector<Object*> result;
-	//root.get();/
 	retrieveFromNode(root.get(), area, result);
 
 	std::sort(result.begin(), result.end());

@@ -26,10 +26,10 @@ int main() {
     enum class GameState { MENU, GAME, GAME_OVER };
     GameState state = GameState::MENU;
     GameState previousState = GameState::MENU;
-    
-    std::unique_ptr<Character> character;
     Resources::Load();
-    //Goomba goomba({ 800,500 }, { 0,0 }, { 0,0 });
+
+    std::unique_ptr<Character> character;
+    std::unique_ptr<Goomba> goomba; 
     while (!WindowShouldClose()) {
 
         float deltaTime = GetFrameTime();
@@ -43,6 +43,10 @@ int main() {
             if (state == GameState::GAME) {
                 PhysicsManager::getInstance().setWorldBounds({0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()});
                 character = std::make_unique<Character>(CharacterType::MARIO, Vector2{ 500, 500 });
+                goomba = std::make_unique<Goomba>(
+                    Vector2{ 800, 1000 }, Vector2{ 0, 0 }, Vector2{ 0, 0 }
+                );
+            
             }
             
             previousState = state;
@@ -84,7 +88,12 @@ int main() {
             LevelEditor::getInstance().update();
             if (character) character->update(deltaTime);
             if (character) character->draw();
-            if (IsKeyPressed(KEY_TAB)) {
+            if (goomba)
+            {
+                goomba->update(deltaTime);
+                goomba->draw();
+            }
+            if (IsKeyPressed(KEY_TAB)) {    
                 LevelEditor::getInstance().toggleEditMode();
             }
             PhysicsManager::getInstance().drawDebug();
