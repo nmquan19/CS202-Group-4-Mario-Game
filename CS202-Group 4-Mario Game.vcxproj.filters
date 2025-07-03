@@ -121,6 +121,24 @@
     <Image Include="assets\Super Mario Bros.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\button\board.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\check.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\cross.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\play.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\return.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\setting.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav">
