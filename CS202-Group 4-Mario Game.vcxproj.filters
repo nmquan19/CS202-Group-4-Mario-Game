@@ -90,6 +90,9 @@
     <ClInclude Include="include\Enemy\Koopa\KoopaState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\System\Constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

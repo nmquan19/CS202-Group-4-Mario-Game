@@ -1,10 +1,15 @@
 #include "..\..\include\Enemy\Enemy.h"
 #include "..\..\include\System\PhysicsManager.h"
 #include <cstdlib>
-#include <math.h>
 #include <raymath.h>
 #include <iostream>
-Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture) {
+#include <vector>
+#include "../../include/Objects/ObjectFactory.h"
+#include "../../include/System/Interface.h"
+#include <raylib.h>
+#include "../../include/Enemy/EnemyState.h"
+#include <iostream>
+Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f) {
     hitbox = {0,0,0,0};
     num_sprites ={};
     currentState = nullptr;
@@ -23,8 +28,32 @@ std::vector<ObjectCategory> Enemy::getCollisionTargets() const
 {
 	return { ObjectCategory::CHARACTER, ObjectCategory::ENEMY, ObjectCategory::BLOCK };
 }
-
-
+void Enemy::applyGravity(float deltaTime) {
+    if (!onGround) {
+        velocity.y +=  980* deltaTime;
+    }
+}
+void Enemy::update(float deltaTime)
+{
+    aniTimer += deltaTime;
+    DrawText(TextFormat("curFrame: x =%f", curFrame), 700, 700, 12, BLACK);
+    if (aniTimer >= aniSpeed) {
+        curFrame += 1;
+        aniTimer = 0;
+    }
+    applyGravity(deltaTime);
+    position += velocity* deltaTime;
+    if (getBottom() >= groundLevel) {
+        position.y = groundLevel - (spritebox.height * scale);
+        onGround = true;  
+        if (velocity.y > 0) {
+            velocity.y = 0;
+        }
+    }
+    else {
+        onGround = false; 
+    }
+}
 
 void Enemy::draw() {
 	 float  scale =5.0f;
@@ -88,29 +117,9 @@ void Enemy::onCollision(Object* other) {
         }
     }
 }
-void Enemy::checkCollision(const std::vector<Object*>& candidates) {
-    for (auto* candidate : candidates) {
-        switch (candidate->getObjectCategory()) {
-        case ObjectCategory::ENEMY:
-            //handleEnemyCollision(candidate);
-            break;
-        case ObjectCategory::BLOCK:
-            handleEnvironmentCollision(candidate);
-            break;
-        case ObjectCategory::PROJECTILE:
-            // implement
-            break;
-        case ObjectCategory::ITEM:
-            // implement
-            break;
-        }
-    }
-}
-
 void Enemy::handleEnvironmentCollision(Object* other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
-
     // Calculate overlap amounts for each direction
     float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
     float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
@@ -120,7 +129,7 @@ void Enemy::handleEnvironmentCollision(Object* other) {
     if (overlapTop < overlapBottom && overlapTop < overlapLeft && overlapTop < overlapRight) {
         // Collision from top - player is on top of block
         position.y = otherHitBox.y - (spritebox.height * scale);  // ? Use sprite dimensions, not hitbox
-        isGrounded = true; 
+       onGround = true; 
     }
     else if (overlapBottom < overlapTop && overlapBottom < overlapLeft && overlapBottom < overlapRight) {
         // Collision from bottom
@@ -132,12 +141,12 @@ void Enemy::handleEnvironmentCollision(Object* other) {
     else if (overlapLeft < overlapRight) {
         // Collision from left side
         position.x = otherHitBox.x - (spritebox.width * scale);  // ? Use sprite dimensions
-        velocity.x = 0;
+        velocity.x *= -1;
     }
     else {
         // Collision from right side
         position.x = otherHitBox.x + otherHitBox.width;
-        velocity.x = 0;
+        velocity.x *= -1;
     }
 }
 bool Enemy::isActive() const {
@@ -178,4 +187,27 @@ bool Enemy::isCollided() const {
 
 void Enemy::setCollided(bool flag) {
     collided = flag;
+}
+
+
+float Enemy::getWidth() const {
+    return spritebox.width * scale;
+}
+
+float Enemy::getHeight() const {
+    return spritebox.height * scale;
+}
+
+float Enemy::getCenterX() const {
+    return position.x + (spritebox.width * scale) / 2;
+}
+float Enemy::getBottom() const {
+    return position.y + hitbox.height;
+}
+float Enemy::getCenterY() const {
+    return position.y + (spritebox.height * scale) / 2;
+}
+
+Vector2 Enemy::getCenter() const {
+    return Vector2{ getCenterX(), getCenterY() };
 }

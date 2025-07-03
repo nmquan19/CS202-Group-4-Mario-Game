@@ -8,6 +8,8 @@
 #include "../include/Characters/Character.h"
 #include "../include/Enemy/Goomba/Goomba.h"
 #include "../include/System/Resources.h"
+#include <memory>
+#include "../include/System/Interface.h"
 
 int main() {
     InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
@@ -44,7 +46,7 @@ int main() {
                 PhysicsManager::getInstance().setWorldBounds({0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()});
                 character = std::make_unique<Character>(CharacterType::MARIO, Vector2{ 500, 500 });
                 goomba = std::make_unique<Goomba>(
-                    Vector2{ 800, 1000 }, Vector2{ 0, 0 }, Vector2{ 0, 0 }
+                    Vector2{ 700, 0 }, Vector2{ 70, 0 }, Vector2{ 0, 0 }
                 );
             
             }

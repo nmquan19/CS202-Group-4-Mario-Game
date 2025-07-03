@@ -1,5 +1,7 @@
 #include "../Enemy.h"
-#include "GoombaState.h"
+#include <vector>
+#include "../../Objects/ObjectFactory.h"
+#include <raylib.h>
 class GoombaWanderingState;  
 class Goomba: public Enemy
 {
@@ -10,4 +12,5 @@ class Goomba: public Enemy
       friend class GoombaJumpingState;
       void onCollision(Object* other) override;
       void update(float deltaTime); 
+      void checkCollision(const std::vector<Object*>& candidates) override;
 }; 

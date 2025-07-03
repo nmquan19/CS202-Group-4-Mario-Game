@@ -1,25 +1,26 @@
 #pragma once
 #include "..\System\Interface.h"
 #include "raylib.h"
-#include "EnemyState.h"
 #include "../Objects/ObjectFactory.h"
 #include <vector>
+#include <utility>
 class EnemyState; 
 class Enemy : public Object, public IUpdatable, public IMovable {
 public:
 	Enemy(Vector2 startPos,Vector2 velocity, Vector2 accelleration, Texture2D texture);
 	~Enemy();
-	virtual void update(float deltaTime) override = 0 ;
+	virtual void update(float deltaTime) override; 
 	virtual void draw();
 	Rectangle getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
 	virtual void onCollision(Object* other) override ;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
-	 void checkCollision(const std::vector<Object*>& candidates) override;
+	virtual void checkCollision(const std::vector<Object*>& candidates) override =0 ;
 	bool isActive() const override;
 	void changeState(EnemyState* other);
 	int curFrame; 	
 public :  
+	void applyGravity(float deltaTime);
 	void setActive(bool flag) override ;
 	void setPosition(Vector2 newPosition) ;
 	Vector2 getPosition() const override ;
@@ -37,9 +38,10 @@ public :
 	float getCenterY() const;
 	Vector2 getCenter() const;
 protected:
+	float aniTimer, aniSpeed; 
 	void handleEnvironmentCollision(Object* other);
     int HP ;
-	bool isGrounded;
+	bool onGround;
 	EnemyState* currentState;
 	float speed; 
 	std::vector<int> numSprites; 	
@@ -54,8 +56,9 @@ protected:
 	Rectangle spritebox;  
 	float hitBoxWidth;
 	float hitBoxHeight;
-	Vector2 velocity;  
+	Vector2 velocity; 
 	Vector2 accelleration; 
+	float groundLevel = 500.0f;
 };
 
 

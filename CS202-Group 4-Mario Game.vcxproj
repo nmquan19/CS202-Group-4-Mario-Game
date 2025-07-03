@@ -34,6 +34,7 @@
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Scenes\Scene.h" />
+    <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\Grid.h" />
     <ClInclude Include="include\System\Interface.h" />
     <ClInclude Include="include\System\LevelEditor.h" />

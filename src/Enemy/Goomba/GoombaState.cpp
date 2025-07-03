@@ -3,8 +3,9 @@
 #include "../../../include/System/PhysicsManager.h"
 #include <cstdlib>  
 #include "../../../include/System/Resources.h"
-#include <ctime> 
-#include <iostream>
+#include "../../../include/Enemy/Enemy.h"
+#include "../../../include/Enemy/EnemyState.h"
+#include <raylib.h>
 void GoombaWanderingState::checkCondition(Enemy* enemy)
 {
 
@@ -13,7 +14,7 @@ void GoombaWanderingState::enter(Enemy* enemy)
 {
 
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    goomba->velocity = {5,0};
+    goomba->velocity.x = 500; 
     goomba->curFrame = 0; 
 //    std::cout<<goomba->num_sprites[0].first<<"\n";
     goomba->spritebox =  Resources::Enemy_sprite_boxes[goomba->num_sprites[0].first];
@@ -24,7 +25,6 @@ void GoombaWanderingState::exit(Enemy* enemy)
     goomba->curFrame =  goomba->numSprites[0]-1;
     goomba->spritebox =  Resources::Enemy_sprite_boxes[goomba->num_sprites[0].first+goomba->curFrame];
 }
-#include <iostream>
 void GoombaWanderingState::update(Enemy* enemy,float deltaTime)
 {   
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
@@ -50,14 +50,11 @@ void GoombaStompedState::enter(Enemy* enemy)
 void GoombaStompedState::checkCondition(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    // if(goomba->curFrame == goomba->numSprites[2]-1)
-    // {
-    //      goomba->changeState(&GoombaWanderingState::GetInstance());
-    // }
-    // if(goomba->velocity.y > 0)
-    // { 
-    //     goomba->changeState(&GoombaJumpingState::GetInstance());
-    // }
+     if(goomba->aniTimer >= goomba->aniSpeed-0.1)
+     {
+          goomba->changeState(&GoombaWanderingState::GetInstance());
+     }
+
 }
 void GoombaStompedState::exit(Enemy* enemy)
 {
