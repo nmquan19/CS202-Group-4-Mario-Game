@@ -38,7 +38,7 @@ void Block::checkCollision(const std::vector<Object*>& candidates) {
 }
 
 void Block::onCollision(Object* other) {}
-
+    
 bool Block::isActive() const {
     return active;
 }

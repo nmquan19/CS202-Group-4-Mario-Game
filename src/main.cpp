@@ -8,6 +8,10 @@
 #include "../include/System/LevelEditor.h"
 #include "../include/System/TextureManager.h"
 #include "../include/Characters/Character.h"
+#include "../include/Enemy/Goomba/Goomba.h"
+#include "../include/System/Resources.h"
+#include <memory>
+#include "../include/System/Interface.h"
 
 
 
@@ -193,9 +197,10 @@ int main() {
     enum class GameState { MENU, GAME, GAME_OVER };
     GameState state = GameState::MENU;
     GameState previousState = GameState::MENU;
+    Resources::Load();
 
     std::unique_ptr<Character> character;
-
+    std::unique_ptr<Goomba> goomba; 
     while (!WindowShouldClose()) {
 
         float deltaTime = GetFrameTime();
@@ -209,6 +214,10 @@ int main() {
             if (state == GameState::GAME) {
                 PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
                 character = std::make_unique<Character>(CharacterType::MARIO, Vector2{ 500, 500 });
+                goomba = std::make_unique<Goomba>(
+                    Vector2{ 700, 0 }, Vector2{ 70, 0 }, Vector2{ 0, 0 }
+                );
+            
             }
             previousState = state;
         }
@@ -245,13 +254,19 @@ int main() {
             menuManager.DrawMenu();
             break;
         case GameState::GAME:
+
             ClearBackground(WHITE);
             DrawText("Press Enter", 500, 100, 20, BLACK);
             PhysicsManager::getInstance().update();
             LevelEditor::getInstance().update();
             if (character) character->update(deltaTime);
             if (character) character->draw();
-            if (IsKeyPressed(KEY_TAB)) {
+            if (goomba)
+            {
+                goomba->update(deltaTime);
+                goomba->draw();
+            }
+            if (IsKeyPressed(KEY_TAB)) {    
                 LevelEditor::getInstance().toggleEditMode();
             }
             PhysicsManager::getInstance().drawDebug();
@@ -273,7 +288,7 @@ int main() {
         PhysicsManager::getInstance().cleanup();
     }
     TextureManager::getInstance().unloadTextures();
-
+    Resources::UnLoad();
     CloseAudioDevice();
     CloseWindow();
     return 0;
