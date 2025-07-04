@@ -14,7 +14,7 @@ std::unique_ptr<Character> CharacterFactory::createMario(Vector2 startPosition, 
     std::vector<std::vector<Rectangle>> stateFrameData = getMarioFrameData();
     const char* spritePath = getMarioSpritePath();
 
-    std::unique_ptr<Character> mario = std::make_unique<Character>(startPosition, stats, stateFrameData, spritePath, CharacterType::MARIO, scale);
+    std::unique_ptr<Character> mario = std::make_unique<Character>(startPosition, stats, stateFrameData, CharacterType::MARIO, scale);
     return mario;
 }
 
@@ -23,7 +23,7 @@ std::unique_ptr<Character> CharacterFactory::createLuigi(Vector2 startPosition, 
     std::vector<std::vector<Rectangle>> stateFrameData = getLuigiFrameData();
     const char* spritePath = getLuigiSpritePath();
 
-    std::unique_ptr<Character> luigi = std::make_unique<Character>(startPosition, stats, stateFrameData, spritePath, CharacterType::LUIGI, scale);
+    std::unique_ptr<Character> luigi = std::make_unique<Character>(startPosition, stats, stateFrameData, CharacterType::LUIGI, scale);
     return luigi;
 }
 

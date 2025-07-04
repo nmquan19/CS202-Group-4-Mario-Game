@@ -2,8 +2,9 @@
 #include "..\..\include\Characters\IdleState.h"
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
+#include "../../include/System/TextureManager.h"
 
-Character::Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, const char* spritePath, CharacterType type, float scale) 
+Character::Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale) 
     : characterType(type), velocity({0, 0}), scale(scale),
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
@@ -12,7 +13,7 @@ Character::Character(Vector2 startPosition,  const CharacterStats& stats, const 
 	this->jumpForce = stats.jumpForce;
 	this->gravity = stats.gravity;
 	this->stateFrameData = stateFrameData;
-	this->spriteSheet = LoadTexture(spritePath);
+	this->spriteSheet = TextureManager::getInstance().getCharacterTexture(type);
 
     if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
         setCurrentStateRow(0);

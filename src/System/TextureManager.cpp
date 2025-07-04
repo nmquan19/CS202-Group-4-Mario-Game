@@ -9,11 +9,18 @@ Texture2D TextureManager::getBlockTexture(BlockType type) {
     return blockTextures[type];
 }
 
+Texture2D TextureManager::getCharacterTexture(CharacterType type) {
+    return characterTextures[type];
+}
+
 void TextureManager::loadTextures() {
     if (texturesLoaded) return;
 
     blockTextures[BlockType::GROUND] = LoadTexture("assets/ground_block.png");
     blockTextures[BlockType::BRICK] = LoadTexture("assets/brick_block.png");
+
+    characterTextures[CharacterType::MARIO] = LoadTexture("assets/mario_sprites.png");
+    characterTextures[CharacterType::LUIGI] = LoadTexture("assets/luigi_sprites.png");
 
     texturesLoaded = true;
 }
@@ -23,8 +30,14 @@ void TextureManager::unloadTextures() {
 
     for (auto& pair : blockTextures) {
         UnloadTexture(pair.second);
-    }
+    } 
     blockTextures.clear();
+
+    for (auto& pair : characterTextures) {
+        UnloadTexture(pair.second);
+    }
+    characterTextures.clear();
+
     texturesLoaded = false;
 }
 
