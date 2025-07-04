@@ -55,6 +55,8 @@ public:
 	void onCollision(Object* other) override;
 	bool isActive() const override;
 	void setActive(bool) override;
+	bool isCollided() const override;
+	void setCollided(bool flag) override;
 
 	float getWidth() const;
 	float getHeight() const;

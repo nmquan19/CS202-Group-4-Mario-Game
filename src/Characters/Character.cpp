@@ -204,6 +204,14 @@ void Character::setActive(bool flag) {
 	active = flag;
 }
 
+bool Character::isCollided() const {
+	return collided;
+}
+
+void Character::setCollided(bool flag) {
+	collided = flag;
+}
+
 ObjectCategory Character::getObjectCategory() const {
 	return ObjectCategory::CHARACTER;
 }

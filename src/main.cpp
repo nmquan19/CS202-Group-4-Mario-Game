@@ -8,6 +8,7 @@
 #include "../include/System/LevelEditor.h"
 #include "../include/System/TextureManager.h"
 #include "../include/Characters/Character.h"
+#include "../include/Characters/CharacterFactory.h"
 #include "../include/Enemy/Goomba/Goomba.h"
 #include "../include/System/Resources.h"
 #include <memory>
@@ -213,7 +214,7 @@ int main() {
 
             if (state == GameState::GAME) {
                 PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
-                character = std::make_unique<Character>(CharacterType::MARIO, Vector2{ 500, 500 });
+                character = CharacterFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
                 goomba = std::make_unique<Goomba>(
                     Vector2{ 700, 0 }, Vector2{ 70, 0 }, Vector2{ 0, 0 }
                 );
