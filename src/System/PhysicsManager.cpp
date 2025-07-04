@@ -1,5 +1,11 @@
 #include <algorithm>
 #include "../../include/System/PhysicsManager.h"
+#include <memory>
+#include <vector>
+#include "../../include/Objects/ObjectFactory.h"
+#include "../../include/System/Interface.h"
+#include "../../include/System/QuadTree.h"
+#include <raylib.h>
 
 PhysicsManager* PhysicsManager::instance = nullptr;
 
@@ -29,7 +35,7 @@ void PhysicsManager::deleteObjects() {
 		if (it != objects.end()) {
 			objects.erase(it);
 		}
-		delete obj;
+		//delete obj;
 	}
 	toDelete.clear();
 }

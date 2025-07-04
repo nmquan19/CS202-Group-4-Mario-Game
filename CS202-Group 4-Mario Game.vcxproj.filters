@@ -54,6 +54,45 @@
     <ClInclude Include="include\Objects\Block.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Characters\ICharacterState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\IdleState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\JumpingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\MovingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\EnemyFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\EnemyState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Goomba\Goomba.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Goomba\GoombaState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Koopa\Koopa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Koopa\KoopaState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\Constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">
@@ -92,12 +131,54 @@
     <ClCompile Include="src\System\LevelEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Characters\IdleState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Characters\JumpingState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Characters\MovingState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Resources.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Goomba\Goomba.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Koopa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\romulus.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="assets\Super Mario Bros.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\board.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\check.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\cross.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\play.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\return.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\button\setting.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
