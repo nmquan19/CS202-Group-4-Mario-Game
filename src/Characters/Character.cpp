@@ -2,17 +2,20 @@
 #include "..\..\include\Characters\IdleState.h"
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
-#include <iostream>
 
-Character::Character(CharacterType type, Vector2 startPosition, float scale) 
+Character::Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, const char* spritePath, CharacterType type, float scale) 
     : characterType(type), velocity({0, 0}), scale(scale),
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
-	setPosition(startPosition);
-    loadCharacterData(type);
+
+	this->position = startPosition;
+	this->speed = stats.baseSpeed;
+	this->jumpForce = stats.jumpForce;
+	this->gravity = stats.gravity;
+	this->stateFrameData = stateFrameData;
+	this->spriteSheet = LoadTexture(spritePath);
 
     if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
         setCurrentStateRow(0);
-		std::cout << stateFrameData[currentStateRow].size() << '\n';
     }
 
     currentState = &IdleState::getInstance();
@@ -20,7 +23,7 @@ Character::Character(CharacterType type, Vector2 startPosition, float scale)
 
     PhysicsManager::getInstance().addObject(this);
 }
- 
+
 Character::~Character() {
 	UnloadTexture(spriteSheet);
 }
@@ -41,7 +44,7 @@ void Character::update(float deltaTime) {
 	aniTimer += deltaTime;
 	if(aniTimer >= aniSpeed){
 		currentFrame = (currentFrame + 1) % stateFrameData[currentStateRow].size();
-		spriteRec = getCurrentStateFrame().toRectangle();
+		spriteRec = getCurrentStateFrame();
 		updateHitBox();
 		aniTimer = 0;
 	}
@@ -49,14 +52,31 @@ void Character::update(float deltaTime) {
 	applyGravity(deltaTime);
     position.x += velocity.x * deltaTime;
     position.y += velocity.y * deltaTime;
+	
+	if (!onGround) {
+        return; // Already falling, no need to check
+    }
 
-	if (getBottom() >= groundLevel) {
-        position.y = groundLevel - (spriteRec.height * scale);
-        setOnGround(true);
-        if (velocity.y > 0) {
-            velocity.y = 0;
+    Rectangle groundCheckBox = {
+        position.x + 5,
+        position.y + (spriteRec.height * scale),
+        (spriteRec.width * scale) - 10,
+        5.0f
+    };
+
+    std::vector<Object*> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
+    
+    bool stillOnGround = false;
+    for (auto* obj : nearbyObjects) {
+        if (obj != this && obj->getObjectCategory() == ObjectCategory::BLOCK) {
+            if (CheckCollisionRecs(groundCheckBox, obj->getHitBox())) {
+                stillOnGround = true;
+                break;
+            }
         }
-    } else {
+    }
+    
+    if (!stillOnGround) {
         setOnGround(false);
     }
 }
@@ -78,7 +98,7 @@ void Character::draw() {
 	DrawTexturePro(spriteSheet, sourceRec, destRec, {0, 0}, 0.0f, WHITE);
 }
 
-StateFrame Character::getCurrentStateFrame() const{
+Rectangle Character::getCurrentStateFrame() const{
 	if(currentStateRow < stateFrameData.size() && currentFrame < stateFrameData[currentStateRow].size()){
 		return stateFrameData[currentStateRow][currentFrame];
 	}
@@ -97,7 +117,7 @@ void Character::setCurrentStateRow(int newRow){
 	if(newRow < stateFrameData.size()){
 		currentStateRow = newRow;
 		currentFrame = 0;
-		spriteRec = getCurrentStateFrame().toRectangle();
+		spriteRec = getCurrentStateFrame();
 		updateHitBox();
 	} 
 }
@@ -133,10 +153,6 @@ void Character::applyGravity(float deltaTime){
 	if(!onGround){
 		velocity.y += gravity * deltaTime;
 	}
-}
-
-void Character::setGroundLevel(float newGroundLevel) {
-	groundLevel = newGroundLevel;
 }
 
 void Character::setVelocity(Vector2 newVelocity){
@@ -223,9 +239,17 @@ void Character::checkCollision(const std::vector<Object*>& candidates) {
 	}
 }
 
+void Character::onCollision(Object* other) {
+
+}
+
 void Character::handleEnvironmentCollision(Object* other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
+
+	if(!CheckCollisionRecs(playerHitBox, otherHitBox)) { 
+		return;
+	}
     
     // Calculate overlap amounts for each direction
     float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
@@ -233,90 +257,32 @@ void Character::handleEnvironmentCollision(Object* other) {
     float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
     float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
     
-    if (overlapTop < overlapBottom && overlapTop < overlapLeft && overlapTop < overlapRight) {
-        // Collision from top - player is on top of block
-        position.y = otherHitBox.y - (spriteRec.height * scale);  // ← Use sprite dimensions, not hitbox
-        setOnGround(true);
-    }
-    else if (overlapBottom < overlapTop && overlapBottom < overlapLeft && overlapBottom < overlapRight) {
-        // Collision from bottom
-        position.y = otherHitBox.y + otherHitBox.height;
-        if (velocity.y < 0) {
-            velocity.y = 0;
-        }
-    }
-    else if (overlapLeft < overlapRight) {
-        // Collision from left side
-        position.x = otherHitBox.x - (spriteRec.width * scale);  // ← Use sprite dimensions
-        velocity.x = 0;
-    }
-    else {
-        // Collision from right side
-        position.x = otherHitBox.x + otherHitBox.width;
-        velocity.x = 0;
-    }
-}
+	const float MIN_OVERLAP = 2.0f;
 
-void Character::loadCharacterData(CharacterType type){
-	CharacterStats stats = getCharacterStats(type);
-	speed = stats.baseSpeed;
-	jumpForce = stats.jumpForce;
-	gravity = stats.gravity;
-
-	stateFrameData = getCharacterFrameData(type);
-
-	const char* spritePath = getCharacterSpritePath(type);
-	spriteSheet = LoadTexture(spritePath);
-}
-
-CharacterStats Character::getCharacterStats(CharacterType type){
-	switch(type){
-		case CharacterType::MARIO:
-			return {220.0f, 550.0f, 980.0f};
-
-		case CharacterType::LUIGI:
-			return {175.0f, 730.0f, 980.0f};
-
-		default:
-			return  {250.0f, 550.0f, 980.0f};
+	if(overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
+		return;
 	}
-}
 
-std::vector<std::vector<StateFrame>> Character::getCharacterFrameData(CharacterType type){
-	switch(type){
-		case CharacterType::MARIO:
-			return {
-				{{31, 21, 17, 43}, {111, 21, 17, 43}, {191, 20, 17, 44}, {271, 20, 17, 44}, {351, 20, 17, 44}}, // idle state
-				{{31, 85, 19, 43}, {112, 85, 16, 43}, {193, 84, 15, 44}, {272, 84, 16, 44}, {351, 85, 18, 43}, {432, 85, 16, 43}, {512, 84, 16, 44}, {592, 84, 16, 44}}, // moving state
-				{{30, 209, 19, 46}, {110, 209, 19, 46}, {190, 209, 19, 46}, {270, 209, 19, 46}} // jumping state
-			};
+	float minOverlap = std::min({overlapTop, overlapBottom, overlapLeft, overlapRight});
 
-		case CharacterType::LUIGI:
-			return {
-				{{31, 21, 17, 43}, {111, 21, 17, 43}, {191, 20, 17, 44}, {271, 20, 17, 44}, {351, 20, 17, 44}}, // idle state
-				{{31, 85, 19, 43}, {112, 85, 16, 43}, {193, 84, 15, 44}, {272, 84, 16, 44}, {351, 85, 18, 43}, {432, 85, 16, 43}, {512, 84, 16, 44}, {592, 84, 16, 44}}, // moving state
-				{{30, 209, 19, 46}, {110, 209, 19, 46}, {190, 209, 19, 46}, {270, 209, 19, 46}} // jumping state
-			};
-
-		default:
-			return {
-				{{31, 21, 17, 43}, {111, 21, 17, 43}, {191, 20, 17, 44}, {271, 20, 17, 44}, {351, 20, 17, 44}}, // idle state
-				{{31, 85, 19, 43}, {112, 85, 16, 43}, {193, 84, 15, 44}, {272, 84, 16, 44}, {351, 85, 18, 43}, {432, 85, 16, 43}, {512, 84, 16, 44}, {592, 84, 16, 44}}, // moving state
-				{{30, 209, 19, 46}, {110, 209, 19, 46}, {190, 209, 19, 46}, {270, 209, 19, 46}} // jumping state
-			};
+	if(minOverlap == overlapTop) {
+		position.y = otherHitBox.y - playerHitBox.height;
+		velocity.y = 0;
+		setOnGround(true);
 	}
-}
-
-const char* Character::getCharacterSpritePath(CharacterType type){
-	switch(type){
-		case CharacterType::MARIO:
-			return "assets/mario_sprites.png";
-
-		case CharacterType::LUIGI:
-			return "assets/luigi_sprites.png";
-
-		default:
-			return "assets/mario_sprites.png";
+	else if(minOverlap == overlapBottom) {
+		position.y = otherHitBox.y + otherHitBox.height;
+		if(velocity.y < 0) {
+			velocity.y = 0;
+		}
+	}
+	else if(minOverlap == overlapLeft && overlapLeft >= MIN_OVERLAP) {
+		position.x = otherHitBox.x - playerHitBox.width;
+		velocity.x = 0;
+	}
+	else if (minOverlap == overlapRight && overlapRight >= MIN_OVERLAP) {
+		position.x = otherHitBox.x + otherHitBox.width;
+		velocity.x = 0;
 	}
 }
 

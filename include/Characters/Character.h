@@ -5,18 +5,6 @@
 #include "../System/Interface.h"
 #include "../System/PhysicsManager.h"
 
-struct StateFrame{
-	Vector2 startPosition;
-	float width;
-	float height;
-
-	StateFrame(float x, float y, float w, float h) : startPosition(Vector2{x, y}), width(w), height(h){}
-
-	Rectangle toRectangle() const{
-		return {startPosition.x, startPosition.y, width, height};
-	}
-};
-
 struct CharacterStats{
 	float baseSpeed;
 	float jumpForce;
@@ -27,14 +15,14 @@ class ICharacterState;
 
 class Character : public Object, public IUpdatable, public IMovable {
 public:
-	Character(CharacterType type, Vector2 startPosition, float scale = 2.0f);
+	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, const char* spritePath, CharacterType type, float scale = 2.0f);
 	~Character();
 	void changeState(ICharacterState& newState);
   
 	void update(float deltaTime) override;
 	void draw() override;
 
-	StateFrame getCurrentStateFrame() const;
+	Rectangle getCurrentStateFrame() const;
 	int getCurrentStateRow() const;
 	void setSpriteRec(Rectangle newRec);
 	void setCurrentStateRow(int newRow);
@@ -47,11 +35,9 @@ public:
 	void jump();
 	void applyGravity(float deltaTime);
 
-	void setGroundLevel(float newGroundLevel);
-
 	void setVelocity(Vector2 newVelocity);
 	Vector2 getVelocity();
-
+	
 	void setSpeed(float newSpeed);
 	float getSpeed();
 
@@ -66,10 +52,9 @@ public:
 	ObjectCategory getObjectCategory() const override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
 	void checkCollision(const std::vector<Object*>& candidates) override;
-	void onCollision(Object* other) override {}
+	void onCollision(Object* other) override;
 	bool isActive() const override;
-	void setActive(bool flag) override;
-
+	void setActive(bool) override;
 	bool isCollided() const override;
 	void setCollided(bool flag) override;
 
@@ -79,12 +64,6 @@ public:
 	float getCenterX() const;
 	float getCenterY() const;
 	Vector2 getCenter() const;
-
-private:
-	void loadCharacterData(CharacterType type);
-	CharacterStats getCharacterStats(CharacterType type);
-	std::vector<std::vector<StateFrame>> getCharacterFrameData(CharacterType type);
-	const char* getCharacterSpritePath(CharacterType type);
 	
 private:
 	ICharacterState* currentState;
@@ -97,12 +76,11 @@ private:
 	float speed;
 	float jumpForce;
 	float gravity;
-	float groundLevel = 500.0f;
 
 	bool facingRight;
 
 	Texture2D spriteSheet;
-	std::vector<std::vector<StateFrame>> stateFrameData;
+	std::vector<std::vector<Rectangle>> stateFrameData;
 	Rectangle spriteRec;
 	int currentFrame;
 	int currentStateRow;

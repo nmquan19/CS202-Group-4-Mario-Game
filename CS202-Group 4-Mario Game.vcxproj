@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
+    <ClInclude Include="include\Characters\CharacterFactory.h" />
     <ClInclude Include="include\Characters\ICharacterState.h" />
     <ClInclude Include="include\Characters\IdleState.h" />
     <ClInclude Include="include\Characters\JumpingState.h" />
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp" />
+    <ClCompile Include="src\Characters\CharacterFactory.cpp" />
     <ClCompile Include="src\Characters\IdleState.cpp" />
     <ClCompile Include="src\Characters\JumpingState.cpp" />
     <ClCompile Include="src\Characters\MovingState.cpp" />
