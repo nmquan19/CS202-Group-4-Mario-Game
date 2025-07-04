@@ -15,7 +15,7 @@ class ICharacterState;
 
 class Character : public Object, public IUpdatable, public IMovable {
 public:
-	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, const char* spritePath, CharacterType type, float scale = 2.0f);
+	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale = 2.0f);
 	~Character();
 	void changeState(ICharacterState& newState);
   
