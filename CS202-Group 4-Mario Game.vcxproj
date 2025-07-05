@@ -20,14 +20,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
+    <ClInclude Include="include\Characters\ICharacterState.h" />
+    <ClInclude Include="include\Characters\IdleState.h" />
+    <ClInclude Include="include\Characters\JumpingState.h" />
+    <ClInclude Include="include\Characters\MovingState.h" />
+    <ClInclude Include="include\Enemy\Enemy.h" />
+    <ClInclude Include="include\Enemy\EnemyFactory.h" />
+    <ClInclude Include="include\Enemy\EnemyState.h" />
+    <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
+    <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
+    <ClInclude Include="include\Enemy\Koopa\Koopa.h" />
+    <ClInclude Include="include\Enemy\Koopa\KoopaState.h" />
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Scenes\Scene.h" />
+    <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\Grid.h" />
     <ClInclude Include="include\System\Interface.h" />
     <ClInclude Include="include\System\LevelEditor.h" />
     <ClInclude Include="include\System\PhysicsManager.h" />
     <ClInclude Include="include\System\QuadTree.h" />
+    <ClInclude Include="include\System\Resources.h" />
     <ClInclude Include="include\System\TextureManager.h" />
     <ClInclude Include="include\UI\Menu.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
@@ -35,6 +48,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp" />
+    <ClCompile Include="src\Characters\IdleState.cpp" />
+    <ClCompile Include="src\Characters\JumpingState.cpp" />
+    <ClCompile Include="src\Characters\MovingState.cpp" />
+    <ClCompile Include="src\Enemy\Enemy.cpp" />
+    <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
+    <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
+    <ClCompile Include="src\Enemy\Koopa.cpp" />
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
@@ -42,12 +62,19 @@
     <ClCompile Include="src\System\LevelEditor.cpp" />
     <ClCompile Include="src\System\PhysicsManager.cpp" />
     <ClCompile Include="src\System\QuadTree.cpp" />
+    <ClCompile Include="src\System\Resources.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
     <ClCompile Include="src\UI\Menu.cpp" />
     <ClCompile Include="src\UI\SoundEffect.cpp" />
     <ClCompile Include="src\UI\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\button\board.png" />
+    <Image Include="assets\button\check.png" />
+    <Image Include="assets\button\cross.png" />
+    <Image Include="assets\button\play.png" />
+    <Image Include="assets\button\return.png" />
+    <Image Include="assets\button\setting.png" />
     <Image Include="assets\romulus.png" />
     <Image Include="assets\Super Mario Bros.png" />
   </ItemGroup>

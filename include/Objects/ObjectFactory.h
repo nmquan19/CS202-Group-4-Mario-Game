@@ -3,8 +3,11 @@
 #include <vector>
 #include <memory>
 #include "../System/Interface.h"
+#include <raylib.h>
 
 class Block;
+class Character;
+struct CharacterStats;
 
 class Object : public ICollidable, public IDrawable {
 public:
@@ -32,7 +35,14 @@ protected:
 
 class ObjectFactory {
 public:
-	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 girdPos);
+	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
+	static std::unique_ptr<Character> createCharacter(CharacterType type, Vector2 startPosition, float scale = 2.0f);
+
 private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
+
+	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, Vector2 startPosition, float scale);
+
+    static CharacterStats getStats(CharacterType type);
+    static std::vector<std::vector<Rectangle>> getFrameData(CharacterType type);
 };
