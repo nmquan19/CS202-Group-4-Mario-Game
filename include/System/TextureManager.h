@@ -1,9 +1,9 @@
 #pragma once
 
 #include <map>
-#include "../Objects/Block.h"
 #include "raylib.h"
-
+#include "Interface.h"
+#include <variant>
 class TextureManager {
 public:
     static TextureManager& getInstance();
@@ -26,13 +26,20 @@ private:
     bool texturesLoaded = false;
 };
 
-class BlockPalette {
+class ObjectPalette {
 public:
     void drawPalette();
     void handleSelection();
-    BlockType getSelectedType() const;
-    Rectangle getPaletteRect() { return PaletteRect; }
+
+    bool isBlock() const { return std::holds_alternative<BlockType>(selected); }
+    bool isEnemy() const { return std::holds_alternative<EnemyType>(selected); }
+
+    BlockType getBlockType() const { return std::get<BlockType>(selected); }
+    EnemyType getEnemyType() const { return std::get<EnemyType>(selected); }
+
+    Rectangle getPaletteRect() const { return paletteRect; }
+	ObjectType getSelectedType() const { return selected; }
 private:
-    Rectangle PaletteRect = { (int)GetScreenWidth() - 320.0f, 50.0f, 300.0f, 100.0f};
-    BlockType selectedBlockType = BlockType::GROUND;
+    Rectangle paletteRect = { (float)GetScreenWidth() - 320, 50, 300, 200 };
+    ObjectType selected = BlockType::GROUND;
 };

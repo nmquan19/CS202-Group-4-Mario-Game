@@ -1,8 +1,8 @@
 #pragma once
 #include "raylib.h"
 #include <vector>
+#include <variant>
 class Object;
-
 enum class ObjectCategory {
 	CHARACTER,
 	BLOCK,
@@ -75,3 +75,4 @@ public:
 	virtual void setVelocity(Vector2 newVelocity) = 0;
 	virtual Vector2 getVelocity() = 0;
 };
+using ObjectType = std::variant<BlockType, EnemyType>;

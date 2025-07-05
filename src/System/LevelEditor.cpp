@@ -1,8 +1,13 @@
 #include "../../include/System/LevelEditor.h"
 #include "../../include/System/PhysicsManager.h"
-#include "../../include/Objects/Block.h"
 #include "../../include/Objects/ObjectFactory.h"
-
+#include "../../include/System/Grid.h"
+#include <memory>
+#include <utility>
+#include "../../include/System/Interface.h"
+#include <raylib.h>
+#include <type_traits>
+#include <variant>
 LevelEditor* LevelEditor::instance = nullptr;
 
 LevelEditor& LevelEditor::getInstance() {
@@ -33,6 +38,17 @@ void LevelEditor::update() {
         palette.handleSelection();
         handleMouseInput();
     }
+    else {
+        for (auto& it : gridBlocks) {
+            if (it.second && it.second->isActive()) {
+                IUpdatable* updatable = dynamic_cast<IUpdatable*>(it.second.get());
+                if (updatable) {
+                    updatable->update(GetFrameTime());
+                }
+            }
+        }
+
+    }
 }
 
 void LevelEditor::draw() {
@@ -43,7 +59,6 @@ void LevelEditor::draw() {
         Vector2 gridCoord = GridSystem::getGridCoord(mousePos);
         Rectangle highlightRect = GridSystem::getGridRect(gridCoord);
         DrawRectangleLinesEx(highlightRect, 3, GREEN);
-
         palette.drawPalette();
     }
     for (auto& it : gridBlocks) {
@@ -60,28 +75,38 @@ void LevelEditor::handleMouseInput() {
     Vector2 gridCoord = GridSystem::getGridCoord(mousePos);
 
     bool clickingOnPalette = CheckCollisionPointRec(mousePos, palette.getPaletteRect());
-
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && !clickingOnPalette) {
-        placeBlock(palette.getSelectedType(), gridCoord);
+        placeObject(palette.getSelectedType(), gridCoord);
     }
-
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-        removeBlock(gridCoord);
+        removeObject(gridCoord);
     }
 }
 
-void LevelEditor::placeBlock(BlockType type, Vector2 gridCoord) {
-    removeBlock(gridCoord);
+void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
+    removeObject(gridCoord);
+    std::visit([&](auto&& actualType) {
+        using T = std::decay_t<decltype(actualType)>;
+        if constexpr (std::is_same_v<T, BlockType>) {
+            auto newBlock = ObjectFactory::createBlock(actualType, gridCoord);
+            if (newBlock) {
+                PhysicsManager::getInstance().addObject(newBlock.get());
+                gridBlocks[{(int)gridCoord.x, (int)gridCoord.y}] = std::move(newBlock);
+            }
+        }
+        else if constexpr (std::is_same_v<T, EnemyType>) {
+            auto newEnemy = ObjectFactory::createEnemy(actualType,GridSystem::getWorldPosition(gridCoord), 5.0f);
+            if (newEnemy) {
+                PhysicsManager::getInstance().addObject(newEnemy.get());
+                gridBlocks[{(int)gridCoord.x, (int)gridCoord.y}] = std::move(newEnemy);
+            }
+        }
 
-    std::unique_ptr<Object> newBlock = ObjectFactory::createBlock(type, gridCoord);
-
-    if (newBlock) {
-        PhysicsManager::getInstance().addObject(newBlock.get());
-        gridBlocks[{(int)gridCoord.x, (int)gridCoord.y}] = std::move(newBlock);
-    }
+        }, type);
 }
 
-void LevelEditor::removeBlock(Vector2 gridCoord) {
+
+void LevelEditor::removeObject(Vector2 gridCoord) {
     auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
     auto it = gridBlocks.find(key);
     if (it != gridBlocks.end()) {
@@ -93,6 +118,7 @@ void LevelEditor::removeBlock(Vector2 gridCoord) {
 
 void LevelEditor::toggleEditMode() {
     editMode = !editMode;
+
 }
 
 bool LevelEditor::isInEditMode() const {

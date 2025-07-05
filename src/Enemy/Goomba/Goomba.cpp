@@ -16,7 +16,14 @@ Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(
     changeState(&GoombaWanderingState::GetInstance());
     hitbox = Rectangle({position.x,position.y,(float)spritebox.width*scale,(float)spritebox.height*scale});
 }
-
+Goomba::Goomba(Vector2 startPos, float scale) : Enemy(startPos, Resources::Enemy_Textures,scale)
+{
+    num_sprites = { {0,1},{2,3},{5,5} };
+    numSprites = { 2,2,1 };
+    max_numSprites = 2;
+    changeState(&GoombaWanderingState::GetInstance());
+    hitbox = Rectangle({ position.x,position.y,(float)spritebox.width * scale,(float)spritebox.height * scale });
+}
 
 void Goomba::onCollision(Object* other) {
    
@@ -54,14 +61,12 @@ void Goomba::update(float deltaTime) {
     if (position.x < 0)
     {
         position.x = 0;
-        velocity *= -1;
+        velocity.x *= -1;
     }
-    if (position.y < 0) position.y = 0;
     if (position.x > 1920 - hitbox.width)
     {
         position.x = 1920 - hitbox.width;
-        velocity *= -1;
+        velocity.x *= -1;
     }
 
-    if (position.y > 1080 - hitBoxHeight) position.y = 1080 - hitBoxHeight;
 }
