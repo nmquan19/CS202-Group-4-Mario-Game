@@ -3,7 +3,7 @@
 #include "../../include/System/Grid.h"
 #include "../../include/System/TextureManager.h"
 
-Block::Block(Vector2 gridPos, BlockType type) : gridPosition(gridPos), blockType(type), active(true) {
+Block::Block(Vector2 gridPos, BlockType type) : gridPosition(gridPos), blockType(type) {
     position = { gridPos.x * GridSystem::GRID_SIZE, gridPos.y * GridSystem::GRID_SIZE };
     size = { GridSystem::GRID_SIZE, GridSystem::GRID_SIZE };
 }
