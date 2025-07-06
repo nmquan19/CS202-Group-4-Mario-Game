@@ -26,7 +26,7 @@ Character::Character(Vector2 startPosition,  const CharacterStats& stats, const 
 }
 
 Character::~Character() {
-	UnloadTexture(spriteSheet);
+	PhysicsManager::getInstance().markForDeletion(this);
 }
 
 void Character::changeState(ICharacterState& newState) {
@@ -55,7 +55,7 @@ void Character::update(float deltaTime) {
     position.y += velocity.y * deltaTime;
 	
 	if (!onGround) {
-        return; // Already falling, no need to check
+        return;
     }
 
     Rectangle groundCheckBox = {
@@ -218,7 +218,7 @@ ObjectCategory Character::getObjectCategory() const {
 }
 
 std::vector<ObjectCategory> Character::getCollisionTargets() const {
-	return { ObjectCategory::BLOCK, ObjectCategory::PROJECTILE, ObjectCategory::ITEM};
+	return { ObjectCategory::BLOCK, ObjectCategory::ITEM};
 }
 
 void Character::checkCollision(const std::vector<Object*>& candidates) {
@@ -232,6 +232,7 @@ void Character::checkCollision(const std::vector<Object*>& candidates) {
 				break;
 			case ObjectCategory::PROJECTILE:
 				// implement
+				//position =  Vector2{position.x - 50, position.y - 20};
 				break;
 			case ObjectCategory::ITEM:
 				// implement
@@ -241,7 +242,9 @@ void Character::checkCollision(const std::vector<Object*>& candidates) {
 }
 
 void Character::onCollision(Object* other) {
-
+	if(other->getObjectCategory() == ObjectCategory::PROJECTILE) {
+		position = Vector2{position.x - 50, position.y - 20};
+	}
 }
 
 void Character::handleEnvironmentCollision(Object* other) {

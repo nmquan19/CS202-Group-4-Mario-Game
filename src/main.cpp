@@ -11,6 +11,7 @@
 #include "../include/Enemy/Goomba/Goomba.h"
 #include "../include/System/Resources.h"
 #include "../include/System/Interface.h"
+#include "../include/Objects/Projectile.h"
 
 
 
@@ -200,6 +201,7 @@ int main() {
 
     std::unique_ptr<Character> character;
     std::unique_ptr<Goomba> goomba; 
+    std::unique_ptr<Projectile> proj;
     while (!WindowShouldClose()) {
 
         float deltaTime = GetFrameTime();
@@ -213,6 +215,7 @@ int main() {
             if (state == GameState::GAME) {
                 PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
                 character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
+                proj = std::make_unique<Projectile>(Vector2{0, 480}, 1, 4.0f);
                 goomba = std::make_unique<Goomba>(
                     Vector2{ 700, 0 }, Vector2{ 70, 0 }, Vector2{ 0, 0 }
                 );
@@ -264,6 +267,10 @@ int main() {
             {
                 goomba->update(deltaTime);
                 goomba->draw();
+            }
+            if(proj) {
+                proj->update(deltaTime);
+                proj->draw();
             }
             if (IsKeyPressed(KEY_TAB)) {    
                 LevelEditor::getInstance().toggleEditMode();
