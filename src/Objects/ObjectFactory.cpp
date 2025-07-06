@@ -50,13 +50,13 @@ CharacterStats ObjectFactory::getStats(CharacterType type) {
             return {220.0f, 550.0f, 980.0f};
     }
 }
-std::unique_ptr<Object> ObjectFactory::createEnemy(EnemyType type, Vector2 gridPos, float scale) {
-    return createSpecificEnemy(type, gridPos, scale);
+std::unique_ptr<Object> ObjectFactory::createEnemy(EnemyType type, Vector2 gridPos, Vector2 size) {
+    return createSpecificEnemy(type, gridPos, size);
 }
-std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector2 startPosition, float scale) {
+std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size) {
         switch (type) {
             case EnemyType::GOOMBA:
-                return std::make_unique<Goomba>(startPosition, scale);
+                return std::make_unique<Goomba>(startPosition, size);
        /* case EnemyType::KOOPA:
             return std::make_unique<Koopa>(startPosition, scale);*/
         default:

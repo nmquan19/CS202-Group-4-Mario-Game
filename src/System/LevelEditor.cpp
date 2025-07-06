@@ -95,7 +95,7 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             }
         }
         else if constexpr (std::is_same_v<T, EnemyType>) {
-            auto newEnemy = ObjectFactory::createEnemy(actualType,GridSystem::getWorldPosition(gridCoord), 5.0f);
+            auto newEnemy = ObjectFactory::createEnemy(actualType,GridSystem::getWorldPosition(gridCoord),{1,1});
             if (newEnemy) {
                 PhysicsManager::getInstance().addObject(newEnemy.get());
                 gridBlocks[{(int)gridCoord.x, (int)gridCoord.y}] = std::move(newEnemy);

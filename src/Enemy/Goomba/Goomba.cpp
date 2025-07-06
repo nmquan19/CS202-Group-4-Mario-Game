@@ -1,5 +1,5 @@
 #include  "../../../include/Enemy/Goomba/Goomba.h"
-#include "../../../include/System/Resources.h"
+#include "../../../include/System/TextureManager.h"
 #include <raymath.h>
 #include "../../../include/Enemy/Enemy.h"
 #include "../../../include/Enemy/Goomba/GoombaState.h"
@@ -7,22 +7,19 @@
 #include "../../../include/System/Interface.h"
 #include <raylib.h>
 #include <vector>
-Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(startPos, velocity,accelleration, Resources::Enemy_Textures )
+Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(startPos, velocity,accelleration, TextureManager::enemyTextures )
 {    
-    scale = 5; 
     num_sprites =  {{0,1},{2,3},{5,5}};
     numSprites = {2,2,1};
     max_numSprites  = 2; 
     changeState(&GoombaWanderingState::GetInstance());
-    hitbox = Rectangle({position.x,position.y,(float)spritebox.width*scale,(float)spritebox.height*scale});
 }
-Goomba::Goomba(Vector2 startPos, float scale) : Enemy(startPos, Resources::Enemy_Textures,scale)
+Goomba::Goomba(Vector2 startPos, Vector2 size) : Enemy(startPos,TextureManager::enemyTextures, size)
 {
     num_sprites = { {0,1},{2,3},{5,5} };
     numSprites = { 2,2,1 };
     max_numSprites = 2;
     changeState(&GoombaWanderingState::GetInstance());
-    hitbox = Rectangle({ position.x,position.y,(float)spritebox.width * scale,(float)spritebox.height * scale });
 }
 
 void Goomba::onCollision(Object* other) {

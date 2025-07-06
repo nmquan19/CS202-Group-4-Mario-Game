@@ -4,10 +4,11 @@
 #include "../Objects/ObjectFactory.h"
 #include <vector>
 #include <utility>
+#include <climits>
 class EnemyState; 
 class Enemy : public Object, public IUpdatable, public IMovable {
 public:
-	Enemy(Vector2 startPos, Texture2D texture, float scale);
+	Enemy(Vector2 startPos, Texture2D texture, Vector2 size);
 	Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration, Texture2D texture);
 	~Enemy();
 	virtual void update(float deltaTime) override;

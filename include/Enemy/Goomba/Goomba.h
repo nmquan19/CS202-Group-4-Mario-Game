@@ -6,7 +6,7 @@ class GoombaWanderingState;
 class Goomba: public Enemy
 {
     public : 
-	  Goomba(Vector2 startPos, float scale);
+	  Goomba(Vector2 startPos, Vector2 size);
       Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration);   
       friend class GoombaWanderingState;
       friend class GoombaStompedState;
