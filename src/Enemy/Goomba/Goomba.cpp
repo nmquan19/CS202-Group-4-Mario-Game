@@ -9,6 +9,7 @@
 #include <vector>
 Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(startPos, velocity,accelleration, Resources::Enemy_Textures )
 {    
+    type = EnemyType::GOOMBA;
     scale = 5; 
     num_sprites =  {{0,1},{2,3},{5,5}};
     numSprites = {2,2,1};
@@ -18,6 +19,7 @@ Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(
 }
 Goomba::Goomba(Vector2 startPos, float scale) : Enemy(startPos, Resources::Enemy_Textures,scale)
 {
+    type = EnemyType::GOOMBA;
     num_sprites = { {0,1},{2,3},{5,5} };
     numSprites = { 2,2,1 };
     max_numSprites = 2;

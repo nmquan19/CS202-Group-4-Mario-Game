@@ -24,6 +24,8 @@ public:
 
 	void drawDebug() const;
 	void getDebugStats(int& totalNodes, int& maxDepth, int& totalObjects) const;
+
+	bool deletionCompleted() const;
 private:
 	PhysicsManager() = default;
 	std::vector<Object*> objects;	

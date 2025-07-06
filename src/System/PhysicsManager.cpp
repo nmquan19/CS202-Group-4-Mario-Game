@@ -35,7 +35,6 @@ void PhysicsManager::deleteObjects() {
 		if (it != objects.end()) {
 			objects.erase(it);
 		}
-		//delete obj;
 	}
 	toDelete.clear();
 }
@@ -131,4 +130,8 @@ void PhysicsManager::getDebugStats(int& totalNodes, int& maxDepth, int& totalObj
 	else {
 		totalNodes = maxDepth = totalObjects = 0;
 	}
+}
+
+bool PhysicsManager::deletionCompleted() const {
+	return toDelete.empty();
 }

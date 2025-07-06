@@ -227,3 +227,7 @@ float Enemy::getCenterY() const {
 Vector2 Enemy::getCenter() const {
     return Vector2{ getCenterX(), getCenterY() };
 }
+
+EnemyType Enemy::getType() const {
+    return type;
+}

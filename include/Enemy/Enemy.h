@@ -38,7 +38,10 @@ public :
 	float getCenterX() const;
 	float getCenterY() const;
 	Vector2 getCenter() const;
+
+	EnemyType getType() const;
 protected:
+	EnemyType type = EnemyType::GOOMBA;
 	float aniTimer, aniSpeed; 
 	void handleEnvironmentCollision(Object* other);
     int HP ;
