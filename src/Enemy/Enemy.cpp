@@ -9,6 +9,7 @@
 #include <raylib.h>
 #include "../../include/Enemy/EnemyState.h"
 #include <iostream>
+#include <algorithm>
 Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f) {
     hitbox = {0,0,0,0};
     num_sprites ={};
@@ -16,7 +17,12 @@ Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D
     PhysicsManager::getInstance().addObject(this);
 
 }
-
+Enemy::Enemy(Vector2 startPos,  Texture2D texture, float scale) : scale(scale), position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f) {
+    this->spritebox = { 0, 0, 32, 32 }; 
+    hitbox = { 0, 0, spritebox.width * scale, spritebox.height * scale };
+    currentState = nullptr;
+    PhysicsManager::getInstance().addObject(this);
+}
 Enemy::~Enemy() {
     PhysicsManager::getInstance().markForDeletion(this);
 }
@@ -30,7 +36,7 @@ std::vector<ObjectCategory> Enemy::getCollisionTargets() const
 }
 void Enemy::applyGravity(float deltaTime) {
     if (!onGround) {
-        velocity.y +=  980* deltaTime;
+        velocity.y +=  1960* deltaTime;
     }
 }
 void Enemy::update(float deltaTime)
@@ -120,31 +126,41 @@ void Enemy::onCollision(Object* other) {
 void Enemy::handleEnvironmentCollision(Object* other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
+
+    if (!CheckCollisionRecs(playerHitBox, otherHitBox)) {
+        return;
+    }
+
     // Calculate overlap amounts for each direction
     float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
     float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
     float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
     float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
 
-    if (overlapTop < overlapBottom && overlapTop < overlapLeft && overlapTop < overlapRight) {
-        // Collision from top - player is on top of block
-        position.y = otherHitBox.y - (spritebox.height * scale);  // ? Use sprite dimensions, not hitbox
-       onGround = true; 
+    const float MIN_OVERLAP = 2.0f;
+
+    if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
+        return;
     }
-    else if (overlapBottom < overlapTop && overlapBottom < overlapLeft && overlapBottom < overlapRight) {
-        // Collision from bottom
+
+    float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
+
+    if (minOverlap == overlapTop) {
+        position.y = otherHitBox.y - playerHitBox.height;
+        velocity.y = 0;
+        onGround = true; 
+    }
+    else if (minOverlap == overlapBottom) {
         position.y = otherHitBox.y + otherHitBox.height;
         if (velocity.y < 0) {
             velocity.y = 0;
         }
     }
-    else if (overlapLeft < overlapRight) {
-        // Collision from left side
-        position.x = otherHitBox.x - (spritebox.width * scale);  // ? Use sprite dimensions
-        velocity.x *= -1;
+    else if (minOverlap == overlapLeft && overlapLeft >= MIN_OVERLAP) {
+        position.x = otherHitBox.x - playerHitBox.width;
+        velocity.x *=-1;
     }
-    else {
-        // Collision from right side
+    else if (minOverlap == overlapRight && overlapRight >= MIN_OVERLAP) {
         position.x = otherHitBox.x + otherHitBox.width;
         velocity.x *= -1;
     }

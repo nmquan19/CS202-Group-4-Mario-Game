@@ -7,13 +7,14 @@
 class EnemyState; 
 class Enemy : public Object, public IUpdatable, public IMovable {
 public:
-	Enemy(Vector2 startPos,Vector2 velocity, Vector2 accelleration, Texture2D texture);
+	Enemy(Vector2 startPos, Texture2D texture, float scale);
+	Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration, Texture2D texture);
 	~Enemy();
-	virtual void update(float deltaTime) override; 
+	virtual void update(float deltaTime) override;
 	virtual void draw();
 	Rectangle getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
-	virtual void onCollision(Object* other) override ;
+	virtual void onCollision(Object* other) override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
 	virtual void checkCollision(const std::vector<Object*>& candidates) override =0 ;
 	bool isActive() const override;
@@ -58,7 +59,7 @@ protected:
 	float hitBoxHeight;
 	Vector2 velocity; 
 	Vector2 accelleration; 
-	float groundLevel = 500.0f;
+	float groundLevel = INT_MAX;
 };
 
 

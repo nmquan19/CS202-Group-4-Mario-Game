@@ -1,6 +1,12 @@
 #include "../../include/Objects/ObjectFactory.h"
 #include "../Objects/Block.h"
 #include "../Characters/Character.h"
+#include <memory>
+#include "../../include/Enemy/Enemy.h"
+#include "../../include/Enemy/Goomba/Goomba.h"
+#include "../../include/System/Interface.h"
+#include <raylib.h>
+#include <vector>
 
 
 std::unique_ptr<Object> ObjectFactory::createBlock(BlockType type, Vector2 gridPos) {
@@ -44,7 +50,19 @@ CharacterStats ObjectFactory::getStats(CharacterType type) {
             return {220.0f, 550.0f, 980.0f};
     }
 }
-
+std::unique_ptr<Object> ObjectFactory::createEnemy(EnemyType type, Vector2 gridPos, float scale) {
+    return createSpecificEnemy(type, gridPos, scale);
+}
+std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector2 startPosition, float scale) {
+        switch (type) {
+            case EnemyType::GOOMBA:
+                return std::make_unique<Goomba>(startPosition, scale);
+       /* case EnemyType::KOOPA:
+            return std::make_unique<Koopa>(startPosition, scale);*/
+        default:
+            return nullptr; 
+        }
+}   
 std::vector<std::vector<Rectangle>> ObjectFactory::getFrameData(CharacterType type) {
     switch (type) {
         case CharacterType::MARIO: 
