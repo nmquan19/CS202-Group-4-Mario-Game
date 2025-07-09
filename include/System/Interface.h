@@ -62,7 +62,13 @@ public:
 	virtual void checkCollision(const std::vector<Object*>& candidates) = 0;
 	virtual void onCollision(Object* other) = 0;
 };
-
+class IDamageable {
+	public:
+	virtual ~IDamageable() = default;
+	virtual void takeDamage(int amount) = 0;
+	virtual bool isAlive() const = 0;
+	virtual void die() = 0;
+};
 class IUpdatable {
 public:
 	virtual ~IUpdatable() = default;

@@ -8,6 +8,7 @@
 #include <raylib.h>
 #include <type_traits>
 #include <variant>
+#include "../../include/Enemy/Enemy.h"
 LevelEditor* LevelEditor::instance = nullptr;
 
 LevelEditor& LevelEditor::getInstance() {
@@ -40,13 +41,27 @@ void LevelEditor::update() {
     }
     else {
         for (auto& it : gridBlocks) {
-            if (it.second && it.second->isActive()) {
-                IUpdatable* updatable = dynamic_cast<IUpdatable*>(it.second.get());
+            Object* obj = it.second.get();
+            if (!obj) continue;
+
+            Enemy* enemy = dynamic_cast<Enemy*>(obj);
+            bool shouldUpdate = false;
+
+            if (enemy) {
+                shouldUpdate = enemy->isAlive();
+            }
+            else {
+                shouldUpdate = obj->isActive();
+            }
+
+            if (shouldUpdate) {
+                IUpdatable* updatable = dynamic_cast<IUpdatable*>(obj);
                 if (updatable) {
                     updatable->update(GetFrameTime());
                 }
             }
         }
+
 
     }
 }
@@ -62,8 +77,21 @@ void LevelEditor::draw() {
         palette.drawPalette();
     }
     for (auto& it : gridBlocks) {
-        if (it.second && it.second->isActive()) {
-            it.second->draw();
+        Object* obj = it.second.get();
+        if (!obj) continue;
+
+        Enemy* enemy = dynamic_cast<Enemy*>(obj);
+        bool shouldDraw = false;
+
+        if (enemy) {
+            shouldDraw = enemy->isAlive();
+        }
+        else {
+            shouldDraw = obj->isActive();
+        }
+
+        if (shouldDraw) {
+               obj->draw();
         }
     }
     const char* modeText = editMode ? "EDIT MODE" : "PLAY MODE";

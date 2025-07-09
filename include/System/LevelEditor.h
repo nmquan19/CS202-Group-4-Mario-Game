@@ -23,8 +23,6 @@ public:
     void handleMouseInput();
     void placeObject(ObjectType type, Vector2 gridCoord);
     void removeObject(Vector2 gridCoord);
-	void placeEnemy(EnemyType type, Vector2 gridCoord);
-	void removeEnemy(Vector2 gridCoord);
     void toggleEditMode();
     bool isInEditMode() const;
 private:

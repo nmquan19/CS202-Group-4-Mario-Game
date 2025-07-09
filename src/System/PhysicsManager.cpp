@@ -76,10 +76,9 @@ void PhysicsManager::update() {
 			}
 		}
 
-		if (!filterdCandidates.empty()) {
-			object->checkCollision(filterdCandidates);
+	
+		object->checkCollision(filterdCandidates);
 			// set true
-		}
 		//else {
 		//	// set false;
 		//}

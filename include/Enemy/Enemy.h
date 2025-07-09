@@ -6,18 +6,20 @@
 #include <utility>
 #include <climits>
 class EnemyState; 
-class Enemy : public Object, public IUpdatable, public IMovable {
+class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable {
 public:
 	Enemy(Vector2 startPos, Texture2D texture, Vector2 size);
 	Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration, Texture2D texture);
 	~Enemy();
 	virtual void update(float deltaTime) override;
 	virtual void draw();
+
 	Rectangle getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
 	virtual void onCollision(Object* other) override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
 	virtual void checkCollision(const std::vector<Object*>& candidates) override =0 ;
+
 	bool isActive() const override;
 	void changeState(EnemyState* other);
 	int curFrame; 	
@@ -38,10 +40,17 @@ public :
 	float getBottom() const;
 	float getCenterX() const;
 	float getCenterY() const;
+	bool FacingRight() const;  
 	Vector2 getCenter() const;
+
+	virtual void takeDamage(int damage) override =0;
+	bool isAlive() const override;
+	virtual void die() override = 0;
+
 protected:
+	bool isalive; 
 	float aniTimer, aniSpeed; 
-	void handleEnvironmentCollision(Object* other);
+	virtual void handleEnvironmentCollision(Object* other);
     int HP ;
 	bool onGround;
 	EnemyState* currentState;
@@ -64,13 +73,4 @@ protected:
 };
 
 
-class LedgeDetector {
-public:
-    LedgeDetector(float offsetX, float castLength);
-    void update(Enemy* enemy, float deltaTime);
-    bool isNearLedge() const;
-private:
-    bool nearLedge;
-    float offsetX;
-    float castLength;	
-};
+

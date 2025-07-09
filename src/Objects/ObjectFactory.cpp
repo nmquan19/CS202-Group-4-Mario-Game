@@ -4,6 +4,8 @@
 #include <memory>
 #include "../../include/Enemy/Enemy.h"
 #include "../../include/Enemy/Goomba/Goomba.h"
+#include "../../include/Enemy/Koopa/Koopa.h"
+
 #include "../../include/System/Interface.h"
 #include <raylib.h>
 #include <vector>
@@ -57,8 +59,8 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         switch (type) {
             case EnemyType::GOOMBA:
                 return std::make_unique<Goomba>(startPosition, size);
-       /* case EnemyType::KOOPA:
-            return std::make_unique<Koopa>(startPosition, scale);*/
+        case EnemyType::KOOPA:
+            return std::make_unique<Koopa>(startPosition, size);
         default:
             return nullptr; 
         }
