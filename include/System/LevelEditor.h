@@ -1,12 +1,15 @@
 #pragma once
 
 #include <memory>
-#include "../System/TextureManager.h"
 #include <map>
 #include <utility>
+#include <raylib.h>
+#include <string>
+#include <fstream>
+#include <stack>
+#include "../System/TextureManager.h"
 #include "../Objects/ObjectFactory.h"
 #include "Interface.h"
-#include <raylib.h>
 
 class LevelEditor {
 public:
@@ -25,10 +28,20 @@ public:
     void removeObject(Vector2 gridCoord);
     void toggleEditMode();
     bool isInEditMode() const;
+
+    void saveLevel(const std::string& filename);
+    void loadLevel(const std::string& filename);
+    void clearLevel();
 private:
     static LevelEditor* instance;
-    std::map<std::pair<int, int>, std::unique_ptr<Object>> gridBlocks;
+    std::map<std::pair<int, int>, std::stack<std::unique_ptr<Object>>> gridBlocks;
 	ObjectPalette palette;
     bool editMode = true;
+    bool clearingLevel = false;
+    bool loadingLevel = false;
     LevelEditor() = default;
+    std::string pendingLoadFile = "";
+    std::string objectTypeToString(const ObjectType& type);
+    ObjectType stringToObjectType(const std::string& typeStr);
+    void performLoad(const std::string& filename);
 };

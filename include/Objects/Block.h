@@ -17,7 +17,7 @@ public:
     void onCollision(Object* other) override;
 
     bool isActive() const override;
-    void setActive(bool flag);
+    void setActive(bool flag) override;
     bool isCollided() const override;
     void setCollided(bool flag) override;
     Vector2 getPosition() const override;
@@ -30,7 +30,6 @@ protected:
     Vector2 gridPosition;
     Vector2 size;
     BlockType blockType;
-    bool active;
     bool solid;
 };
 

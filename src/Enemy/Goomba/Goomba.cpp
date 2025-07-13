@@ -10,7 +10,9 @@
 #include <algorithm>
 Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(startPos, velocity,accelleration, TextureManager::enemyTextures )
 {    
-	stompedAnimation = false;
+    type = EnemyType::GOOMBA;
+    scale = 5; 
+	  stompedAnimation = false;
     num_sprites =  {{0,1},{2,3},{5,5}};
     numSprites = {2,2,1};
     max_numSprites  = 2; 
@@ -18,6 +20,7 @@ Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(
 }
 Goomba::Goomba(Vector2 startPos, Vector2 size) : Enemy(startPos,TextureManager::enemyTextures, size)
 {
+    type = EnemyType::GOOMBA;
     stompedAnimation = false;
     num_sprites = { {0,1},{2,3},{5,5} };
     numSprites = { 2,2,1 };

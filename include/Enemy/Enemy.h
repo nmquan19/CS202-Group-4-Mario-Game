@@ -43,6 +43,9 @@ public :
 	bool FacingRight() const;  
 	Vector2 getCenter() const;
 
+	EnemyType getType() const;
+protected:
+	EnemyType type = EnemyType::GOOMBA;
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;
