@@ -44,13 +44,12 @@ public :
 	Vector2 getCenter() const;
 
 	EnemyType getType() const;
-protected:
-	EnemyType type = EnemyType::GOOMBA;
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;
 
 protected:
+	EnemyType type = EnemyType::GOOMBA;
 	bool isalive; 
 	float aniTimer, aniSpeed; 
 	virtual void handleEnvironmentCollision(Object* other);
