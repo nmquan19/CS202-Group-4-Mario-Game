@@ -4,13 +4,14 @@
 #include "raylib.h"
 #include "Interface.h"
 #include <variant>
+#include <vector>
 class TextureManager {
 public:
     static TextureManager& getInstance();
-
+    static std::vector<Rectangle> Enemy_sprite_boxes;
+    static Texture2D enemyTextures;
     Texture2D getBlockTexture(BlockType type);
     Texture2D getCharacterTexture(CharacterType type);
-
     void loadTextures();
     void unloadTextures();
 
@@ -19,10 +20,10 @@ public:
 
 private:
     TextureManager() = default;
-
+   
     std::map<BlockType, Texture2D> blockTextures;
     std::map<CharacterType, Texture2D> characterTextures;
-
+ 
     bool texturesLoaded = false;
 };
 

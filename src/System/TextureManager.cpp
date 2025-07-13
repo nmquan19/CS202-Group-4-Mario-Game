@@ -1,7 +1,11 @@
 #include "../../include/System/TextureManager.h"
 #include "../../include/System/Interface.h"
 #include <raylib.h>
-
+#include <fstream>
+#include <vector>
+#include <iostream>
+std::vector<Rectangle> TextureManager::Enemy_sprite_boxes;
+Texture2D TextureManager::enemyTextures;
 TextureManager& TextureManager::getInstance() {
     static TextureManager instance;
     return instance;
@@ -23,7 +27,18 @@ void TextureManager::loadTextures() {
 
     characterTextures[CharacterType::MARIO] = LoadTexture("assets/mario_sprites.png");
     characterTextures[CharacterType::LUIGI] = LoadTexture("assets/luigi_sprites.png");
-
+    //Enemy textures 
+	DrawText("Loading enemy textures...", 10, 10, 20, DARKGRAY);
+    std::ifstream  enemy_in;
+    enemy_in.open("enemy_output.txt");
+    int id, x, y, w, h;
+    while (enemy_in >> id >> x >> y >> w >> h)
+    {
+		std::cout << "Loading enemy sprite: " << id << " at (" << x << ", " << y << ") with size (" << w << ", " << h << ")\n";
+        Enemy_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
+    }
+    enemyTextures = Texture2D(LoadTexture("assets/enemy_spritesheet.png"));
+    enemy_in.close();
     texturesLoaded = true;
 }
 
@@ -39,7 +54,7 @@ void TextureManager::unloadTextures() {
         UnloadTexture(pair.second);
     }
     characterTextures.clear();
-
+	UnloadTexture(enemyTextures);
     texturesLoaded = false;
 }
 

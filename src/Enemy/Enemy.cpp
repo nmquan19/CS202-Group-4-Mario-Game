@@ -1,25 +1,29 @@
 #include "..\..\include\Enemy\Enemy.h"
 #include "..\..\include\System\PhysicsManager.h"
-#include <cstdlib>
 #include <raymath.h>
-#include <iostream>
 #include <vector>
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
 #include <raylib.h>
 #include "../../include/Enemy/EnemyState.h"
-#include <iostream>
 #include <algorithm>
+#include "../../include/System/Grid.h"
 Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f) {
-    hitbox = {0,0,0,0};
+	isalive = true;
+    size = { 1,1 };
+    hitbox = { position.x, position.y,  size.x * GridSystem::GRID_SIZE,
+        size.y * GridSystem::GRID_SIZE};
     num_sprites ={};
-    currentState = nullptr;
+    currentState = nullptr; 
     PhysicsManager::getInstance().addObject(this);
 
 }
-Enemy::Enemy(Vector2 startPos,  Texture2D texture, float scale) : scale(scale), position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f) {
-    this->spritebox = { 0, 0, 32, 32 }; 
-    hitbox = { 0, 0, spritebox.width * scale, spritebox.height * scale };
+Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f) {
+    this->size = size; 
+	isalive = true;
+    this->spritebox = { 0, 0, 32, 32}; 
+    hitbox = {position.x, position.y,  size.x * GridSystem::GRID_SIZE,
+        size.y * GridSystem::GRID_SIZE };
     currentState = nullptr;
     PhysicsManager::getInstance().addObject(this);
 }
@@ -36,7 +40,7 @@ std::vector<ObjectCategory> Enemy::getCollisionTargets() const
 }
 void Enemy::applyGravity(float deltaTime) {
     if (!onGround) {
-        velocity.y +=  1960* deltaTime;
+        velocity.y +=  980* deltaTime;
     }
 }
 void Enemy::update(float deltaTime)
@@ -47,7 +51,6 @@ void Enemy::update(float deltaTime)
         curFrame += 1;
         aniTimer = 0;
     }
-    applyGravity(deltaTime);
     position += velocity* deltaTime;
     if (getBottom() >= groundLevel) {
         position.y = groundLevel - (spritebox.height * scale);
@@ -62,32 +65,9 @@ void Enemy::update(float deltaTime)
 }
 
 void Enemy::draw() {
-	 float  scale =5.0f;
     Rectangle sourceRec = this->spritebox;      
-//    if(direction == 1)  
-//     {
-//      DrawText("FLIPPED", 60, 120, 20, RED);
-//      sourceRec.x = sourceRec.x ;  
-//      sourceRec.width = -sourceRec.width;           
-//     }
-    Rectangle destRec = {
-    position.x,
-    position.y,
-    abs(sourceRec.width) * scale,  
-    sourceRec.height * scale
-    };
-Vector2 origin = { 0, 0 };
-
-
- DrawText(TextFormat("spritebox_width: x =%f", spritebox.width), 100, 600, 20, RED);
-  DrawText(TextFormat("position: x=%.1f y=%.1f", position.x, position.y), 100, 620, 20, RED); 
-  DrawText(TextFormat("velocity: x=%.1f y=%.1f", velocity.x, velocity.y), 100, 640, 20, RED); 
-  DrawText(TextFormat("hitbox: x=%.1f y=%.1f", hitbox.width, hitbox.height), 100, 660, 20, RED); 
-
- DrawText(TextFormat("curFrame: x =%d", curFrame), 100, 580, 20, RED);
- DrawText(TextFormat("Rec: x=%.1f witdth=%.1f", sourceRec.x, sourceRec.width), 100, 540, 20, RED);
- DrawText(TextFormat("destRec: x=%.1f width=%.1f", destRec.x, destRec.width), 100, 560, 20, RED); 
-DrawTexturePro(this->texture, sourceRec, destRec, origin, 0.0f, WHITE);
+    Vector2 origin = { 0, 0 };
+    DrawTexturePro(this->texture, sourceRec, hitbox, origin, 0.0f, WHITE);
 }
 
 ObjectCategory Enemy::getObjectCategory() const {
@@ -97,8 +77,10 @@ void Enemy::changeState(EnemyState* other)
 {      
      if(currentState) currentState->exit(this);
       currentState =  other; 
-      std::cout<<"\n Entering"<<"A"<<"\n";
-      currentState->enter(this);
+      if(other)   currentState->enter(this);
+}
+bool Enemy::isAlive() const {
+    return isalive;
 }
 void Enemy::onCollision(Object* other) {
 	if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
@@ -216,6 +198,10 @@ float Enemy::getHeight() const {
 
 float Enemy::getCenterX() const {
     return position.x + (spritebox.width * scale) / 2;
+}
+bool Enemy::FacingRight() const
+{
+    return isFacingRight;
 }
 float Enemy::getBottom() const {
     return position.y + hitbox.height;

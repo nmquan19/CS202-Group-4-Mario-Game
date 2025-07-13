@@ -1,6 +1,5 @@
 #include <raylib.h>
 #include <memory>
-#include <string>
 #include "../include/UI/SoundEffect.h"
 #include "../include/UI/Menu.h"
 #include "../include/UI/UI.h"
@@ -9,287 +8,207 @@
 #include "../include/System/TextureManager.h"
 #include "../include/Characters/Character.h"
 #include "../include/Enemy/Goomba/Goomba.h"
-#include "../include/System/Resources.h"
 #include "../include/System/Interface.h"
+#include "../include/Objects/ObjectFactory.h"
+
+class GameState {
+public:
+    virtual ~GameState() = default;
+    virtual void handleInput(class GameContext& context) = 0;
+    virtual void update(class GameContext& context, float deltaTime) = 0;
+    virtual void draw(class GameContext& context) = 0;
+};
 
 
-
-/*
-float deltaTime = GetFrameTime();
-std::unique_ptr<Character> character;
-class ScenePlayerState {
-protected:
+class GameContext {
+public:
     AudioManager audioManager;
     UIManager uiManager;
     MenuManager menuManager;
+    std::unique_ptr<Character> character;
+    std::unique_ptr<Goomba> goomba;
+    GameState* previousState = nullptr;
 
-public:
-    std::string currentState;
-    virtual ~ScenePlayerState() {}
-    virtual void draw(ScenePlayer* scene) {};
-    virtual void logic(ScenePlayer* scene) {};
-};
-class MenuState : public ScenePlayerState {
-    virtual ~MenuState() {}
-    void draw(ScenePlayer* scene) {
-        menuManager.DrawMenu();
+    GameContext() {
+        TextureManager::getInstance().loadTextures();
     }
-    void logic(ScenePlayer* scene) {
-        if (IsKeyPressed(KEY_ENTER) && !menuManager.dialog) {
-            scene->setter(ScenePlayer::GAME);
-            currentState = "GAME";
+
+    ~GameContext() {
+        if (previousState) {
+            LevelEditor::getInstance().cleanup();
+            PhysicsManager::getInstance().cleanup();
+        }
+        TextureManager::getInstance().unloadTextures();
+    }
+
+    void setState(GameState* newState) {
+        if (currentState != newState) {
+            if (currentState == gamePlayState && newState != gamePlayState) {
+                LevelEditor::getInstance().cleanup();
+                PhysicsManager::getInstance().cleanup();
+                character.reset();
+                goomba.reset();
+            }
+            if (newState == gamePlayState) {
+                PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
+                character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
+                goomba = std::make_unique<Goomba>(Vector2{ 700, 0 }, Vector2{ 70, 0 }, Vector2{ 0, 0 });
+            }
+            previousState = currentState;
+            currentState = newState;
         }
     }
+
+    void handleInput() {
+        if (currentState) {
+            currentState->handleInput(*this);
+        }
+    }
+
+    void update(float deltaTime) {
+        if (currentState) {
+            currentState->update(*this, deltaTime);
+        }
+    }
+
+    void draw() {
+        if (currentState) {
+            currentState->draw(*this);
+        }
+    }
+
+    void setGameStates(GameState* menu, GameState* game, GameState* gameOver) {
+        menuState = menu;
+        gamePlayState = game;
+        gameOverState = gameOver;
+        currentState = menuState;
+    }
+
+
+    GameState* currentState = nullptr;
+    GameState* menuState = nullptr;
+    GameState* gamePlayState = nullptr;
+    GameState* gameOverState = nullptr;
 };
-class GameState : public ScenePlayerState {
-    virtual ~GameState() {}
-    void draw(ScenePlayer* scene) {
-        ClearBackground(WHITE);
-        DrawText("Press Enter", 500, 100, 20, BLACK);
-        PhysicsManager::getInstance().update();
-        LevelEditor::getInstance().update();
-        if (character) character->update(deltaTime);
-        if (character) character->draw();
+
+
+class MenuState : public GameState {
+public:
+    void handleInput(GameContext& context) override {
+        context.menuManager.HandleInput();
+        if (context.menuManager.HandleExit()) {
+            CloseWindow();
+            exit(0);
+        }
+        if (IsKeyPressed(KEY_ENTER) && !context.menuManager.dialog) {
+            context.setState(context.gamePlayState);
+        }
+    }
+
+    void update(GameContext& context, float deltaTime) override {
+
+    }
+
+    void draw(GameContext& context) override {
+
+        BeginDrawing();
+        context.menuManager.DrawMenu();
+        EndDrawing();
+    }
+};
+
+
+class GamePlayState : public GameState {
+public:
+    void handleInput(GameContext& context) override {
+        context.menuManager.HandleSetting();
+
+        if (IsKeyPressed(KEY_ENTER)) {
+            context.setState(context.gameOverState);
+        }
+
         if (IsKeyPressed(KEY_TAB)) {
             LevelEditor::getInstance().toggleEditMode();
         }
-        PhysicsManager::getInstance().drawDebug();
-        LevelEditor::getInstance().draw();
-        DrawFPS(20, 50);
-
     }
-    void logic(ScenePlayer* scene) {
-        menuManager.HandleInput();
-        if (IsKeyPressed(KEY_ENTER) && !menuManager.dialog) {
-            scene->setter(ScenePlayer::GAME_OVER);
-            currentState = "GAME_OVER";
+
+    void update(GameContext& context, float deltaTime) override {
+        PhysicsManager::getInstance().update();
+        LevelEditor::getInstance().update();
+
+        if (context.character) {
+            context.character->update(deltaTime);
+        }
+
+        if (context.goomba) {
+            context.goomba->update(deltaTime);
         }
     }
-};
-class Game_overState : public ScenePlayerState {
-    virtual ~Game_overState() {}
-    void draw(ScenePlayer* scene) {
+
+    void draw(GameContext& context) override {
+        BeginDrawing();
         ClearBackground(WHITE);
-        uiManager.DrawGameOver();
-    }
-    void logic(ScenePlayer* scene) {
-        if (IsKeyPressed(KEY_ENTER)) {
-            scene->setter(ScenePlayer::MENU);
-            currentState = "MENU";
-        }
-    }
-};
-class PauseState : public ScenePlayerState {
-    virtual ~PauseState() {}
-    void draw() {
+        DrawText("Press Enter", 500, 100, 20, BLACK);
 
-    }
-    void logic(ScenePlayer* scene) {
-        if (IsKeyPressed(KEY_ENTER)) {
-            scene->setter(ScenePlayer::GAME);
-            currentState = "GAME";
+        if (context.character) {
+            context.character->draw();
         }
+
+        if (context.goomba) {
+            context.goomba->draw();
+        }
+
+        LevelEditor::getInstance().draw();
+        PhysicsManager::getInstance().drawDebug();
+        DrawFPS(20, 50);
+        context.menuManager.DrawSetting();
+        EndDrawing();
     }
 };
 
-class ScenePlayer {
-private:
-    ScenePlayerState* pPreviousState;
-    ScenePlayerState* pState;
+
+class GameOverState : public GameState {
 public:
-    enum State {
-        MENU,
-        GAME,
-        PAUSE,
-        GAME_OVER
-    };
-    ScenePlayer() {
-        pState = new MenuState();
-        pPreviousState = pState;
-    }
-    virtual ~ScenePlayer() { delete pPreviousState; delete pState; }
-    void draw() {
-        pState->draw(this);
-    }
-    void logic() {
-        pState->logic(this);
-    }
-    bool isGameScene() {
-        if (pState->currentState == "GAME") return true;
-        return false;
-    }
-    void setter(State state) {
-        delete pPreviousState;
-        if (state == MENU) { pPreviousState = pState; pState = new MenuState(); }
-        else if (state == GAME) { pPreviousState = pState; pState = new GameState(); }
-        else if (state == PAUSE) { pPreviousState = pState; pState = new PauseState(); }
-        else if (state == GAME_OVER) { pPreviousState = pState; pState = new Game_overState(); }
-    }
-    void setMario() {
-        if (pState->currentState != pPreviousState->currentState) {
-            if (pPreviousState->currentState == "GAME") {
-                LevelEditor::getInstance().cleanup();
-                PhysicsManager::getInstance().cleanup();
-            }
-
-            if (pState->currentState == "GAME") {
-                PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
-                character = std::make_unique<Character>(CharacterType::MARIO, Vector2{ 500, 500 });
-            }
-            pPreviousState = pState;
+    void handleInput(GameContext& context) override {
+        if (IsKeyPressed(KEY_ENTER)) {
+            context.setState(context.menuState);
         }
+    }
+
+    void update(GameContext& context, float deltaTime) override {
+        // add later
+    }
+
+    void draw(GameContext& context) override {
+        BeginDrawing();
+
+        ClearBackground(WHITE);
+        context.uiManager.DrawGameOver();
+
+        EndDrawing();
     }
 };
-int main() {
-    InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
-    InitAudioDevice();
-    SetTargetFPS(60);
-    ScenePlayer scenePlayer;
-    TextureManager::getInstance().loadTextures();
-    while (!WindowShouldClose()) {
-        scenePlayer.setMario();
-        scenePlayer.logic();
-        BeginDrawing();
-        scenePlayer.draw();
-        EndDrawing();
-    }
-    if (scenePlayer.isGameScene()) {
-        LevelEditor::getInstance().cleanup();
-        PhysicsManager::getInstance().cleanup();
-    }
-    TextureManager::getInstance().unloadTextures();
-
-    CloseAudioDevice();
-    CloseWindow();
-    return 0;
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 int main() {
     InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
     InitAudioDevice();
     SetTargetFPS(60);
 
-    AudioManager audioManager;
-    UIManager uiManager;
-    MenuManager menuManager;
+    GameContext context;
+    MenuState menuState;
+    GamePlayState gamePlayState;
+    GameOverState gameOverState;
 
-    //audioManager.LoadBackgroundMusic("some music path");
-    //audioManager.PlayBackgroundMusic();
+    context.setGameStates(&menuState, &gamePlayState, &gameOverState);
 
-    TextureManager::getInstance().loadTextures();
-
-    enum class GameState { MENU, GAME, GAME_OVER };
-    GameState state = GameState::MENU;
-    GameState previousState = GameState::MENU;
-    Resources::Load();
-
-    std::unique_ptr<Character> character;
-    std::unique_ptr<Goomba> goomba; 
     while (!WindowShouldClose()) {
-
         float deltaTime = GetFrameTime();
-
-        if (state != previousState) {
-            if (previousState == GameState::GAME) {
-                LevelEditor::getInstance().cleanup();
-                PhysicsManager::getInstance().cleanup();
-            }
-
-            if (state == GameState::GAME) {
-                PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
-                character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
-                goomba = std::make_unique<Goomba>(
-                    Vector2{ 700, 0 }, Vector2{ 70, 0 }, Vector2{ 0, 0 }
-                );
-            
-            }
-            previousState = state;
-        }
-        switch (state) {
-        case GameState::MENU:
-            menuManager.HandleInput();
-            if (menuManager.HandleExit()) {
-                CloseWindow();
-                return 0;
-            }
-            if (IsKeyPressed(KEY_ENTER) && !menuManager.dialog) {
-                state = GameState::GAME;
-            }
-            break;
-        case GameState::GAME:
-            menuManager.HandleSetting();
-            if (IsKeyPressed(KEY_ENTER)) {
-                state = GameState::GAME_OVER;
-            }
-            break;
-
-        case GameState::GAME_OVER:
-            //change sample
-            if (IsKeyPressed(KEY_ENTER)) {
-                state = GameState::MENU;
-            }
-            break;
-        }
-
-        BeginDrawing();
-
-        switch (state) {
-        case GameState::MENU:
-            menuManager.DrawMenu();
-            break;
-        case GameState::GAME:
-
-            ClearBackground(WHITE);
-            DrawText("Press Enter", 500, 100, 20, BLACK);
-            PhysicsManager::getInstance().update();
-            LevelEditor::getInstance().update();
-            if (character) character->update(deltaTime);
-            if (character) character->draw();
-            if (goomba)
-            {
-                goomba->update(deltaTime);
-                goomba->draw();
-            }
-            if (IsKeyPressed(KEY_TAB)) {    
-                LevelEditor::getInstance().toggleEditMode();
-            }
-            PhysicsManager::getInstance().drawDebug();
-            LevelEditor::getInstance().draw();
-            DrawFPS(20, 50);
-            menuManager.DrawSetting();
-            break;
-        case GameState::GAME_OVER:
-            //change sample
-            ClearBackground(WHITE);
-            uiManager.DrawGameOver();
-            break;
-        }
-        EndDrawing();
+        context.handleInput();
+        context.update(deltaTime);
+        context.draw();
     }
 
-    if (state == GameState::GAME) {
-        LevelEditor::getInstance().cleanup();
-        PhysicsManager::getInstance().cleanup();
-    }
-    TextureManager::getInstance().unloadTextures();
-    Resources::UnLoad();
     CloseAudioDevice();
     CloseWindow();
     return 0;
 }
-

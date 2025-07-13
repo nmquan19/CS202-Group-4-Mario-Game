@@ -73,8 +73,21 @@ void LevelEditor::update() {
     }
     else if (!clearingLevel) {
         for (auto& it : gridBlocks) {
-            if (!it.second.empty() && it.second.top() && it.second.top()->isActive()) {
-                IUpdatable* updatable = dynamic_cast<IUpdatable*>(it.second.top().get());
+            Object* obj = it.second.top().get();
+            if (!obj) continue;
+
+            Enemy* enemy = dynamic_cast<Enemy*>(obj);
+            bool shouldUpdate = false;
+
+            if (enemy) {
+                shouldUpdate = enemy->isAlive();
+            }
+            else {
+                shouldUpdate = obj->isActive();
+            }
+
+            if (shouldUpdate) {
+                IUpdatable* updatable = dynamic_cast<IUpdatable*>(obj);
                 if (updatable) {
                     updatable->update(GetFrameTime());
                 }
@@ -98,11 +111,23 @@ void LevelEditor::draw() {
         DrawText("F9: Clear Level", 20, 140, 16, DARKBLUE);
         //DrawText(("Number of objects in level editor: " + std::to_string(gridBlocks.size())).c_str(), 20, 160, 16, DARKBLUE);
     }
-    if (!clearingLevel) {
-        for (auto& it : gridBlocks) {
-            if (!it.second.empty() && it.second.top() && it.second.top()->isActive()) {
-                it.second.top()->draw();
-            }
+
+    for (auto& it : gridBlocks) {
+        Object* obj = it.second.top().get();
+        if (!obj) continue;
+
+        Enemy* enemy = dynamic_cast<Enemy*>(obj);
+        bool shouldDraw = false;
+
+        if (enemy) {
+            shouldDraw = enemy->isAlive();
+        }
+        else {
+            shouldDraw = obj->isActive();
+        }
+
+        if (shouldDraw) {
+               obj->draw();
         }
     }
     
@@ -135,7 +160,7 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             }
         }
         else if constexpr (std::is_same_v<T, EnemyType>) {
-            auto newEnemy = ObjectFactory::createEnemy(actualType,GridSystem::getWorldPosition(gridCoord), 5.0f);
+            auto newEnemy = ObjectFactory::createEnemy(actualType,GridSystem::getWorldPosition(gridCoord),{1,1});
             if (newEnemy) {
                 PhysicsManager::getInstance().addObject(newEnemy.get());
                 gridBlocks[key].push(std::move(newEnemy));

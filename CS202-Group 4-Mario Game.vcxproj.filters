@@ -81,9 +81,6 @@
     <ClInclude Include="include\Enemy\Goomba\GoombaState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\System\Resources.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Enemy\Koopa\Koopa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -91,6 +88,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\System\Constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\LedgeDetector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -140,9 +140,6 @@
     <ClCompile Include="src\Characters\MovingState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\System\Resources.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Enemy\Goomba\Goomba.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -152,7 +149,13 @@
     <ClCompile Include="src\Enemy\Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Enemy\Koopa.cpp">
+    <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Koopa\Koopa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\LedgeDetector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
