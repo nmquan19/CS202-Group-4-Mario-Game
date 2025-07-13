@@ -5,6 +5,7 @@
 #include <variant>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 #include "../../include/System/LevelEditor.h"
 #include "../../include/System/PhysicsManager.h"
 #include "../../include/Objects/ObjectFactory.h"
@@ -31,18 +32,22 @@ void LevelEditor::cleanup() {
 
 LevelEditor::~LevelEditor() {
     for (auto& it : gridBlocks) {
-        if (it.second) {
-            PhysicsManager::getInstance().markForDeletion(it.second.get());
+        while (!it.second.empty()) {
+            if (it.second.top()) {
+                it.second.top()->setActive(false);
+                PhysicsManager::getInstance().markForDeletion(it.second.top().get());
+            }
+            it.second.pop();
         }
     }
     gridBlocks.clear();
 }
 
 void LevelEditor::update() {
-    std::cout << "Level update\n";
     if (editMode) {
         palette.handleSelection();
-        handleMouseInput();
+
+        if (!clearingLevel) handleMouseInput();
 
         if (IsKeyPressed(KEY_F7)) {
             saveLevel("test_level.json");
@@ -66,10 +71,10 @@ void LevelEditor::update() {
             }
         }
     }
-    else {
+    else if (!clearingLevel) {
         for (auto& it : gridBlocks) {
-            if (it.second && it.second->isActive()) {
-                IUpdatable* updatable = dynamic_cast<IUpdatable*>(it.second.get());
+            if (!it.second.empty() && it.second.top() && it.second.top()->isActive()) {
+                IUpdatable* updatable = dynamic_cast<IUpdatable*>(it.second.top().get());
                 if (updatable) {
                     updatable->update(GetFrameTime());
                 }
@@ -91,13 +96,16 @@ void LevelEditor::draw() {
         DrawText("F7: Save Level", 20, 100, 16, DARKBLUE);
         DrawText("F8: Load Level", 20, 120, 16, DARKBLUE);
         DrawText("F9: Clear Level", 20, 140, 16, DARKBLUE);
-        DrawText(("Number of objects in level editor: " + std::to_string(gridBlocks.size())).c_str(), 20, 160, 16, DARKBLUE);
+        //DrawText(("Number of objects in level editor: " + std::to_string(gridBlocks.size())).c_str(), 20, 160, 16, DARKBLUE);
     }
-    for (auto& it : gridBlocks) {
-        if (it.second && it.second->isActive()) {
-            it.second->draw();
+    if (!clearingLevel) {
+        for (auto& it : gridBlocks) {
+            if (!it.second.empty() && it.second.top() && it.second.top()->isActive()) {
+                it.second.top()->draw();
+            }
         }
     }
+    
     const char* modeText = editMode ? "EDIT MODE" : "PLAY MODE";
     DrawText(modeText, 20, 70, 20, editMode ? GREEN : BLUE);
 }
@@ -116,21 +124,21 @@ void LevelEditor::handleMouseInput() {
 }
 
 void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
-    removeObject(gridCoord);
+    auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
     std::visit([&](auto&& actualType) {
         using T = std::decay_t<decltype(actualType)>;
         if constexpr (std::is_same_v<T, BlockType>) {
             auto newBlock = ObjectFactory::createBlock(actualType, gridCoord);
             if (newBlock) {
                 PhysicsManager::getInstance().addObject(newBlock.get());
-                gridBlocks[{(int)gridCoord.x, (int)gridCoord.y}] = std::move(newBlock);
+                gridBlocks[key].push(std::move(newBlock));
             }
         }
         else if constexpr (std::is_same_v<T, EnemyType>) {
             auto newEnemy = ObjectFactory::createEnemy(actualType,GridSystem::getWorldPosition(gridCoord), 5.0f);
             if (newEnemy) {
                 PhysicsManager::getInstance().addObject(newEnemy.get());
-                gridBlocks[{(int)gridCoord.x, (int)gridCoord.y}] = std::move(newEnemy);
+                gridBlocks[key].push(std::move(newEnemy));
             }
         }
     }, type);
@@ -140,10 +148,18 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
 void LevelEditor::removeObject(Vector2 gridCoord) {
     auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
     auto it = gridBlocks.find(key);
-    if (it != gridBlocks.end()) {
-        it->second.get()->setActive(false);
-        it->second.release();
-        gridBlocks.erase(it);
+    if (it != gridBlocks.end() && !it->second.empty()) {
+        if (it->second.top()) {
+            std::cout << "set\n";
+            it->second.top()->setActive(false);
+            std::cout << "mark\n";
+            PhysicsManager::getInstance().markForDeletion(it->second.top().get());
+            it->second.top().release();
+            it->second.pop();
+        }
+        if (it->second.empty()) {
+            gridBlocks.erase(it);
+        }
     }
 }
 
@@ -187,167 +203,175 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
 }
 
 void LevelEditor::saveLevel(const std::string& filename) {
-    std::ofstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Failed to create save file: " << filename << "\n";
-        return;
-    }
-
-    file << "{\n";
-    file << " \"level_name\": \"" << filename << "\",\n";
-    file << " \"objects\": [\n";
-
-    bool first = true;
-    for (const auto& pair : gridBlocks) {
-        if (!first) {
-            file << ",\n";
-        }
-        first = false;
-
-        int x = pair.first.first;
-        int y = pair.first.second;
-
-        std::string objectType = "GROUND";
-
-        ObjectCategory category = pair.second->getObjectCategory();
-        
-        if (category == ObjectCategory::BLOCK) {
-            Block* blockObj = dynamic_cast<Block*>(pair.second.get());
-            objectType = objectTypeToString(blockObj->getType());
-        }
-        else if (category == ObjectCategory::ENEMY) {
-            Enemy* enemyObj = dynamic_cast<Enemy*>(pair.second.get());
-            objectType = objectTypeToString(enemyObj->getType());
-        }
-
-        file << "    {\n";
-        file << "      \"x\": " << x << ",\n";
-        file << "      \"y\": " << y << ",\n";
-        file << "      \"type\": \"" << objectType << "\"\n";
-        file << "    }";
-    }
-
-    file << "\n  ]\n";
-    file << "}\n";
-    
-    file.close();
-    std::cout << "Level saved: " << filename << std::endl;
+    //    std::ofstream file(filename);
+    //    if (!file.is_open()) {
+    //        std::cout << "Failed to create save file: " << filename << "\n";
+    //        return;
+    //    }
+    //
+    //    file << "{\n";
+    //    file << " \"level_name\": \"" << filename << "\",\n";
+    //    file << " \"objects\": [\n";
+    //
+    //    bool first = true;
+    //    for (const auto& pair : gridBlocks) {
+    //        if (!first) {
+    //            file << ",\n";
+    //        }
+    //        first = false;
+    //
+    //        int x = pair.first.first;
+    //        int y = pair.first.second;
+    //
+    //        std::string objectType = "GROUND";
+    //
+    //        ObjectCategory category = pair.second->getObjectCategory();
+    //
+    //        if (category == ObjectCategory::BLOCK) {
+    //            Block* blockObj = dynamic_cast<Block*>(pair.second.get());
+    //            objectType = objectTypeToString(blockObj->getType());
+    //        }
+    //        else if (category == ObjectCategory::ENEMY) {
+    //            Enemy* enemyObj = dynamic_cast<Enemy*>(pair.second.get());
+    //            objectType = objectTypeToString(enemyObj->getType());
+    //        }
+    //
+    //        file << "    {\n";
+    //        file << "      \"x\": " << x << ",\n";
+    //        file << "      \"y\": " << y << ",\n";
+    //        file << "      \"type\": \"" << objectType << "\"\n";
+    //        file << "    }";
+    //    }
+    //
+    //    file << "\n  ]\n";
+    //    file << "}\n";
+    //
+    //    file.close();
+    //    std::cout << "Level saved: " << filename << std::endl;
 }
 
-void LevelEditor::loadLevel(const std::string& filename) {
-    if (clearingLevel) {
-        // Already clearing, queue the load
-        pendingLoadFile = filename;
-        loadingLevel = true;
-        std::cout << "Queuing load for: " << filename << " (waiting for clear to complete)\n";
-        return; 
-    }
+void LevelEditor::loadLevel(const std::string & filename) {
+    //if (clearingLevel) {
+    //    // Already clearing, queue the load
+    //    pendingLoadFile = filename;
+    //    loadingLevel = true;
+    //    std::cout << "Queuing load for: " << filename << " (waiting for clear to complete)\n";
+    //    return;
+    //}
 
-    if (!gridBlocks.empty()) {
-        clearLevel();
-        pendingLoadFile = filename;
-        loadingLevel = true;
-        std::cout << "Clearing level before loading: " << filename << "\n";
-        return;
-    }
+    //if (!gridBlocks.empty()) {
+    //    clearLevel();
+    //    pendingLoadFile = filename;
+    //    loadingLevel = true;
+    //    std::cout << "Clearing level before loading: " << filename << "\n";
+    //    return;
+    //}
 
-    performLoad(filename);
+    //performLoad(filename);
 }
 
 void LevelEditor::performLoad(const std::string& filename) {
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Failed to open level file: " << filename << "\n";
-        return;
-    }
+    //std::ifstream file(filename);
+    //if (!file.is_open()) {
+    //    std::cout << "Failed to open level file: " << filename << "\n";
+    //    return;
+    //}
 
-    std::string line;
-    std::string content;
-    while (std::getline(file, line)) {
-        content += line + "\n";
-    }
-    file.close();
+    //std::string line;
+    //std::string content;
+    //while (std::getline(file, line)) {
+    //    content += line + "\n";
+    //}
+    //file.close();
 
-    std::size_t objectsPos = content.find("\"objects\":");
-    if (objectsPos == std::string::npos) {
-        std::cout << "Invalid level file format" << "\n";
-        return;
-    }
+    //std::size_t objectsPos = content.find("\"objects\":");
+    //if (objectsPos == std::string::npos) {
+    //    std::cout << "Invalid level file format" << "\n";
+    //    return;
+    //}
 
-    // Extract objects array content
-    std::size_t arrayStart = content.find("[", objectsPos);
-    std::size_t arrayEnd = content.find("]", arrayStart);
-    
-    if (arrayStart == std::string::npos || arrayEnd == std::string::npos) {
-        std::cout << "Invalid objects array format" << std::endl;
-        return;
-    }
-    
-    std::string objectsStr = content.substr(arrayStart + 1, arrayEnd - arrayStart - 1);
-    
-    // Parse individual objects
-    std::size_t pos = 0;
-    while (pos < objectsStr.length()) {
-        std::size_t objStart = objectsStr.find("{", pos);
-        std::size_t objEnd = objectsStr.find("}", objStart);
-        
-        if (objStart == std::string::npos || objEnd == std::string::npos) {
-            break;
-        }
-        
-        std::string objStr = objectsStr.substr(objStart + 1, objEnd - objStart - 1);
-        
-        // Parse x, y, type
-        int x = 0, y = 0;
-        std::string type = "GROUND";
-        
-        // Extract x
-        std::size_t xPos = objStr.find("\"x\":");
-        if (xPos != std::string::npos) {
-            std::size_t xValStart = objStr.find(":", xPos) + 1;
-            std::size_t xValEnd = objStr.find(",", xValStart);
-            std::string xStr = objStr.substr(xValStart, xValEnd - xValStart);
-            // Remove spaces
-            xStr.erase(std::remove_if(xStr.begin(), xStr.end(), ::isspace), xStr.end());
-            x = std::stoi(xStr);
-        }
-        
-        // Extract y
-        std::size_t yPos = objStr.find("\"y\":");
-        if (yPos != std::string::npos) {
-            std::size_t yValStart = objStr.find(":", yPos) + 1;
-            std::size_t yValEnd = objStr.find(",", yValStart);
-            std::string yStr = objStr.substr(yValStart, yValEnd - yValStart);
-            // Remove spaces
-            yStr.erase(std::remove_if(yStr.begin(), yStr.end(), ::isspace), yStr.end());
-            y = std::stoi(yStr);
-        }
-        
-        // Extract type
-        std::size_t typePos = objStr.find("\"type\":");
-        if (typePos != std::string::npos) {
-            std::size_t typeValStart = objStr.find("\"", typePos + 7) + 1;
-            std::size_t typeValEnd = objStr.find("\"", typeValStart);
-            type = objStr.substr(typeValStart, typeValEnd - typeValStart);
-        }
-        
-        // Place the object
-        Vector2 gridPos = {(float)x, (float)y};
-        ObjectType objType = stringToObjectType(type);
-        placeObject(objType, gridPos);
-        
-        pos = objEnd + 1;
-    }
-    
-    std::cout << "Level loaded: " << filename << std::endl;
+    //// Extract objects array content
+    //std::size_t arrayStart = content.find("[", objectsPos);
+    //std::size_t arrayEnd = content.find("]", arrayStart);
+
+    //if (arrayStart == std::string::npos || arrayEnd == std::string::npos) {
+    //    std::cout << "Invalid objects array format" << std::endl;
+    //    return;
+    //}
+
+    //std::string objectsStr = content.substr(arrayStart + 1, arrayEnd - arrayStart - 1);
+
+    //// Parse individual objects
+    //std::size_t pos = 0;
+    //while (pos < objectsStr.length()) {
+    //    std::size_t objStart = objectsStr.find("{", pos);
+    //    std::size_t objEnd = objectsStr.find("}", objStart);
+
+    //    if (objStart == std::string::npos || objEnd == std::string::npos) {
+    //        break;
+    //    }
+
+    //    std::string objStr = objectsStr.substr(objStart + 1, objEnd - objStart - 1);
+
+    //    // Parse x, y, type
+    //    int x = 0, y = 0;
+    //    std::string type = "GROUND";
+
+    //    // Extract x
+    //    std::size_t xPos = objStr.find("\"x\":");
+    //    if (xPos != std::string::npos) {
+    //        std::size_t xValStart = objStr.find(":", xPos) + 1;
+    //        std::size_t xValEnd = objStr.find(",", xValStart);
+    //        std::string xStr = objStr.substr(xValStart, xValEnd - xValStart);
+    //        // Remove spaces
+    //        xStr.erase(std::remove_if(xStr.begin(), xStr.end(), ::isspace), xStr.end());
+    //        x = std::stoi(xStr);
+    //    }
+
+    //    // Extract y
+    //    std::size_t yPos = objStr.find("\"y\":");
+    //    if (yPos != std::string::npos) {
+    //        std::size_t yValStart = objStr.find(":", yPos) + 1;
+    //        std::size_t yValEnd = objStr.find(",", yValStart);
+    //        std::string yStr = objStr.substr(yValStart, yValEnd - yValStart);
+    //        // Remove spaces
+    //        yStr.erase(std::remove_if(yStr.begin(), yStr.end(), ::isspace), yStr.end());
+    //        y = std::stoi(yStr);
+    //    }
+
+    //    // Extract type
+    //    std::size_t typePos = objStr.find("\"type\":");
+    //    if (typePos != std::string::npos) {
+    //        std::size_t typeValStart = objStr.find("\"", typePos + 7) + 1;
+    //        std::size_t typeValEnd = objStr.find("\"", typeValStart);
+    //        type = objStr.substr(typeValStart, typeValEnd - typeValStart);
+    //    }
+
+    //    // Place the object
+    //    Vector2 gridPos = { (float)x, (float)y };
+    //    ObjectType objType = stringToObjectType(type);
+    //    placeObject(objType, gridPos);
+
+    //    pos = objEnd + 1;
+    //}
+
+    //std::cout << "Level loaded: " << filename << std::endl;
 }
 
 void LevelEditor::clearLevel() {
+    if (clearingLevel) {
+        std::cout << "Already clearing level, please wait...\n";
+        return;
+    }
+
     clearingLevel = true;
     for (auto& pair : gridBlocks) {
-        if (pair.second) {
-            std::cout << "Marked\n";
-            PhysicsManager::getInstance().markForDeletion(pair.second.get());
+        while (!pair.second.empty()) {
+            if (pair.second.top()) {
+                pair.second.top()->setActive(false);
+                PhysicsManager::getInstance().markForDeletion(pair.second.top().get());
+            }
+            pair.second.pop();
         }
     }
 }

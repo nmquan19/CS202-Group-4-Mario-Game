@@ -6,6 +6,7 @@
 #include <raylib.h>
 #include <string>
 #include <fstream>
+#include <stack>
 #include "../System/TextureManager.h"
 #include "../Objects/ObjectFactory.h"
 #include "Interface.h"
@@ -33,7 +34,7 @@ public:
     void clearLevel();
 private:
     static LevelEditor* instance;
-    std::map<std::pair<int, int>, std::unique_ptr<Object>> gridBlocks;
+    std::map<std::pair<int, int>, std::stack<std::unique_ptr<Object>>> gridBlocks;
 	ObjectPalette palette;
     bool editMode = true;
     bool clearingLevel = false;
