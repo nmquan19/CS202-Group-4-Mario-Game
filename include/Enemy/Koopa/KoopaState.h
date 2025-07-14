@@ -1,30 +1,30 @@
 #pragma once
 #include "../EnemyState.h"
-class GoombaWanderingState : public EnemyState
-{ 
-    public : 
-    virtual void exit(Enemy* enemy) override; 
+#include "../Enemy.h"
+class KoopaWanderingState : public EnemyState
+{
+public:
+    virtual void exit(Enemy* enemy) override;
     virtual void enter(Enemy* enemy) override;
-    virtual void checkCondition(Enemy* enemy) override; 
-    virtual void update(Enemy* enemy ,float deltaTime) override; 
-    static GoombaWanderingState& GetInstance() ;  
-};  
-class GoombaStompedState:  public EnemyState
-{ 
-    public : 
-     virtual void exit(Enemy* enemy) override; 
+    virtual void checkCondition(Enemy* enemy) override;
+    virtual void update(Enemy* enemy, float deltaTime) override;
+    static KoopaWanderingState& GetInstance();
+};
+class KoopaStompedState : public EnemyState
+{
+public:
+    virtual void exit(Enemy* enemy) override;
     virtual void enter(Enemy* enemy) override;
-    virtual void checkCondition(Enemy* enemy) override; 
-    virtual void update(Enemy* enemy ,float deltaTime) override; 
-    static GoombaStompedState& GetInstance() ;  
-}; 
-
-class GoombaJumpingState:  public EnemyState
-{ 
-    public :  
-     virtual void exit(Enemy* enemy) override; 
+    virtual void checkCondition(Enemy* enemy) override;
+    virtual void update(Enemy* enemy, float deltaTime) override;
+    static KoopaStompedState& GetInstance();
+};
+class KoopaKnockState : public EnemyState
+{
+public:
+    virtual void exit(Enemy* enemy) override;
     virtual void enter(Enemy* enemy) override;
-    virtual void checkCondition(Enemy* enemy) override; 
-    virtual void update(Enemy* enemy ,float deltaTime) override; 
-    static GoombaJumpingState& GetInstance() ;  
-}; 
+    virtual void checkCondition(Enemy* enemy) override;
+    virtual void update(Enemy* enemy, float deltaTime) override;
+    static KoopaKnockState& GetInstance();
+};

@@ -1,57 +1,74 @@
-#include  "../../../include/Enemy/Goomba/Goomba.h"
+#include  "../../../include/Enemy/Koopa/Koopa.h"
 #include "../../../include/System/TextureManager.h"
 #include <raymath.h>
 #include "../../../include/Enemy/Enemy.h"
-#include "../../../include/Enemy/Goomba/GoombaState.h"
+#include "../../../include/Enemy/Koopa/KoopaState.h"
 #include "../../../include/Objects/ObjectFactory.h"
 #include "../../../include/System/Interface.h"
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
-Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(startPos, velocity,accelleration, TextureManager::enemyTextures )
-{    
-    type = EnemyType::GOOMBA;
-    scale = 5; 
-	  stompedAnimation = false;
-    num_sprites =  {{0,1},{2,3},{5,5}};
-    numSprites = {2,2,1};
-    max_numSprites  = 2; 
-    changeState(&GoombaWanderingState::GetInstance());
-}
-Goomba::Goomba(Vector2 startPos, Vector2 size) : Enemy(startPos,TextureManager::enemyTextures, size)
+#include "../../../include/Enemy/LedgeDetector.h"
+#include "../../../include/System/PhysicsManager.h"
+#include <memory>
+Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures),ledgeDetector(std::make_unique<LedgeDetector>(10.0f))
 {
-    type = EnemyType::GOOMBA;
     stompedAnimation = false;
-    num_sprites = { {0,1},{2,3},{5,5} };
-    numSprites = { 2,2,1 };
+    num_sprites = {{45,46}};
+    numSprites = {2};
     max_numSprites = 2;
-    changeState(&GoombaWanderingState::GetInstance());
+    changeState(&KoopaWanderingState::GetInstance());
+    isFacingRight = velocity.x > 0;
+}
+Koopa::~Koopa()
+{
+	
+    if (ledgeDetector) {
+        PhysicsManager::getInstance().markForDeletion(ledgeDetector.release());
+     }
+    
+
+}
+Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size), ledgeDetector(std::make_unique<LedgeDetector>(10.0f))
+{
+    stompedAnimation = false;
+    num_sprites = {{45,46}};
+    numSprites = { 2 };
+    max_numSprites = 2;
+    changeState(&KoopaWanderingState::GetInstance());
+    isFacingRight = velocity.x > 0;
+
 }
 
-void Goomba::onCollision(Object* other) {
-   
-	if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-         DrawText("HITTED",200,200,20,RED);
-         this->changeState(&GoombaStompedState::GetInstance());
+void Koopa::onCollision(Object* other) {
+
+    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
+        this->changeState(&KoopaStompedState::GetInstance());
     }
 }
-void Goomba::draw() {
-    
+void Koopa::draw() {
+
+
     Rectangle source = spritebox;
-    Rectangle dest = hitbox;  
+    Rectangle dest = hitbox;
     if (knockAnimation && velocity.y > 0) {
         source.height *= -1;
-    }else if(stompedAnimation)
-    {   
+    }
+    else if (stompedAnimation)
+    {
         dest.y += dest.height * 0.5f;
-        dest.height *= 0.5f; 
+        dest.height *= 0.5f;
+    }
+    if(isFacingRight)
+    {
+		source.width *= -1;
     }
     Vector2 origin = { 0, 0 };
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
 }
 
-void Goomba::checkCollision(const std::vector<Object*>& candidates)
-{   
+void Koopa::checkCollision(const std::vector<Object*>& candidates)
+{
     for (auto* candidate : candidates) {
         switch (candidate->getObjectCategory()) {
         case ObjectCategory::BLOCK:
@@ -59,15 +76,15 @@ void Goomba::checkCollision(const std::vector<Object*>& candidates)
             break;
         case ObjectCategory::PROJECTILE:
             // implement
-			this->changeState(&GoombaKnockState::GetInstance());
+            this->changeState(&KoopaKnockState::GetInstance());
             break;
         case ObjectCategory::CHARACTER:
-			handleCharacterCollision(candidate);
+            handleCharacterCollision(candidate);
             break;
         }
     }
 }
-void Goomba::handleCharacterCollision(Object* other) {
+void Koopa::handleCharacterCollision(Object* other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
 
@@ -77,15 +94,15 @@ void Goomba::handleCharacterCollision(Object* other) {
     float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
     float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
     float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-      
+
     float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
     if (minOverlap == overlapBottom) {
-        die(); 
-		this->changeState(&GoombaStompedState::GetInstance());
+        die();
+        this->changeState(&KoopaStompedState::GetInstance());
     }
 }
 
-void Goomba::handleEnvironmentCollision(Object* other) {
+void Koopa::handleEnvironmentCollision(Object* other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
 
@@ -121,37 +138,52 @@ void Goomba::handleEnvironmentCollision(Object* other) {
     else if (minOverlap == overlapLeft && overlapLeft >= MIN_OVERLAP) {
         position.x = otherHitBox.x - playerHitBox.width;
         velocity.x *= -1;
+		isFacingRight = false;
     }
     else if (minOverlap == overlapRight && overlapRight >= MIN_OVERLAP) {
         position.x = otherHitBox.x + otherHitBox.width;
         velocity.x *= -1;
+		isFacingRight = true;
     }
 }
-void Goomba::die()
+void Koopa::die()
 {
 }
-void Goomba::takeDamage(int amount) {
- 
+void Koopa::takeDamage(int amount) {
+
 }
 
-void Goomba::update(float deltaTime) {
+void Koopa::update(float deltaTime) {
+
+    if (!ledgeDetector->isNearLedge())
+    {
+        isFacingRight ^= 1;
+        velocity.x *= -1;
+    }
+    ledgeDetector->update(this, deltaTime);
+
     Enemy::update(deltaTime);
     if (!stompedAnimation) {
         applyGravity(deltaTime);
     }
-    currentState->update(this, deltaTime);
-    currentState->checkCondition(this);
+    if (currentState)
+    {
+        currentState->update(this, deltaTime);
+        currentState->checkCondition(this);
+    }
     hitbox.x = position.x;
     hitbox.y = position.y;
     if (position.x < 0)
     {
         position.x = 0;
         velocity.x *= -1;
+        isFacingRight = true; 
     }
     if (position.x > 1920 - hitbox.width)
     {
         position.x = 1920 - hitbox.width;
         velocity.x *= -1;
+        isFacingRight = false;
     }
 
 }

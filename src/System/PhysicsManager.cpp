@@ -35,11 +35,9 @@ void PhysicsManager::deleteObjects() {
 		if (it != objects.end()) {
 			objects.erase(it);
 		}
-		//delete obj;
 	}
 	toDelete.clear();
 }
-
 void PhysicsManager::update() {
 	deleteObjects();
 	frameCounter++;
@@ -53,13 +51,15 @@ void PhysicsManager::update() {
 			}
 		}
 	}
+	int i = 0;  
 	for (auto* object : objects) {
+		i++; 
 		if (!object) continue;
-		if (object && !object->isActive()) {
-			markForDeletion(object);
+			if (object && !object->isActive()) {
+			//markForDeletion(object);
 			continue;
 		}
-
+					
 		auto targetLayer = object->getCollisionTargets();
 		if (targetLayer.empty()) continue;
 
@@ -76,10 +76,9 @@ void PhysicsManager::update() {
 			}
 		}
 
-		if (!filterdCandidates.empty()) {
-			object->checkCollision(filterdCandidates);
+	
+		object->checkCollision(filterdCandidates);
 			// set true
-		}
 		//else {
 		//	// set false;
 		//}
@@ -131,4 +130,8 @@ void PhysicsManager::getDebugStats(int& totalNodes, int& maxDepth, int& totalObj
 	else {
 		totalNodes = maxDepth = totalObjects = 0;
 	}
+}
+
+bool PhysicsManager::deletionCompleted() const {
+	return toDelete.empty();
 }

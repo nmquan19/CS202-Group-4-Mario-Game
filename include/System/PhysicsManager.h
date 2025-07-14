@@ -5,6 +5,7 @@
 #include "Interface.h"
 #include "QuadTree.h"
 #include "../Objects/ObjectFactory.h"
+#include <raylib.h>
 
 class PhysicsManager {
 public:
@@ -24,11 +25,13 @@ public:
 
 	void drawDebug() const;
 	void getDebugStats(int& totalNodes, int& maxDepth, int& totalObjects) const;
+
+	bool deletionCompleted() const;
 private:
 	PhysicsManager() = default;
-	std::vector<Object*> objects;
+	std::vector<Object*> objects;	
 	std::vector<Object*> toDelete;
-	std::unique_ptr<QuadTree> quadTree;
+	std::unique_ptr<QuadTree> quadTree; 
 	static PhysicsManager* instance;
 	const int REBUILD_FREQUENCY = 2;
 	int frameCounter = 0;
