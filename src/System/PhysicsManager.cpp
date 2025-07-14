@@ -38,7 +38,6 @@ void PhysicsManager::deleteObjects() {
 	}
 	toDelete.clear();
 }
-
 void PhysicsManager::update() {
 	deleteObjects();
 	frameCounter++;
@@ -52,13 +51,15 @@ void PhysicsManager::update() {
 			}
 		}
 	}
+	int i = 0;  
 	for (auto* object : objects) {
+		i++; 
 		if (!object) continue;
-		if (object && !object->isActive()) {
-			markForDeletion(object);
+			if (object && !object->isActive()) {
+			//markForDeletion(object);
 			continue;
 		}
-
+					
 		auto targetLayer = object->getCollisionTargets();
 		if (targetLayer.empty()) continue;
 

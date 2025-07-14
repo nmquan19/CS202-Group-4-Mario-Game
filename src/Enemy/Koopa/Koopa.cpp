@@ -9,7 +9,9 @@
 #include <vector>
 #include <algorithm>
 #include "../../../include/Enemy/LedgeDetector.h"
-Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures),ledgeDetector(10.0f)
+#include "../../../include/System/PhysicsManager.h"
+#include <memory>
+Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures),ledgeDetector(std::make_unique<LedgeDetector>(10.0f))
 {
     stompedAnimation = false;
     num_sprites = {{45,46}};
@@ -17,9 +19,17 @@ Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(
     max_numSprites = 2;
     changeState(&KoopaWanderingState::GetInstance());
     isFacingRight = velocity.x > 0;
+}
+Koopa::~Koopa()
+{
+	
+    if (ledgeDetector) {
+        PhysicsManager::getInstance().markForDeletion(ledgeDetector.release());
+     }
+    
 
 }
-Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size),ledgeDetector(10.0f)
+Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size), ledgeDetector(std::make_unique<LedgeDetector>(10.0f))
 {
     stompedAnimation = false;
     num_sprites = {{45,46}};
@@ -33,11 +43,11 @@ Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::e
 void Koopa::onCollision(Object* other) {
 
     if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        DrawText("HITTED", 200, 200, 20, RED);
         this->changeState(&KoopaStompedState::GetInstance());
     }
 }
 void Koopa::draw() {
+
 
     Rectangle source = spritebox;
     Rectangle dest = hitbox;
@@ -51,7 +61,6 @@ void Koopa::draw() {
     }
     if(isFacingRight)
     {
-		DrawText("RIGHT", 200, 200, 20, RED);
 		source.width *= -1;
     }
     Vector2 origin = { 0, 0 };
@@ -146,19 +155,22 @@ void Koopa::takeDamage(int amount) {
 
 void Koopa::update(float deltaTime) {
 
-    if (!ledgeDetector.isNearLedge())
+    if (!ledgeDetector->isNearLedge())
     {
         isFacingRight ^= 1;
         velocity.x *= -1;
     }
-    ledgeDetector.update(this, deltaTime);
+    ledgeDetector->update(this, deltaTime);
 
     Enemy::update(deltaTime);
     if (!stompedAnimation) {
         applyGravity(deltaTime);
     }
-    currentState->update(this, deltaTime);
-    currentState->checkCondition(this);
+    if (currentState)
+    {
+        currentState->update(this, deltaTime);
+        currentState->checkCondition(this);
+    }
     hitbox.x = position.x;
     hitbox.y = position.y;
     if (position.x < 0)

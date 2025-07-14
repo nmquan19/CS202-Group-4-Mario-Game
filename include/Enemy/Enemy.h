@@ -47,12 +47,12 @@ public :
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;
+	virtual void handleEnvironmentCollision(Object* other);
 
 protected:
 	EnemyType type = EnemyType::GOOMBA;
 	bool isalive; 
 	float aniTimer, aniSpeed; 
-	virtual void handleEnvironmentCollision(Object* other);
     int HP ;
 	bool onGround;
 	EnemyState* currentState;

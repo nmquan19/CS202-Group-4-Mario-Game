@@ -90,4 +90,5 @@ Vector2 LedgeDetector::getPosition() const
 LedgeDetector :: ~LedgeDetector()
 {
     this->active = false;  
+    PhysicsManager::getInstance().markForDeletion(this);
 }

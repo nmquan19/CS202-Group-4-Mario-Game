@@ -5,6 +5,7 @@
 #include "Interface.h"
 #include "QuadTree.h"
 #include "../Objects/ObjectFactory.h"
+#include <raylib.h>
 
 class PhysicsManager {
 public:

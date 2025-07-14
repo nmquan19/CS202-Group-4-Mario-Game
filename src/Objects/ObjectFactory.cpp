@@ -9,6 +9,8 @@
 #include "../../include/System/Interface.h"
 #include <raylib.h>
 #include <vector>
+#include <algorithm>
+#include "../../include/Enemy/Koopa/KoopaShell.h"
 
 
 std::unique_ptr<Object> ObjectFactory::createBlock(BlockType type, Vector2 gridPos) {
@@ -55,6 +57,7 @@ CharacterStats ObjectFactory::getStats(CharacterType type) {
 std::unique_ptr<Object> ObjectFactory::createEnemy(EnemyType type, Vector2 gridPos, Vector2 size) {
     return createSpecificEnemy(type, gridPos, size);
 }
+
 std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size) {
         switch (type) {
             case EnemyType::GOOMBA:
@@ -86,4 +89,44 @@ std::vector<std::vector<Rectangle>> ObjectFactory::getFrameData(CharacterType ty
                 {{30, 209, 19, 46}, {110, 209, 19, 46}, {190, 209, 19, 46}, {270, 209, 19, 46}} // jumping state
             };
     }
+}
+std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vector2 gridPos, Vector2 size) {
+    return createSpecificKoopaShell(type, gridPos, size);
+}
+std::unique_ptr<KoopaShell> ObjectFactory::createSpecificKoopaShell(KoopaShellType type, Vector2 startPosition, Vector2 size) {
+    switch (type) {
+    case KoopaShellType::GREEN_KOOPA_SHELL:
+        return std::make_unique<KoopaShell>(startPosition, size);
+    //case EnemyType::KOOPA:
+    //    return std::make_unique<Koopa>(startPosition, size);
+    default:
+        return nullptr;
+    }
+}
+int Object::getCollidedPart(const Object& other)
+{
+    Rectangle playerHitBox = getHitBox();
+    Rectangle otherHitBox = other.getHitBox();
+
+    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
+    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
+    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
+    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
+
+    const float MIN_OVERLAP = 2.0f;
+
+    if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
+        return 0 ;
+    }
+
+    float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
+    if(minOverlap == overlapTop) {
+        return 1; 
+    } else if(minOverlap == overlapBottom) {
+        return 2; 
+    } else if(minOverlap == overlapLeft) {
+        return 3; 
+    } else if(minOverlap == overlapRight) {
+        return 4; 
+	}
 }
