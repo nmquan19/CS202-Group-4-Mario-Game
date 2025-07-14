@@ -21,7 +21,7 @@ public:
     AudioManager audioManager;
     UIManager uiManager;
     MenuManager menuManager;
-    std::unique_ptr<Character> character;
+    std::shared_ptr<Character> character;
     std::vector<std::shared_ptr<Object>> Objects;
     std::vector<std::shared_ptr<Object>> ToDeleteObjects;
     std::vector<ObjectInfo> ToSpawnObjects;

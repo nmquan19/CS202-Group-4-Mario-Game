@@ -30,8 +30,8 @@ LevelEditor::~LevelEditor() {
     for (auto& it : gridBlocks) {
         while (!it.second.empty()) {
             if (it.second.top()) {
-                it.second.top()->setActive(false);
-                PhysicsManager::getInstance().markForDeletion(it.second.top().get());
+                PhysicsManager::getInstance().markForDeletion(std::move(it.second.top()));
+                it.second.top().release();
             }
             it.second.pop();
         }
@@ -50,21 +50,21 @@ void LevelEditor::update() {
         if (IsKeyPressed(KEY_F8)) {
             loadLevel("test_level.json");
         }
-        if (IsKeyPressed(KEY_F9)) {
+        if (IsKeyPressed(KEY_F)) {
             clearLevel();
         }
 
-        if (clearingLevel && PhysicsManager::getInstance().deletionCompleted()) {
-            gridBlocks.clear();
-            clearingLevel = false;
-            std::cout << "Level cleared successfully!\n";
+        // if (clearingLevel && PhysicsManager::getInstance().deletionCompleted()) {
+        //     gridBlocks.clear();
+        //     clearingLevel = false;
+        //     std::cout << "Level cleared successfully!\n";
 
-            if (loadingLevel && !pendingLoadFile.empty()) {
-                performLoad(pendingLoadFile);
-                pendingLoadFile = "";
-                loadingLevel = false;
-            }
-        }
+        //     if (loadingLevel && !pendingLoadFile.empty()) {
+        //         performLoad(pendingLoadFile);
+        //         pendingLoadFile = "";
+        //         loadingLevel = false;
+        //     }
+        // }
     }
     else if (!clearingLevel) {
         for (auto& it : gridBlocks) {
@@ -150,14 +150,14 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
         if constexpr (std::is_same_v<T, BlockType>) {
             auto newBlock = ObjectFactory::createBlock(actualType, gridCoord);
             if (newBlock) {
-                PhysicsManager::getInstance().addObject(newBlock.get());
+                PhysicsManager::getInstance().addObject(std::move(newBlock));
                 gridBlocks[key].push(std::move(newBlock));
             }
         }
         else if constexpr (std::is_same_v<T, EnemyType>) {
             auto newEnemy = ObjectFactory::createEnemy(actualType,GridSystem::getWorldPosition(gridCoord),{1,1});
             if (newEnemy) {
-                PhysicsManager::getInstance().addObject(newEnemy.get());
+                PhysicsManager::getInstance().addObject(std::move(newEnemy));
                 gridBlocks[key].push(std::move(newEnemy));
             }
         }
@@ -196,7 +196,7 @@ void LevelEditor::removeObject(Vector2 gridCoord) {
     if (it != gridBlocks.end() && !it->second.empty()) {
         if (it->second.top()) {
             it->second.top()->setActive(false);
-            PhysicsManager::getInstance().markForDeletion(it->second.top().get());
+            PhysicsManager::getInstance().markForDeletion(std::move(it->second.top()));
             it->second.top().release();
             it->second.pop();
         }
@@ -410,8 +410,8 @@ void LevelEditor::clearLevel() {
     for (auto& pair : gridBlocks) {
         while (!pair.second.empty()) {
             if (pair.second.top()) {
-                pair.second.top()->setActive(false);
-                PhysicsManager::getInstance().markForDeletion(pair.second.top().get());
+                PhysicsManager::getInstance().markForDeletion(std::move(pair.second.top()));
+                pair.second.top().release();
             }
             pair.second.pop();
         }

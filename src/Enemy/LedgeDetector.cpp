@@ -7,7 +7,7 @@
 #include "../../include/Enemy/Enemy.h"
 LedgeDetector::LedgeDetector(float castLength)
     : nearLedge(false), castLength(castLength), hitBox({ 0,0,0,0 }){
-	PhysicsManager::getInstance().addObject(this);
+	// PhysicsManager::getInstance().addObject(this);
 }
 
 void LedgeDetector::update(Enemy* enemy, float deltaTime) 
@@ -90,5 +90,5 @@ Vector2 LedgeDetector::getPosition() const
 LedgeDetector :: ~LedgeDetector()
 {
     this->active = false;  
-    PhysicsManager::getInstance().markForDeletion(this);
+    // PhysicsManager::getInstance().markForDeletion(this);
 }

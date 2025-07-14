@@ -17,7 +17,7 @@ TriggerZone::TriggerZone(CollectableObject* ownerItem, Vector2 pos, Vector2 sz)
 
     hitBox = Rectangle{ position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
     this->active = true;
-    PhysicsManager::getInstance().addObject(this); 
+    // PhysicsManager::getInstance().addObject(this); 
 } 
 
 void TriggerZone::update(float deltaTime) {

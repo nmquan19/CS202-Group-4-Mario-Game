@@ -21,8 +21,6 @@ Character::Character(Vector2 startPosition,  const CharacterStats& stats, const 
 
     currentState = &IdleState::getInstance();
     currentState->enter(this);
-
-    PhysicsManager::getInstance().addObject(this);
 }
 
 Character::~Character() {
@@ -65,11 +63,11 @@ void Character::update(float deltaTime) {
         5.0f
     };
 
-    std::vector<Object*> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
+    std::vector<std::shared_ptr<Object>> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
     
     bool stillOnGround = false;
-    for (auto* obj : nearbyObjects) {
-        if (obj != this && obj->getObjectCategory() == ObjectCategory::BLOCK) {
+    for (auto obj : nearbyObjects) {
+        if (obj.get() != this && obj->getObjectCategory() == ObjectCategory::BLOCK) {
             if (CheckCollisionRecs(groundCheckBox, obj->getHitBox())) {
                 stillOnGround = true;
                 break;
