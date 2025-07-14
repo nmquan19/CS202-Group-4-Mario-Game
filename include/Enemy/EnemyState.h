@@ -1,12 +1,11 @@
 #pragma once
-#include "Enemy.h"
 class Enemy; 
-enum EState{ 
-  Idle = 0, 
-  Moving, 
-  Jumping,
-  Attacking
-};  
+enum EState {
+    Idle = 0,
+    Moving,
+    Jumping,
+    Attacking
+};
 class EnemyState
 {
   public : 

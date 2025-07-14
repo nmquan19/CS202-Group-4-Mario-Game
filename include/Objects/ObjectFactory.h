@@ -8,6 +8,7 @@ class Block;
 class Character;
 struct CharacterStats;
 class Enemy; 
+class KoopaShell;
 class Object : public ICollidable, public IDrawable {
 public:
 	virtual ~Object() = default;
@@ -25,6 +26,7 @@ public:
 	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;
 	virtual void checkCollision(const std::vector<Object*>& candidates) override = 0;
 	void onCollision(Object* other) override = 0;
+	int getCollidedPart(const Object& other);
 protected:
 	Vector2 position;
 	Vector2 size;
@@ -37,10 +39,12 @@ public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Character> createCharacter(CharacterType type, Vector2 startPosition, float scale = 2.0f);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
+	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
 private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, Vector2 startPosition, float scale);
-    static CharacterStats getStats(CharacterType type);
+	static std::unique_ptr<KoopaShell> createSpecificKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
+	static CharacterStats getStats(CharacterType type);
     static std::vector<std::vector<Rectangle>> getFrameData(CharacterType type);
 };

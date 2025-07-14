@@ -3,19 +3,15 @@
 #include <raylib.h>
 #include <type_traits>
 #include <variant>
-#include <sstream>
 #include <iostream>
-#include <algorithm>
 #include "../../include/System/LevelEditor.h"
 #include "../../include/System/PhysicsManager.h"
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Grid.h"
 #include "../../include/System/Interface.h"
-#include "../../include/Objects/Block.h"
 #include "../../include/Enemy/Enemy.h"
 
 LevelEditor* LevelEditor::instance = nullptr;
-
 LevelEditor& LevelEditor::getInstance() {
     if (!instance) {
         instance = new LevelEditor();
@@ -42,7 +38,6 @@ LevelEditor::~LevelEditor() {
     }
     gridBlocks.clear();
 }
-
 void LevelEditor::update() {
     if (editMode) {
         palette.handleSelection();
@@ -88,7 +83,7 @@ void LevelEditor::update() {
 
             if (shouldUpdate) {
                 IUpdatable* updatable = dynamic_cast<IUpdatable*>(obj);
-                if (updatable) {
+                if (updatable){
                     updatable->update(GetFrameTime());
                 }
             }
@@ -168,16 +163,39 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
         }
     }, type);
 }
+#include <iostream>
+#include <string>
+void LevelEditor::addObject(ObjectType type, Vector2 worldPos) {
 
+    Vector2 gridCoord = GridSystem::getGridCoord(worldPos);
+    worldPos = GridSystem::getWorldPosition(gridCoord);
+    std::unique_ptr<Object> object = nullptr;
+
+    std::visit([&](auto&& actualType) {
+        using T = std::decay_t<decltype(actualType)>;
+
+        if constexpr (std::is_same_v<T, BlockType>) {
+            object = ObjectFactory::createBlock(actualType, gridCoord);
+        }
+        else if constexpr (std::is_same_v<T, EnemyType>) {
+            object = ObjectFactory::createEnemy(actualType, worldPos, { 1, 1 });
+        }
+        else if constexpr (std::is_same_v<T, KoopaShellType>) {
+            object = ObjectFactory::createKoopaShell(actualType, worldPos, { 1, 1 });
+        }
+        }, type);
+
+    if (object) {
+        object->setPosition(worldPos);
+    }
+}
 
 void LevelEditor::removeObject(Vector2 gridCoord) {
     auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
     auto it = gridBlocks.find(key);
     if (it != gridBlocks.end() && !it->second.empty()) {
         if (it->second.top()) {
-            std::cout << "set\n";
             it->second.top()->setActive(false);
-            std::cout << "mark\n";
             PhysicsManager::getInstance().markForDeletion(it->second.top().get());
             it->second.top().release();
             it->second.pop();
@@ -388,7 +406,6 @@ void LevelEditor::clearLevel() {
         std::cout << "Already clearing level, please wait...\n";
         return;
     }
-
     clearingLevel = true;
     for (auto& pair : gridBlocks) {
         while (!pair.second.empty()) {

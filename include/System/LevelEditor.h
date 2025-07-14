@@ -25,6 +25,7 @@ public:
     void draw();
     void handleMouseInput();
     void placeObject(ObjectType type, Vector2 gridCoord);
+	void addObject(ObjectType type , Vector2 worldPos);
     void removeObject(Vector2 gridCoord);
     void toggleEditMode();
     bool isInEditMode() const;

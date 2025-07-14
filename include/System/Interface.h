@@ -9,7 +9,8 @@ enum class ObjectCategory {
 	ENEMY,
 	ITEM,
 	PROJECTILE,
-	TRIGGER
+	TRIGGER,
+	SHELL,
 };
 
 enum class BlockType {
@@ -40,14 +41,21 @@ enum class CharacterType {
 	MARIO,
 	LUIGI
 };
-
+enum class KoopaShellType {
+	GREEN_KOOPA_SHELL,
+};
 enum class TriggerType {
 	CHECKPOINT,
 	LEVEL_END,
 	WARP_PIPE
 };
-
-class IDrawable {
+enum class Direction {
+	UP =1 ,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+class IDrawable{
 public:
 	virtual ~IDrawable() = default;
 	virtual void draw() = 0;
@@ -74,11 +82,10 @@ public:
 	virtual ~IUpdatable() = default;
 	virtual void update(float deltaTime) = 0;
 };
-
 class IMovable {
 public:
 	virtual ~IMovable() = default;
 	virtual void setVelocity(Vector2 newVelocity) = 0;
 	virtual Vector2 getVelocity() = 0;
 };
-using ObjectType = std::variant<BlockType, EnemyType>;
+using ObjectType = std::variant<BlockType, EnemyType, KoopaShellType>;
