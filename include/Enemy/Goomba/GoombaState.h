@@ -1,5 +1,6 @@
 #pragma once
 #include "../EnemyState.h"
+#include "../Enemy.h"
 class GoombaWanderingState : public EnemyState
 { 
     public : 
@@ -18,13 +19,12 @@ class GoombaStompedState:  public EnemyState
     virtual void update(Enemy* enemy ,float deltaTime) override; 
     static GoombaStompedState& GetInstance() ;  
 }; 
-
-class GoombaJumpingState:  public EnemyState
+class GoombaKnockState:  public EnemyState
 { 
     public :  
      virtual void exit(Enemy* enemy) override; 
     virtual void enter(Enemy* enemy) override;
     virtual void checkCondition(Enemy* enemy) override; 
     virtual void update(Enemy* enemy ,float deltaTime) override; 
-    static GoombaJumpingState& GetInstance() ;  
+    static GoombaKnockState& GetInstance() ;  
 }; 

@@ -1,4 +1,5 @@
 #include <raylib.h>
+<<<<<<< HEAD
 #include <memory>
 #include <string>
 #include "../include/UI/SoundEffect.h"
@@ -180,18 +181,23 @@ int main() {
 
 
 
+=======
+#include "../include/Game/GameContext.h"
+#include "../include/Game/GameStates.h"
+>>>>>>> d60861c35ec8ba7053c4ff34af052ffa3f48e0b7
 int main() {
     InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
     InitAudioDevice();
     SetTargetFPS(60);
 
-    AudioManager audioManager;
-    UIManager uiManager;
-    MenuManager menuManager;
+    GameContext* context = &GameContext::getInstance(); 
+    MenuState menuState;
+    GamePlayState gamePlayState;
+    GameOverState gameOverState;
 
-    //audioManager.LoadBackgroundMusic("some music path");
-    //audioManager.PlayBackgroundMusic();
+    context->setGameStates(&menuState, &gamePlayState, &gameOverState);
 
+<<<<<<< HEAD
     TextureManager::getInstance().loadTextures();
 
     enum class GameState { MENU, GAME, GAME_OVER };
@@ -202,9 +208,11 @@ int main() {
     std::unique_ptr<Character> character;
     std::unique_ptr<Goomba> goomba; 
     std::unique_ptr<Projectile> proj;
+=======
+>>>>>>> d60861c35ec8ba7053c4ff34af052ffa3f48e0b7
     while (!WindowShouldClose()) {
-
         float deltaTime = GetFrameTime();
+<<<<<<< HEAD
 
         if (state != previousState) {
             if (previousState == GameState::GAME) {
@@ -287,16 +295,14 @@ int main() {
             break;
         }
         EndDrawing();
+=======
+        context->handleInput();
+        context->update(deltaTime);
+        context->draw();
+>>>>>>> d60861c35ec8ba7053c4ff34af052ffa3f48e0b7
     }
 
-    if (state == GameState::GAME) {
-        LevelEditor::getInstance().cleanup();
-        PhysicsManager::getInstance().cleanup();
-    }
-    TextureManager::getInstance().unloadTextures();
-    Resources::UnLoad();
     CloseAudioDevice();
     CloseWindow();
     return 0;
 }
-

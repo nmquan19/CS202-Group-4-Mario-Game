@@ -1,5 +1,10 @@
 #include <algorithm>
 #include "../../include/System/QuadTree.h"
+#include <memory>
+#include <vector>
+#include "../../include/Objects/ObjectFactory.h"
+#include "../../include/System/Interface.h"
+#include <raylib.h>
 
 QuadTree::QuadTree(Rectangle worldBounds) : worldBounds(worldBounds) {
 	root = std::make_unique<Node>(worldBounds, 0);
@@ -151,7 +156,7 @@ void QuadTree::drawNodeRecursive(Node* node) const {
 				hitboxColor = MAGENTA;
 				break;
 			case ObjectCategory::BLOCK:
-				hitboxColor = BROWN;
+				hitboxColor = BLUE;
 				break;
 			case ObjectCategory::ITEM:
 				hitboxColor = GOLD;

@@ -14,16 +14,24 @@ MenuManager::MenuManager() {
     cross.load("./assets/button/cross.png");
     setting.load("./assets/button/setting.png");
     returnButton.load("./assets/button/return.png");
+
     boardPosition.x = (static_cast<float>(screenWidth) - board.width * scale) / 2;
     boardPosition.y = (static_cast<float>(screenHeight) - board.height * scale) / 2;
+
     crossPosition.x = boardPosition.x + board.width * scale / 2 - 50 - 100;
     crossPosition.y = boardPosition.y + board.height * scale / 2;
+
     checkPosition.x = boardPosition.x + board.width * scale / 2 - 50 + 100;
     checkPosition.y = boardPosition.y + board.height * scale / 2;
+
     settingPosition.x = GetScreenWidth() * 9 / 10;
     settingPosition.y = GetScreenHeight() / 10;
+
     returnButtonPosition.x = boardPosition.x + board.width * scale / 2 - 50;
     returnButtonPosition.y = boardPosition.y + board.height * scale / 2;
+
+    slideBarPosition.x = boardPosition.x + board.width * scale / 4;
+    slideBarPosition.y = boardPosition.y + board.height * scale / 4;
 }
 
 MenuManager::~MenuManager() {
@@ -99,6 +107,7 @@ void MenuManager::DrawSetting() {
     if (dialog) {
         DrawTextureEx(board, boardPosition, 0, scale, WHITE);
         returnButton.draw(returnButtonPosition);
+        slideBar.DrawSlideBar(slideBarPosition);
     }
 
 }

@@ -1,10 +1,8 @@
 #include "../../../include/Enemy/Goomba/GoombaState.h"
 #include "../../../include/Enemy/Goomba/Goomba.h"
-#include "../../../include/System/PhysicsManager.h"
-#include <cstdlib>  
-#include "../../../include/System/Resources.h"
 #include "../../../include/Enemy/Enemy.h"
 #include "../../../include/Enemy/EnemyState.h"
+#include "../../../include/System/TextureManager.h"
 #include <raylib.h>
 void GoombaWanderingState::checkCondition(Enemy* enemy)
 {
@@ -14,105 +12,102 @@ void GoombaWanderingState::enter(Enemy* enemy)
 {
 
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    goomba->velocity.x = 500; 
-    goomba->curFrame = 0; 
-//    std::cout<<goomba->num_sprites[0].first<<"\n";
-    goomba->spritebox =  Resources::Enemy_sprite_boxes[goomba->num_sprites[0].first];
+    goomba->velocity.x = 500;
+    goomba->curFrame = 0;
+    //    std::cout<<goomba->num_sprites[0].first<<"\n";
+    goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->num_sprites[0].first];
 }
 void GoombaWanderingState::exit(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    goomba->curFrame =  goomba->numSprites[0]-1;
-    goomba->spritebox =  Resources::Enemy_sprite_boxes[goomba->num_sprites[0].first+goomba->curFrame];
+    goomba->curFrame = goomba->numSprites[0] - 1;
+    goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->num_sprites[0].first + goomba->curFrame];
 }
-void GoombaWanderingState::update(Enemy* enemy,float deltaTime)
-{   
+void GoombaWanderingState::update(Enemy* enemy, float deltaTime)
+{
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    int num =  goomba->numSprites[Idle];
-    goomba->curFrame  =   goomba->curFrame%num; 
-    goomba->spritebox =  Resources::Enemy_sprite_boxes[goomba->num_sprites[0].first+goomba->curFrame];
-} 
+    int num = goomba->numSprites[Idle];
+    goomba->curFrame = goomba->curFrame % num;
+    goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->num_sprites[0].first + goomba->curFrame];
+}
 
-GoombaWanderingState& GoombaWanderingState::GetInstance(){
-    static GoombaWanderingState instance; 
-    return instance;  
+GoombaWanderingState& GoombaWanderingState::GetInstance() {
+    static GoombaWanderingState instance;
+    return instance;
 }
 
 void GoombaStompedState::enter(Enemy* enemy)
 {
-    
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
     goomba->velocity = {0,0};
-    goomba->active = false;
-    goomba->curFrame = 0; 
-    goomba->spritebox =  Resources::Enemy_sprite_boxes[goomba->num_sprites[2].first];
+    goomba->curFrame = 0;
+    goomba->active = false; 
+    goomba->stompedAnimation = true; 
+    goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->num_sprites[2].first];
 }
 void GoombaStompedState::checkCondition(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-     if(goomba->aniTimer >= goomba->aniSpeed-0.1)
-     {
-          goomba->changeState(&GoombaWanderingState::GetInstance());
-     }
-
+    if (goomba->stompedTime >= goomba->stompedDuration) 
+    {
+        goomba->stompedAnimation = false;
+        goomba->active = false; 
+        goomba->changeState(nullptr);
+    }
 }
 void GoombaStompedState::exit(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    goomba->active = true;
-    PhysicsManager::getInstance().addObject(goomba);
+    goomba->isalive = false; 
 }
-void GoombaStompedState::update(Enemy* enemy,float deltaTime)
-{   
-    Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    int num =  goomba->numSprites[2];
-    goomba->curFrame  =   goomba->curFrame%num; 
-    goomba->spritebox =  Resources::Enemy_sprite_boxes[goomba->num_sprites[2].first+goomba->curFrame];
-} 
-GoombaStompedState& GoombaStompedState::GetInstance(){
-    static GoombaStompedState instance; 
-    return instance;  
-}
-
-
-
-
-
-void GoombaJumpingState::checkCondition(Enemy* enemy)
+void GoombaStompedState::update(Enemy* enemy, float deltaTime)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    int chance = rand() % 100;
-    if (chance == 0) {
-        goomba->changeState(&GoombaWanderingState::GetInstance());
+    int num = goomba->numSprites[2];
+    goomba->curFrame = goomba->curFrame % num;
+    goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->num_sprites[2].first + goomba->curFrame];
+	goomba->stompedTime += deltaTime; 
+}
+GoombaStompedState& GoombaStompedState::GetInstance() {
+    static GoombaStompedState instance;
+    return instance;
+}
+
+void GoombaKnockState::enter(Enemy* enemy)
+{
+    Goomba* goomba = dynamic_cast<Goomba*>(enemy);
+    goomba->velocity = { 0, goomba->knockVelocity };
+    goomba->curFrame = 0;
+    goomba->active = false;
+    goomba->stompedAnimation = true;
+    goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->num_sprites[2].first];
+}
+void GoombaKnockState::checkCondition(Enemy* enemy)
+{
+    Goomba* goomba = dynamic_cast<Goomba*>(enemy);
+    if (goomba->position.y >= GetScreenHeight())
+    {
+
+        goomba->knockAnimation = false;
+        //goomba->velocity = { 0, 0 };
+        goomba->active = false;
+        goomba->changeState(nullptr);
     }
 }
-void GoombaJumpingState::enter(Enemy* enemy)
-{
-    
-    Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-
-    goomba->velocity = {5,0};
-    int rowFrames =  goomba->numSprites[1];
-    float frameHeight = goomba->texture.height/3;
-    float frameWidth = goomba->texture.width/goomba->max_numSprites;
-    goomba->curFrame = 0; 
-    goomba->spritebox =  Rectangle({goomba->curFrame*frameWidth,1*frameHeight, frameWidth, frameHeight});
-}
-void GoombaJumpingState::exit(Enemy* enemy)
+void GoombaKnockState::exit(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    goomba->curFrame =  goomba->numSprites[1]-1;
-    goomba->spritebox.x = (float)goomba->curFrame*(float)goomba->texture.width/goomba->max_numSprites;
+    goomba->isalive = false;
 }
-void GoombaJumpingState::update(Enemy* enemy,float deltaTime)
-{   
+void GoombaKnockState::update(Enemy* enemy, float deltaTime)
+{
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    int num =  goomba->numSprites[1];
-    goomba->curFrame  =   goomba->curFrame%num; 
-    goomba->spritebox.x = (float)goomba->curFrame*(float)goomba->texture.width/goomba->max_numSprites;
-} 
-
-GoombaJumpingState& GoombaJumpingState::GetInstance(){
-    static GoombaJumpingState instance; 
-    return instance;  
+    int num = goomba->numSprites[2];
+    goomba->curFrame = goomba->curFrame % num;
+    goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->num_sprites[2].first + goomba->curFrame];
 }
+GoombaKnockState& GoombaKnockState::GetInstance() {
+    static GoombaKnockState instance;
+    return instance;
+}
+

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -29,9 +29,16 @@
     <ClInclude Include="include\Enemy\EnemyState.h" />
     <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
     <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
+    <ClInclude Include="include\Enemy\Koopa\KoopaShell.h" />
+    <ClInclude Include="include\Enemy\Koopa\KoopaShellState..h" />
+    <ClInclude Include="include\Enemy\LedgeDetector.h" />
     <ClInclude Include="include\Enemy\Koopa\Koopa.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaState.h" />
+    <ClInclude Include="include\Enemy\TriggerZone.h" />
+    <ClInclude Include="include\Game\GameContext.h" />
+    <ClInclude Include="include\Game\GameStates.h" />
     <ClInclude Include="include\Objects\Block.h" />
+    <ClInclude Include="include\Objects\CollectableObject.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Objects\Projectile.h" />
     <ClInclude Include="include\Scenes\Scene.h" />
@@ -41,7 +48,6 @@
     <ClInclude Include="include\System\LevelEditor.h" />
     <ClInclude Include="include\System\PhysicsManager.h" />
     <ClInclude Include="include\System\QuadTree.h" />
-    <ClInclude Include="include\System\Resources.h" />
     <ClInclude Include="include\System\TextureManager.h" />
     <ClInclude Include="include\UI\Menu.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
@@ -55,16 +61,23 @@
     <ClCompile Include="src\Enemy\Enemy.cpp" />
     <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
     <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
-    <ClCompile Include="src\Enemy\Koopa.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\KoopaShellState.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\Koopa.cpp" />
+    <ClCompile Include="src\Enemy\LedgeDetector.cpp" />
+    <ClCompile Include="src\Enemy\TriggerZone.cpp" />
+    <ClCompile Include="src\Game\GameContext.cpp" />
+    <ClCompile Include="src\Game\GameStates.cpp" />
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Objects\CollectableObject.cpp" />
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
     <ClCompile Include="src\Objects\Projectile.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />
     <ClCompile Include="src\System\PhysicsManager.cpp" />
     <ClCompile Include="src\System\QuadTree.cpp" />
-    <ClCompile Include="src\System\Resources.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
     <ClCompile Include="src\UI\Menu.cpp" />
     <ClCompile Include="src\UI\SoundEffect.cpp" />
@@ -182,6 +195,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -196,6 +210,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
