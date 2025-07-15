@@ -26,7 +26,7 @@ std::unique_ptr<Block> ObjectFactory::createSpecificBlock(BlockType type, Vector
     }
 }
 
-std::unique_ptr<Character> ObjectFactory::createCharacter(CharacterType type, Vector2 startPosition, float scale) {
+std::unique_ptr<Object> ObjectFactory::createCharacter(CharacterType type, Vector2 startPosition, float scale) {
     switch(type) {
         case CharacterType::MARIO:
             return createSpecificCharacter(CharacterType::MARIO, startPosition, scale);

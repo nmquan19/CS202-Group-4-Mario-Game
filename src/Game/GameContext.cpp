@@ -7,6 +7,7 @@
 #include "../../include/System/TextureManager.h"
 #include "../../include/System/LevelEditor.h"
 #include "../../include/Game/GameStates.h"
+#include "../../include/System/Grid.h"
 #include <type_traits>
 #include <variant>
 #include <algorithm>
@@ -28,19 +29,22 @@ GameContext& GameContext::getInstance() {
 }
 void GameContext::setState(GameState* newState) {
     if (currentState != newState) {
-        if (currentState == gamePlayState && newState != gamePlayState) {
+        if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState || currentState != editorState)) {
             LevelEditor::getInstance().cleanup();
             PhysicsManager::getInstance().cleanup();
             character.reset();
         }
 
-        if (newState == gamePlayState) {
-            PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
-            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
-        }
-
         previousState = currentState;
         currentState = newState;
+
+        if (newState == gamePlayState) {
+            PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
+            LevelEditor::getInstance().setEditMode(false);
+            LevelEditor::getInstance().loadLevel("testlevel");
+            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
+            PhysicsManager::getInstance().addObject(character);
+        }
     }
 }
 
@@ -62,9 +66,10 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* game, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* game, GameState* editor, GameState* gameOver) {
     menuState = menu;
     gamePlayState = game;
+    editorState = editor;
     gameOverState = gameOver;
     currentState = menuState;
 }
@@ -83,7 +88,7 @@ void GameContext::spawnObject() {
             using T = std::decay_t<decltype(actualType)>;
 
             if constexpr (std::is_same_v<T, BlockType>) {
-                object = ObjectFactory::createBlock(actualType, request.worldpos);
+                object = ObjectFactory::createBlock(actualType, GridSystem::getGridCoord(request.worldpos));
             }
             else if constexpr (std::is_same_v<T, EnemyType>) {
                 object = ObjectFactory::createEnemy(actualType, request.worldpos, request.size);
@@ -95,6 +100,7 @@ void GameContext::spawnObject() {
 
         if (object) {
             Objects.push_back(object);
+            PhysicsManager::getInstance().addObject(object);
         }
     }
     ToSpawnObjects.clear();

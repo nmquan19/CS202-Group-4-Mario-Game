@@ -8,28 +8,29 @@
 #include "../../Characters/Character.h"
 #include <climits>
 class KoopaShell : public CollectableObject, public IMovable{    
-    public:
-     KoopaShell(Vector2 pos, Vector2 sz);
-     void onCollect(Character* player) override; 
-     void update(float deltaTime) override;
-     void draw() override;
-     void setVelocity(Vector2 newVelocity) override;
-     Vector2 getVelocity() override;
-	 ObjectCategory getObjectCategory() const override;
-     std::vector<ObjectCategory> getCollisionTargets() const override;
-     virtual void handleEnvironmentCollision(Object* other);
-	 void applyGravity(float deltaTime);
-	 void onCollision(Object* other) override;  
-	 void changeState(KoopaShellState* newState); 
-     void checkCollision(const std::vector<Object*>& candidates) override;
-	 friend class KoopaShellIdleState;
-	 friend class KoopaShellMovingState;
-	 friend class KoopaShellCollectedState;
-	 friend class KoopaShellRevivingState;
-     friend class KoopaShellKnockedState;
-	 void queueState(KoopaShellState* newState);
-     void applyQueueState(); 
-	 bool isMovingState() const;  
+public:
+  KoopaShell(Vector2 pos, Vector2 sz);
+  void onCollect(Character* player) override; 
+  void update(float deltaTime) override;
+  void draw() override;
+  void setVelocity(Vector2 newVelocity) override;
+  Vector2 getVelocity() override;
+  ObjectCategory getObjectCategory() const override;
+  std::vector<ObjectCategory> getCollisionTargets() const override;
+  virtual void handleEnvironmentCollision(Object* other);
+  void applyGravity(float deltaTime);
+  void onCollision(Object* other) override;  
+  void changeState(KoopaShellState* newState); 
+  void checkCollision(const std::vector<Object*>& candidates) override;
+  Vector2 getSize() const {return size;};
+  friend class KoopaShellIdleState;
+  friend class KoopaShellMovingState;
+  friend class KoopaShellCollectedState;
+  friend class KoopaShellRevivingState;
+  friend class KoopaShellKnockedState;
+  void queueState(KoopaShellState* newState);
+  void applyQueueState(); 
+  bool isMovingState() const;  
 private:
     bool isKnocked; 
       bool onGround; 

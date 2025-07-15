@@ -44,6 +44,7 @@
     <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\Grid.h" />
     <ClInclude Include="include\System\Interface.h" />
+    <ClInclude Include="include\System\json.hpp" />
     <ClInclude Include="include\System\LevelEditor.h" />
     <ClInclude Include="include\System\PhysicsManager.h" />
     <ClInclude Include="include\System\QuadTree.h" />

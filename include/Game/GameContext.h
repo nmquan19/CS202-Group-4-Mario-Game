@@ -21,7 +21,7 @@ public:
     AudioManager audioManager;
     UIManager uiManager;
     MenuManager menuManager;
-    std::unique_ptr<Character> character;
+    std::shared_ptr<Object> character;
     std::vector<std::shared_ptr<Object>> Objects;
     std::vector<std::shared_ptr<Object>> ToDeleteObjects;
     std::vector<ObjectInfo> ToSpawnObjects;
@@ -30,6 +30,7 @@ public:
     GameState* previousState = nullptr;
     GameState* menuState = nullptr;
     GameState* gamePlayState = nullptr;
+    GameState* editorState = nullptr;
     GameState* gameOverState = nullptr;
     GameContext();
     ~GameContext();
@@ -38,7 +39,7 @@ public:
     void handleInput();
     void update(float deltaTime);
     void draw();
-    void setGameStates(GameState* menu, GameState* game, GameState* gameOver);
+    void setGameStates(GameState* menu, GameState* game, GameState* editor, GameState* gameOver);
 	void addObject(ObjectType type, Vector2 worldpos, Vector2 size);
     void mark_for_deletion_Object(std::shared_ptr<Object> object);
     void spawnObject();

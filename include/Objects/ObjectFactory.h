@@ -18,6 +18,7 @@ public:
 	virtual void setCollided(bool) = 0;
 	virtual Vector2 getPosition() const = 0;
 	virtual void setPosition(Vector2 newPos) = 0;
+	virtual Vector2 getSize() const = 0;
 
 	virtual void draw() override = 0;
 
@@ -27,6 +28,8 @@ public:
 	virtual void checkCollision(const std::vector<Object*>& candidates) override = 0;
 	void onCollision(Object* other) override = 0;
 	int getCollidedPart(const Object& other);
+	virtual ObjectType getObjectType() const = 0;
+	
 protected:
 	Vector2 position;
 	Vector2 size;
@@ -37,7 +40,7 @@ protected:
 class ObjectFactory {
 public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
-	static std::unique_ptr<Character> createCharacter(CharacterType type, Vector2 startPosition, float scale = 2.0f);
+	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 2.0f);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
 private:

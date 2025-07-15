@@ -34,9 +34,11 @@ public:
 
     bool isBlock() const { return std::holds_alternative<BlockType>(selected); }
     bool isEnemy() const { return std::holds_alternative<EnemyType>(selected); }
+    bool isCharacter() const {return std::holds_alternative<CharacterType>(selected); }
 
     BlockType getBlockType() const { return std::get<BlockType>(selected); }
     EnemyType getEnemyType() const { return std::get<EnemyType>(selected); }
+    CharacterType getCharacterType() const {return std::get<CharacterType>(selected); }
 
     Rectangle getPaletteRect() const { return paletteRect; }
 	ObjectType getSelectedType() const { return selected; }

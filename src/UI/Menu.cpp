@@ -51,16 +51,25 @@ void MenuManager::DrawMenu() {
         DrawTextEx(menuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, YELLOW);
         DrawTextEx(menuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, WHITE);
+        DrawTextEx(menuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, WHITE);
     }
     else if (select == 1 && !dialog) {
         DrawTextEx(menuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, YELLOW);
         DrawTextEx(menuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, WHITE);
+        DrawTextEx(menuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, WHITE);
     }
     else if (select == 2 && !dialog) {
         DrawTextEx(menuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, YELLOW);
+        DrawTextEx(menuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, WHITE);
+    }
+    else if (select == 3 && !dialog) {
+        DrawTextEx(menuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, WHITE);
+        DrawTextEx(menuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, WHITE);
+        DrawTextEx(menuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, WHITE);
+        DrawTextEx(menuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, YELLOW);
     }
     if (dialog) {
         DrawExit();
@@ -72,12 +81,15 @@ void MenuManager::HandleInput() {
         audioManager.PlaySoundEffect("click");
         select--;
     }
-    if ((IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_D)) && select != 2 && !dialog) {
+    if ((IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_D)) && select != 3 && !dialog) {
         audioManager.PlaySoundEffect("click");
         select++;
     }
     if (IsKeyPressed(KEY_ENTER) && select == 2) {
         dialog = true;
+    }
+    if (IsKeyPressed(KEY_ENTER) && select == 3) {
+        std::cout << "Editor mode\n";
     }
     if (dialog) {
         bool b = HandleExit();
