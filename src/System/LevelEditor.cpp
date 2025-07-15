@@ -11,7 +11,10 @@
 #include "../../include/System/Interface.h"
 #include "../../include/Enemy/Enemy.h"
 #include "../../include/Game/GameContext.h"
-
+#include <exception>
+#include <fstream>
+#include <stack>
+#include <vector>
 LevelEditor* LevelEditor::instance = nullptr;
 LevelEditor& LevelEditor::getInstance() {
     if (!instance) {
@@ -145,24 +148,7 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
 }
 
 
-    std::visit([&](auto&& actualType) {
-        using T = std::decay_t<decltype(actualType)>;
-
-        if constexpr (std::is_same_v<T, BlockType>) {
-            object = ObjectFactory::createBlock(actualType, gridCoord);
-        }
-        else if constexpr (std::is_same_v<T, EnemyType>) {
-            object = ObjectFactory::createEnemy(actualType, worldPos, { 1, 1 });
-        }
-        else if constexpr (std::is_same_v<T, KoopaShellType>) {
-            object = ObjectFactory::createKoopaShell(actualType, worldPos, { 1, 1 });
-        }
-        }, type);
-
-    if (object) {
-        object->setPosition(worldPos);
-    }
-}
+  
 
 void LevelEditor::removeObject(Vector2 gridCoord) {
     auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
@@ -294,11 +280,7 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
         switch (blockType)
         {
         case BlockType::GROUND: return "GROUND";
-            case EnemyType::GREEN_KOOPA: return "GREEN_KOOPA";
-			case EnemyType::RED_KOOPA: return "RED_KOOPA";
-                break;
-            case EnemyType::HAMMER_BRO: return "HAMMER_BRO";
-                break;
+            
         case BlockType::BRICK: return "BRICK";
             break;
         case BlockType::INVISIBLE: return "INVISIBLE";
@@ -318,7 +300,10 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
         switch (enemyType) 
         {
             case EnemyType::GOOMBA: return "GOOMBA";
-            case EnemyType::KOOPA: return "KOOPA";
+            case EnemyType::GREEN_KOOPA: return "GREEN_KOOPA";
+            case EnemyType::RED_KOOPA: return "RED_KOOPA";
+                break;
+            case EnemyType::HAMMER_BRO: return "HAMMER_BRO";
                 break;
             case EnemyType::PIRANHA_PLANT: return "PIRANHA_PLANT";
                 break;
@@ -329,14 +314,7 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
     else if (std::holds_alternative<CharacterType>(type)) {
         CharacterType charType = std::get<CharacterType>(type);
         switch (charType) {
-    if (typeStr == "HAMMER_BRO") return EnemyType::HAMMER_BRO;
-    if (typeStr == "PIRANHA_PLANT") return EnemyType::PIRANHA_PLANT;
 
-    if (typeStr == "MARIO") return CharacterType::MARIO;
-    if (typeStr == "LUIGI") return CharacterType::LUIGI;
-    if (typeStr == "GREEN_KOOPA") return EnemyType::GREEN_KOOPA;
-    if (typeStr == "RED_KOOPA") return EnemyType::RED_KOOPA;
-                break;
             case CharacterType::LUIGI: return "LUIGI";
                 break;
             default: return "MARIO";
@@ -353,9 +331,9 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "PIPE") return BlockType::PIPE;
     if (typeStr == "PLATFORM") return BlockType::PLATFORM;
     if (typeStr == "QUESTION") return BlockType::QUESTION;
-
+	if (typeStr == "GREEN_KOOPA") return EnemyType::GREEN_KOOPA;
+	if (typeStr == "RED_KOOPA") return EnemyType::RED_KOOPA;
     if (typeStr == "GOOMBA") return EnemyType::GOOMBA;
-    if (typeStr == "KOOPA") return EnemyType::KOOPA;
 
     return BlockType::GROUND;
 }

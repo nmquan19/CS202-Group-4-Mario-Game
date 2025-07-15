@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <variant>
 #include <algorithm>
+#include "../../include/System/Grid.h"
 #include <functional>
 #include <cmath>
 GameContext::GameContext() {

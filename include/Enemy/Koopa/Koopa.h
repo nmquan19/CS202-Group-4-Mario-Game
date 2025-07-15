@@ -35,10 +35,14 @@
             GreenKoopa(Vector2 startPos, Vector2 size);
             GreenKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration);
             EnemyType getType() const override;
+            ObjectType getObjectType() const override;
+
     }; 
     class RedKoopa : public Koopa {
         public:
             RedKoopa(Vector2 startPos, Vector2 size);
             RedKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration);
             EnemyType getType() const override;
+            ObjectType getObjectType() const override;
+
 	};

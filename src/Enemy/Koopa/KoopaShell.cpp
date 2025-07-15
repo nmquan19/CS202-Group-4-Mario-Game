@@ -156,3 +156,9 @@ KoopaRedShell::KoopaRedShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
 KoopaShellType KoopaRedShell::getType() const {
     return KoopaShellType::RED_KOOPA_SHELL;
 }
+ObjectType KoopaGreenShell::getObjectType() const {
+    return KoopaShellType::GREEN_KOOPA_SHELL;
+}
+ObjectType KoopaRedShell::getObjectType() const {
+    return KoopaShellType::RED_KOOPA_SHELL;
+}

@@ -43,9 +43,9 @@ public :
 	float getCenterY() const;
 	bool FacingRight() const;  
 	Vector2 getCenter() const;
-
+	virtual ObjectType getObjectType() const override = 0 ;
 	virtual EnemyType getType() const =0;
-	Vector2 getSize() const override;
+	Vector2 getSize() const override { return size; };
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;

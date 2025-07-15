@@ -150,3 +150,6 @@ void Goomba::update(float deltaTime) {
 EnemyType Goomba::getType() const {
     return EnemyType::GOOMBA;
 }
+ObjectType Goomba::getObjectType() const {
+    return EnemyType::GOOMBA;
+}

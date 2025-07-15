@@ -25,5 +25,6 @@ class Goomba: public Enemy
 	  void handleCharacterCollision(Object* other);
       void die() override;  
       void takeDamage(int damage) override;
+	  ObjectType getObjectType() const override;
       EnemyType getType() const override;
 }; 

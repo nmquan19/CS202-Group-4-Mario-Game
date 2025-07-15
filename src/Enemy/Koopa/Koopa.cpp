@@ -11,6 +11,7 @@
 #include "../../../include/Enemy/LedgeDetector.h"
 #include "../../../include/System/PhysicsManager.h"
 #include <memory>
+#include <utility>
 Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures),ledgeDetector(std::make_unique<LedgeDetector>(10.0f))
 {
     stompedAnimation = false;
@@ -212,4 +213,10 @@ KoopaShellType Koopa::getShellType() const {
     default:
         return KoopaShellType::GREEN_KOOPA_SHELL; 
     }
+}
+ObjectType RedKoopa::getObjectType() const {
+    return getType();
+}
+ObjectType GreenKoopa::getObjectType() const {
+    return getType();
 }
