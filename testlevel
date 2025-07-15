@@ -1,0 +1,26 @@
+{
+     "gridSize": 128,
+     "objects": [
+          {
+               "gridX": 4,
+               "gridY": 7,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 7,
+               "gridY": 10,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 9,
+               "gridY": 4,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 14,
+               "gridY": 7,
+               "type": "GROUND"
+          }
+     ],
+     "version": "1.0"
+}

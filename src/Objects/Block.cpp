@@ -70,6 +70,10 @@ bool Block::isSolid() const {
     return solid;
 }
 
+ObjectType Block::getObjectType() const {
+    return getType();
+}
+
 BlockType Block::getType() const {
     return blockType;
 }

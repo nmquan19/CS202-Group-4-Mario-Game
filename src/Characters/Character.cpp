@@ -211,6 +211,10 @@ void Character::setCollided(bool flag) {
 	collided = flag;
 }
 
+ObjectType Character::getObjectType() const {
+	return characterType;
+}
+
 ObjectCategory Character::getObjectCategory() const {
 	return ObjectCategory::CHARACTER;
 }

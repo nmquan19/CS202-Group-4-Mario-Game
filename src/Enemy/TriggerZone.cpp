@@ -71,3 +71,7 @@ bool TriggerZone::isCollided() const { return collided; }
 
 Vector2 TriggerZone::getPosition() const { return position; }
 void TriggerZone::setPosition(Vector2 newPos) { position = newPos; }
+
+ObjectType TriggerZone::getObjectType() const {
+    return TriggerType::ZONE;
+}

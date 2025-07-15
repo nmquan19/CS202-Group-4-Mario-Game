@@ -43,6 +43,7 @@ public :
 	bool FacingRight() const;  
 	Vector2 getCenter() const;
 
+	ObjectType getObjectType() const override;
 	EnemyType getType() const;
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;

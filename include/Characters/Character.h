@@ -58,6 +58,8 @@ public:
 	bool isCollided() const override;
 	void setCollided(bool flag) override;
 
+	ObjectType getObjectType() const override;
+
 	float getWidth() const;
 	float getHeight() const;
 	float getBottom() const;

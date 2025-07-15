@@ -92,3 +92,7 @@ LedgeDetector :: ~LedgeDetector()
     this->active = false;  
     // PhysicsManager::getInstance().markForDeletion(this);
 }
+
+ObjectType LedgeDetector::getObjectType() const {
+    return TriggerType::CHECKPOINT;
+}

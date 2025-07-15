@@ -29,7 +29,7 @@ GameContext& GameContext::getInstance() {
 }
 void GameContext::setState(GameState* newState) {
     if (currentState != newState) {
-        if (currentState == gamePlayState && newState != gamePlayState) {
+        if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState || currentState != editorState)) {
             LevelEditor::getInstance().cleanup();
             PhysicsManager::getInstance().cleanup();
             character.reset();
@@ -70,9 +70,10 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* game, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* game, GameState* editor, GameState* gameOver) {
     menuState = menu;
     gamePlayState = game;
+    editorState = editor;
     gameOverState = gameOver;
     currentState = menuState;
 }

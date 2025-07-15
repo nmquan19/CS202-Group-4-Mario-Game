@@ -214,6 +214,10 @@ Vector2 Enemy::getCenter() const {
     return Vector2{ getCenterX(), getCenterY() };
 }
 
+ObjectType Enemy::getObjectType() const {
+    return getType();
+}
+
 EnemyType Enemy::getType() const {
     return type;
 }

@@ -22,6 +22,7 @@ public:
     void setCollided(bool flag) override;
     Vector2 getPosition() const override;
     void setPosition(Vector2 newPos) override;
+    ObjectType getObjectType() const override;
 
     bool isSolid() const;
     BlockType getType() const;

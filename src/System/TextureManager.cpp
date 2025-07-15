@@ -65,27 +65,93 @@ void ObjectPalette::drawPalette() {
     float startX = paletteRect.x + 10;
     float yBlock = paletteRect.y + 10;
     float yEnemy = yBlock + 80;
+    float yCharacter = yEnemy + 80;
     float spacing = 80;
+    float iconSize = 50;
 
-    Rectangle groundRect = { startX, yBlock, 50, 50 };
-    DrawRectangleRec(groundRect, BROWN);
+    TextureManager& tm = TextureManager::getInstance();
+
+    // Draw Block Section
+    DrawText("BLOCKS", startX, yBlock - 20, 12, BLACK);
+    
+    // Ground Block
+    Rectangle groundRect = { startX, yBlock, iconSize, iconSize };
+    Texture2D groundTexture = tm.getBlockTexture(BlockType::GROUND);
+    if (groundTexture.id != 0) {
+        DrawTexturePro(groundTexture, 
+            { 0, 0, (float)groundTexture.width, (float)groundTexture.height },
+            groundRect, { 0, 0 }, 0.0f, WHITE);
+    } else {
+        DrawRectangleRec(groundRect, BROWN);
+    }
     DrawRectangleLinesEx(groundRect, 2, (isBlock() && getBlockType() == BlockType::GROUND) ? RED : BLACK);
-    DrawText("GROUND", groundRect.x - 5, groundRect.y + 55, 10, BLACK);
+    DrawText("GROUND", groundRect.x - 5, groundRect.y + iconSize + 5, 10, BLACK);
 
-    Rectangle brickRect = { startX + spacing, yBlock, 50, 50 };
-    DrawRectangleRec(brickRect, ORANGE);
+    // Brick Block
+    Rectangle brickRect = { startX + spacing, yBlock, iconSize, iconSize };
+    Texture2D brickTexture = tm.getBlockTexture(BlockType::BRICK);
+    if (brickTexture.id != 0) {
+        DrawTexturePro(brickTexture,
+            { 0, 0, (float)brickTexture.width, (float)brickTexture.height },
+            brickRect, { 0, 0 }, 0.0f, WHITE);
+    } else {
+        DrawRectangleRec(brickRect, ORANGE);
+    }
     DrawRectangleLinesEx(brickRect, 2, (isBlock() && getBlockType() == BlockType::BRICK) ? RED : BLACK);
-    DrawText("BRICK", brickRect.x + 5, brickRect.y + 55, 10, BLACK);
+    DrawText("BRICK", brickRect.x + 5, brickRect.y + iconSize + 5, 10, BLACK);
 
-    Rectangle goombaRect = { startX, yEnemy, 50, 50 };
-    DrawRectangleRec(goombaRect, DARKBROWN);
+    // Draw Enemy Section
+    DrawText("ENEMIES", startX, yEnemy - 20, 12, BLACK);
+    
+    // Goomba
+    Rectangle goombaRect = { startX, yEnemy, iconSize, iconSize };
+    if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
+        Rectangle goombaSource = tm.Enemy_sprite_boxes[0]; // Assuming first sprite is Goomba
+        DrawTexturePro(tm.enemyTextures, goombaSource, goombaRect, { 0, 0 }, 0.0f, WHITE);
+    } else {
+        DrawRectangleRec(goombaRect, DARKBROWN);
+    }
     DrawRectangleLinesEx(goombaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GOOMBA) ? RED : BLACK);
-    DrawText("GOOMBA", goombaRect.x - 5, goombaRect.y + 55, 10, BLACK);
+    DrawText("GOOMBA", goombaRect.x - 5, goombaRect.y + iconSize + 5, 10, BLACK);
 
-    Rectangle koopaRect = { startX + spacing, yEnemy, 50, 50 };
-    DrawRectangleRec(koopaRect, GREEN);
+    // Koopa
+    Rectangle koopaRect = { startX + spacing, yEnemy, iconSize, iconSize };
+    if (tm.enemyTextures.id != 0 && tm.Enemy_sprite_boxes.size() > 1) {
+        Rectangle koopaSource = tm.Enemy_sprite_boxes[1]; // Assuming second sprite is Koopa
+        DrawTexturePro(tm.enemyTextures, koopaSource, koopaRect, { 0, 0 }, 0.0f, WHITE);
+    } else {
+        DrawRectangleRec(koopaRect, GREEN);
+    }
     DrawRectangleLinesEx(koopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::KOOPA) ? RED : BLACK);
-    DrawText("KOOPA", koopaRect.x + 5, koopaRect.y + 55, 10, BLACK);
+    DrawText("KOOPA", koopaRect.x + 5, koopaRect.y + iconSize + 5, 10, BLACK);
+
+    // Draw Character Section
+    DrawText("CHARACTERS", startX, yCharacter - 20, 12, BLACK);
+    
+    // Mario
+    Rectangle marioRect = { startX, yCharacter, iconSize, iconSize };
+    Texture2D marioTexture = tm.getCharacterTexture(CharacterType::MARIO);
+    if (marioTexture.id != 0) {
+        // Use a portion of Mario sprite sheet (idle frame)
+        Rectangle marioSource = { 31, 21, 17, 43 }; // Adjust based on your sprite sheet
+        DrawTexturePro(marioTexture, marioSource, marioRect, { 0, 0 }, 0.0f, WHITE);
+    } else {
+        DrawRectangleRec(marioRect, RED);
+    }
+    DrawRectangleLinesEx(marioRect, 2, (isCharacter() && getCharacterType() == CharacterType::MARIO) ? RED : BLACK);
+    DrawText("MARIO", marioRect.x + 5, marioRect.y + iconSize + 5, 10, BLACK);
+
+    // Luigi (optional)
+    Rectangle luigiRect = { startX + spacing, yCharacter, iconSize, iconSize };
+    Texture2D luigiTexture = tm.getCharacterTexture(CharacterType::LUIGI);
+    if (luigiTexture.id != 0) {
+        Rectangle luigiSource = { 0, 0, 32, 32 }; // Adjust based on your sprite sheet
+        DrawTexturePro(luigiTexture, luigiSource, luigiRect, { 0, 0 }, 0.0f, WHITE);
+    } else {
+        DrawRectangleRec(luigiRect, DARKGREEN);
+    }
+    DrawRectangleLinesEx(luigiRect, 2, (isCharacter() && getCharacterType() == CharacterType::LUIGI) ? RED : BLACK);
+    DrawText("LUIGI", luigiRect.x + 10, luigiRect.y + iconSize + 5, 10, BLACK);
 }
 
 void ObjectPalette::handleSelection() {
@@ -97,12 +163,21 @@ void ObjectPalette::handleSelection() {
     float startX = paletteRect.x + 10;
     float yBlock = paletteRect.y + 10;
     float yEnemy = yBlock + 80;
+    float yCharacter = yEnemy + 80;
     float spacing = 80;
+    float iconSize = 50;
 
-    Rectangle groundRect = { startX, yBlock, 50, 50 };
-    Rectangle brickRect = { startX + spacing, yBlock, 50, 50 };
-    Rectangle goombaRect = { startX, yEnemy, 50, 50 };
-    Rectangle koopaRect = { startX + spacing, yEnemy, 50, 50 };
+    // Block selection rectangles
+    Rectangle groundRect = { startX, yBlock, iconSize, iconSize };
+    Rectangle brickRect = { startX + spacing, yBlock, iconSize, iconSize };
+    
+    // Enemy selection rectangles
+    Rectangle goombaRect = { startX, yEnemy, iconSize, iconSize };
+    Rectangle koopaRect = { startX + spacing, yEnemy, iconSize, iconSize };
+    
+    // Character selection rectangles
+    Rectangle marioRect = { startX, yCharacter, iconSize, iconSize };
+    Rectangle luigiRect = { startX + spacing, yCharacter, iconSize, iconSize };
 
     if (CheckCollisionPointRec(mousePos, groundRect)) {
         selected = BlockType::GROUND;
@@ -115,5 +190,11 @@ void ObjectPalette::handleSelection() {
     }
     else if (CheckCollisionPointRec(mousePos, koopaRect)) {
         selected = EnemyType::KOOPA;
+    }
+    else if (CheckCollisionPointRec(mousePos, marioRect)) {
+        selected = CharacterType::MARIO;
+    }
+    else if (CheckCollisionPointRec(mousePos, luigiRect)) {
+        selected = CharacterType::LUIGI;
     }
 }

@@ -26,6 +26,7 @@ public:
     Vector2 getPosition() const override;
     void setPosition(Vector2 newPos) override;
 
+    ObjectType getObjectType() const override;
 private:
     CollectableObject* owner;
 	Rectangle hitBox;

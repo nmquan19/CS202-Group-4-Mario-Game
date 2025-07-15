@@ -75,3 +75,7 @@ void CollectableObject::setPosition(Vector2 newPos) {
     position = newPos;
     if (triggerZone) triggerZone->setPosition(newPos);
 }
+
+ObjectType CollectableObject::getObjectType() const {
+    return type;
+}
