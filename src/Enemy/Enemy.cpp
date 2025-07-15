@@ -15,7 +15,7 @@ Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D
     hitbox = { position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE};
     currentState = nullptr; 
-    PhysicsManager::getInstance().addObject(this);
+    // PhysicsManager::getInstance().addObject(this);
 
 }
 Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f) {
@@ -25,10 +25,10 @@ Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(star
     hitbox = {position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE };
     currentState = nullptr;
-    PhysicsManager::getInstance().addObject(this);
+    // PhysicsManager::getInstance().addObject(this);
 }
 Enemy::~Enemy() {
-    PhysicsManager::getInstance().markForDeletion(this);
+    // PhysicsManager::getInstance().markForDeletion(this);
 }
 
 Rectangle Enemy::getHitBox() const {

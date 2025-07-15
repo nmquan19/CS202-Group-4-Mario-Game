@@ -45,6 +45,7 @@ public :
 	Vector2 getCenter() const;
 
 	virtual EnemyType getType() const =0;
+	Vector2 getSize() const override;
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;

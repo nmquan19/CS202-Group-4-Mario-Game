@@ -9,9 +9,10 @@ int main() {
     GameContext* context = &GameContext::getInstance(); 
     MenuState menuState;
     GamePlayState gamePlayState;
+    EditorState editorState;
     GameOverState gameOverState;
 
-    context->setGameStates(&menuState, &gamePlayState, &gameOverState);
+    context->setGameStates(&menuState, &gamePlayState, &editorState, &gameOverState);
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();

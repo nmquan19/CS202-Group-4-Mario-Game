@@ -20,8 +20,8 @@ Koopa::~Koopa()
 {
 	
     if (ledgeDetector) {
-        PhysicsManager::getInstance().markForDeletion(ledgeDetector.release());
-     }
+        PhysicsManager::getInstance().markForDeletion(std::move(ledgeDetector));
+    }
     
 
 }

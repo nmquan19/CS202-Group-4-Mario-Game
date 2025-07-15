@@ -31,10 +31,12 @@ public:
     bool isCollided() const override;
 
     Vector2 getPosition() const override;
-    void setPosition(Vector2 newPos) override;
+    void setPosition(Vector2 newPos) override;  
+
+    ObjectType getObjectType() const;
 protected:
     Texture2D texture;   
-
+    ItemType type = ItemType::COIN;
 	Rectangle hitBox;
     std::unique_ptr<TriggerZone> triggerZone = nullptr;
 };

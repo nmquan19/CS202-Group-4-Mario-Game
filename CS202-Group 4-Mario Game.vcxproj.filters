@@ -111,6 +111,9 @@
     <ClInclude Include="include\Game\GameStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\System\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h">
       <Filter>Header Files</Filter>
     </ClInclude>

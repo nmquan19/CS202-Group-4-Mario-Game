@@ -33,6 +33,7 @@ class KoopaShell : public CollectableObject, public IMovable{
 	 bool isMovingState() const;  
      virtual KoopaShellType getType() const =0; 
      std::vector<std::pair<int, int>> getSpriteData() const;   
+     Vector2 getSize() const { return size; };
 private:
       float aniTimer;
 	  float aniSpeed;    
