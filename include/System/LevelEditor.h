@@ -5,7 +5,6 @@
 #include <utility>
 #include <raylib.h>
 #include <string>
-#include <fstream>
 #include <stack>
 #include "../System/TextureManager.h"
 #include "../Objects/ObjectFactory.h"
@@ -25,7 +24,6 @@ public:
     void draw();
     void handleMouseInput();
     void placeObject(ObjectType type, Vector2 gridCoord);
-	void addObject(ObjectType type , Vector2 worldPos);
     void removeObject(Vector2 gridCoord);
     void toggleEditMode();
     bool isInEditMode() const;

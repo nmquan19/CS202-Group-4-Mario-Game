@@ -7,10 +7,12 @@
 #include "../../include/System/TextureManager.h"
 #include "../../include/System/LevelEditor.h"
 #include "../../include/Game/GameStates.h"
+#include "../../include/System/Constant.h"
 #include <type_traits>
 #include <variant>
 #include <algorithm>
-#include <iostream>
+#include <functional>
+#include <cmath>
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
 }
@@ -68,14 +70,19 @@ void GameContext::setGameStates(GameState* menu, GameState* game, GameState* gam
     gameOverState = gameOver;
     currentState = menuState;
 }
-void GameContext::addObject(ObjectType type, Vector2 worldPos, Vector2 size)
-{
-    ToSpawnObjects.push_back({ type, worldPos, size });
+void GameContext::addObject(ObjectType type, Vector2 worldPos, Vector2 size, std::function<void(std::shared_ptr<Object>)> onSpawn)
+{ 
+	//pass the middle point of the object x and the end point(feet) of the object y
+    Vector2 topLeft = {
+     std::floor(worldPos.x - size.x*Constants::TILE_SIZE / 2),
+     std::floor(worldPos.y - size.y*Constants::TILE_SIZE)
+    };
+
+    ToSpawnObjects.push_back({ type, topLeft, size, onSpawn});
 }
 
 void GameContext::spawnObject() {
     for (const auto& request : ToSpawnObjects) {
-        std::cout << "SPAWNING" << "\n"; 
         
         std::shared_ptr<Object> object = nullptr;
 
@@ -95,6 +102,9 @@ void GameContext::spawnObject() {
 
         if (object) {
             Objects.push_back(object);
+            if (request.onSpawn) {
+                request.onSpawn(object);
+            }
         }
     }
     ToSpawnObjects.clear();
@@ -113,6 +123,7 @@ void GameContext::deleteObjects(){
             Objects.erase(std::remove(Objects.begin(), Objects.end(), obj), Objects.end());
 	   }
     }
+	ToDeleteObjects.clear();
 }
 
 std::shared_ptr<Object> GameContext::getSharedPtrFromRaw(Object* rawPtr) {

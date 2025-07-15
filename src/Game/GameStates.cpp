@@ -42,9 +42,7 @@ void GamePlayState::handleInput(GameContext& context) {
 }
 
 void GamePlayState::update(GameContext& context, float deltaTime) {
-    PhysicsManager::getInstance().update();
-    LevelEditor::getInstance().update();
-
+    
     if (context.character) {
         context.character->update(deltaTime);
     }
@@ -55,6 +53,8 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     }
     context.spawnObject();
     context.deleteObjects();
+    PhysicsManager::getInstance().update();
+    LevelEditor::getInstance().update();
 }
 
 void GamePlayState::draw(GameContext& context) {

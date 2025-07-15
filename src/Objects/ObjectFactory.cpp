@@ -62,8 +62,10 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         switch (type) {
             case EnemyType::GOOMBA:
                 return std::make_unique<Goomba>(startPosition, size);
-        case EnemyType::KOOPA:
-            return std::make_unique<Koopa>(startPosition, size);
+        case EnemyType::GREEN_KOOPA:
+            return std::make_unique<GreenKoopa>(startPosition, size);
+        case EnemyType::RED_KOOPA:
+            return std::make_unique<RedKoopa>(startPosition, size);
         default:
             return nullptr; 
         }
@@ -96,9 +98,9 @@ std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vec
 std::unique_ptr<KoopaShell> ObjectFactory::createSpecificKoopaShell(KoopaShellType type, Vector2 startPosition, Vector2 size) {
     switch (type) {
     case KoopaShellType::GREEN_KOOPA_SHELL:
-        return std::make_unique<KoopaShell>(startPosition, size);
-    //case EnemyType::KOOPA:
-    //    return std::make_unique<Koopa>(startPosition, size);
+        return std::make_unique<KoopaGreenShell>(startPosition, size);
+    case KoopaShellType::RED_KOOPA_SHELL:
+        return std::make_unique<KoopaRedShell>(startPosition, size);
     default:
         return nullptr;
     }

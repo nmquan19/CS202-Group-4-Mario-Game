@@ -3,7 +3,6 @@
 #include <raylib.h>
 #include <fstream>
 #include <vector>
-#include <iostream>
 std::vector<Rectangle> TextureManager::Enemy_sprite_boxes;
 Texture2D TextureManager::enemyTextures;
 TextureManager& TextureManager::getInstance() {
@@ -34,7 +33,6 @@ void TextureManager::loadTextures() {
     int id, x, y, w, h;
     while (enemy_in >> id >> x >> y >> w >> h)
     {
-		std::cout << "Loading enemy sprite: " << id << " at (" << x << ", " << y << ") with size (" << w << ", " << h << ")\n";
         Enemy_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
     }
     enemyTextures = Texture2D(LoadTexture("assets/enemy_spritesheet.png"));
@@ -82,10 +80,16 @@ void ObjectPalette::drawPalette() {
     DrawRectangleLinesEx(goombaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GOOMBA) ? RED : BLACK);
     DrawText("GOOMBA", goombaRect.x - 5, goombaRect.y + 55, 10, BLACK);
 
-    Rectangle koopaRect = { startX + spacing, yEnemy, 50, 50 };
-    DrawRectangleRec(koopaRect, GREEN);
-    DrawRectangleLinesEx(koopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::KOOPA) ? RED : BLACK);
-    DrawText("KOOPA", koopaRect.x + 5, koopaRect.y + 55, 10, BLACK);
+    Rectangle GreenkoopaRect = { startX + spacing, yEnemy, 50, 50 };
+    DrawRectangleRec(GreenkoopaRect, GREEN);
+    DrawRectangleLinesEx(GreenkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GREEN_KOOPA) ? RED : BLACK);
+    DrawText("GreenKOOPA", GreenkoopaRect.x + 5, GreenkoopaRect.y + 55, 10, BLACK);
+
+    Rectangle RedkoopaRect = { startX + 2*spacing, yEnemy, 50, 50 };
+    DrawRectangleRec(RedkoopaRect, GREEN);
+    DrawRectangleLinesEx(RedkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::RED_KOOPA) ? RED : BLACK);
+    DrawText("RedKOOPA", RedkoopaRect.x + 15, RedkoopaRect.y + 55, 10, BLACK);
+   
 }
 
 void ObjectPalette::handleSelection() {
@@ -102,7 +106,8 @@ void ObjectPalette::handleSelection() {
     Rectangle groundRect = { startX, yBlock, 50, 50 };
     Rectangle brickRect = { startX + spacing, yBlock, 50, 50 };
     Rectangle goombaRect = { startX, yEnemy, 50, 50 };
-    Rectangle koopaRect = { startX + spacing, yEnemy, 50, 50 };
+    Rectangle gkoopaRect = { startX + spacing, yEnemy, 50, 50 };
+    Rectangle rkoopaRect = { startX + 2*spacing, yEnemy, 50, 50 };
 
     if (CheckCollisionPointRec(mousePos, groundRect)) {
         selected = BlockType::GROUND;
@@ -113,7 +118,10 @@ void ObjectPalette::handleSelection() {
     else if (CheckCollisionPointRec(mousePos, goombaRect)) {
         selected = EnemyType::GOOMBA;
     }
-    else if (CheckCollisionPointRec(mousePos, koopaRect)) {
-        selected = EnemyType::KOOPA;
+    else if (CheckCollisionPointRec(mousePos, gkoopaRect)) {
+        selected = EnemyType::GREEN_KOOPA;
+    }
+    else if (CheckCollisionPointRec(mousePos, rkoopaRect)) {
+        selected = EnemyType::RED_KOOPA;
     }
 }

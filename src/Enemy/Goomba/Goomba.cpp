@@ -10,21 +10,14 @@
 #include <algorithm>
 Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(startPos, velocity,accelleration, TextureManager::enemyTextures )
 {    
-    type = EnemyType::GOOMBA;
     scale = 5; 
-	  stompedAnimation = false;
-    num_sprites =  {{0,1},{2,3},{5,5}};
-    numSprites = {2,2,1};
-    max_numSprites  = 2; 
+	stompedAnimation = false;
     changeState(&GoombaWanderingState::GetInstance());
 }
 Goomba::Goomba(Vector2 startPos, Vector2 size) : Enemy(startPos,TextureManager::enemyTextures, size)
 {
-    type = EnemyType::GOOMBA;
     stompedAnimation = false;
-    num_sprites = { {0,1},{2,3},{5,5} };
-    numSprites = { 2,2,1 };
-    max_numSprites = 2;
+
     changeState(&GoombaWanderingState::GetInstance());
 }
 
@@ -58,7 +51,6 @@ void Goomba::checkCollision(const std::vector<Object*>& candidates)
             handleEnvironmentCollision(candidate);
             break;
         case ObjectCategory::PROJECTILE:
-            // implement
 			this->changeState(&GoombaKnockState::GetInstance());
             break;
         case ObjectCategory::CHARACTER:
@@ -154,4 +146,7 @@ void Goomba::update(float deltaTime) {
         velocity.x *= -1;
     }
 
+}
+EnemyType Goomba::getType() const {
+    return EnemyType::GOOMBA;
 }

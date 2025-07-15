@@ -14,10 +14,6 @@
 Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures),ledgeDetector(std::make_unique<LedgeDetector>(10.0f))
 {
     stompedAnimation = false;
-    num_sprites = {{45,46}};
-    numSprites = {2};
-    max_numSprites = 2;
-    changeState(&KoopaWanderingState::GetInstance());
     isFacingRight = velocity.x > 0;
 }
 Koopa::~Koopa()
@@ -32,11 +28,7 @@ Koopa::~Koopa()
 Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size), ledgeDetector(std::make_unique<LedgeDetector>(10.0f))
 {
     stompedAnimation = false;
-    num_sprites = {{45,46}};
-    numSprites = { 2 };
-    max_numSprites = 2;
-    changeState(&KoopaWanderingState::GetInstance());
-    isFacingRight = velocity.x > 0;
+    isFacingRight = velocity.x >= 0;
 
 }
 
@@ -186,4 +178,38 @@ void Koopa::update(float deltaTime) {
         isFacingRight = false;
     }
 
+}
+
+GreenKoopa::GreenKoopa(Vector2 startPos, Vector2 size) : Koopa(startPos, size) {
+    changeState(&KoopaWanderingState::GetInstance());
+
+ }
+GreenKoopa::GreenKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Koopa(startPos, velocity, accelleration) {
+    changeState(&KoopaWanderingState::GetInstance());
+
+}
+EnemyType GreenKoopa::getType() const {
+    return EnemyType::GREEN_KOOPA;
+}
+
+RedKoopa::RedKoopa(Vector2 startPos, Vector2 size) : Koopa(startPos, size) {
+    changeState(&KoopaWanderingState::GetInstance());
+
+}
+RedKoopa::RedKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Koopa(startPos, velocity, accelleration) {
+    changeState(&KoopaWanderingState::GetInstance());
+
+}
+EnemyType RedKoopa::getType() const {
+    return EnemyType::RED_KOOPA;
+}
+KoopaShellType Koopa::getShellType() const {
+    switch (getType()) {
+    case EnemyType::GREEN_KOOPA:
+        return KoopaShellType::GREEN_KOOPA_SHELL;
+    case EnemyType::RED_KOOPA:
+        return KoopaShellType::RED_KOOPA_SHELL;
+    default:
+        return KoopaShellType::GREEN_KOOPA_SHELL; 
+    }
 }

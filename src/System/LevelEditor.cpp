@@ -165,30 +165,7 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
 }
 #include <iostream>
 #include <string>
-void LevelEditor::addObject(ObjectType type, Vector2 worldPos) {
 
-    Vector2 gridCoord = GridSystem::getGridCoord(worldPos);
-    worldPos = GridSystem::getWorldPosition(gridCoord);
-    std::unique_ptr<Object> object = nullptr;
-
-    std::visit([&](auto&& actualType) {
-        using T = std::decay_t<decltype(actualType)>;
-
-        if constexpr (std::is_same_v<T, BlockType>) {
-            object = ObjectFactory::createBlock(actualType, gridCoord);
-        }
-        else if constexpr (std::is_same_v<T, EnemyType>) {
-            object = ObjectFactory::createEnemy(actualType, worldPos, { 1, 1 });
-        }
-        else if constexpr (std::is_same_v<T, KoopaShellType>) {
-            object = ObjectFactory::createKoopaShell(actualType, worldPos, { 1, 1 });
-        }
-        }, type);
-
-    if (object) {
-        object->setPosition(worldPos);
-    }
-}
 
 void LevelEditor::removeObject(Vector2 gridCoord) {
     auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
@@ -228,7 +205,8 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
         EnemyType enemyType = std::get<EnemyType>(type);
         switch (enemyType) {
             case EnemyType::GOOMBA: return "GOOMBA";
-            case EnemyType::KOOPA: return "KOOPA";
+            case EnemyType::GREEN_KOOPA: return "GREEN_KOOPA";
+			case EnemyType::RED_KOOPA: return "RED_KOOPA";
             default: return "GOOMBA";
         }
     }
@@ -240,7 +218,8 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "BRICK") return BlockType::BRICK;
 
     if (typeStr == "GOOMBA") return EnemyType::GOOMBA;
-    if (typeStr == "KOOPA") return EnemyType::KOOPA;
+    if (typeStr == "GREEN_KOOPA") return EnemyType::GREEN_KOOPA;
+    if (typeStr == "RED_KOOPA") return EnemyType::RED_KOOPA;
 
     return BlockType::GROUND;
 }

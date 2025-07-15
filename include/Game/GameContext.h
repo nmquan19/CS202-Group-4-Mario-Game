@@ -8,6 +8,7 @@
 #include "../Characters/Character.h"
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
+#include <functional>
 #include <raylib.h>
 class GameState;
 struct ObjectInfo
@@ -15,6 +16,8 @@ struct ObjectInfo
     ObjectType type;
     Vector2 worldpos;
 	Vector2 size;
+    std::function<void(std::shared_ptr<Object>)> onSpawn = nullptr;
+
 };
 class GameContext {
 public:
@@ -39,7 +42,7 @@ public:
     void update(float deltaTime);
     void draw();
     void setGameStates(GameState* menu, GameState* game, GameState* gameOver);
-	void addObject(ObjectType type, Vector2 worldpos, Vector2 size);
+	void addObject(ObjectType type, Vector2 worldpos, Vector2 size, std::function<void(std::shared_ptr<Object>)> onSpawn = nullptr);
     void mark_for_deletion_Object(std::shared_ptr<Object> object);
     void spawnObject();
 	void deleteObjects();

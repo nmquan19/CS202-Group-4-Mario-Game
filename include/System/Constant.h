@@ -1,1 +1,32 @@
-#pragma once
+#pragma once// Constants.h
+#include <raylib.h>
+namespace Constants {
+    constexpr float GRAVITY = 980.0f;
+    constexpr int TILE_SIZE = 52;
+    constexpr float KOOPA_SPEED = 200.0f;
+
+    namespace GreenKoopa {
+		constexpr Vector2 standardSize = { 1, 2};
+        constexpr float WANDERING_SPEED = 100.0f;
+        constexpr float STOMPED_DURATION = 0.3f;
+        constexpr float KNOCK_VELOCITY = -300.0f;
+    }
+    namespace RedKoopa {
+        constexpr Vector2 standardSize = {1, 2};
+        constexpr float WANDERING_SPEED = 150.0f;
+        constexpr float STOMPED_DURATION = 0.3f;
+        constexpr float KNOCK_VELOCITY = -300.0f;
+    }
+    namespace Goomba {
+        constexpr Vector2 standardSize = { 1, 1 };
+        constexpr float WANDERING_SPEED = 100.0f;
+        constexpr float STOMPED_DURATION = 0.3f;
+        constexpr float KNOCK_VELOCITY = -300.0f;
+	}
+    namespace KoopaShell {
+        constexpr Vector2 standardSize = { 1, 1 };
+        constexpr float MOVING_SPEED = 500.0f;
+        constexpr float IDLE_DURATION = 4.5f;
+        constexpr float REVIVE_DURATION = 1.5f;
+	}
+}

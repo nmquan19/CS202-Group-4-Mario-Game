@@ -3,14 +3,13 @@
 #include <vector>
 #include "../../Objects/ObjectFactory.h"
 #include <raylib.h>
+#include "../../System/Interface.h"
 class Goomba: public Enemy
 {
     private: 
         bool stompedAnimation = false;
 		bool knockAnimation = false;
 		float stompedTime = 0.0f; 
-		float stompedDuration = 0.3f; 
-        float knockVelocity = -300.0f; 
     public : 
 	  Goomba(Vector2 startPos, Vector2 size);
       Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration);   
@@ -26,4 +25,5 @@ class Goomba: public Enemy
 	  void handleCharacterCollision(Object* other);
       void die() override;  
       void takeDamage(int damage) override;
+      EnemyType getType() const override;
 }; 

@@ -6,6 +6,7 @@
 #include <utility>
 #include <climits>
 class EnemyState; 
+
 class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable {
 public:
 	Enemy(Vector2 startPos, Texture2D texture, Vector2 size);
@@ -43,26 +44,22 @@ public :
 	bool FacingRight() const;  
 	Vector2 getCenter() const;
 
-	EnemyType getType() const;
+	virtual EnemyType getType() const =0;
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;
 	virtual void handleEnvironmentCollision(Object* other);
-
+	std::vector<std::pair<int, int>> getSpriteData();
 protected:
-	EnemyType type = EnemyType::GOOMBA;
 	bool isalive; 
 	float aniTimer, aniSpeed; 
     int HP ;
 	bool onGround;
 	EnemyState* currentState;
 	float speed; 
-	std::vector<int> numSprites; 	
-	std::vector<std::pair<int,int>> num_sprites; 
 	float scale;  
 	Rectangle hitbox; 
-	bool isFacingRight; 
-	int max_numSprites; 
+	bool isFacingRight;
 	Vector2 position;
 	bool active;
 	Texture2D texture; 
