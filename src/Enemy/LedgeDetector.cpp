@@ -96,3 +96,7 @@ LedgeDetector :: ~LedgeDetector()
 ObjectType LedgeDetector::getObjectType() const {
     return TriggerType::CHECKPOINT;
 }
+
+Vector2 LedgeDetector::getSize() const {
+    return size;
+}

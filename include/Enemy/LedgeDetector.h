@@ -28,6 +28,7 @@ public:
     void draw() override ;
 
     ObjectType getObjectType() const override;
+    Vector2 getSize() const override;
 private:
     bool nearLedge;
     float castLength;

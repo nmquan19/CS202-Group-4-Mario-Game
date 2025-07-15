@@ -75,3 +75,7 @@ void TriggerZone::setPosition(Vector2 newPos) { position = newPos; }
 ObjectType TriggerZone::getObjectType() const {
     return TriggerType::ZONE;
 }
+
+Vector2 TriggerZone::getSize() const {
+    return size;
+}

@@ -35,20 +35,16 @@ void GameContext::setState(GameState* newState) {
             character.reset();
         }
 
-        if (newState == gamePlayState) {
-            PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
-            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
-            PhysicsManager::getInstance().addObject(character);
-            addObject(BlockType::GROUND, {300, 1500}, {GridSystem::GRID_SIZE, GridSystem::GRID_SIZE});
-            addObject(BlockType::GROUND, {400, 1500}, {GridSystem::GRID_SIZE, GridSystem::GRID_SIZE});
-            addObject(BlockType::GROUND, {500, 1500}, {GridSystem::GRID_SIZE, GridSystem::GRID_SIZE});
-            addObject(BlockType::GROUND, {600, 1500}, {GridSystem::GRID_SIZE, GridSystem::GRID_SIZE});
-            addObject(BlockType::GROUND, {700, 1500}, {GridSystem::GRID_SIZE, GridSystem::GRID_SIZE});
-            addObject(BlockType::GROUND, {700, 1400}, {GridSystem::GRID_SIZE, GridSystem::GRID_SIZE});
-        }
-
         previousState = currentState;
         currentState = newState;
+
+        if (newState == gamePlayState) {
+            PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
+            LevelEditor::getInstance().setEditMode(false);
+            LevelEditor::getInstance().loadLevel("testlevel");
+            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
+            PhysicsManager::getInstance().addObject(character);
+        }
     }
 }
 

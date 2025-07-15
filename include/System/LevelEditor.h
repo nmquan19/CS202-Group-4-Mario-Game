@@ -28,9 +28,8 @@ public:
     void draw();
     void handleMouseInput();
     void placeObject(ObjectType type, Vector2 gridCoord);
-	void addObject(ObjectType type , Vector2 worldPos);
     void removeObject(Vector2 gridCoord);
-    void toggleEditMode();
+    void setEditMode(bool flag);
     bool isInEditMode() const;
 
     void saveLevel(const std::string& filename);

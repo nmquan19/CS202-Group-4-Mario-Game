@@ -18,6 +18,7 @@ public:
 	virtual void setCollided(bool) = 0;
 	virtual Vector2 getPosition() const = 0;
 	virtual void setPosition(Vector2 newPos) = 0;
+	virtual Vector2 getSize() const = 0;
 
 	virtual void draw() override = 0;
 
@@ -28,6 +29,7 @@ public:
 	void onCollision(Object* other) override = 0;
 	int getCollidedPart(const Object& other);
 	virtual ObjectType getObjectType() const = 0;
+	
 protected:
 	Vector2 position;
 	Vector2 size;

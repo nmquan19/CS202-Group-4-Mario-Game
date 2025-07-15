@@ -45,6 +45,7 @@ public :
 
 	ObjectType getObjectType() const override;
 	EnemyType getType() const;
+	Vector2 getSize() const override;
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;

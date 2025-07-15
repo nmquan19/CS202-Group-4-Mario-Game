@@ -5,7 +5,7 @@
 
 class Block : public Object {
 public:
-    Block(Vector2 gridPos, BlockType type);
+    Block(Vector2 gridPos, BlockType type, Vector2);
     virtual ~Block();
 
     void draw() override;
@@ -23,13 +23,14 @@ public:
     Vector2 getPosition() const override;
     void setPosition(Vector2 newPos) override;
     ObjectType getObjectType() const override;
+    Vector2 getSize() const override;
 
     bool isSolid() const;
     BlockType getType() const;
 protected:
     Vector2 position;
     Vector2 gridPosition;
-    Vector2 size;
+    Rectangle hitbox;
     BlockType blockType;
     bool solid;
 };

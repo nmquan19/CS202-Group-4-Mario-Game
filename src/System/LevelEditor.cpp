@@ -10,6 +10,7 @@
 #include "../../include/System/Grid.h"
 #include "../../include/System/Interface.h"
 #include "../../include/Enemy/Enemy.h"
+#include "../../include/Game/GameContext.h"
 
 LevelEditor* LevelEditor::instance = nullptr;
 LevelEditor& LevelEditor::getInstance() {
@@ -143,34 +144,6 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
     }, type);
 }
 
-void LevelEditor::addObject(ObjectType type, Vector2 worldPos) {
-
-    Vector2 gridCoord = GridSystem::getGridCoord(worldPos);
-    worldPos = GridSystem::getWorldPosition(gridCoord);
-    std::unique_ptr<Object> object = nullptr;
-
-    std::visit([&](auto&& actualType) {
-        using T = std::decay_t<decltype(actualType)>;
-
-        if constexpr (std::is_same_v<T, BlockType>) {
-            object = ObjectFactory::createBlock(actualType, gridCoord);
-        }
-        else if constexpr (std::is_same_v<T, EnemyType>) {
-            object = ObjectFactory::createEnemy(actualType, worldPos, { 1, 1 });
-        }
-        else if constexpr (std::is_same_v<T, KoopaShellType>) {
-            object = ObjectFactory::createKoopaShell(actualType, worldPos, { 1, 1 });
-        }
-        else if constexpr (std::is_same_v<T, CharacterType>) {
-            object = ObjectFactory::createCharacter(actualType, worldPos);
-        }
-        }, type);
-
-    if (object) {
-        object->setPosition(worldPos);
-    }
-}
-
 void LevelEditor::removeObject(Vector2 gridCoord) {
     auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
     auto it = gridBlocks.find(key);
@@ -178,14 +151,15 @@ void LevelEditor::removeObject(Vector2 gridCoord) {
         if (it->second.top()) {
             it->second.pop();
         }
+
         if (it->second.empty()) {
             gridBlocks.erase(it);
         }
     }
 }
 
-void LevelEditor::toggleEditMode() {
-    editMode = !editMode;
+void LevelEditor::setEditMode(bool flag) {
+    editMode = flag;
 }
 
 bool LevelEditor::isInEditMode() const {
@@ -216,7 +190,8 @@ void LevelEditor::saveLevel(const std::string& filename) {
                     objectData["gridX"] = gridPos.first;
                     objectData["gridY"] = gridPos.second;
                     objectData["type"] = objectTypeToString(obj->getObjectType());
-
+                    objectData["sizeX"] = obj->getSize().x;
+                    objectData["sizeY"] = obj->getSize().y;
                     stackJson.push_back(objectData);
                 } 
             }
@@ -263,6 +238,12 @@ void LevelEditor::loadLevel(const std::string& filename) {
                     std::string typeStr = objData["type"];
                     ObjectType objType = stringToObjectType(typeStr);
                     placeObject(objType, {gridX, gridY});
+                    float sizeX = objData["sizeX"];
+                    float sizeY = objData["sizeY"];
+                    if (GameContext::getInstance().currentState && GameContext::getInstance().currentState == GameContext::getInstance().gamePlayState) {
+                        Vector2 worldPos = GridSystem::getWorldPosition({gridX, gridY});
+                        GameContext::getInstance().addObject(objType, worldPos, {sizeX, sizeY});
+                    }
                     loadedCount++;
                 } catch (const std::exception& e) {
                     std::cerr << "Error loading object: " << e.what() << "\n";

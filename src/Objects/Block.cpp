@@ -6,9 +6,10 @@
 #include "../../include/System/Interface.h"
 #include <raylib.h>
 
-Block::Block(Vector2 gridPos, BlockType type) : gridPosition(gridPos), blockType(type) {
+Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos), blockType(type) {
     position = { gridPos.x * GridSystem::GRID_SIZE, gridPos.y * GridSystem::GRID_SIZE };
-    size = { GridSystem::GRID_SIZE, GridSystem::GRID_SIZE };
+    size = s;
+    hitbox = {position.x, position.y, size.x*GridSystem::GRID_SIZE, size.y*GridSystem::GRID_SIZE};
 }
 
 Block::~Block() {}
@@ -18,14 +19,14 @@ void Block::draw() {
 
     Texture2D texture = TextureManager::getInstance().getBlockTexture(getType());
 
-    Rectangle destRec = { position.x, position.y, size.x, size.y };
+    Rectangle destRec = { position.x, position.y, hitbox.width, hitbox.height};
     Rectangle sourceRec = { 0, 0, (float)texture.width, (float)texture.height };
 
     DrawTexturePro(texture, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
 }
 
 Rectangle Block::getHitBox() const {
-    return { position.x, position.y, size.x, size.y };
+   return hitbox;
 }
 
 ObjectCategory Block::getObjectCategory() const {
@@ -78,10 +79,14 @@ BlockType Block::getType() const {
     return blockType;
 }
 
-GroundBlock::GroundBlock(Vector2 gridPos) : Block(gridPos, BlockType::GROUND) {
+Vector2 Block::getSize() const {
+    return size;
+}
+
+GroundBlock::GroundBlock(Vector2 gridPos) : Block(gridPos, BlockType::GROUND, {1, 1}) {
     solid = true;
 }
 
-BrickBlock::BrickBlock(Vector2 gridPos) : Block(gridPos, BlockType::BRICK) {
+BrickBlock::BrickBlock(Vector2 gridPos) : Block(gridPos, BlockType::BRICK, {1, 1}) {
     solid = true;
 }

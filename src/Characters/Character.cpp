@@ -215,6 +215,10 @@ ObjectType Character::getObjectType() const {
 	return characterType;
 }
 
+Vector2 Character::getSize() const {
+	return size;
+}
+
 ObjectCategory Character::getObjectCategory() const {
 	return ObjectCategory::CHARACTER;
 }

@@ -221,3 +221,7 @@ ObjectType Enemy::getObjectType() const {
 EnemyType Enemy::getType() const {
     return type;
 }
+
+Vector2 Enemy::getSize() const {
+    return size;
+}

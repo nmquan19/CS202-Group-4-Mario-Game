@@ -39,10 +39,6 @@ void GamePlayState::handleInput(GameContext& context) {
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.gameOverState);
     }
-
-    if (IsKeyPressed(KEY_TAB)) {
-        LevelEditor::getInstance().toggleEditMode();
-    }
 }
 
 void GamePlayState::update(GameContext& context, float deltaTime) {
@@ -58,7 +54,7 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 		IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
         if(updatableObj)updatableObj->update(deltaTime); 
     }
-    context.spawnObject();
+    context.spawnObject();  
     context.deleteObjects();
 }
 
@@ -72,7 +68,7 @@ void GamePlayState::draw(GameContext& context) {
     {
         obj->draw();
     }
-    LevelEditor::getInstance().draw();
+    // LevelEditor::getInstance().draw();
     PhysicsManager::getInstance().drawDebug();
     DrawFPS(20, 50);
     context.menuManager.DrawSetting();
@@ -84,9 +80,6 @@ void EditorState::handleInput(GameContext& context) {
 
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.gameOverState);
-    }
-    if (IsKeyPressed(KEY_TAB)) {
-        LevelEditor::getInstance().toggleEditMode();
     }
     if (IsKeyPressed(KEY_F9) && LevelEditor::getInstance().isInEditMode()) {
         LevelEditor::getInstance().clearLevel();
@@ -101,7 +94,6 @@ void EditorState::handleInput(GameContext& context) {
 
 void EditorState::update(GameContext& context, float deltaTime) {
     LevelEditor::getInstance().update();
-    // PhysicsManager::getInstance().update();
 }
 
 void EditorState::draw(GameContext& context) {
