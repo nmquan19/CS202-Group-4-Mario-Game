@@ -88,4 +88,8 @@ public:
 	virtual void setVelocity(Vector2 newVelocity) = 0;
 	virtual Vector2 getVelocity() = 0;
 };
+class IProjectile {
+public: 
+	virtual ~IProjectile() = default;
+};
 using ObjectType = std::variant<BlockType, EnemyType, KoopaShellType>;

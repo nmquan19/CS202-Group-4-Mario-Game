@@ -40,7 +40,6 @@
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\CollectableObject.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
-    <ClInclude Include="include\Objects\Projectile.h" />
     <ClInclude Include="include\Scenes\Scene.h" />
     <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\Grid.h" />
@@ -73,7 +72,6 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\CollectableObject.cpp" />
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
-    <ClCompile Include="src\Objects\Projectile.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />
     <ClCompile Include="src\System\PhysicsManager.cpp" />
