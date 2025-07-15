@@ -29,13 +29,13 @@ void TextureManager::loadTextures() {
     //Enemy textures 
 	DrawText("Loading enemy textures...", 10, 10, 20, DARKGRAY);
     std::ifstream  enemy_in;
-    enemy_in.open("enemy_output.txt");
+    enemy_in.open("assets/enemy/enemy_output.txt");
     int id, x, y, w, h;
     while (enemy_in >> id >> x >> y >> w >> h)
     {
         Enemy_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
     }
-    enemyTextures = Texture2D(LoadTexture("assets/enemy_spritesheet.png"));
+    enemyTextures = Texture2D(LoadTexture("assets/enemy/enemy_spritesheet.png"));
     enemy_in.close();
     texturesLoaded = true;
 }

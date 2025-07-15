@@ -10,7 +10,7 @@
     private:
         bool stompedAnimation = false;
         bool knockAnimation = false;
-	    std::unique_ptr<LedgeDetector> ledgeDetector;
+	    std::shared_ptr<LedgeDetector> ledgeDetector;
     public:
         Koopa(Vector2 startPos, Vector2 size);
         Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration);

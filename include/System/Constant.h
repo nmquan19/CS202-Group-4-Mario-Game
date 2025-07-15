@@ -6,13 +6,13 @@ namespace Constants {
     constexpr float KOOPA_SPEED = 200.0f;
 
     namespace GreenKoopa {
-		constexpr Vector2 standardSize = { 1, 2};
+		constexpr Vector2 standardSize = { 1, 1.5};
         constexpr float WANDERING_SPEED = 100.0f;
         constexpr float STOMPED_DURATION = 0.3f;
         constexpr float KNOCK_VELOCITY = -300.0f;
     }
     namespace RedKoopa {
-        constexpr Vector2 standardSize = {1, 2};
+        constexpr Vector2 standardSize = {1, 1.5};
         constexpr float WANDERING_SPEED = 150.0f;
         constexpr float STOMPED_DURATION = 0.3f;
         constexpr float KNOCK_VELOCITY = -300.0f;

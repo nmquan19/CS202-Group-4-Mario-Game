@@ -126,11 +126,9 @@ void KoopaKnockState::enter(Enemy* enemy)
         koopa->velocity = { 0, knockVelocity };
         koopa->curFrame = 0;
         koopa->active = false;
-        koopa->stompedAnimation = true;
+        koopa->knockAnimation = true;
         koopa->spritebox = TextureManager::Enemy_sprite_boxes[koopa->getSpriteData()[0].first];
-        
         Vector2 spawnPosition = { koopa->getPosition().x + (koopa->size.x * Constants::TILE_SIZE) / 2, koopa->getPosition().y + koopa->size.y * Constants::TILE_SIZE };
-
         GameContext::getInstance().addObject(type, spawnPosition, { 1,1 }, [](std::shared_ptr<Object> obj) {
             auto shell = std::dynamic_pointer_cast<KoopaShell>(obj);
             if (shell) {
@@ -152,10 +150,10 @@ void KoopaKnockState::exit(Enemy* enemy)
     if (koopa) {
         koopa->isalive = false;
 
-        std::shared_ptr<Object> sharedKoopa = GameContext::getInstance().getSharedPtrFromRaw(koopa);
+      /*  std::shared_ptr<Object> sharedKoopa = GameContext::getInstance().getSharedPtrFromRaw(koopa);
         if (sharedKoopa) {
             GameContext::getInstance().mark_for_deletion_Object(sharedKoopa);
-        }
+        }*/
     }
 }
 

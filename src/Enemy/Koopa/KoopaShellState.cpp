@@ -134,7 +134,7 @@ void KoopaShellRevivingState::update(KoopaShell* shell, float deltaTime) {
         }
         Vector2 spawnPosition = { shell->getPosition().x + (shell->size.x * Constants::TILE_SIZE) / 2, shell->getPosition().y + shell->size.y * Constants::TILE_SIZE };
 
-        GameContext::getInstance().addObject(type, spawnPosition, { 1,2 });
+        GameContext::getInstance().addObject(type, spawnPosition, { 1,1.5 });
         //GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(shell));
 		shell->active = false;
         shell->changeState(nullptr);

@@ -2,10 +2,10 @@
 
 #include "raylib.h"
 #include <cmath>
-
+#include "Constant.h"
 class GridSystem {
 public:
-    static const int GRID_SIZE = 52;
+    static const int GRID_SIZE = Constants::TILE_SIZE;
     static Vector2 snapToGrid(Vector2 position) {
         return {
             (float)floor(position.x / GRID_SIZE) * GRID_SIZE,

@@ -12,10 +12,13 @@
 #include "../../../include/System/PhysicsManager.h"
 #include <memory>
 #include <utility>
-Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures),ledgeDetector(std::make_unique<LedgeDetector>(10.0f))
+Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures)
 {
     stompedAnimation = false;
     isFacingRight = velocity.x > 0;
+
+    ledgeDetector  =  std::make_shared<LedgeDetector>(1000.0f);
+    PhysicsManager::getInstance().addObject(ledgeDetector);
 }
 Koopa::~Koopa()
 {
@@ -26,11 +29,12 @@ Koopa::~Koopa()
     
 
 }
-Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size), ledgeDetector(std::make_unique<LedgeDetector>(10.0f))
+Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size), ledgeDetector(std::make_shared<LedgeDetector>(10.0f))
 {
     stompedAnimation = false;
     isFacingRight = velocity.x >= 0;
-
+    ledgeDetector = std::make_shared<LedgeDetector>(10.0f);
+    PhysicsManager::getInstance().addObject(ledgeDetector);
 }
 
 void Koopa::onCollision(Object* other) {
@@ -108,12 +112,15 @@ void Koopa::handleEnvironmentCollision(Object* other) {
     float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
     float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
     float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-
-    const float MIN_OVERLAP = 2.0f;
-
+    const float MIN_OVERLAP = 0.1f;
     if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
         return;
     }
+  /*  const float MIN_OVERLAP = 2.0f;
+
+    if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
+        return;
+    }*/
 
     float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
 
@@ -139,7 +146,7 @@ void Koopa::handleEnvironmentCollision(Object* other) {
 		isFacingRight = true;
     }
 }
-void Koopa::die()
+void Koopa::die()   
 {
 }
 void Koopa::takeDamage(int amount) {

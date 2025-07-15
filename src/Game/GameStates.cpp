@@ -6,6 +6,8 @@
 #include "../../include/System/PhysicsManager.h"
 #include <raylib.h>
 #include "../../include/System/Interface.h"
+#include <memory>
+#include "../../include/Characters/Character.h"
 
 void MenuState::handleInput(GameContext& context) {
     context.menuManager.HandleInput();
