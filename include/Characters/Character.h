@@ -62,8 +62,9 @@ public:
 	bool isAlive() const override;
 	void die() override;
 
-	/*void pickupProjectile(Projectile* projectile);
-	void throwProjectile();*/
+	void setHoldingProjectile(bool flag);
+	bool isHoldingProjectile() const;
+	void holdProjectile(KoopaShell& p);
 
 	float getWidth() const;
 	float getHeight() const;
@@ -99,12 +100,11 @@ private:
 	bool active = true;
 
 	int hp;
-	bool alive = true;
 	float invincibleTime;
 	float invincibleTimer;
 	
-	IProjectile* heldProjectile;
-	bool isHoldingProjectile;
+	KoopaShell* projectile;
+	bool holdingProjectile;
 
 	void handleEnvironmentCollision(Object* other);
 	void handleEnemyCollision(Object* other);

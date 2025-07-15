@@ -3,11 +3,12 @@
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
 #include "../../include/System/TextureManager.h"
+#include "../../include/Enemy/Koopa/KoopaShell.h"
 #include <iostream>
 #include <string>
 
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale)
-	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(5), heldProjectile(nullptr), isHoldingProjectile(false),
+	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(5), projectile(nullptr), holdingProjectile(false),
 	invincibleTimer(0), invincibleTime(2.0f),
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
@@ -56,6 +57,18 @@ void Character::update(float deltaTime) {
 
 	if(invincibleTimer > 0) {
 		invincibleTimer -= deltaTime;		
+	}
+
+	if(holdingProjectile && projectile != nullptr) {
+		if(IsKeyPressed(KEY_X)) {
+			projectile->setActive(true);
+			projectile->setVelocity(Vector2{this->isFacingRight() ? 200.0f : -200.0f, 980.0f});
+			projectile->setPosition(Vector2{this->position.x + (this->isFacingRight() ? this->getWidth() : -20.0f), this->getCenterY()});
+		}
+	}
+
+	if(projectile) {
+		projectile->update(deltaTime);
 	}
 	
 	applyGravity(deltaTime);
@@ -106,7 +119,12 @@ void Character::draw() {
 
 	DrawTexturePro(spriteSheet, sourceRec, destRec, {0, 0}, 0.0f, WHITE);
 	std::string s = "hp: " + std::to_string(hp);
-	DrawText(s.c_str(), 20, 460, 20, BLACK);
+	DrawText(s.c_str(), 20, 460, 25, BLACK);
+
+	if(holdingProjectile && projectile != nullptr) {
+		DrawText("holding projectile", 20, 540, 25, BLACK);
+		projectile->draw();
+	}
 }
 
 Rectangle Character::getCurrentStateFrame() const{
@@ -313,6 +331,7 @@ void Character::handleEnemyCollision(Object* other) {
 
     if (minOverlap == overlapTop) {
         DrawText("deal damage", 50, 200, 30, BLACK);
+		invincibleTimer = 0.2f;
         velocity.y = -200.0f;
         setOnGround(false);
     }
@@ -354,9 +373,21 @@ void Character::takeDamage(int amount) {
 }
 
 bool Character::isAlive() const {
-	return alive;
+	return hp > 0;
 }
 
 void Character::die() {
 
+}
+
+void Character::setHoldingProjectile(bool flag) {
+	holdingProjectile = flag;
+}
+
+bool Character::isHoldingProjectile() const {
+	return holdingProjectile;
+}
+
+void Character::holdProjectile(KoopaShell& p) {
+	projectile = &p;
 }
