@@ -5,7 +5,6 @@
 #include <utility>
 #include <raylib.h>
 #include <string>
-#include <fstream>
 #include <stack>
 #include "../System/TextureManager.h"
 #include "../Objects/ObjectFactory.h"

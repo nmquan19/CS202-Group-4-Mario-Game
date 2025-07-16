@@ -31,6 +31,7 @@
     <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaShell.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaShellState..h" />
+    <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h" />
     <ClInclude Include="include\Enemy\LedgeDetector.h" />
     <ClInclude Include="include\Enemy\Koopa\Koopa.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaState.h" />

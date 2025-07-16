@@ -6,6 +6,8 @@
 #include "../../include/System/PhysicsManager.h"
 #include <raylib.h>
 #include "../../include/System/Interface.h"
+#include <memory>
+#include "../../include/Characters/Character.h"
 
 void MenuState::handleInput(GameContext& context) {
     context.menuManager.HandleInput();
@@ -42,9 +44,7 @@ void GamePlayState::handleInput(GameContext& context) {
 }
 
 void GamePlayState::update(GameContext& context, float deltaTime) {
-    PhysicsManager::getInstance().update();
-    LevelEditor::getInstance().update();
-
+    
     if (context.character) {
         std::shared_ptr<Character> character = std::dynamic_pointer_cast<Character>(context.character);
         character->update(deltaTime);
@@ -56,6 +56,8 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     }
     context.spawnObject();  
     context.deleteObjects();
+    PhysicsManager::getInstance().update();
+    LevelEditor::getInstance().update();
 }
 
 void GamePlayState::draw(GameContext& context) {

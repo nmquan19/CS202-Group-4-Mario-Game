@@ -3,7 +3,6 @@
 #include <raylib.h>
 #include <fstream>
 #include <vector>
-#include <iostream>
 std::vector<Rectangle> TextureManager::Enemy_sprite_boxes;
 Texture2D TextureManager::enemyTextures;
 TextureManager& TextureManager::getInstance() {
@@ -30,14 +29,13 @@ void TextureManager::loadTextures() {
     //Enemy textures 
 	DrawText("Loading enemy textures...", 10, 10, 20, DARKGRAY);
     std::ifstream  enemy_in;
-    enemy_in.open("enemy_output.txt");
+    enemy_in.open("assets/enemy/enemy_output.txt");
     int id, x, y, w, h;
     while (enemy_in >> id >> x >> y >> w >> h)
     {
-		std::cout << "Loading enemy sprite: " << id << " at (" << x << ", " << y << ") with size (" << w << ", " << h << ")\n";
         Enemy_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
     }
-    enemyTextures = Texture2D(LoadTexture("assets/enemy_spritesheet.png"));
+    enemyTextures = Texture2D(LoadTexture("assets/enemy/enemy_spritesheet.png"));
     enemy_in.close();
     texturesLoaded = true;
 }
@@ -114,17 +112,16 @@ void ObjectPalette::drawPalette() {
     DrawRectangleLinesEx(goombaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GOOMBA) ? RED : BLACK);
     DrawText("GOOMBA", goombaRect.x - 5, goombaRect.y + iconSize + 5, 10, BLACK);
 
-    // Koopa
-    Rectangle koopaRect = { startX + spacing, yEnemy, iconSize, iconSize };
-    if (tm.enemyTextures.id != 0 && tm.Enemy_sprite_boxes.size() > 1) {
-        Rectangle koopaSource = tm.Enemy_sprite_boxes[1]; // Assuming second sprite is Koopa
-        DrawTexturePro(tm.enemyTextures, koopaSource, koopaRect, { 0, 0 }, 0.0f, WHITE);
-    } else {
-        DrawRectangleRec(koopaRect, GREEN);
-    }
-    DrawRectangleLinesEx(koopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::KOOPA) ? RED : BLACK);
-    DrawText("KOOPA", koopaRect.x + 5, koopaRect.y + iconSize + 5, 10, BLACK);
+    Rectangle GreenkoopaRect = { startX + spacing, yEnemy, 50, 50 };
+    DrawRectangleRec(GreenkoopaRect, GREEN);
+    DrawRectangleLinesEx(GreenkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GREEN_KOOPA) ? RED : BLACK);
+    DrawText("GreenKOOPA", GreenkoopaRect.x + 5, GreenkoopaRect.y + 55, 10, BLACK);
 
+    Rectangle RedkoopaRect = { startX + 2*spacing, yEnemy, 50, 50 };
+    DrawRectangleRec(RedkoopaRect, GREEN);
+    DrawRectangleLinesEx(RedkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::RED_KOOPA) ? RED : BLACK);
+    DrawText("RedKOOPA", RedkoopaRect.x + 15, RedkoopaRect.y + 55, 10, BLACK);
+   
     // Draw Character Section
     DrawText("CHARACTERS", startX, yCharacter - 20, 12, BLACK);
     
@@ -173,11 +170,13 @@ void ObjectPalette::handleSelection() {
     
     // Enemy selection rectangles
     Rectangle goombaRect = { startX, yEnemy, iconSize, iconSize };
-    Rectangle koopaRect = { startX + spacing, yEnemy, iconSize, iconSize };
     
     // Character selection rectangles
     Rectangle marioRect = { startX, yCharacter, iconSize, iconSize };
     Rectangle luigiRect = { startX + spacing, yCharacter, iconSize, iconSize };
+
+    Rectangle gkoopaRect = { startX + spacing, yEnemy, 50, 50 };
+    Rectangle rkoopaRect = { startX + 2*spacing, yEnemy, 50, 50 };
 
     if (CheckCollisionPointRec(mousePos, groundRect)) {
         selected = BlockType::GROUND;
@@ -188,8 +187,11 @@ void ObjectPalette::handleSelection() {
     else if (CheckCollisionPointRec(mousePos, goombaRect)) {
         selected = EnemyType::GOOMBA;
     }
-    else if (CheckCollisionPointRec(mousePos, koopaRect)) {
-        selected = EnemyType::KOOPA;
+    else if (CheckCollisionPointRec(mousePos, gkoopaRect)) {
+        selected = EnemyType::GREEN_KOOPA;
+    }
+    else if (CheckCollisionPointRec(mousePos, rkoopaRect)) {
+        selected = EnemyType::RED_KOOPA;
     }
     else if (CheckCollisionPointRec(mousePos, marioRect)) {
         selected = CharacterType::MARIO;

@@ -3,11 +3,10 @@
 #include <vector>
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
-#include "../../include/System/PhysicsManager.h"
 #include "../../include/Enemy/Enemy.h"
 LedgeDetector::LedgeDetector(float castLength)
     : nearLedge(false), castLength(castLength), hitBox({ 0,0,0,0 }){
-	// PhysicsManager::getInstance().addObject(this);
+
 }
 
 void LedgeDetector::update(Enemy* enemy, float deltaTime) 

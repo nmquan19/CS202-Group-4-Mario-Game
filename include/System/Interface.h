@@ -11,6 +11,7 @@ enum class ObjectCategory {
 	PROJECTILE,
 	TRIGGER,
 	SHELL,
+	BACKGROUND, 
 };
 
 enum class BlockType {
@@ -24,7 +25,8 @@ enum class BlockType {
 
 enum class EnemyType {
 	GOOMBA,
-	KOOPA,
+	GREEN_KOOPA,
+	RED_KOOPA,
 	PIRANHA_PLANT,
 	HAMMER_BRO
 };
@@ -44,6 +46,7 @@ enum class CharacterType {
 };
 enum class KoopaShellType {
 	GREEN_KOOPA_SHELL,
+	RED_KOOPA_SHELL	
 };
 enum class TriggerType {
 	CHECKPOINT,

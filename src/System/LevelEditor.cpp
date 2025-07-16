@@ -11,7 +11,10 @@
 #include "../../include/System/Interface.h"
 #include "../../include/Enemy/Enemy.h"
 #include "../../include/Game/GameContext.h"
-
+#include <exception>
+#include <fstream>
+#include <stack>
+#include <vector>
 LevelEditor* LevelEditor::instance = nullptr;
 LevelEditor& LevelEditor::getInstance() {
     if (!instance) {
@@ -144,6 +147,9 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
     }, type);
 }
 
+
+  
+
 void LevelEditor::removeObject(Vector2 gridCoord) {
     auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
     auto it = gridBlocks.find(key);
@@ -274,7 +280,7 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
         switch (blockType)
         {
         case BlockType::GROUND: return "GROUND";
-            break;
+            
         case BlockType::BRICK: return "BRICK";
             break;
         case BlockType::INVISIBLE: return "INVISIBLE";
@@ -294,10 +300,10 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
         switch (enemyType) 
         {
             case EnemyType::GOOMBA: return "GOOMBA";
+            case EnemyType::GREEN_KOOPA: return "GREEN_KOOPA";
+            case EnemyType::RED_KOOPA: return "RED_KOOPA";
                 break;
             case EnemyType::HAMMER_BRO: return "HAMMER_BRO";
-                break;
-            case EnemyType::KOOPA: return "KOOPA";
                 break;
             case EnemyType::PIRANHA_PLANT: return "PIRANHA_PLANT";
                 break;
@@ -308,8 +314,7 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
     else if (std::holds_alternative<CharacterType>(type)) {
         CharacterType charType = std::get<CharacterType>(type);
         switch (charType) {
-            case CharacterType::MARIO: return "MARIO";
-                break;
+
             case CharacterType::LUIGI: return "LUIGI";
                 break;
             default: return "MARIO";
@@ -326,14 +331,9 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "PIPE") return BlockType::PIPE;
     if (typeStr == "PLATFORM") return BlockType::PLATFORM;
     if (typeStr == "QUESTION") return BlockType::QUESTION;
-
+	if (typeStr == "GREEN_KOOPA") return EnemyType::GREEN_KOOPA;
+	if (typeStr == "RED_KOOPA") return EnemyType::RED_KOOPA;
     if (typeStr == "GOOMBA") return EnemyType::GOOMBA;
-    if (typeStr == "HAMMER_BRO") return EnemyType::HAMMER_BRO;
-    if (typeStr == "KOOPA") return EnemyType::KOOPA;
-    if (typeStr == "PIRANHA_PLANT") return EnemyType::PIRANHA_PLANT;
-
-    if (typeStr == "MARIO") return CharacterType::MARIO;
-    if (typeStr == "LUIGI") return CharacterType::LUIGI;
 
     return BlockType::GROUND;
 }
