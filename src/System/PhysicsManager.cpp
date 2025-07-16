@@ -1,5 +1,11 @@
 #include <algorithm>
-#include "..\..\include\System\PhysicsManager.h"
+#include "../../include/System/PhysicsManager.h"
+#include <memory>
+#include <vector>
+#include "../../include/Objects/ObjectFactory.h"
+#include "../../include/System/Interface.h"
+#include "../../include/System/QuadTree.h"
+#include <raylib.h>
 
 PhysicsManager* PhysicsManager::instance = nullptr;
 
@@ -10,42 +16,55 @@ PhysicsManager& PhysicsManager::getInstance() {
 	return *instance;
 }
 
-void PhysicsManager::addCollidable(ICollidable* collidable) {
-	if (collidable && std::find(collidables.begin(), collidables.end(), collidable) == collidables.end()) {
-		collidables.push_back(collidable);
+void PhysicsManager::addObject(std::shared_ptr<Object> object) {
+	if (object && std::find(objects.begin(), objects.end(), object) == objects.end()) {
+		objects.push_back(object);
 	}
 }
 
-void PhysicsManager::removeCollidable(ICollidable* collidable) {
-	collidables.erase(std::remove(collidables.begin(), collidables.end(), collidable), collidables.end());
+void PhysicsManager::markForDeletion(std::shared_ptr<Object> object) {
+	if (object) {
+		object->setActive(false);
+	}
 }
-
 void PhysicsManager::update() {
-	collidables.erase(std::remove_if(collidables.begin(), collidables.end(), [](ICollidable* c) { return !c->isActive(); }), collidables.end());
+
+	objects.erase(std::remove_if(objects.begin(), objects.end(), [](const std::shared_ptr<Object>& obj) {
+		return !obj || !obj->isActive();
+	}), objects.end());
 
 	frameCounter++;
 	if (frameCounter >= REBUILD_FREQUENCY) {
 		frameCounter = 0;
 
 		quadTree->clear();
-		for (auto* collidable : collidables) {
-			if (collidable->isActive()) {
-				quadTree->insert(collidable);
+		for (const auto object : objects) {
+			if (object && object->isActive()) {
+				quadTree->insert(object.get());
 			}
 		}
 	}
-	for (auto* collidable : collidables) {
-		if (!collidable->isActive()) continue;
+ 
+	for (const auto object : objects) {
 
-		std::vector<ICollidable*> candidates = quadTree->retrieve(collidable);
+		if (!object|| !object->isActive()) continue;
+					
+		auto targetLayer = object->getCollisionTargets();
+		if (targetLayer.empty()) continue;
+
+		std::vector<Object*> candidates = quadTree->retrieve(object.get());
+		std::vector<Object*> filterdCandidates;
+		filterdCandidates.reserve(candidates.size());
+
 		for (auto* candidate : candidates) {
-			if (candidate != collidable && candidate->isActive()) {
-				if (checkCollision(collidable->getHitBox(), candidate->getHitBox())) {
-					collidable->onCollision(candidate);
-					candidate->onCollision(collidable);
+			if (candidate && candidate != object.get() && candidate->isActive()) {
+				if (std::find(targetLayer.begin(), targetLayer.end(), candidate->getObjectCategory()) != targetLayer.end()
+					&& PhysicsManager::getInstance().checkCollision(object->getHitBox(), candidate->getHitBox())) {
+					filterdCandidates.push_back(candidate);
 				}
 			}
 		}
+		object->checkCollision(filterdCandidates);
 	}
 }
 
@@ -53,11 +72,11 @@ bool PhysicsManager::checkCollision(const Rectangle& rect1, const Rectangle& rec
 	return CheckCollisionRecs(rect1, rect2);
 }
 
-std::vector<ICollidable*> PhysicsManager::getCollidablesInLayer(CollissionLayer layer) {
-	std::vector<ICollidable*> result;
-	for (auto* collidable : collidables) {
-		if (collidable->getCollisionLayer() == layer) {
-			result.push_back(collidable);
+std::vector<std::shared_ptr<Object>> PhysicsManager::getObjectsInLayer(ObjectCategory objectCategory) {
+	std::vector<std::shared_ptr<Object>> result;
+	for (const auto object : objects) {
+		if (object->getObjectCategory() == objectCategory) {
+			result.push_back(object);
 		}
 	}
 	return result;
@@ -72,13 +91,24 @@ void PhysicsManager::setWorldBounds(Rectangle bounds) {
 	quadTree = std::make_unique<QuadTree>(bounds);
 }
 
-std::vector<ICollidable*> PhysicsManager::getObjectsInArea(Rectangle area) {
-	return quadTree->retrieve(area);
+std::vector<std::shared_ptr<Object>> PhysicsManager::getObjectsInArea(Rectangle area) {
+	auto rawObjects = quadTree->retrieve(area);
+	std::vector<std::shared_ptr<Object>> result;
+
+	for (auto* rawObj : rawObjects) {
+		auto it = std::find_if(objects.begin(), objects.end(), [rawObj](const std::shared_ptr<Object>& obj) {
+			return obj.get() == rawObj;
+			});
+		if (it != objects.end()) {
+			result.push_back(*it);
+		}
+	}
+	return result;
 }
 
-std::vector<ICollidable*> PhysicsManager::getObjectsNearPoint(Vector2 point, float radius) {
+std::vector<std::shared_ptr<Object>> PhysicsManager::getObjectsNearPoint(Vector2 point, float radius) {
 	Rectangle area = { point.x - radius, point.y - radius, radius * 2, radius * 2 };
-	return quadTree->retrieve(area);
+	return getObjectsInArea(area);
 }
 
 void PhysicsManager::drawDebug() const {

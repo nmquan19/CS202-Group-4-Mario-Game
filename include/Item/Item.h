@@ -1,44 +1,38 @@
 #pragma once
 #include "raylib.h"
+#include "../System/Interface.h"
+#include <vector>
+#include "..\..\include\System\PhysicsManager.h"
+#include <cstdlib>
+#include <math.h>
+#include <iostream>
 
-class Item {
-protected:
-    Vector2 position;
-    Vector2 velocity;
-    Texture2D texture;
-    float scale;
-
+class Item : public ICollidable, public Object {
 public:
-    Item(Vector2 pos, const char* imagePath, float scale = 0.04f);
+    Item();
     virtual ~Item();
     virtual void Update(float deltaTime) = 0;
     virtual void Draw() const;
     virtual Rectangle GetRect() const;
 };
 
+    Rectangle getHitBox() const override;
+    ObjectCategory getObjectCategory() const override;
+    std::vector<ObjectCategory> getCollisionTargets() const override;
+    void checkCollision(const std::vector<Object*>& candidates) override;
+    void onCollision(Object* other) override;
 
+    bool isActive();
 
-//Coin
-class Coin : public Item {
-private:
-    bool isCollected;
+    int getCurrentFrame();
 
-public:
-    Coin(Vector2 pos);
-    void Update(float deltaTime) override;
-    void Draw() const override;
-    Rectangle GetRect() const override;
-    bool Collected() const;
-    void Collect();
-};
+protected:
+    bool isGrounded;
 
+    std::vector<std::pair<int, int>> num_sprites;
 
-
-
-//Mushroom
-class Mushroom : public Item {
-public:
-    Mushroom(Vector2 pos);
-    void Update(float deltaTime) override;
-    Rectangle GetRect() const override;
+    Rectangle hitbox;
+    Rectangle spriteBox;
+    Texture2D texture;
+    bool IsActive;
 };

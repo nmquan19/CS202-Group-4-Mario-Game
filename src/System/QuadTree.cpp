@@ -1,5 +1,10 @@
 #include <algorithm>
-#include "..\..\include\System\QuadTree.h"
+#include "../../include/System/QuadTree.h"
+#include <memory>
+#include <vector>
+#include "../../include/Objects/ObjectFactory.h"
+#include "../../include/System/Interface.h"
+#include <raylib.h>
 
 QuadTree::QuadTree(Rectangle worldBounds) : worldBounds(worldBounds) {
 	root = std::make_unique<Node>(worldBounds, 0);
@@ -9,14 +14,14 @@ void QuadTree::clear() {
 	root = std::make_unique<Node>(worldBounds, 0);
 }
 
-void QuadTree::insert(ICollidable* object) {
+void QuadTree::insert(Object* object) {
 	if (!object || !object->isActive()) return;
 	Rectangle objBounds = object->getHitBox();
 	if (!CheckCollisionRecs(objBounds, worldBounds)) return;
 	insertIntoNode(root.get(), object);
 }
 
-void QuadTree::insertIntoNode(Node* node, ICollidable* object) {
+void QuadTree::insertIntoNode(Node* node, Object* object) {
 	Rectangle objBounds = object->getHitBox();
 	if (!node->isLeaf) {
 		int quadrant = getQuadrant(node, objBounds);
@@ -76,12 +81,12 @@ int QuadTree::getQuadrant(Node* node, Rectangle objectBounds) const {
 	return -1;
 }
 
-std::vector<ICollidable*> QuadTree::retrieve(ICollidable* object) {
+std::vector<Object*> QuadTree::retrieve(Object* object) {
 	return retrieve(object->getHitBox());
 }
 
-std::vector<ICollidable*> QuadTree::retrieve(Rectangle area) {
-	std::vector<ICollidable*> result;
+std::vector<Object*> QuadTree::retrieve(Rectangle area) { 
+	std::vector<Object*> result;
 	retrieveFromNode(root.get(), area, result);
 
 	std::sort(result.begin(), result.end());
@@ -90,7 +95,7 @@ std::vector<ICollidable*> QuadTree::retrieve(Rectangle area) {
 	return result;
 }
 
-void QuadTree::retrieveFromNode(Node* node, Rectangle area, std::vector<ICollidable*>& result) const {
+void QuadTree::retrieveFromNode(Node* node, Rectangle area, std::vector<Object*>& result) const {
 	for (auto obj : node->objects) {
 		if (CheckCollisionRecs(obj->getHitBox(), area)) {
 			result.push_back(obj);
@@ -143,23 +148,23 @@ void QuadTree::drawNodeRecursive(Node* node) const {
 		if (obj && obj->isActive()) {
 			Rectangle hitBox = obj->getHitBox();
 			Color hitboxColor = BLACK;
-			switch (obj->getCollisionLayer()) {
-			case CollissionLayer::PLAYER:
+			switch (obj->getObjectCategory()) {
+			case ObjectCategory::CHARACTER:
 				hitboxColor = LIME;
 				break;
-			case CollissionLayer::ENEMY:
+			case ObjectCategory::ENEMY:
 				hitboxColor = MAGENTA;
 				break;
-			case CollissionLayer::ENVIRONMENT:
-				hitboxColor = BROWN;
+			case ObjectCategory::BLOCK:
+				hitboxColor = BLUE;
 				break;
-			case CollissionLayer::ITEM:
+			case ObjectCategory::ITEM:
 				hitboxColor = GOLD;
 				break;
-			case CollissionLayer::PROJECTILE:
+			case ObjectCategory::PROJECTILE:
 				hitboxColor = ORANGE;
 				break;
-			case CollissionLayer::TRIGGER:
+			case ObjectCategory::TRIGGER:
 				hitboxColor = VIOLET;
 				break;
 			default:

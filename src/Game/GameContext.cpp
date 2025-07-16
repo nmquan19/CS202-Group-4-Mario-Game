@@ -1,0 +1,142 @@
+#include "../../include/Game/GameContext.h"
+#include <raylib.h>
+#include <memory>
+#include "../../include/Objects/ObjectFactory.h"
+#include "../../include/System/Interface.h"
+#include "../../include/System/PhysicsManager.h"
+#include "../../include/System/TextureManager.h"
+#include "../../include/System/LevelEditor.h"
+#include "../../include/Game/GameStates.h"
+#include "../../include/System/Constant.h"
+#include <type_traits>
+#include <variant>
+#include <algorithm>
+#include "../../include/System/Grid.h"
+#include <functional>
+#include <cmath>
+GameContext::GameContext() {
+    TextureManager::getInstance().loadTextures();
+}
+
+GameContext::~GameContext() {
+    if (previousState) {
+        LevelEditor::getInstance().cleanup();
+        PhysicsManager::getInstance().cleanup();
+    }
+    TextureManager::getInstance().unloadTextures();
+}
+GameContext& GameContext::getInstance() {
+    static GameContext instance;
+    return instance;
+}
+void GameContext::setState(GameState* newState) {
+    if (currentState != newState) {
+        if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState || currentState != editorState)) {
+            LevelEditor::getInstance().cleanup();
+            PhysicsManager::getInstance().cleanup();
+            character.reset();
+        }
+
+        previousState = currentState;
+        currentState = newState;
+
+        if (newState == gamePlayState) {
+            PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
+            LevelEditor::getInstance().setEditMode(false);
+            LevelEditor::getInstance().loadLevel("testlevel");
+            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
+            PhysicsManager::getInstance().addObject(character);
+        }
+    }
+}
+
+void GameContext::handleInput() {
+    if (currentState) {
+        currentState->handleInput(*this);
+    }
+}
+
+void GameContext::update(float deltaTime) {
+    if (currentState) {
+        currentState->update(*this, deltaTime);
+    }
+}
+
+void GameContext::draw() {
+    if (currentState) {
+        currentState->draw(*this);
+    }
+}
+
+void GameContext::setGameStates(GameState* menu, GameState* game, GameState* editor, GameState* gameOver) {
+    menuState = menu;
+    gamePlayState = game;
+    editorState = editor;
+    gameOverState = gameOver;
+    currentState = menuState;
+}
+void GameContext::addObject(ObjectType type, Vector2 worldPos, Vector2 size, std::function<void(std::shared_ptr<Object>)> onSpawn)
+{ 
+	//pass the middle point of the object x and the end point(feet) of the object y
+    Vector2 topLeft = {
+     std::floor(worldPos.x - size.x*Constants::TILE_SIZE / 2),
+     std::floor(worldPos.y - size.y*Constants::TILE_SIZE)
+    };
+
+    ToSpawnObjects.push_back({ type, topLeft, size, onSpawn});
+}
+
+void GameContext::spawnObject() {
+    for (const auto& request : ToSpawnObjects) {
+        
+        std::shared_ptr<Object> object = nullptr;
+
+        std::visit([&](auto&& actualType) {
+            using T = std::decay_t<decltype(actualType)>;
+
+            if constexpr (std::is_same_v<T, BlockType>) {
+                object = ObjectFactory::createBlock(actualType, GridSystem::getGridCoord(request.worldpos));
+            }
+            else if constexpr (std::is_same_v<T, EnemyType>) {
+                object = ObjectFactory::createEnemy(actualType, request.worldpos, request.size);
+            }
+            else if constexpr (std::is_same_v<T, KoopaShellType>) {
+                object = ObjectFactory::createKoopaShell(actualType, request.worldpos, request.size);
+            }
+            }, request.type);
+
+        if (object) {
+            Objects.push_back(object);
+            if (request.onSpawn) {
+                request.onSpawn(object);
+            }
+            PhysicsManager::getInstance().addObject(object);
+        }
+    }
+    ToSpawnObjects.clear();
+}
+
+
+void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
+    if (object) {
+        ToDeleteObjects.push_back(object);
+    }
+}
+void GameContext::deleteObjects(){
+    for (const auto& obj : ToDeleteObjects)
+    {
+       if(std::find(Objects.begin(), Objects.end(), obj) != Objects.end()) {
+            Objects.erase(std::remove(Objects.begin(), Objects.end(), obj), Objects.end());
+	   }
+    }
+	ToDeleteObjects.clear();
+}
+
+std::shared_ptr<Object> GameContext::getSharedPtrFromRaw(Object* rawPtr) {
+    for (const auto& obj : Objects) {
+        if (obj.get() == rawPtr) {
+            return obj;
+        }
+    }
+    return nullptr;
+}
