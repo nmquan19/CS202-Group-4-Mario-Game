@@ -5,6 +5,10 @@
 #include <vector>
 std::vector<Rectangle> TextureManager::Enemy_sprite_boxes;
 Texture2D TextureManager::enemyTextures;
+
+std::vector<Rectangle> TextureManager::Item_sprite_boxes;
+Texture2D TextureManager::itemTextures;
+
 TextureManager& TextureManager::getInstance() {
     static TextureManager instance;
     return instance;

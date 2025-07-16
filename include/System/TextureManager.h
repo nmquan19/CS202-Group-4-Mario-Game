@@ -10,6 +10,10 @@ public:
     static TextureManager& getInstance();
     static std::vector<Rectangle> Enemy_sprite_boxes;
     static Texture2D enemyTextures;
+
+    static std::vector<Rectangle> Item_sprite_boxes;
+    static Texture2D itemTextures;
+
     Texture2D getBlockTexture(BlockType type);
     Texture2D getCharacterTexture(CharacterType type);
     void loadTextures();
@@ -25,6 +29,7 @@ private:
     std::map<CharacterType, Texture2D> characterTextures;
  
     bool texturesLoaded = false;
+	bool itemTexturesLoaded = false;
 };
 
 class ObjectPalette {
