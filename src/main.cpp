@@ -48,7 +48,7 @@ int main() {
 
     // Convert std::unique_ptr to std::shared_ptr before adding to PhysicsManager
     PhysicsManager::getInstance().addObject(std::shared_ptr<Object>(std::move(coin)));
-    //PhysicsManager::getInstance().addObject(std::shared_ptr<Object>(std::move(mushroom)));
+    PhysicsManager::getInstance().addObject(std::shared_ptr<Object>(std::move(mushroom)));
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -62,8 +62,8 @@ int main() {
             if (obj->isActive()) obj->draw();
         }
 
-        // Optional: debug quadtree
-        // PhysicsManager::getInstance().drawDebug();
+         //Optional: debug quadtree
+         //PhysicsManager::getInstance().drawDebug();
 
         DrawText("Item test - ESC to exit", 10, 10, 20, DARKGRAY);
 
