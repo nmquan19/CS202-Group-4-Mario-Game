@@ -4,6 +4,7 @@
 #include <memory>
 #include "../System/Interface.h"
 #include <raylib.h>
+#include "../Item/Item.h"
 class Block;
 class Character;
 struct CharacterStats;
@@ -43,9 +44,16 @@ public:
 	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 2.0f);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
+	static std::unique_ptr<Object> createItem(ItemType type, Vector2 startPos, Vector2 size);
+	static std::unique_ptr<Item> createCoin(Vector2 startPos, Vector2 size);
+	static std::unique_ptr<Item> createMushroom(Vector2 startPos, Vector2 size);
+
+
 private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
+	static std::unique_ptr<Item> createSpecificItem(ItemType type, Vector2 startPos, Vector2 size);
+
 	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, Vector2 startPosition, float scale);
 	static std::unique_ptr<KoopaShell> createSpecificKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
 	static CharacterStats getStats(CharacterType type);

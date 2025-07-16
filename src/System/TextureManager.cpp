@@ -26,6 +26,7 @@ void TextureManager::loadTextures() {
 
     characterTextures[CharacterType::MARIO] = LoadTexture("assets/mario_sprites.png");
     characterTextures[CharacterType::LUIGI] = LoadTexture("assets/luigi_sprites.png");
+
     //Enemy textures 
 	DrawText("Loading enemy textures...", 10, 10, 20, DARKGRAY);
     std::ifstream  enemy_in;
@@ -38,6 +39,20 @@ void TextureManager::loadTextures() {
     enemyTextures = Texture2D(LoadTexture("assets/enemy/enemy_spritesheet.png"));
     enemy_in.close();
     texturesLoaded = true;
+
+	//Item textures
+    DrawText("Loading item textures...", 10, 30, 20, DARKGRAY);
+    std::ifstream item_in;
+    item_in.open("assets/item/item_output.txt");
+    int item_id, item_x, item_y, item_w, item_h;
+    while (item_in >> item_id >> item_x >> item_y >> item_w >> item_h)
+    {
+        Item_sprite_boxes.push_back({ (float)item_x,(float)item_y,(float)item_w, (float)item_h });
+    }
+    itemTextures = LoadTexture("assets/item/item_spritesheet.png");
+    item_in.close();
+
+    itemTexturesLoaded = true;
 }
 
 void TextureManager::unloadTextures() {
@@ -52,8 +67,14 @@ void TextureManager::unloadTextures() {
         UnloadTexture(pair.second);
     }
     characterTextures.clear();
+
 	UnloadTexture(enemyTextures);
     texturesLoaded = false;
+
+	UnloadTexture(itemTextures);
+    itemTexturesLoaded = false;
+    Enemy_sprite_boxes.clear();
+	Item_sprite_boxes.clear();
 }
 
 void ObjectPalette::drawPalette() {
