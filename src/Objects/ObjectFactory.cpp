@@ -1,6 +1,6 @@
-#include "../../include/Objects/ObjectFactory.h"
-#include "../Objects/Block.h"
-#include "../Characters/Character.h"
+#include "../../../include/Objects/ObjectFactory.h"
+#include "../../../include/Objects/Block.h"
+#include "../../../include/Characters/Character.h"
 #include <memory>
 #include "../../include/Enemy/Enemy.h"
 #include "../../include/Enemy/Goomba/Goomba.h"
