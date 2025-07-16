@@ -11,7 +11,7 @@ enum class ObjectCategory {
 	PROJECTILE,
 	TRIGGER,
 	SHELL,
-	BACKGROUND, 
+	BACKGROUND,
 };
 
 enum class BlockType {
@@ -46,7 +46,7 @@ enum class CharacterType {
 };
 enum class KoopaShellType {
 	GREEN_KOOPA_SHELL,
-	RED_KOOPA_SHELL	
+	RED_KOOPA_SHELL
 };
 enum class TriggerType {
 	CHECKPOINT,
@@ -56,12 +56,12 @@ enum class TriggerType {
 	ZONE,
 };
 enum class Direction {
-	UP =1 ,
+	UP = 1,
 	DOWN,
 	LEFT,
 	RIGHT
 };
-class IDrawable{
+class IDrawable {
 public:
 	virtual ~IDrawable() = default;
 	virtual void draw() = 0;
@@ -77,7 +77,7 @@ public:
 	virtual void onCollision(Object* other) = 0;
 };
 class IDamageable {
-	public:
+public:
 	virtual ~IDamageable() = default;
 	virtual void takeDamage(int amount) = 0;
 	virtual bool isAlive() const = 0;

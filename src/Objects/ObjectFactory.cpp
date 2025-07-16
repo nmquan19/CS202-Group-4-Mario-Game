@@ -92,6 +92,11 @@ std::unique_ptr<Item> ObjectFactory::createCoin(Vector2 startPos, Vector2 size) 
     return std::make_unique<Item>(startPos, texture, size);
 }
 
+std::unique_ptr<Item> ObjectFactory::createMushroom(Vector2 startPos, Vector2 size) {
+    Texture2D texture = LoadTexture("assets/item_mushroom.png");
+    return std::make_unique<Item>(startPos, texture, size);
+}
+
 
 std::vector<std::vector<Rectangle>> ObjectFactory::getFrameData(CharacterType type) {
     switch (type) {
