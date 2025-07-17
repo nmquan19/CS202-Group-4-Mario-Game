@@ -115,6 +115,12 @@
 >>>>>>> d60861c35ec8ba7053c4ff34af052ffa3f48e0b7
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\System\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

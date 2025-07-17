@@ -26,6 +26,9 @@ public:
     Vector2 getPosition() const ;
 	void setPosition(Vector2 newPos);
     void draw() override ;
+
+    ObjectType getObjectType() const override;
+    Vector2 getSize() const override;
 private:
     bool nearLedge;
     float castLength;

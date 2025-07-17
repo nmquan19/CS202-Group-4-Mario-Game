@@ -11,6 +11,7 @@ enum class ObjectCategory {
 	PROJECTILE,
 	TRIGGER,
 	SHELL,
+	BACKGROUND, 
 };
 
 enum class BlockType {
@@ -24,7 +25,8 @@ enum class BlockType {
 
 enum class EnemyType {
 	GOOMBA,
-	KOOPA,
+	GREEN_KOOPA,
+	RED_KOOPA,
 	PIRANHA_PLANT,
 	HAMMER_BRO
 };
@@ -35,6 +37,7 @@ enum class ItemType {
 	FIRE_FLOWER,
 	STAR,
 	ONE_UP
+
 };
 
 enum class CharacterType {
@@ -43,11 +46,14 @@ enum class CharacterType {
 };
 enum class KoopaShellType {
 	GREEN_KOOPA_SHELL,
+	RED_KOOPA_SHELL	
 };
 enum class TriggerType {
 	CHECKPOINT,
 	LEVEL_END,
-	WARP_PIPE
+	WARP_PIPE,
+	DETECTOR,
+	ZONE,
 };
 enum class Direction {
 	UP =1 ,
@@ -88,4 +94,4 @@ public:
 	virtual void setVelocity(Vector2 newVelocity) = 0;
 	virtual Vector2 getVelocity() = 0;
 };
-using ObjectType = std::variant<BlockType, EnemyType, KoopaShellType>;
+using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType>;

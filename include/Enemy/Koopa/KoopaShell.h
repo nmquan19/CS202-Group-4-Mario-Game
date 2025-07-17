@@ -7,6 +7,7 @@
 #include <vector>
 #include "../../Characters/Character.h"
 #include <climits>
+#include <utility>
 class KoopaShell : public CollectableObject, public IMovable{    
     public:
      KoopaShell(Vector2 pos, Vector2 sz);
@@ -30,14 +31,36 @@ class KoopaShell : public CollectableObject, public IMovable{
 	 void queueState(KoopaShellState* newState);
      void applyQueueState(); 
 	 bool isMovingState() const;  
+     virtual KoopaShellType getType() const =0; 
+     std::vector<std::pair<int, int>> getSpriteData() const;   
+     Vector2 getSize() const { return size; };
 private:
-    bool isKnocked; 
+      float aniTimer;
+	  float aniSpeed;    
+      bool isKnocked; 
       bool onGround; 
       float timer;
-      Rectangle spriteBox;
+      Rectangle spritebox;
       Vector2 velocity; 
 	  KoopaShellState* currentState;
       KoopaShellState* pendingState; 
-      Vector2 knockedVelocity; 
       float groundLevel = (float)INT_MAX;
+	  int curFrame = 0;
+};
+
+class KoopaGreenShell : public KoopaShell {
+    public:
+        KoopaGreenShell(Vector2 pos, Vector2 sz);
+        ObjectType getObjectType() const override;
+
+        KoopaShellType getType() const ;
+}; 
+
+class KoopaRedShell : public KoopaShell {
+public:
+
+    KoopaRedShell(Vector2 pos, Vector2 sz);
+    ObjectType getObjectType() const override;
+
+    KoopaShellType getType() const ;
 };

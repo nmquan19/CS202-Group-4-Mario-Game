@@ -7,7 +7,6 @@
 #include "../../include/Objects/CollectableObject.h"
 #include <raymath.h>
 #include "../../include/System/Grid.h"
-#include "../../include/System/PhysicsManager.h"
 TriggerZone::TriggerZone(CollectableObject* ownerItem, Vector2 pos, Vector2 sz)
     : owner(ownerItem) {
     position = pos;
@@ -17,7 +16,7 @@ TriggerZone::TriggerZone(CollectableObject* ownerItem, Vector2 pos, Vector2 sz)
 
     hitBox = Rectangle{ position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
     this->active = true;
-    PhysicsManager::getInstance().addObject(this); 
+     //PhysicsManager::getInstance().addObject(this); 
 } 
 
 void TriggerZone::update(float deltaTime) {
@@ -71,3 +70,11 @@ bool TriggerZone::isCollided() const { return collided; }
 
 Vector2 TriggerZone::getPosition() const { return position; }
 void TriggerZone::setPosition(Vector2 newPos) { position = newPos; }
+
+ObjectType TriggerZone::getObjectType() const {
+    return TriggerType::ZONE;
+}
+
+Vector2 TriggerZone::getSize() const {
+    return size;
+}
