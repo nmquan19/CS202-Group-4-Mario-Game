@@ -4,8 +4,10 @@
 #include "..\..\include\Characters\JumpingState.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/Enemy/Koopa/KoopaShell.h"
+#include "../../include/System/Constant.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale)
 	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(5), projectile(nullptr), holdingProjectile(false),
@@ -15,10 +17,9 @@ Character::Character(Vector2 startPosition, const CharacterStats& stats, const s
 	this->position = startPosition;
 	this->speed = stats.baseSpeed;
 	this->jumpForce = stats.jumpForce;
-	//this->gravity = stats.gravity;
-	this->gravity = 490.0f;
+	this->gravity = Constants::GRAVITY;
 	this->stateFrameData = stateFrameData;
-	this->spriteSheet = TextureManager::getInstance().getCharacterTexture(type);
+	this->spriteSheet = TextureManager::getInstance().getCharacterTexture();
 
     if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
         setCurrentStateRow(0);
@@ -28,7 +29,9 @@ Character::Character(Vector2 startPosition, const CharacterStats& stats, const s
     currentState->enter(this);
 }
 
-Character::~Character() {}
+Character::~Character() {
+	
+}
 
 void Character::changeState(ICharacterState& newState) {
 	if (currentState) {
@@ -102,7 +105,7 @@ void Character::update(float deltaTime) {
 void Character::draw() {
 	Rectangle sourceRec = spriteRec;
 
-	if(isFacingRight()){
+	if(!isFacingRight()){
 		sourceRec.width = -sourceRec.width;
 	}
 
@@ -268,7 +271,7 @@ void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candi
 				//position =  Vector2{position.x - 50, position.y - 20};
 				break;
 			case ObjectCategory::ITEM:
-				// implement
+				// implement 
 				break;
 		}
 	}
@@ -291,7 +294,6 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 	if(overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
 		return;
 	}
-
 	float minOverlap = std::min({overlapTop, overlapBottom, overlapLeft, overlapRight});
 
 	if(minOverlap == overlapTop) {
@@ -323,12 +325,6 @@ void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
     float overlapRight = (otherHitbox.x + otherHitbox.width) - characterHitbox.x;
     float overlapTop = (characterHitbox.y + characterHitbox.height) - otherHitbox.y;
     float overlapBottom = (otherHitbox.y + otherHitbox.height) - characterHitbox.y;
-
-    const float MIN_OVERLAP = 2.0f;
-
-    if (overlapLeft <= MIN_OVERLAP || overlapRight <= MIN_OVERLAP || overlapTop <= MIN_OVERLAP || overlapBottom <= MIN_OVERLAP) {
-        return;
-    }
 
     float minOverlap = std::min({overlapLeft, overlapRight, overlapTop, overlapBottom});
 
