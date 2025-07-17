@@ -7,10 +7,11 @@
 #include <vector>
 #include "../../../include/System/Interface.h"
 #include "../../../include/Characters/Character.h"
+#include "../../../include/System/Constant.h"
 #include <raymath.h>
-KoopaShell::KoopaShell(Vector2 pos, Vector2 sz): spriteBox({0,0,0,0}), velocity({0,0}), CollectableObject(pos, sz, TextureManager::enemyTextures) {   
-    changeState(&KoopaShellIdleState::getInstance());
-	knockedVelocity = { 0, -600};
+#include <utility>
+KoopaShell::KoopaShell(Vector2 pos, Vector2 sz): spritebox({0,0,0,0}), velocity({0,0}), CollectableObject(pos, sz, TextureManager::enemyTextures), aniSpeed(0.2f), aniTimer(0) {   
+	
 }
 
 void KoopaShell::onCollect(Character* player) {
@@ -23,6 +24,7 @@ void KoopaShell::onCollect(Character* player) {
 
 void KoopaShell::update(float deltaTime) {
 
+    aniTimer += deltaTime; 
     CollectableObject::update(deltaTime); 
 	if(currentState)currentState->update(this, deltaTime);
     if (pendingState) {
@@ -30,6 +32,11 @@ void KoopaShell::update(float deltaTime) {
     }
 	position += velocity*deltaTime; 
     applyGravity(deltaTime);
+    if (aniTimer >= aniSpeed) {
+        curFrame += 1;
+        aniTimer = 0;
+    }
+   
     if (position.y + hitBox.height >= groundLevel) {
 		position.y = groundLevel - hitBox.height;
         onGround = true;
@@ -53,7 +60,7 @@ void KoopaShell::onCollision(Object* other) {
 }
 
 void KoopaShell::draw() {
-    Rectangle sourceRec = this->spriteBox;
+    Rectangle sourceRec = this->spritebox;
     if (isKnocked)
     {
         sourceRec.height *= -1; 
@@ -76,7 +83,7 @@ void KoopaShell::checkCollision(const std::vector<Object*>& candidates)
 
 void KoopaShell ::applyGravity(float deltaTime) {
     if (!onGround) {
-        velocity.y += 980 * deltaTime;
+        velocity.y += Constants::GRAVITY * deltaTime;
     }
 }
 void KoopaShell::handleEnvironmentCollision(Object* other) {
@@ -104,7 +111,8 @@ void KoopaShell::handleEnvironmentCollision(Object* other) {
     }
 }
     
-std::vector<ObjectCategory> KoopaShell::getCollisionTargets() const {    
+std::vector<ObjectCategory> KoopaShell::getCollisionTargets() const {
+	if (!currentState) return {};
 	return currentState->getCollisionTargets();
 }
 bool KoopaShell::isMovingState() const
@@ -127,4 +135,32 @@ void KoopaShell::applyQueueState()
 {
    	changeState(pendingState);  
 	pendingState = nullptr;  
+}
+std::vector<std::pair<int, int>> KoopaShell::getSpriteData() const {
+    switch(getType()){
+        case KoopaShellType::GREEN_KOOPA_SHELL:
+            return { {47,47},{49,52},{47, 48}};
+        default:
+            return { { 55,55},{57,60}, {55,56} };
+	}
+}
+
+
+KoopaGreenShell::KoopaGreenShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
+    changeState(&KoopaShellIdleState::getInstance());
+}
+KoopaShellType KoopaGreenShell::getType() const {
+    return KoopaShellType::GREEN_KOOPA_SHELL;
+}
+KoopaRedShell::KoopaRedShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
+    changeState(&KoopaShellIdleState::getInstance());
+}
+KoopaShellType KoopaRedShell::getType() const {
+    return KoopaShellType::RED_KOOPA_SHELL;
+}
+ObjectType KoopaGreenShell::getObjectType() const {
+    return KoopaShellType::GREEN_KOOPA_SHELL;
+}
+ObjectType KoopaRedShell::getObjectType() const {
+    return KoopaShellType::RED_KOOPA_SHELL;
 }

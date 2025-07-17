@@ -58,6 +58,9 @@ public:
 	bool isCollided() const override;
 	void setCollided(bool flag) override;
 
+	ObjectType getObjectType() const override;
+	Vector2 getSize() const override;
+
 	void takeDamage(int amount) override;
 	bool isAlive() const override;
 	void die() override;

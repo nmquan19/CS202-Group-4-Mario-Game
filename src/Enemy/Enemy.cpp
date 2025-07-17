@@ -1,5 +1,4 @@
 #include "..\..\include\Enemy\Enemy.h"
-#include "..\..\include\System\PhysicsManager.h"
 #include <raymath.h>
 #include <vector>
 #include "../../include/Objects/ObjectFactory.h"
@@ -8,14 +7,14 @@
 #include "../../include/Enemy/EnemyState.h"
 #include <algorithm>
 #include "../../include/System/Grid.h"
+#include <utility>
 Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f) {
 	isalive = true;
     size = { 1,1 };
     hitbox = { position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE};
-    num_sprites ={};
     currentState = nullptr; 
-    PhysicsManager::getInstance().addObject(this);
+    // PhysicsManager::getInstance().addObject(this);
 
 }
 Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f) {
@@ -25,10 +24,10 @@ Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(star
     hitbox = {position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE };
     currentState = nullptr;
-    PhysicsManager::getInstance().addObject(this);
+    // PhysicsManager::getInstance().addObject(this);
 }
 Enemy::~Enemy() {
-    PhysicsManager::getInstance().markForDeletion(this);
+    // PhysicsManager::getInstance().markForDeletion(this);
 }
 
 Rectangle Enemy::getHitBox() const {
@@ -36,7 +35,7 @@ Rectangle Enemy::getHitBox() const {
 }
 std::vector<ObjectCategory> Enemy::getCollisionTargets() const 
 {
-	return { ObjectCategory::CHARACTER, ObjectCategory::ENEMY, ObjectCategory::BLOCK };
+	return { ObjectCategory::CHARACTER, ObjectCategory::ENEMY, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE };
 }
 void Enemy::applyGravity(float deltaTime) {
     if (!onGround) {
@@ -214,6 +213,15 @@ Vector2 Enemy::getCenter() const {
     return Vector2{ getCenterX(), getCenterY() };
 }
 
-EnemyType Enemy::getType() const {
-    return type;
+std::vector<std::pair<int, int>> Enemy::getSpriteData() {
+   switch(getType()) {
+        case EnemyType::GOOMBA:
+            return { {0,1},{2,3},{5,5} }; 
+        case EnemyType::GREEN_KOOPA:
+            return  {{45,46}};
+        case EnemyType::RED_KOOPA:
+			return { {53,54} };
+        default:
+            return {};
+   }
 }

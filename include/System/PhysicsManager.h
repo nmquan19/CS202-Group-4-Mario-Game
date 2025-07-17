@@ -12,25 +12,21 @@ public:
 	static PhysicsManager& getInstance();
 	static void cleanup();
 
-	void addObject(Object* object);
-	void markForDeletion(Object* object);
-	void deleteObjects();
+	void addObject(std::shared_ptr<Object> object);
+	void markForDeletion(std::shared_ptr<Object> object);
 	void update();
 	bool checkCollision(const Rectangle& rect1, const Rectangle& rect2);
-	std::vector<Object*> getObjectsInLayer(ObjectCategory objectCategory);
+	std::vector<std::shared_ptr<Object>> getObjectsInLayer(ObjectCategory objectCategory);
 
 	void setWorldBounds(Rectangle bounds);
-	std::vector<Object*> getObjectsInArea(Rectangle area);
-	std::vector<Object*> getObjectsNearPoint(Vector2 point, float radius);
+	std::vector<std::shared_ptr<Object>> getObjectsInArea(Rectangle area);
+	std::vector<std::shared_ptr<Object>> getObjectsNearPoint(Vector2 point, float radius);
 
 	void drawDebug() const;
 	void getDebugStats(int& totalNodes, int& maxDepth, int& totalObjects) const;
-
-	bool deletionCompleted() const;
 private:
 	PhysicsManager() = default;
-	std::vector<Object*> objects;	
-	std::vector<Object*> toDelete;
+	std::vector<std::shared_ptr<Object>> objects;	
 	std::unique_ptr<QuadTree> quadTree; 
 	static PhysicsManager* instance;
 	const int REBUILD_FREQUENCY = 2;

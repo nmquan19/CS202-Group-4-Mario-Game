@@ -23,6 +23,13 @@ public:
     void draw(GameContext& context) override;
 };
 
+class EditorState : public GameState {
+public:
+    void handleInput(GameContext& context) override;
+    void update(GameContext& context, float deltaTime) override;
+    void draw(GameContext& context) override;
+};
+
 class GameOverState : public GameState {
 public:
     void handleInput(GameContext& context) override;

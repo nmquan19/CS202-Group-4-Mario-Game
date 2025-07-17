@@ -4,15 +4,13 @@
     #include "../LedgeDetector.h"
     #include <raylib.h>
     #include <memory>
+#include "../../System/Interface.h"
     class Koopa: public Enemy
     {
     private:
         bool stompedAnimation = false;
         bool knockAnimation = false;
-        float stompedTime = 0.0f;
-        float stompedDuration = 0.3f;
-        float knockVelocity = -300.0f;
-	    std::unique_ptr<LedgeDetector> ledgeDetector;
+	    std::shared_ptr<LedgeDetector> ledgeDetector;
     public:
         Koopa(Vector2 startPos, Vector2 size);
         Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration);
@@ -28,4 +26,23 @@
         void handleCharacterCollision(Object* other);
         void die() override;
         void takeDamage(int damage) override;
+		KoopaShellType getShellType() const;
+        virtual EnemyType getType() const override =0; 
     }; 
+
+    class GreenKoopa : public Koopa {
+        public:
+            GreenKoopa(Vector2 startPos, Vector2 size);
+            GreenKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration);
+            EnemyType getType() const override;
+            ObjectType getObjectType() const override;
+
+    }; 
+    class RedKoopa : public Koopa {
+        public:
+            RedKoopa(Vector2 startPos, Vector2 size);
+            RedKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration);
+            EnemyType getType() const override;
+            ObjectType getObjectType() const override;
+
+	};
