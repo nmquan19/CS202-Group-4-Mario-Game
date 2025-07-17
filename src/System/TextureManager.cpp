@@ -14,8 +14,8 @@ Texture2D TextureManager::getBlockTexture(BlockType type) {
     return blockTextures[type];
 }
 
-Texture2D TextureManager::getCharacterTexture(CharacterType type) {
-    return characterTextures[type];
+Texture2D TextureManager::getCharacterTexture() const {
+    return characterTextures;
 }
 
 void TextureManager::loadTextures() {
@@ -24,8 +24,7 @@ void TextureManager::loadTextures() {
     blockTextures[BlockType::GROUND] = LoadTexture("assets/ground_block.png");
     blockTextures[BlockType::BRICK] = LoadTexture("assets/brick_block.png");
 
-    characterTextures[CharacterType::MARIO] = LoadTexture("assets/mario_sprites.png");
-    characterTextures[CharacterType::LUIGI] = LoadTexture("assets/luigi_sprites.png");
+    characterTextures = LoadTexture("assets/character_spritesheet.png");
     //Enemy textures 
 	DrawText("Loading enemy textures...", 10, 10, 20, DARKGRAY);
     std::ifstream  enemy_in;
@@ -48,10 +47,7 @@ void TextureManager::unloadTextures() {
     } 
     blockTextures.clear();
 
-    for (auto& pair : characterTextures) {
-        UnloadTexture(pair.second);
-    }
-    characterTextures.clear();
+    UnloadTexture(characterTextures);
 	UnloadTexture(enemyTextures);
     texturesLoaded = false;
 }
@@ -127,10 +123,10 @@ void ObjectPalette::drawPalette() {
     
     // Mario
     Rectangle marioRect = { startX, yCharacter, iconSize, iconSize };
-    Texture2D marioTexture = tm.getCharacterTexture(CharacterType::MARIO);
+    Texture2D marioTexture = tm.getCharacterTexture();
     if (marioTexture.id != 0) {
         // Use a portion of Mario sprite sheet (idle frame)
-        Rectangle marioSource = { 31, 21, 17, 43 }; // Adjust based on your sprite sheet
+        Rectangle marioSource = { 11, 23, 12, 15 }; // Adjust based on your sprite sheet
         DrawTexturePro(marioTexture, marioSource, marioRect, { 0, 0 }, 0.0f, WHITE);
     } else {
         DrawRectangleRec(marioRect, RED);
@@ -140,9 +136,9 @@ void ObjectPalette::drawPalette() {
 
     // Luigi (optional)
     Rectangle luigiRect = { startX + spacing, yCharacter, iconSize, iconSize };
-    Texture2D luigiTexture = tm.getCharacterTexture(CharacterType::LUIGI);
+    Texture2D luigiTexture = tm.getCharacterTexture();
     if (luigiTexture.id != 0) {
-        Rectangle luigiSource = { 0, 0, 32, 32 }; // Adjust based on your sprite sheet
+        Rectangle luigiSource = { 11, 893, 12, 15 }; // Adjust based on your sprite sheet
         DrawTexturePro(luigiTexture, luigiSource, luigiRect, { 0, 0 }, 0.0f, WHITE);
     } else {
         DrawRectangleRec(luigiRect, DARKGREEN);

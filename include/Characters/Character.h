@@ -5,17 +5,11 @@
 #include "../System/Interface.h"
 #include "../System/PhysicsManager.h"
 
-struct CharacterStats{
-	float baseSpeed;
-	float jumpForce;
-	float gravity;
-};
-
 class ICharacterState;
 
 class Character : public Object, public IUpdatable, public IMovable, public IDamageable {
 public:
-	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale = 2.0f);
+	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale);
 	~Character();
 	void changeState(ICharacterState& newState);
   
