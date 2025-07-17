@@ -150,10 +150,10 @@ void KoopaKnockState::exit(Enemy* enemy)
     if (koopa) {
         koopa->isalive = false;
 
-      /*  std::shared_ptr<Object> sharedKoopa = GameContext::getInstance().getSharedPtrFromRaw(koopa);
+        std::shared_ptr<Object> sharedKoopa = GameContext::getInstance().getSharedPtrFromRaw(koopa);
         if (sharedKoopa) {
             GameContext::getInstance().mark_for_deletion_Object(sharedKoopa);
-        }*/
+        }
     }
 }
 

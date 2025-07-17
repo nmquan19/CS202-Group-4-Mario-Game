@@ -17,9 +17,9 @@ public:
 
 	Rectangle getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
-	virtual void onCollision(Object* other) override;
+	virtual void onCollision(std::shared_ptr<Object> other) override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
-	virtual void checkCollision(const std::vector<Object*>& candidates) override =0 ;
+	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0 ;
 
 	bool isActive() const override;
 	void changeState(EnemyState* other);
@@ -45,11 +45,11 @@ public :
 	Vector2 getCenter() const;
 	virtual ObjectType getObjectType() const override = 0 ;
 	virtual EnemyType getType() const =0;
-	Vector2 getSize() const override { return size; };
+	Vector2 getSize() const override;
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;
-	virtual void handleEnvironmentCollision(Object* other);
+	virtual void handleEnvironmentCollision(std::shared_ptr<Object> other);
 	std::vector<std::pair<int, int>> getSpriteData();
 protected:
 	bool isalive; 

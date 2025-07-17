@@ -25,8 +25,8 @@ public:
 	virtual Rectangle getHitBox() const override = 0;
 	virtual ObjectCategory getObjectCategory() const override = 0;
 	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;
-	virtual void checkCollision(const std::vector<Object*>& candidates) override = 0;
-	void onCollision(Object* other) override = 0;
+	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0;
+	void onCollision(std::shared_ptr<Object> other) override = 0;
 	int getCollidedPart(const Object& other);
 	virtual ObjectType getObjectType() const = 0;
 	

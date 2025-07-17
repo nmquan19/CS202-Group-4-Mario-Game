@@ -9,13 +9,10 @@
 #include "../../include/System/Grid.h"
 #include <utility>
 Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f) {
-	isalive = true;
-    size = { 1,1 };
+    isalive = true;
     hitbox = { position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE};
     currentState = nullptr; 
-    // PhysicsManager::getInstance().addObject(this);
-
 }
 Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f) {
     this->size = size; 
@@ -24,10 +21,8 @@ Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(star
     hitbox = {position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE };
     currentState = nullptr;
-    // PhysicsManager::getInstance().addObject(this);
 }
 Enemy::~Enemy() {
-    // PhysicsManager::getInstance().markForDeletion(this);
 }
 
 Rectangle Enemy::getHitBox() const {
@@ -81,7 +76,7 @@ void Enemy::changeState(EnemyState* other)
 bool Enemy::isAlive() const {
     return isalive;
 }
-void Enemy::onCollision(Object* other) {
+void Enemy::onCollision(std::shared_ptr<Object> other) {
 	if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
             // velocity = {0,0} ;  
             // accelleration = {0,0};
@@ -104,7 +99,7 @@ void Enemy::onCollision(Object* other) {
         }
     }
 }
-void Enemy::handleEnvironmentCollision(Object* other) {
+void Enemy::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
 
@@ -224,4 +219,8 @@ std::vector<std::pair<int, int>> Enemy::getSpriteData() {
         default:
             return {};
    }
+}
+
+Vector2 Enemy::getSize() const {
+    return size;
 }

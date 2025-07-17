@@ -40,7 +40,7 @@ void PhysicsManager::update() {
 		quadTree->clear();
 		for (const auto object : objects) {
 			if (object && object->isActive()) {
-				quadTree->insert(object.get());
+				quadTree->insert(object);
 			}
 		}
 	}
@@ -52,12 +52,12 @@ void PhysicsManager::update() {
 		auto targetLayer = object->getCollisionTargets();
 		if (targetLayer.empty()) continue;
 
-		std::vector<Object*> candidates = quadTree->retrieve(object.get());
-		std::vector<Object*> filterdCandidates;
+		std::vector<std::shared_ptr<Object>> candidates = quadTree->retrieve(object);
+		std::vector<std::shared_ptr<Object>> filterdCandidates;
 		filterdCandidates.reserve(candidates.size());
 
-		for (auto* candidate : candidates) {
-			if (candidate && candidate != object.get() && candidate->isActive()) {
+		for (auto candidate : candidates) {
+			if (candidate && candidate != object && candidate->isActive()) {
 				if (std::find(targetLayer.begin(), targetLayer.end(), candidate->getObjectCategory()) != targetLayer.end()
 					&& PhysicsManager::getInstance().checkCollision(object->getHitBox(), candidate->getHitBox())) {
 					filterdCandidates.push_back(candidate);
@@ -95,9 +95,9 @@ std::vector<std::shared_ptr<Object>> PhysicsManager::getObjectsInArea(Rectangle 
 	auto rawObjects = quadTree->retrieve(area);
 	std::vector<std::shared_ptr<Object>> result;
 
-	for (auto* rawObj : rawObjects) {
+	for (auto rawObj : rawObjects) {
 		auto it = std::find_if(objects.begin(), objects.end(), [rawObj](const std::shared_ptr<Object>& obj) {
-			return obj.get() == rawObj;
+			return obj == rawObj;
 			});
 		if (it != objects.end()) {
 			result.push_back(*it);

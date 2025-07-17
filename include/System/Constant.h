@@ -9,7 +9,7 @@ struct CharacterStats {
 
 namespace Constants {
     constexpr float GRAVITY = 980.0f;
-    constexpr int TILE_SIZE = 52;
+    constexpr int TILE_SIZE = 96;
     constexpr float KOOPA_SPEED = 200.0f;
 
     namespace GreenKoopa {
@@ -25,7 +25,7 @@ namespace Constants {
         constexpr float KNOCK_VELOCITY = -300.0f;
     }
     namespace Goomba {
-        constexpr Vector2 standardSize = { 1, 1 };
+        constexpr Vector2 standardSize = { 0.75, 0.75 };
         constexpr float WANDERING_SPEED = 100.0f;
         constexpr float STOMPED_DURATION = 0.3f;
         constexpr float KNOCK_VELOCITY = -300.0f;
