@@ -5,12 +5,6 @@
 #include "../System/Interface.h"
 #include "../System/PhysicsManager.h"
 
-struct CharacterStats{
-	float baseSpeed;
-	float jumpForce;
-	float gravity;
-};
-
 class ICharacterState;
 
 class Character : public Object, public IUpdatable, public IMovable, public IDamageable {

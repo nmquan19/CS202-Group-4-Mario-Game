@@ -1,5 +1,12 @@
 #pragma once// Constants.h
 #include <raylib.h>
+#include <vector>
+
+struct CharacterStats {
+    float baseSpeed;
+    float jumpForce;
+};
+
 namespace Constants {
     constexpr float GRAVITY = 980.0f;
     constexpr int TILE_SIZE = 52;
@@ -29,4 +36,18 @@ namespace Constants {
         constexpr float IDLE_DURATION = 4.5f;
         constexpr float REVIVE_DURATION = 1.5f;
 	}
+    namespace Character {
+        constexpr CharacterStats MARIO_STATS = {220.0f, 550.0f};
+        constexpr CharacterStats LUIGI_STATS = {175.0f, 730.0f};
+        const std::vector<std::vector<Rectangle>> MARIO_FRAME_DATA = {
+            {{11, 23, 12, 15}}, // idle state
+            {{118, 23, 12, 15}, {149, 22, 15, 16}}, // moving state
+            {{293, 22, 16, 16}, {326, 22, 16, 16}} // jumping state
+        };
+        const std::vector<std::vector<Rectangle>> LUIGI_FRAME_DATA = {
+            {{11, 893, 12, 15}}, // idle state
+            {{118, 893, 12, 15}, {149, 892, 15, 16}}, // moving state
+            {{293, 892, 16, 16}, {326, 892, 16, 16}} // jumping state
+        };
+    }
 }
