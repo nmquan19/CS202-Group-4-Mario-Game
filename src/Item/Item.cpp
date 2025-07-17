@@ -50,15 +50,15 @@ std::vector<ObjectCategory> Item::getCollisionTargets() const {
     return { ObjectCategory::CHARACTER };
 }
 
-void Item::onCollision(Object* other) {
+void Item::onCollision(std::shared_ptr<Object> other) {
     // Ví dụ: Khi va chạm với nhân vật thì biến mất
     if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
         active = false;
     }
 }
 
-void Item::checkCollision(const std::vector<Object*>& candidates) {
-    for (Object* obj : candidates) {
+void Item::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
+    for (std::shared_ptr<Object> obj : candidates) {
         if (!obj->isActive()) continue;
 
         for (ObjectCategory targetCat : getCollisionTargets()) {
