@@ -89,12 +89,12 @@ std::unique_ptr<Item> ObjectFactory::createSpecificItem(ItemType type, Vector2 s
 
 std::unique_ptr<Item> ObjectFactory::createCoin(Vector2 startPos, Vector2 size) {
     Texture2D texture = LoadTexture("assets/item_coin.png"); // 👈 dùng sprite riêng cho coin
-    return std::make_unique<Item>(startPos, texture, size);
+    return std::make_unique<CoinItem>(startPos, texture, size);
 }
 
 std::unique_ptr<Item> ObjectFactory::createMushroom(Vector2 startPos, Vector2 size) {
     Texture2D texture = LoadTexture("assets/item_mushroom.png");
-    return std::make_unique<Item>(startPos, texture, size);
+    return std::make_unique<MushroomItem>(startPos, texture, size);
 }
 
 

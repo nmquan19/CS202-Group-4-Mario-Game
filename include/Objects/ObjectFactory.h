@@ -4,8 +4,6 @@
 #include <memory>  
 #include "../System/Interface.h"  
 #include <raylib.h>  
-#include "../Item/Item.h"  
-
 // Forward declaration for Item class  
 class Item;  
 class Block;  
@@ -13,6 +11,7 @@ class Character;
 struct CharacterStats;  
 class Enemy;  
 class KoopaShell;  
+
 class Object : public ICollidable, public IDrawable {  
 public:  
 	virtual ~Object() = default;  
@@ -29,8 +28,8 @@ public:
 	virtual Rectangle getHitBox() const override = 0;  
 	virtual ObjectCategory getObjectCategory() const override = 0;  
 	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;  
-	virtual void checkCollision(const std::vector<Object*>& candidates) override = 0;  
-	void onCollision(Object* other) override = 0;  
+	virtual void checkCollision(const std::vector<Object*>& candidates) override = 0;
+	virtual void onCollision(Object* other) override = 0;  
 	int getCollidedPart(const Object& other);  
 	virtual ObjectType getObjectType() const = 0;  
 

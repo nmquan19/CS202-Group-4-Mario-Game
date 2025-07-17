@@ -3,6 +3,8 @@
 #include "raylib.h"
 #include "../Objects/ObjectFactory.h"
 #include <climits>
+#include <variant>
+
 
 class Item : public Object, public IUpdatable {
 public:
@@ -23,6 +25,12 @@ public:
     bool isActive() const override;
     void setActive(bool flag) override;
 
+    bool isCollided() const override;
+    void setCollided(bool) override;
+    Vector2 getSize() const override;
+    virtual ObjectType getObjectType() const override = 0 ;
+
+
 protected:
     Vector2 position;
     Vector2 velocity;
@@ -38,3 +46,20 @@ protected:
 
     ItemType type; // Giả định bạn có enum ItemType
 };
+
+class CoinItem : public Item {
+public:
+    CoinItem(Vector2 startPos, Texture2D texture, Vector2 size);
+
+    ObjectType getObjectType() const override;
+};
+
+class MushroomItem : public Item {
+public:
+    MushroomItem(Vector2 startPos, Texture2D texture, Vector2 size);
+
+    ObjectType getObjectType() const override;
+};
+
+
+

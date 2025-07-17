@@ -86,3 +86,33 @@ bool Item::isActive() const {
 void Item::setActive(bool flag) {
     active = flag;
 }
+
+
+bool Item::isCollided() const {
+    return collided;
+}
+
+void Item::setCollided(bool value) {
+    collided = value;
+}
+
+Vector2 Item::getSize() const {
+    return size;
+}
+
+CoinItem::CoinItem(Vector2 startPos, Texture2D texture, Vector2 size)
+    : Item(startPos, texture, size) {
+}
+
+std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType> CoinItem::getObjectType() const {
+    return ItemType::COIN;
+}
+
+MushroomItem::MushroomItem(Vector2 startPos, Texture2D texture, Vector2 size)
+    : Item(startPos, texture, size) {
+}
+
+std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType> MushroomItem::getObjectType() const {
+    return ItemType::MUSHROOM;  
+}
+
