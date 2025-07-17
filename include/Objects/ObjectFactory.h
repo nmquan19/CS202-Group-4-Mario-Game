@@ -37,7 +37,7 @@ protected:
 class ObjectFactory {
 public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
-	static std::unique_ptr<Character> createCharacter(CharacterType type, Vector2 startPosition, float scale = 2.0f);
+	static std::unique_ptr<Character> createCharacter(CharacterType type, Vector2 startPosition, float scale = 4.0f);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
 private:

@@ -15,10 +15,9 @@ Character::Character(Vector2 startPosition, const CharacterStats& stats, const s
 	this->position = startPosition;
 	this->speed = stats.baseSpeed;
 	this->jumpForce = stats.jumpForce;
-	//this->gravity = stats.gravity;
-	this->gravity = 490.0f;
+	this->gravity = stats.gravity;
 	this->stateFrameData = stateFrameData;
-	this->spriteSheet = TextureManager::getInstance().getCharacterTexture(type);
+	this->spriteSheet = TextureManager::getInstance().getCharacterTexture();
 
     if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
         setCurrentStateRow(0);
@@ -106,7 +105,7 @@ void Character::update(float deltaTime) {
 void Character::draw() {
 	Rectangle sourceRec = spriteRec;
 
-	if(isFacingRight()){
+	if(!isFacingRight()){
 		sourceRec.width = -sourceRec.width;
 	}
 

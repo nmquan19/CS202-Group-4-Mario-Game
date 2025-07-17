@@ -15,8 +15,8 @@ Texture2D TextureManager::getBlockTexture(BlockType type) {
     return blockTextures[type];
 }
 
-Texture2D TextureManager::getCharacterTexture(CharacterType type) {
-    return characterTextures[type];
+Texture2D TextureManager::getCharacterTexture() const {
+    return characterTextures;
 }
 
 void TextureManager::loadTextures() {
@@ -25,8 +25,7 @@ void TextureManager::loadTextures() {
     blockTextures[BlockType::GROUND] = LoadTexture("assets/ground_block.png");
     blockTextures[BlockType::BRICK] = LoadTexture("assets/brick_block.png");
 
-    characterTextures[CharacterType::MARIO] = LoadTexture("assets/mario_sprites.png");
-    characterTextures[CharacterType::LUIGI] = LoadTexture("assets/luigi_sprites.png");
+    characterTextures = LoadTexture("assets/character_spritesheet.png");
     //Enemy textures 
 	DrawText("Loading enemy textures...", 10, 10, 20, DARKGRAY);
     std::ifstream  enemy_in;
@@ -50,10 +49,7 @@ void TextureManager::unloadTextures() {
     } 
     blockTextures.clear();
 
-    for (auto& pair : characterTextures) {
-        UnloadTexture(pair.second);
-    }
-    characterTextures.clear();
+    UnloadTexture(characterTextures);
 	UnloadTexture(enemyTextures);
     texturesLoaded = false;
 }
