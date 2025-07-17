@@ -109,7 +109,7 @@ private:
 	KoopaShell* projectile;
 	bool holdingProjectile;
 
-	void handleEnvironmentCollision((std::shared_ptr<Object> other);
-	void handleEnemyCollision((std::shared_ptr<Object> other);
+	void handleEnvironmentCollision(std::shared_ptr<Object> other);
+	void handleEnemyCollision(std::shared_ptr<Object> other);
 	//void handleItemCollsion(ICollidable* other);
 };

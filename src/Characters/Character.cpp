@@ -315,7 +315,7 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 	}
 }
 
-void Character::handleEnemyCollision((std::shared_ptr<Object> other) {
+void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
     Rectangle characterHitbox = getHitBox();
     Rectangle otherHitbox = other->getHitBox();
 
