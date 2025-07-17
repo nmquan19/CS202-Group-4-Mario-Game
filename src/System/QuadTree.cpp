@@ -14,14 +14,14 @@ void QuadTree::clear() {
 	root = std::make_unique<Node>(worldBounds, 0);
 }
 
-void QuadTree::insert(Object* object) {
+void QuadTree::insert(std::shared_ptr<Object> object) {
 	if (!object || !object->isActive()) return;
 	Rectangle objBounds = object->getHitBox();
 	if (!CheckCollisionRecs(objBounds, worldBounds)) return;
 	insertIntoNode(root.get(), object);
 }
 
-void QuadTree::insertIntoNode(Node* node, Object* object) {
+void QuadTree::insertIntoNode(Node* node, std::shared_ptr<Object> object) {
 	Rectangle objBounds = object->getHitBox();
 	if (!node->isLeaf) {
 		int quadrant = getQuadrant(node, objBounds);
@@ -81,21 +81,27 @@ int QuadTree::getQuadrant(Node* node, Rectangle objectBounds) const {
 	return -1;
 }
 
-std::vector<Object*> QuadTree::retrieve(Object* object) {
+std::vector<std::shared_ptr<Object>> QuadTree::retrieve(std::shared_ptr<Object> object) {
 	return retrieve(object->getHitBox());
 }
 
-std::vector<Object*> QuadTree::retrieve(Rectangle area) { 
-	std::vector<Object*> result;
+std::vector<std::shared_ptr<Object>> QuadTree::retrieve(Rectangle area) { 
+	std::vector<std::shared_ptr<Object>> result;
 	retrieveFromNode(root.get(), area, result);
 
-	std::sort(result.begin(), result.end());
-	result.erase(std::unique(result.begin(), result.end()), result.end());
+	std::sort(result.begin(), result.end(), 
+	[](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
+		return a.get() < b.get();
+	});
+	result.erase(std::unique(result.begin(), result.end(),
+	[](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b) {
+		return a.get() == b.get();
+	}), result.end());
 
 	return result;
 }
 
-void QuadTree::retrieveFromNode(Node* node, Rectangle area, std::vector<Object*>& result) const {
+void QuadTree::retrieveFromNode(Node* node, Rectangle area, std::vector<std::shared_ptr<Object>>& result) const {
 	for (auto obj : node->objects) {
 		if (CheckCollisionRecs(obj->getHitBox(), area)) {
 			result.push_back(obj);
@@ -144,7 +150,7 @@ void QuadTree::drawNodeRecursive(Node* node) const {
 	default: color = PURPLE; break;
 	}
 	DrawRectangleLinesEx(node->bounds, 2, color);
-	for (auto* obj : node->objects) {
+	for (auto obj : node->objects) {
 		if (obj && obj->isActive()) {
 			Rectangle hitBox = obj->getHitBox();
 			Color hitboxColor = BLACK;

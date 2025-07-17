@@ -13,8 +13,8 @@ public:
     Rectangle getHitBox() const override;
     ObjectCategory getObjectCategory() const override;
     std::vector<ObjectCategory> getCollisionTargets() const override;
-    void checkCollision(const std::vector<Object*>& candidates) override;
-    void onCollision(Object* other) override;
+    void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
+    void onCollision(std::shared_ptr<Object> other) override;
 
     bool isActive() const override;
     void setActive(bool flag) override;

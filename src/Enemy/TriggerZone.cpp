@@ -40,8 +40,8 @@ std::vector<ObjectCategory> TriggerZone::getCollisionTargets() const {
     return { ObjectCategory::CHARACTER};
 }
 
-void TriggerZone::checkCollision(const std::vector<Object*>& candidates) {
-    for (auto* obj : candidates) {
+void TriggerZone::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
+    for (auto obj : candidates) {
         if (!obj->isActive()) continue;
         setCollided(true);
         if (IsKeyDown(KEY_E))
@@ -51,10 +51,10 @@ void TriggerZone::checkCollision(const std::vector<Object*>& candidates) {
     }
 }
 
-void TriggerZone::onCollision(Object* other) {
+void TriggerZone::onCollision(std::shared_ptr<Object> other) {
     if (!owner || !other) return;
     if (other->getObjectCategory() != ObjectCategory::CHARACTER) return;
-    Character* player = dynamic_cast<Character*>(other);
+    Character* player = dynamic_cast<Character*>(other.get());
     if (player) {
         owner->onCollect(player);
         owner->setActive(false);

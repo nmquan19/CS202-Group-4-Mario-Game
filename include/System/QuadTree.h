@@ -8,7 +8,7 @@
 
 struct Node {
 	Rectangle bounds;
-	std::vector<Object*> objects;
+	std::vector<std::shared_ptr<Object>> objects;
 	std::unique_ptr<Node> children[4];
 	bool isLeaf = true;
 	int level;
@@ -26,9 +26,9 @@ public:
 	~QuadTree() = default;
 
 	void clear();
-	void insert(Object* object);
-	std::vector<Object*> retrieve(Object* object);
-	std::vector<Object*> retrieve(Rectangle area);
+	void insert(std::shared_ptr<Object> object);
+	std::vector<std::shared_ptr<Object>> retrieve(std::shared_ptr<Object> object);
+	std::vector<std::shared_ptr<Object>> retrieve(Rectangle area);
 
 	void getStats(int& totalNodes, int& maxDepth, int& totalObjects) const;
 	void drawDebug() const;
@@ -37,8 +37,8 @@ private:
 	std::unique_ptr<Node> root;
 	Rectangle worldBounds;
 	void subdivide(Node* node);
-	void insertIntoNode(Node* node, Object* object);
-	void retrieveFromNode(Node* node, Rectangle area, std::vector<Object*>& result) const;
+	void insertIntoNode(Node* node, std::shared_ptr<Object> object);
+	void retrieveFromNode(Node* node, Rectangle area, std::vector<std::shared_ptr<Object>>& result) const;
 	int getQuadrant(Node* node, Rectangle objectBounds) const;
 	void getStatsRecursive(Node* node, int& totalNodes, int& maxDepth, int& totalObjects) const;
 	void drawNodeRecursive(Node* node) const;
