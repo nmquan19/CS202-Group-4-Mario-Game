@@ -42,7 +42,7 @@ std::vector<ObjectCategory> LedgeDetector::getCollisionTargets() const
 {
     return {ObjectCategory::BLOCK};
 }
-void LedgeDetector::checkCollision(const std::vector<Object*>& candidates)
+void LedgeDetector::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
 {
     if (candidates.empty()) {
         nearLedge = false;
@@ -53,7 +53,7 @@ void LedgeDetector::checkCollision(const std::vector<Object*>& candidates)
         nearLedge = true; 
     }
  }
-void LedgeDetector::onCollision(Object* other)
+void LedgeDetector::onCollision(std::shared_ptr<Object> other)
 {
 }
 

@@ -53,7 +53,7 @@ void KoopaShell::setVelocity(Vector2 newVelocity) {
 Vector2 KoopaShell::getVelocity() {
     return velocity;
 }
-void KoopaShell::onCollision(Object* other) {
+void KoopaShell::onCollision(std::shared_ptr<Object> other) {
     
 }
 
@@ -73,7 +73,7 @@ void KoopaShell::changeState(KoopaShellState* newState) {
    if(currentState) currentState->enter(this);
 }
 
-void KoopaShell::checkCollision(const std::vector<Object*>& candidates)
+void KoopaShell::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
 {
 	if (currentState == nullptr) return;
 	currentState->checkCollision(this, candidates);
@@ -84,7 +84,7 @@ void KoopaShell ::applyGravity(float deltaTime) {
         velocity.y += Constants::GRAVITY * deltaTime;
     }
 }
-void KoopaShell::handleEnvironmentCollision(Object* other) {
+void KoopaShell::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 	Rectangle otherHitBox = other->getHitBox();
 	Rectangle playerHitBox = getHitBox();
     int minOverlap = getCollidedPart(*other);

@@ -47,7 +47,7 @@ std::unique_ptr<Character> ObjectFactory::createSpecificCharacter(CharacterType 
 CharacterStats ObjectFactory::getStats(CharacterType type) {
     switch (type) {
         case CharacterType::MARIO:
-            return {220.0f, 550.0f, 980.0f};
+            return {220.0f, 850.0f, 980.0f};
         case CharacterType::LUIGI:  
             return {175.0f, 730.0f, 980.0f};
         default:

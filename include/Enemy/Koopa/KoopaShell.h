@@ -18,11 +18,11 @@ class KoopaShell : public CollectableObject, public IMovable{
      Vector2 getVelocity() override;
 	 ObjectCategory getObjectCategory() const override;
      std::vector<ObjectCategory> getCollisionTargets() const override;
-     virtual void handleEnvironmentCollision(Object* other);
+     virtual void handleEnvironmentCollision(std::shared_ptr<Object> other);
 	 void applyGravity(float deltaTime);
-	 void onCollision(Object* other) override;  
+	 void onCollision(std::shared_ptr<Object> other) override;  
 	 void changeState(KoopaShellState* newState); 
-     void checkCollision(const std::vector<Object*>& candidates) override;
+     void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
 	 friend class KoopaShellIdleState;
 	 friend class KoopaShellMovingState;
 	 friend class KoopaShellCollectedState;

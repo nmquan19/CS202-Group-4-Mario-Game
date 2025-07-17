@@ -1,5 +1,5 @@
 {
-     "gridSize": 52,
+     "gridSize": 96,
      "objects": [
           {
                "gridX": 0,
@@ -84,13 +84,6 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
-          },
-          {
-               "gridX": 7,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GREEN_KOOPA"
           },
           {
                "gridX": 7,
@@ -185,10 +178,17 @@
           },
           {
                "gridX": 14,
+               "gridY": 9,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GOOMBA"
+          },
+          {
+               "gridX": 14,
                "gridY": 12,
-               "sizeX": 0.0,
-               "sizeY": 0.0,
-               "type": "MARIO"
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
           },
           {
                "gridX": 14,
@@ -196,6 +196,13 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
+          },
+          {
+               "gridX": 15,
+               "gridY": 13,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 15,
@@ -210,6 +217,13 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
+          },
+          {
+               "gridX": 17,
+               "gridY": 11,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GOOMBA"
           },
           {
                "gridX": 17,

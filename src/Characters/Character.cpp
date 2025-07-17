@@ -227,8 +227,8 @@ std::vector<ObjectCategory> Character::getCollisionTargets() const {
 	return { ObjectCategory::BLOCK, ObjectCategory::PROJECTILE, ObjectCategory::ITEM};
 }
 
-void Character::checkCollision(const std::vector<Object*>& candidates) {
-	for (auto* candidate : candidates) {
+void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
+	for (auto candidate : candidates) {
 		switch(candidate->getObjectCategory()) {
 			case ObjectCategory::ENEMY:
 				//handleEnemyCollision(candidate);
@@ -246,11 +246,11 @@ void Character::checkCollision(const std::vector<Object*>& candidates) {
 	}
 }
 
-void Character::onCollision(Object* other) {
+void Character::onCollision(std::shared_ptr<Object> other) {
 
 }
 
-void Character::handleEnvironmentCollision(Object* other) {
+void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
 
