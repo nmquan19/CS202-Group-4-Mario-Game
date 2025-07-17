@@ -34,7 +34,7 @@ void Item::update(float deltaTime) {
 }
 
 void Item::draw() {
-    Rectangle sourceRec = { spritebox.x + spritebox.width * curFrame, spritebox.y, spritebox.width, spritebox.height };
+    Rectangle sourceRec = this->spritebox;
     DrawTexturePro(texture, sourceRec, hitbox, { 0,0 }, 0.0f, WHITE);
 }
 
