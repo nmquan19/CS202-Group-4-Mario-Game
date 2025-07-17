@@ -17,6 +17,8 @@ KoopaShell::KoopaShell(Vector2 pos, Vector2 sz): spritebox({0,0,0,0}), velocity(
 void KoopaShell::onCollect(Character* player) {
     if (!player) return;
     TraceLog(LOG_INFO, "KoopaShell collected!");
+    player->setHoldingProjectile(true);
+    player->holdProjectile(*this);
 	this->changeState(&KoopaShellCollectedState::getInstance());
 }
 

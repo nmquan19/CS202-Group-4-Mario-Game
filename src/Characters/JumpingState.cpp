@@ -28,7 +28,6 @@ void JumpingState::update(Character* character, float deltaTime){
         character->setVelocity({currentVel.x * 0.95f, currentVel.y});
     }
 
-    // Variable jump height
     // if the user hold the space for long time -> long jump, else -> short jump
     if (IsKeyReleased(KEY_SPACE) && currentVel.y < 0) {
         Vector2 vel = character->getVelocity();
