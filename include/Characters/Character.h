@@ -13,7 +13,7 @@ struct CharacterStats{
 
 class ICharacterState;
 
-class Character : public Object, public IUpdatable, public IMovable {
+class Character : public Object, public IUpdatable, public IMovable, public IDamageable {
 public:
 	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale = 2.0f);
 	~Character();
@@ -61,6 +61,14 @@ public:
 	ObjectType getObjectType() const override;
 	Vector2 getSize() const override;
 
+	void takeDamage(int amount) override;
+	bool isAlive() const override;
+	void die() override;
+
+	void setHoldingProjectile(bool flag);
+	bool isHoldingProjectile() const;
+	void holdProjectile(KoopaShell& p);
+
 	float getWidth() const;
 	float getHeight() const;
 	float getBottom() const;
@@ -94,6 +102,14 @@ private:
 	float hitBoxHeight;
 	bool active = true;
 
+	int hp;
+	float invincibleTime;
+	float invincibleTimer;
+	
+	KoopaShell* projectile;
+	bool holdingProjectile;
+
 	void handleEnvironmentCollision(Object* other);
+	void handleEnemyCollision(Object* other);
 	//void handleItemCollsion(ICollidable* other);
 };
