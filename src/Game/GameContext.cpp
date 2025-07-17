@@ -127,6 +127,7 @@ void GameContext::deleteObjects(){
     {
        if(std::find(Objects.begin(), Objects.end(), obj) != Objects.end()) {
             Objects.erase(std::remove(Objects.begin(), Objects.end(), obj), Objects.end());
+            std::cout << "Deleted an object\n";
 	   }
     }
 	ToDeleteObjects.clear();

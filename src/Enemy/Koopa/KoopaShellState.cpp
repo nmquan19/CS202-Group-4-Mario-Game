@@ -29,8 +29,8 @@ void KoopaShellIdleState::update(KoopaShell* shell, float deltaTime) {
 ObjectCategory KoopaShellIdleState::getObjectCategory() const {
     return ObjectCategory::SHELL;
 }
-void KoopaShellIdleState::checkCollision(KoopaShell* shell, const std::vector<Object*>& objects) {
-    for (auto* obj : objects) {
+void KoopaShellIdleState::checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& objects) {
+    for (auto obj : objects) {
         {
             switch (obj->getObjectCategory())
             {
@@ -71,8 +71,8 @@ void KoopaShellMovingState::update(KoopaShell* shell, float deltaTime) {
     shell->spritebox = TextureManager::Enemy_sprite_boxes[shell->getSpriteData()[1].first + shell->curFrame];
 }
 
-void KoopaShellMovingState::checkCollision(KoopaShell* shell, const std::vector<Object*>& objects) {
-    for (auto* obj : objects) {
+void KoopaShellMovingState::checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& objects) {
+    for (auto obj : objects) {
         {
             switch (obj->getObjectCategory())
             {
@@ -141,8 +141,8 @@ void KoopaShellRevivingState::update(KoopaShell* shell, float deltaTime) {
     }
 }
 
-void KoopaShellRevivingState::checkCollision(KoopaShell* shell, const std::vector<Object*>& objects) {
-    for (auto* obj : objects) {
+void KoopaShellRevivingState::checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& objects) {
+    for (auto obj : objects) {
         {
             switch (obj->getObjectCategory())
             {
@@ -193,7 +193,7 @@ void KoopaShellCollectedState::update(KoopaShell* shell, float deltaTime) {
     shell->spritebox = TextureManager::Enemy_sprite_boxes[shell->getSpriteData()[0].first + shell->curFrame];
 }
 
-void KoopaShellCollectedState::checkCollision(KoopaShell* shell, const std::vector<Object*>& objects) {
+void KoopaShellCollectedState::checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& objects) {
   
 }
 ObjectCategory KoopaShellCollectedState::getObjectCategory() const {
@@ -238,7 +238,7 @@ void KoopaShellKnockedState::update(KoopaShell* shell, float deltaTime) {
     shell->spritebox = TextureManager::Enemy_sprite_boxes[shell->getSpriteData()[0].first + shell->curFrame];
 }
 
-void KoopaShellKnockedState::checkCollision(KoopaShell* shell, const std::vector<Object*>& objects) {
+void KoopaShellKnockedState::checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& objects) {
 
 }
 ObjectCategory KoopaShellKnockedState::getObjectCategory() const {

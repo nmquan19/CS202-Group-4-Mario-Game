@@ -37,11 +37,11 @@ std::vector<ObjectCategory> Block::getCollisionTargets() const {
     return {};
 }
 
-void Block::checkCollision(const std::vector<Object*>& candidates) {
+void Block::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
     return;
 }
 
-void Block::onCollision(Object* other) {}
+void Block::onCollision(std::shared_ptr<Object> other) {}
     
 bool Block::isActive() const {
     return active;

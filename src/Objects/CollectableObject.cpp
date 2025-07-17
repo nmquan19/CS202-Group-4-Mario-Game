@@ -47,7 +47,7 @@ std::vector<ObjectCategory> CollectableObject::getCollisionTargets() const {
     return {};
 }
 
-void CollectableObject::checkCollision(const std::vector<Object*>&) {
+void CollectableObject::checkCollision(const std::vector<std::shared_ptr<Object>>&) {
 }
 
 void CollectableObject::setActive(bool val) {

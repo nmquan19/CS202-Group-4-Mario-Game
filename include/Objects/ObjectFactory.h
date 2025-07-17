@@ -28,8 +28,8 @@ public:
 	virtual Rectangle getHitBox() const override = 0;  
 	virtual ObjectCategory getObjectCategory() const override = 0;  
 	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;  
-	virtual void checkCollision(const std::vector<Object*>& candidates) override = 0;
-	virtual void onCollision(Object* other) override = 0;  
+	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0;
+	virtual void onCollision(std::shared_ptr<Object> other) override = 0;  
 	int getCollidedPart(const Object& other);  
 	virtual ObjectType getObjectType() const = 0;  
 
@@ -43,7 +43,7 @@ protected:
 class ObjectFactory {  
 public:  
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);  
-	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 2.0f);  
+	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 4.0f);  
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);  
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);  
 	static std::unique_ptr<Object> createItem(ItemType type, Vector2 startPos, Vector2 size);  

@@ -17,6 +17,8 @@ KoopaShell::KoopaShell(Vector2 pos, Vector2 sz): spritebox({0,0,0,0}), velocity(
 void KoopaShell::onCollect(Character* player) {
     if (!player) return;
     TraceLog(LOG_INFO, "KoopaShell collected!");
+    player->setHoldingProjectile(true);
+    player->holdProjectile(*this);
 	this->changeState(&KoopaShellCollectedState::getInstance());
 }
 
@@ -53,7 +55,7 @@ void KoopaShell::setVelocity(Vector2 newVelocity) {
 Vector2 KoopaShell::getVelocity() {
     return velocity;
 }
-void KoopaShell::onCollision(Object* other) {
+void KoopaShell::onCollision(std::shared_ptr<Object> other) {
     
 }
 
@@ -73,7 +75,7 @@ void KoopaShell::changeState(KoopaShellState* newState) {
    if(currentState) currentState->enter(this);
 }
 
-void KoopaShell::checkCollision(const std::vector<Object*>& candidates)
+void KoopaShell::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
 {
 	if (currentState == nullptr) return;
 	currentState->checkCollision(this, candidates);
@@ -84,7 +86,7 @@ void KoopaShell ::applyGravity(float deltaTime) {
         velocity.y += Constants::GRAVITY * deltaTime;
     }
 }
-void KoopaShell::handleEnvironmentCollision(Object* other) {
+void KoopaShell::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 	Rectangle otherHitBox = other->getHitBox();
 	Rectangle playerHitBox = getHitBox();
     int minOverlap = getCollidedPart(*other);

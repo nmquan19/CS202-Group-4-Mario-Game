@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <vector>
 #include <variant>
+#include <memory>
 class Object;
 enum class ObjectCategory {
 	CHARACTER,
@@ -73,8 +74,8 @@ public:
 	virtual Rectangle getHitBox() const = 0;
 	virtual ObjectCategory getObjectCategory() const = 0;
 	virtual std::vector<ObjectCategory> getCollisionTargets() const = 0;
-	virtual void checkCollision(const std::vector<Object*>& candidates) = 0;
-	virtual void onCollision(Object* other) = 0;
+	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) = 0;
+	virtual void onCollision(std::shared_ptr<Object> other) = 0;
 };
 
 class IDamageable {

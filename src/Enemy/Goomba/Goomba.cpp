@@ -5,6 +5,7 @@
 #include "../../../include/Enemy/Goomba/GoombaState.h"
 #include "../../../include/Objects/ObjectFactory.h"
 #include "../../../include/System/Interface.h"
+#include "../../../include/System/Constant.h"
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
@@ -21,7 +22,7 @@ Goomba::Goomba(Vector2 startPos, Vector2 size) : Enemy(startPos,TextureManager::
     changeState(&GoombaWanderingState::GetInstance());
 }
 
-void Goomba::onCollision(Object* other) {
+void Goomba::onCollision(std::shared_ptr<Object> other) {
    
 	if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
          DrawText("HITTED",200,200,20,RED);
@@ -43,9 +44,9 @@ void Goomba::draw() {
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
 }
 
-void Goomba::checkCollision(const std::vector<Object*>& candidates)
+void Goomba::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
 {   
-    for (auto* candidate : candidates) {
+    for (auto candidate : candidates) {
         switch (candidate->getObjectCategory()) {
         case ObjectCategory::BLOCK:
             handleEnvironmentCollision(candidate);
@@ -59,7 +60,7 @@ void Goomba::checkCollision(const std::vector<Object*>& candidates)
         }
     }
 }
-void Goomba::handleCharacterCollision(Object* other) {
+void Goomba::handleCharacterCollision(std::shared_ptr<Object> other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
 
@@ -77,7 +78,7 @@ void Goomba::handleCharacterCollision(Object* other) {
     }
 }
 
-void Goomba::handleEnvironmentCollision(Object* other) {
+void Goomba::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
 

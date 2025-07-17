@@ -90,6 +90,9 @@
     <ClInclude Include="include\System\Constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="include\Objects\Projectile.h">
+=======
     <ClInclude Include="include\Enemy\LedgeDetector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -109,6 +112,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\GameStates.h">
+>>>>>>> d60861c35ec8ba7053c4ff34af052ffa3f48e0b7
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\System\json.hpp">
@@ -201,6 +205,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\GameStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Projectile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Item\Item.cpp">

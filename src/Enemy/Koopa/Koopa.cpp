@@ -5,6 +5,7 @@
 #include "../../../include/Enemy/Koopa/KoopaState.h"
 #include "../../../include/Objects/ObjectFactory.h"
 #include "../../../include/System/Interface.h"
+#include "../../../include/System/Constant.h"
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
@@ -37,7 +38,7 @@ Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::e
     PhysicsManager::getInstance().addObject(ledgeDetector);
 }
 
-void Koopa::onCollision(Object* other) {
+void Koopa::onCollision(std::shared_ptr<Object> other) {
 
     if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
         this->changeState(&KoopaStompedState::GetInstance());
@@ -64,9 +65,9 @@ void Koopa::draw() {
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
 }
 
-void Koopa::checkCollision(const std::vector<Object*>& candidates)
+void Koopa::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
 {
-    for (auto* candidate : candidates) {
+    for (auto candidate : candidates) {
         switch (candidate->getObjectCategory()) {
         case ObjectCategory::BLOCK:
             handleEnvironmentCollision(candidate);
@@ -81,7 +82,7 @@ void Koopa::checkCollision(const std::vector<Object*>& candidates)
         }
     }
 }
-void Koopa::handleCharacterCollision(Object* other) {
+void Koopa::handleCharacterCollision(std::shared_ptr<Object> other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
 
@@ -99,7 +100,7 @@ void Koopa::handleCharacterCollision(Object* other) {
     }
 }
 
-void Koopa::handleEnvironmentCollision(Object* other) {
+void Koopa::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     Rectangle playerHitBox = getHitBox();
     Rectangle otherHitBox = other->getHitBox();
 
@@ -224,6 +225,7 @@ KoopaShellType Koopa::getShellType() const {
 ObjectType RedKoopa::getObjectType() const {
     return getType();
 }
+
 ObjectType GreenKoopa::getObjectType() const {
     return getType();
 }
