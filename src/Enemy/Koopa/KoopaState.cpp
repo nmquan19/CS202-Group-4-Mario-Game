@@ -87,10 +87,10 @@ void KoopaStompedState::exit(Enemy* enemy)
         }
         Vector2 spawnPosition = {koopa->getPosition().x + (koopa->size.x * Constants::TILE_SIZE)/2, koopa->getPosition().y +koopa->size.y*Constants::TILE_SIZE};
         GameContext::getInstance().addObject(type, spawnPosition, { 1,1 });
-      /*  std::shared_ptr<Object> sharedKoopa = GameContext::getInstance().getSharedPtrFromRaw(koopa);
-        if (sharedKoopa) {
-            GameContext::getInstance().mark_for_deletion_Object(sharedKoopa);
-        }*/
+        std::shared_ptr<Object> sharedKoopa = GameContext::getInstance().getSharedPtrFromRaw(koopa);
+            if (sharedKoopa) {
+                GameContext::getInstance().mark_for_deletion_Object(sharedKoopa);
+        }
     }
 }
 

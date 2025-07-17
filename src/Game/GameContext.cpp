@@ -119,6 +119,7 @@ void GameContext::spawnObject() {
 
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
+        PhysicsManager::getInstance().markForDeletion(object);
         ToDeleteObjects.push_back(object);
     }
 }

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "../../include/System/PhysicsManager.h"
 #include <memory>
+#include <iostream>
 #include <vector>
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
