@@ -4,6 +4,7 @@
 #include "../Objects/ObjectFactory.h"
 #include <climits>
 #include <variant>
+#include "../System/InterpolationController.h"
 
 
 class Item : public Object, public IUpdatable {
@@ -29,7 +30,6 @@ public:
     void setCollided(bool) override;
     Vector2 getSize() const override;
     virtual ObjectType getObjectType() const override = 0 ;
-
 
 protected:
     Vector2 position;
