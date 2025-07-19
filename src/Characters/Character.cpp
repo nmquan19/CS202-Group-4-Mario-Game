@@ -261,7 +261,6 @@ void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candi
 		switch(candidate->getObjectCategory()) {
 			case ObjectCategory::ENEMY:
 				handleEnemyCollision(candidate);
-				takeDamage(1);
 				break;
 			case ObjectCategory::BLOCK:
 				handleEnvironmentCollision(candidate);
@@ -321,22 +320,16 @@ void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
     Rectangle characterHitbox = getHitBox();
     Rectangle otherHitbox = other->getHitBox();
 
-    float overlapLeft = (characterHitbox.x + characterHitbox.width) - otherHitbox.x;
-    float overlapRight = (otherHitbox.x + otherHitbox.width) - characterHitbox.x;
-    float overlapTop = (characterHitbox.y + characterHitbox.height) - otherHitbox.y;
-    float overlapBottom = (otherHitbox.y + otherHitbox.height) - characterHitbox.y;
-
-    float minOverlap = std::min({overlapLeft, overlapRight, overlapTop, overlapBottom});
-
-    if (minOverlap == overlapTop) {
-        DrawText("deal damage", 50, 200, 30, BLACK);
+	if(velocity.y > 0 && characterHitbox.x + characterHitbox.height <= otherHitbox.width + 5.0f) {
+		DrawText("deal damage", 50, 200, 30, BLACK);
 		invincibleTimer = 0.2f;
-        velocity.y = -200.0f;
-        setOnGround(false);
-    }
-    else {
-		DrawText("got hit", 50, 200, 30, BLACK);
-    }
+        velocity.y -= 200.0f;
+        // setOnGround(false);
+	}
+	else if (velocity.y <= 0) {
+		takeDamage(1);
+		DrawText ("got hit", 50, 200, 30, BLACK);
+	} 
 }
 
 float Character::getBottom() const {
