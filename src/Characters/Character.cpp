@@ -27,6 +27,7 @@ Character::Character(Vector2 startPosition, const CharacterStats& stats, const s
 
     currentState = &IdleState::getInstance();
     currentState->enter(this);
+
 }
 
 Character::~Character() {

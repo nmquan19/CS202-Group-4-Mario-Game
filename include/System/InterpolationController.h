@@ -24,15 +24,15 @@ public:
     void update(float dt) {
         elapsed = std::min(elapsed + dt, duration);
     }
-    void set(int start, int end, float durationSeconds,
-        std::function<float(float)> easing = [](float t) { return t; })
-    {
+    
+    void set(int start, int end, float durationSeconds, std::function<float(float)> easing = [](float t) { return t; }){
 		startFrame = start;
         endFrame = end;
         duration = durationSeconds;
         elapsed = 0.0f;
 		easingFunction = easing;
     }
+
     int getCurrentFrame() const {
         float t = std::clamp(elapsed / duration, 0.0f, 1.0f);
         float easedT = easingFunction(t);
@@ -70,3 +70,6 @@ namespace Easing {
         return t < 0.5f ? 2 * t * t : 1 - std::pow(-2 * t + 2, 2) / 2;
     }
 }
+
+
+

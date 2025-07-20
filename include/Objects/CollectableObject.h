@@ -13,7 +13,8 @@ public:
     CollectableObject(Vector2 pos, Vector2 sz, Texture2D texture);
     virtual ~CollectableObject();
 
-    virtual void onCollect(Character* player) = 0;
+    virtual void onCollect(Character* 
+    ) = 0;
 
     virtual void update(float deltaTime) override;
     virtual void draw() override;

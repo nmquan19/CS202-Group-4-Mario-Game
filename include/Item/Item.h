@@ -6,7 +6,6 @@
 #include <variant>
 #include "../System/InterpolationController.h"
 
-
 class Item : public Object, public IUpdatable {
 public:
     Item(Vector2 startPos, Texture2D texture, Vector2 size);

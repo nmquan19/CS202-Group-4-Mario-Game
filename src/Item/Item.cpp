@@ -9,17 +9,13 @@ Item::Item(Vector2 startPos, Texture2D texture, Vector2 size)
     : position(startPos), texture(texture), active(true), scale(1.0f),
     velocity({ 0, 0 }), accelleration({ 0, 0 }), aniTimer(0), aniSpeed(0.2f), curFrame(0) {
 
-
-
     this->spritebox = { 0, 0, 32, 32 };
     this->hitbox = { position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
 }
 
-
 Item::~Item() {
     // PhysicsManager::getInstance().markForDeletion(this);
 }
-
 
 void Item::update(float deltaTime) {
     aniTimer += deltaTime;
@@ -86,7 +82,6 @@ bool Item::isActive() const {
 void Item::setActive(bool flag) {
     active = flag;
 }
-
 
 bool Item::isCollided() const {
     return collided;

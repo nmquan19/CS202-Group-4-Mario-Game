@@ -1,8 +1,9 @@
-#include "../../include/System/TextureManager.h"
+﻿#include "../../include/System/TextureManager.h"
 #include "../../include/System/Interface.h"
 #include <raylib.h>
 #include <fstream>
 #include <vector>
+#include <iostream>
 std::vector<Rectangle> TextureManager::Enemy_sprite_boxes;
 Texture2D TextureManager::enemyTextures;
 
@@ -16,6 +17,10 @@ TextureManager& TextureManager::getInstance() {
 
 Texture2D TextureManager::getBlockTexture(BlockType type) {
     return blockTextures[type];
+}
+
+Texture2D TextureManager::getItemTexture(ItemType type) const {
+    return itemTextures;
 }
 
 Texture2D TextureManager::getCharacterTexture() const {
@@ -34,8 +39,7 @@ void TextureManager::loadTextures() {
     std::ifstream  enemy_in;
     enemy_in.open("assets/enemy/enemy_output.txt");
     int id, x, y, w, h;
-    while (enemy_in >> id >> x >> y >> w >> h)
-    {
+    while (enemy_in >> id >> x >> y >> w >> h){
         Enemy_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
     }
     enemyTextures = Texture2D(LoadTexture("assets/enemy/enemy_spritesheet.png"));
@@ -50,6 +54,7 @@ void TextureManager::loadTextures() {
     while (item_in >> item_id >> item_x >> item_y >> item_w >> item_h)
     {
         Item_sprite_boxes.push_back({ (float)item_x,(float)item_y,(float)item_w, (float)item_h });
+        std::cout << "Loaded ID " << item_id << std::endl;
     }
     itemTextures = LoadTexture("assets/item/item_spritesheet.png");
     item_in.close();
@@ -87,6 +92,10 @@ void ObjectPalette::drawPalette() {
     float iconSize = 50;
 
     TextureManager& tm = TextureManager::getInstance();
+
+    //Item
+    //Rectangle ItemRect =
+
 
     // Draw Block Section
     DrawText("BLOCKS", startX, yBlock - 20, 12, BLACK);
@@ -168,6 +177,53 @@ void ObjectPalette::drawPalette() {
     }
     DrawRectangleLinesEx(luigiRect, 2, (isCharacter() && getCharacterType() == CharacterType::LUIGI) ? RED : BLACK);
     DrawText("LUIGI", luigiRect.x + 10, luigiRect.y + iconSize + 5, 10, BLACK);
+
+
+    //Draw Item
+    float yItem = yCharacter + 80;
+    DrawText("ITEMS", startX, yItem - 20, 12, BLACK);
+
+    //coin
+    Rectangle coinRect = { startX + spacing, yItem, iconSize, iconSize };
+    Texture2D coinTexture = tm.getItemTexture(ItemType::COIN);
+    if (coinTexture.id != 0) {
+        int coin_start_id = 703;
+        int coin_end_id = 706;
+
+        for (int i = coin_start_id; i <= coin_end_id; ++i) {
+            int index = i - 1; 
+            if (index >= 0 && index < tm.Item_sprite_boxes.size()) {
+                Rectangle src = tm.Item_sprite_boxes[index];
+                Rectangle dest = { 50.0f + (i - coin_start_id) * 60.0f, 400.0f, src.width * 3, src.height * 3 };
+                DrawTexturePro(tm.itemTextures, src, dest, { 0, 0 }, 0.0f, WHITE);
+            }
+        }
+
+    }
+    else {
+        DrawRectangleRec(coinRect, GOLD);
+    }
+    DrawRectangleLinesEx(coinRect, 2, (isItem() && getItemType() == ItemType::COIN) ? RED : BLACK);
+    DrawText("COIN", coinRect.x + 10, coinRect.y + iconSize + 5, 10, BLACK);
+
+
+    //mushroom
+    Rectangle mushroomRect = { startX, yItem, iconSize, iconSize };
+    Texture2D mushroomTexture = tm.getItemTexture(ItemType::MUSHROOM); 
+    if (mushroomTexture.id != 0) {
+        DrawTexturePro(mushroomTexture,
+            { 0, 0, (float)mushroomTexture.width, (float)mushroomTexture.height },
+            mushroomRect, { 0, 0 }, 0.0f, WHITE);
+    }
+    else {
+        DrawRectangleRec(mushroomRect, RED);
+    }
+    DrawRectangleLinesEx(mushroomRect, 2, (isItem() && getItemType() == ItemType::MUSHROOM) ? RED : BLACK);
+    DrawText("MUSHROOM", mushroomRect.x - 5, mushroomRect.y + iconSize + 5, 10, BLACK);
+
+
+
+
 }
 
 void ObjectPalette::handleSelection() {
