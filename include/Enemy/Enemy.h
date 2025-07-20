@@ -4,6 +4,7 @@
 #include "../Objects/ObjectFactory.h"
 #include <vector>
 #include <utility>
+#include <string>
 #include <climits>
 class EnemyState; 
 
@@ -51,6 +52,8 @@ public :
 	virtual void die() override = 0;
 	virtual void handleEnvironmentCollision(Object* other);
 	std::vector<std::pair<int, int>> getSpriteData();
+	virtual void setAnimation(const std::string& ani_type) {};
+	void flipDirection(); 
 protected:
 	bool isalive; 
 	float aniTimer, aniSpeed; 

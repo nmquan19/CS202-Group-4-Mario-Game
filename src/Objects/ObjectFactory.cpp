@@ -5,7 +5,7 @@
 #include "../../include/Enemy/Enemy.h"
 #include "../../include/Enemy/Goomba/Goomba.h"
 #include "../../include/Enemy/Koopa/Koopa.h"
-
+#include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../include/System/Interface.h"
 #include <raylib.h>
 #include <vector>
@@ -66,6 +66,9 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
             return std::make_unique<GreenKoopa>(startPosition, size);
         case EnemyType::RED_KOOPA:
             return std::make_unique<RedKoopa>(startPosition, size);
+        case EnemyType::DRY_BOWSER: 
+            return std::make_unique<DryBowser>(startPosition, size);
+
         default:
             return nullptr; 
         }

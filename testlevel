@@ -2,85 +2,50 @@
      "gridSize": 52,
      "objects": [
           {
-               "gridX": 0,
-               "gridY": 13,
+               "gridX": 3,
+               "gridY": 11,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
-               "gridX": 1,
+               "gridX": 3,
                "gridY": 12,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
-               "gridX": 1,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 1,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 2,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
                "gridX": 3,
                "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GREEN_KOOPA"
-          },
-          {
-               "gridX": 3,
-               "gridY": 14,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 4,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 4,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 5,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 6,
-               "gridY": 14,
+               "gridY": 12,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 6,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
@@ -90,95 +55,67 @@
                "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GREEN_KOOPA"
+               "type": "GROUND"
           },
           {
                "gridX": 7,
-               "gridY": 14,
+               "gridY": 13,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 7,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 8,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 9,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GREEN_KOOPA"
-          },
-          {
-               "gridX": 9,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 10,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 10,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 11,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 12,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 12,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 12,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 13,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 13,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 13,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
@@ -186,27 +123,27 @@
           {
                "gridX": 14,
                "gridY": 12,
-               "sizeX": 0.0,
-               "sizeY": 0.0,
-               "type": "MARIO"
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GREEN_KOOPA"
           },
           {
                "gridX": 14,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 15,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 16,
-               "gridY": 14,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
@@ -219,29 +156,43 @@
                "type": "GROUND"
           },
           {
-               "gridX": 17,
-               "gridY": 14,
+               "gridX": 18,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 18,
+               "gridY": 13,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 19,
+               "gridY": 13,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 19,
+               "gridY": 13,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 20,
+               "gridY": 11,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 20,
                "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 18,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 18,
-               "gridY": 14,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"

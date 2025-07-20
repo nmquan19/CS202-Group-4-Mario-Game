@@ -78,6 +78,10 @@ void Enemy::changeState(EnemyState* other)
       currentState =  other; 
       if(other)   currentState->enter(this);
 }
+void Enemy::flipDirection()
+{
+    isFacingRight ^= 1; 
+}
 bool Enemy::isAlive() const {
     return isalive;
 }

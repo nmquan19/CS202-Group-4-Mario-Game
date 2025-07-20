@@ -21,7 +21,8 @@ void KoopaWanderingState::enter(Enemy* enemy)
         switch (koopa->getType()) 
         {
            case EnemyType::GREEN_KOOPA:
-                koopa->velocity.x = Constants::GreenKoopa::WANDERING_SPEED;
+
+                koopa->velocity.x = (koopa->isFacingRight?1: -1)*Constants::GreenKoopa::WANDERING_SPEED;
                 break;
             case EnemyType::RED_KOOPA:
                 koopa->velocity.x = Constants::RedKoopa::WANDERING_SPEED;
@@ -150,10 +151,10 @@ void KoopaKnockState::exit(Enemy* enemy)
     if (koopa) {
         koopa->isalive = false;
 
-      /*  std::shared_ptr<Object> sharedKoopa = GameContext::getInstance().getSharedPtrFromRaw(koopa);
+        std::shared_ptr<Object> sharedKoopa = GameContext::getInstance().getSharedPtrFromRaw(koopa);
         if (sharedKoopa) {
             GameContext::getInstance().mark_for_deletion_Object(sharedKoopa);
-        }*/
+        }
     }
 }
 
