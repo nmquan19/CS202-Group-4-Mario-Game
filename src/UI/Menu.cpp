@@ -4,17 +4,20 @@ MenuManager::MenuManager() {
     isActive = true;
 
     logo = LoadTexture("./assets/Super Mario Bros.png");
-    //startButton = LoadTexture("resources/textures/start_button.png");
     select = 0;
     dialog = false;
     exit = false;
-    //audioManager.LoadSoundEffect("click", "./assets/sound/click.wav");
-    //audioManager.LoadBackgroundMusic("theme1", "./asset/sound/theme1.wav");
     board = LoadTexture("./assets/button/board.png");
     check.load("./assets/button/check.png");
+    check_selected.load("./assets/button/check_selected.png");
     cross.load("./assets/button/cross.png");
+    cross_selected.load("./assets/button/cross_selected.png");
     setting.load("./assets/button/setting.png");
+    setting_selected.load("./assets/button/setting_selected.png");
     returnButton.load("./assets/button/return.png");
+    returnButton_selected.load("./assets/button/return_selected.png");
+    home.load("./assets/button/home.png");
+    play.load("./assets/button/play.png");
 
     boardPosition.x = (static_cast<float>(screenWidth) - board.width * scale) / 2;
     boardPosition.y = (static_cast<float>(screenHeight) - board.height * scale) / 2;
@@ -28,11 +31,14 @@ MenuManager::MenuManager() {
     settingPosition.x = GetScreenWidth() * 9 / 10.0f;
     settingPosition.y = GetScreenHeight() / 10.0f;
 
-    returnButtonPosition.x = boardPosition.x + board.width * scale / 2 - 50;
-    returnButtonPosition.y = boardPosition.y + board.height * scale / 2;
+    returnButtonPosition.x = boardPosition.x + board.width * scale / 2.0f - 50;
+    returnButtonPosition.y = boardPosition.y + board.height * scale * 3 / 4.0f;
 
-    slideBarPosition.x = boardPosition.x + board.width * scale / 4;
-    slideBarPosition.y = boardPosition.y + board.height * scale / 4;
+    slideBarMusicPosition.x = boardPosition.x + board.width * scale / 5.0f;
+    slideBarMusicPosition.y = boardPosition.y + board.height * scale * 3 / 10.0f;
+
+    slideBarSoundPosition.x = boardPosition.x + board.width * scale / 5.0f;
+    slideBarSoundPosition.y = boardPosition.y + board.height * scale * 5 / 10.0f;
 }
 
 MenuManager::~MenuManager() {
@@ -99,13 +105,18 @@ void MenuManager::HandleInput() {
     }
 }
 void MenuManager::DrawExit() {
-    float spaceCrossCheck = 100;
 
     DrawTextureEx(board, boardPosition, 0, scale, WHITE);
-    Vector2 textPosition = { boardPosition.x + 30, boardPosition.y + 80 };
+    Vector2 textSize = MeasureTextEx(menuFont, "Are you sure want to exit?", 40, 1);
+    Vector2 textPosition = { boardPosition.x + (board.width * scale - textSize.x) / 2, boardPosition.y + 100 };
     DrawTextEx(menuFont, "Are you sure want to exit?", textPosition, 40, 1, BROWN);
+
+    Vector2 mousePos = GetMousePosition();
     cross.draw(crossPosition);
+    if (cross.checkCollision(mousePos)) cross_selected.draw(crossPosition);
+
     check.draw(checkPosition);
+    if (check.checkCollision(mousePos)) check_selected.draw(checkPosition);
 }
 bool MenuManager::HandleExit() {
     Vector2 mousePos = GetMousePosition();
@@ -118,11 +129,24 @@ bool MenuManager::HandleExit() {
     return false;
 }
 void MenuManager::DrawSetting() {
+    Vector2 mousePos = GetMousePosition();
     setting.draw(settingPosition);
+    if (setting.checkCollision(mousePos)) setting_selected.draw(settingPosition);
+
     if (dialog) {
         DrawTextureEx(board, boardPosition, 0, scale, WHITE);
+        Vector2 textSize = MeasureTextEx(menuFont, "Setting", 40, 1);
+        Vector2 textPosition = { boardPosition.x + (board.width * scale - textSize.x) / 2, boardPosition.y + 60 };
+        DrawTextEx(menuFont, "Setting", textPosition, 40, 1, BROWN);
+
         returnButton.draw(returnButtonPosition);
-        slideBar.DrawSlideBar(slideBarPosition);
+        if (returnButton.checkCollision(mousePos)) returnButton_selected.draw(returnButtonPosition);
+
+        DrawTextEx(menuFont, "Music: ", { slideBarMusic.getBorder().x - 100, slideBarMusic.getBorder().y + slideBarMusic.getBorder().height / 2 - 10 }, 20, 4, BORDER_BROWN);
+        slideBarMusic.DrawSlideBar(slideBarMusicPosition);
+
+        DrawTextEx(menuFont, "Sound: ", { slideBarSound.getBorder().x - 100, slideBarSound.getBorder().y + slideBarSound.getBorder().height / 2 - 10 }, 20, 4, BORDER_BROWN);
+        slideBarSound.DrawSlideBar(slideBarSoundPosition);
     }
 }
 void MenuManager::HandleSetting() {
