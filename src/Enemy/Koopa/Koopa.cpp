@@ -88,8 +88,13 @@ void Koopa::checkCollision(const std::vector<std::shared_ptr<Object>>& candidate
     }
 }
 void Koopa::handleCharacterCollision(std::shared_ptr<Object> other) {
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other->getHitBox();
+    std::vector<Rectangle> playerHitBoxes = getHitBox();
+    std::vector<Rectangle> otherHitBoxes = other->getHitBox();
+    
+    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
+    
+    Rectangle playerHitBox = playerHitBoxes[0];
+    Rectangle otherHitBox = otherHitBoxes[0];
 
     if (!CheckCollisionRecs(playerHitBox, otherHitBox)) return;
 
@@ -106,8 +111,13 @@ void Koopa::handleCharacterCollision(std::shared_ptr<Object> other) {
 }
 
 void Koopa::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-      Rectangle koopaBox = getHitBox();
-    Rectangle otherBox = other->getHitBox();
+      std::vector<Rectangle> koopaBoxes = getHitBox();
+    std::vector<Rectangle> otherBoxes = other->getHitBox();
+    
+    if (koopaBoxes.empty() || otherBoxes.empty()) return;
+    
+    Rectangle koopaBox = koopaBoxes[0];
+    Rectangle otherBox = otherBoxes[0];
     if (!CheckCollisionRecs(koopaBox, otherBox)) return;
 
     // Calculate previous position

@@ -37,8 +37,8 @@ void CollectableObject::draw() {
 
 }
 
-Rectangle CollectableObject::getHitBox() const {
-    return hitBox;
+std::vector<Rectangle> CollectableObject::getHitBox() const {
+    return {hitBox};
 }
 
 ObjectCategory CollectableObject::getObjectCategory() const {

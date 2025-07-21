@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "../../include/System/Grid.h"
 #include <utility>
+
 Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f) {
     isalive = true;
     hitbox = { position.x, position.y,  size.x * GridSystem::GRID_SIZE,
@@ -25,8 +26,8 @@ Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(star
 Enemy::~Enemy() {
 }
 
-Rectangle Enemy::getHitBox() const {
-    return hitbox;
+std::vector<Rectangle> Enemy::getHitBox() const {
+    return {hitbox};
 }
 std::vector<ObjectCategory> Enemy::getCollisionTargets() const 
 {
@@ -87,25 +88,33 @@ void Enemy::onCollision(std::shared_ptr<Object> other) {
     }
     if (other->getObjectCategory() == ObjectCategory::ENEMY) {
         // Push enemy away from Mario slightly to prevent sticking
-        Rectangle otherHitBox = other->getHitBox();
-        Vector2 pushDirection = {
-            position.x - otherHitBox.x,
-            position.y - otherHitBox.y
-        };
+        std::vector<Rectangle> otherHitBoxes = other->getHitBox();
+        if (!otherHitBoxes.empty()) {
+            Rectangle otherHitBox = otherHitBoxes[0];
+            Vector2 pushDirection = {
+                position.x - otherHitBox.x,
+                position.y - otherHitBox.y
+            };
 
-        // Normalize and apply small push
-        float length = pushDirection.x * pushDirection.x + pushDirection.y * pushDirection.y;
-        if (length > 0) {
-            pushDirection.x /= length;
-            pushDirection.y /= length;
-            position.x += pushDirection.x * 500.0f; // Small push away
-            position.y += pushDirection.y * 500.0f;
+            // Normalize and apply small push
+            float length = pushDirection.x * pushDirection.x + pushDirection.y * pushDirection.y;
+            if (length > 0) {
+                pushDirection.x /= length;
+                pushDirection.y /= length;
+                position.x += pushDirection.x * 500.0f; // Small push away
+                position.y += pushDirection.y * 500.0f;
+            }
         }
     }
 }
 void Enemy::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other->getHitBox();
+    std::vector<Rectangle> playerHitBoxes = getHitBox();
+    std::vector<Rectangle> otherHitBoxes = other->getHitBox();
+    
+    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
+    
+    Rectangle playerHitBox = playerHitBoxes[0];
+    Rectangle otherHitBox = otherHitBoxes[0];
 
     if (!CheckCollisionRecs(playerHitBox, otherHitBox)) {
         return;
@@ -226,5 +235,14 @@ std::vector<std::pair<int, int>> Enemy::getSpriteData() {
 }
 
 Vector2 Enemy::getSize() const {
-    return size;
+    switch(getType()) {
+        case EnemyType::GOOMBA:
+            return Constants::Goomba::standardSize;
+        case EnemyType::GREEN_KOOPA:
+            return  Constants::GreenKoopa::standardSize;
+        case EnemyType::RED_KOOPA:
+			return Constants::RedKoopa::standardSize;
+        default:
+            return {1, 1};
+    }
 }
