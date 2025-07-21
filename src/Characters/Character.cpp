@@ -5,13 +5,14 @@
 #include "../../include/System/TextureManager.h"
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
+#include "../../include/Enemy/Enemy.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
 
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale)
 	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(5), projectile(nullptr), holdingProjectile(false),
-	invincibleTimer(0), invincibleTime(2.0f),
+	invincibleTimer(0),
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
 	this->position = startPosition;
@@ -58,6 +59,10 @@ void Character::update(float deltaTime) {
 		invincibleTimer -= deltaTime;		
 	}
 
+	if(bounceTimer > 0) {
+		bounceTimer -= deltaTime;
+	}
+
 	if(holdingProjectile && projectile != nullptr) {
 		if(IsKeyPressed(KEY_X)) {
 			projectile->setActive(true);
@@ -82,7 +87,7 @@ void Character::update(float deltaTime) {
         position.x + 5,
         position.y + (spriteRec.height * scale),
         (spriteRec.width * scale) - 10,
-        5.0f
+        3.0f
     };
 
     std::vector<std::shared_ptr<Object>> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
@@ -105,7 +110,7 @@ void Character::update(float deltaTime) {
 void Character::draw() {
 	Rectangle sourceRec = spriteRec;
 
-	if(!isFacingRight()){
+	if (!isFacingRight()) {
 		sourceRec.width = -sourceRec.width;
 	}
 
@@ -116,12 +121,26 @@ void Character::draw() {
 		sourceRec.height * scale
 	};
 
-	DrawTexturePro(spriteSheet, sourceRec, destRec, {0, 0}, 0.0f, WHITE);
+	DrawTexturePro(spriteSheet, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
+
 	std::string s = "hp: " + std::to_string(hp);
 	DrawText(s.c_str(), 20, 460, 25, BLACK);
 
+	std::string s1 = "velocity.y: " + std::to_string(velocity.y);
+	DrawText(s1.c_str(), 20, 500, 25, BLACK);
+
+	if (currentState == &IdleState::getInstance()) {
+		DrawText("idle", 20, 540, 25, BLACK);
+	}
+	else if (currentState == &MovingState::getInstance()) {
+		DrawText("moving", 20, 540, 25, BLACK);
+	}
+	else {
+		DrawText("jumping", 20, 540, 25, BLACK);
+	}
+
 	if(holdingProjectile && projectile != nullptr) {
-		DrawText("holding projectile", 20, 540, 25, BLACK);
+		//DrawText("holding projectile", 20, 540, 25, BLACK);
 		projectile->draw();
 	}
 }
@@ -267,7 +286,6 @@ void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candi
 				break;
 			case ObjectCategory::PROJECTILE:
 				// implement
-				//position =  Vector2{position.x - 50, position.y - 20};
 				break;
 			case ObjectCategory::ITEM:
 				// implement 
@@ -277,7 +295,9 @@ void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candi
 }
 
 
-void Character::onCollision(std::shared_ptr<Object> other) {}
+void Character::onCollision(std::shared_ptr<Object> other) {
+
+}
 
 void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     Rectangle playerHitBox = getHitBox();
@@ -317,19 +337,28 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 }
 
 void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
-    Rectangle characterHitbox = getHitBox();
-    Rectangle otherHitbox = other->getHitBox();
+    Rectangle playerHitBox = getHitBox();
+    Rectangle otherHitBox = other->getHitBox();
 
-	if(velocity.y > 0 && characterHitbox.x + characterHitbox.height <= otherHitbox.width + 5.0f) {
+	float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
+    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
+    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
+    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
+
+	float minOverlap = std::min({ overlapLeft, overlapRight, overlapBottom, overlapTop });
+
+	if(minOverlap == overlapTop && velocity.y > 0) {
 		DrawText("deal damage", 50, 200, 30, BLACK);
 		invincibleTimer = 0.2f;
-        velocity.y -= 200.0f;
-        // setOnGround(false);
+		velocity.y = -500.0f;
+		setOnGround(false);
+		auto enemy = dynamic_cast<Enemy*>(other.get());
+		enemy->takeDamage(1);
 	}
-	else if (velocity.y <= 0) {
+	else {
 		takeDamage(1);
-		DrawText ("got hit", 50, 200, 30, BLACK);
-	} 
+		DrawText("got hit", 50, 200, 30, BLACK);
+	}
 }
 
 float Character::getBottom() const {
@@ -361,7 +390,7 @@ void Character::takeDamage(int amount) {
 		return;
 	}
 	hp -= amount;
-	invincibleTimer = invincibleTime;
+	invincibleTimer = 1.0f;
 }
 
 bool Character::isAlive() const {

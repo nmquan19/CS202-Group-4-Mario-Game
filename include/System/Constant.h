@@ -9,7 +9,7 @@ struct CharacterStats {
 
 namespace Constants {
     constexpr float GRAVITY = 980.0f;
-    constexpr int TILE_SIZE = 96;
+    constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
 
     namespace GreenKoopa {

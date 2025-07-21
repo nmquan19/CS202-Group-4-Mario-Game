@@ -77,7 +77,7 @@ void Koopa::checkCollision(const std::vector<std::shared_ptr<Object>>& candidate
             this->changeState(&KoopaKnockState::GetInstance());
             break;
         case ObjectCategory::CHARACTER:
-            handleCharacterCollision(candidate);
+            //handleCharacterCollision(candidate);
             break;
         }
     }
