@@ -8,6 +8,7 @@
 #include "../../include/System/LevelEditor.h"
 #include "../../include/Game/GameStates.h"
 #include "../../include/System/Constant.h"
+#include "../../include/Enemy/TriggerZone.h"
 #include <type_traits>
 #include <variant>
 #include <algorithm>
@@ -133,6 +134,7 @@ void GameContext::spawnObject() {
 
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
+        PhysicsManager::getInstance().markForDeletion(object);
         ToDeleteObjects.push_back(object);
     }
 }

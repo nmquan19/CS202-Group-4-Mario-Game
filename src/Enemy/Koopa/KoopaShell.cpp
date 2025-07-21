@@ -11,20 +11,23 @@
 #include <raymath.h>
 #include <utility>
 #include <memory>
+#include <iostream>
 KoopaShell::KoopaShell(Vector2 pos, Vector2 sz): spritebox({0,0,0,0}), velocity({0,0}), CollectableObject(pos, sz, TextureManager::enemyTextures), aniSpeed(0.2f), aniTimer(0) {   
 	
 }
 
 void KoopaShell::onCollect(Character* player) {
     if (!player) return;
+    std::cout << "On collect\n";
     TraceLog(LOG_INFO, "KoopaShell collected!");
     player->setHoldingProjectile(true);
     player->holdProjectile(*this);
 	this->changeState(&KoopaShellCollectedState::getInstance());
+    player->holdProjectile(*this);
+    player->setHoldingProjectile(true);
 }
 
 void KoopaShell::update(float deltaTime) {
-
     aniTimer += deltaTime; 
     CollectableObject::update(deltaTime); 
 	if(currentState)currentState->update(this, deltaTime);
