@@ -350,7 +350,7 @@ void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
 	if(minOverlap == overlapTop && velocity.y > 0) {
 		DrawText("deal damage", 50, 200, 30, BLACK);
 		invincibleTimer = 0.2f;
-		velocity.y = -500.0f;
+		velocity.y = Constants::Character::BOUNCE_VELOCITY;
 		setOnGround(false);
 		auto enemy = dynamic_cast<Enemy*>(other.get());
 		enemy->takeDamage(1);

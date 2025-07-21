@@ -123,16 +123,17 @@ void Goomba::handleEnvironmentCollision(std::shared_ptr<Object> other) {
         velocity.x *= -1;
     }
 }
+
 void Goomba::die()
 {
+    setActive(false);
 }
+
 void Goomba::takeDamage(int amount) {
     HP -= amount;
+    this->changeState(&GoombaStompedState::GetInstance());
     if (HP <= 0) {
         die();
-    }
-    else {
-        this->changeState(&GoombaStompedState::GetInstance());
     }
 }
 

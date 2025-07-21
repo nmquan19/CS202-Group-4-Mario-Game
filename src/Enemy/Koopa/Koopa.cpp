@@ -157,7 +157,13 @@ void Koopa::die()
 {
 }
 void Koopa::takeDamage(int amount) {
-
+    HP -= amount;
+    if (HP <= 0) {
+        die();
+    }
+    else {
+        this->changeState(&KoopaStompedState::GetInstance());
+    }
 }
 
 void Koopa::update(float deltaTime) {
