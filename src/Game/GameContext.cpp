@@ -57,6 +57,20 @@ void GameContext::handleInput() {
 }
 
 void GameContext::update(float deltaTime) {
+    if (currentState == gamePlayState) {
+        audioManager.SetSoundEffectVolume(menuManager.slideBar.getValue());
+        audioManager.SetBackgroundMusicVolume(menuManager.slideBar.getValue());
+        if (!audioManager.isPlaying()) {
+            audioManager.PlayBackgroundMusic("theme1");
+        }
+        audioManager.UpdateBackgroundMusic("theme1");
+    }
+    else {
+        if (audioManager.isPlaying()) {
+            audioManager.StopBackgroundMusic("theme1");
+        }
+    }
+
     if (currentState) {
         currentState->update(*this, deltaTime);
     }

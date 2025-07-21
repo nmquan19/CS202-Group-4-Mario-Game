@@ -8,7 +8,8 @@ MenuManager::MenuManager() {
     select = 0;
     dialog = false;
     exit = false;
-    audioManager.LoadSoundEffect("click", "./assets/sound/click.wav");
+    //audioManager.LoadSoundEffect("click", "./assets/sound/click.wav");
+    //audioManager.LoadBackgroundMusic("theme1", "./asset/sound/theme1.wav");
     board = LoadTexture("./assets/button/board.png");
     check.load("./assets/button/check.png");
     cross.load("./assets/button/cross.png");
@@ -24,8 +25,8 @@ MenuManager::MenuManager() {
     checkPosition.x = boardPosition.x + board.width * scale / 2 - 50 + 100;
     checkPosition.y = boardPosition.y + board.height * scale / 2;
 
-    settingPosition.x = GetScreenWidth() * 9 / 10;
-    settingPosition.y = GetScreenHeight() / 10;
+    settingPosition.x = GetScreenWidth() * 9 / 10.0f;
+    settingPosition.y = GetScreenHeight() / 10.0f;
 
     returnButtonPosition.x = boardPosition.x + board.width * scale / 2 - 50;
     returnButtonPosition.y = boardPosition.y + board.height * scale / 2;
@@ -78,12 +79,14 @@ void MenuManager::DrawMenu() {
 
 void MenuManager::HandleInput() {
     if ((IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_U)) && select != 0 && !dialog) {
-        audioManager.PlaySoundEffect("click");
         select--;
+        audioManager.PlaySoundEffect("click");
+
     }
     if ((IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_D)) && select != 3 && !dialog) {
-        audioManager.PlaySoundEffect("click");
         select++;
+        audioManager.PlaySoundEffect("click");
+
     }
     if (IsKeyPressed(KEY_ENTER) && select == 2) {
         dialog = true;
@@ -121,13 +124,13 @@ void MenuManager::DrawSetting() {
         returnButton.draw(returnButtonPosition);
         slideBar.DrawSlideBar(slideBarPosition);
     }
-
 }
 void MenuManager::HandleSetting() {
     Vector2 mousePos = GetMousePosition();
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && setting.checkCollision(mousePos)) {
         dialog = true;
     }
+    if (IsKeyPressed(KEY_ENTER)) dialog = false;
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && returnButton.checkCollision(mousePos)) {
         dialog = false;
     }
