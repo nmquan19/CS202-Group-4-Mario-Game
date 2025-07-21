@@ -102,6 +102,7 @@
     <Media Include="assets\sound\notice2.wav" />
     <Media Include="assets\sound\point.wav" />
     <Media Include="assets\sound\strike.wav" />
+    <Media Include="assets\sound\theme1.wav" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\button\board.png" />
