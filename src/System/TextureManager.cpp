@@ -51,8 +51,7 @@ void TextureManager::loadTextures() {
     std::ifstream item_in;
     item_in.open("assets/item/item_output.txt");
     int item_id, item_x, item_y, item_w, item_h;
-    while (item_in >> item_id >> item_x >> item_y >> item_w >> item_h)
-    {
+    while (item_in >> item_id >> item_x >> item_y >> item_w >> item_h){
         Item_sprite_boxes.push_back({ (float)item_x,(float)item_y,(float)item_w, (float)item_h });
         std::cout << "Loaded ID " << item_id << std::endl;
     }
@@ -67,7 +66,7 @@ void TextureManager::unloadTextures() {
 
     for (auto& pair : blockTextures) {
         UnloadTexture(pair.second);
-    } 
+    }
     blockTextures.clear();
 
     UnloadTexture(characterTextures);
@@ -187,14 +186,13 @@ void ObjectPalette::drawPalette() {
     Rectangle coinRect = { startX + spacing, yItem, iconSize, iconSize };
     Texture2D coinTexture = tm.getItemTexture(ItemType::COIN);
     if (coinTexture.id != 0) {
-        int coin_start_id = 703;
-        int coin_end_id = 706;
+        std::vector<int> v = { 404, 422, 434, 462 };
 
-        for (int i = coin_start_id; i <= coin_end_id; ++i) {
-            int index = i - 1; 
+        for (int i = 0; i <= 3; ++i) {
+            int index = v[i] - 1; 
             if (index >= 0 && index < tm.Item_sprite_boxes.size()) {
                 Rectangle src = tm.Item_sprite_boxes[index];
-                Rectangle dest = { 50.0f + (i - coin_start_id) * 60.0f, 400.0f, src.width * 3, src.height * 3 };
+                Rectangle dest = { 50.0f + (i) * 60.0f, 400.0f, src.width * 3, src.height * 3 };
                 DrawTexturePro(tm.itemTextures, src, dest, { 0, 0 }, 0.0f, WHITE);
             }
         }
