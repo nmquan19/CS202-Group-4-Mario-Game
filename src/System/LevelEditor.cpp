@@ -307,6 +307,8 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
                 break;
             case EnemyType::PIRANHA_PLANT: return "PIRANHA_PLANT";
                 break;
+            case EnemyType::DRY_BOWSER: return "DRY_BOWSER";
+				break;
             default: return "GOOMBA";
                 break;
         }

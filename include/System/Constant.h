@@ -9,7 +9,7 @@ struct CharacterStats {
 
 namespace Constants {
     constexpr float GRAVITY = 980.0f;
-    constexpr int TILE_SIZE = 64;
+    constexpr int TILE_SIZE = 32;
     constexpr float KOOPA_SPEED = 200.0f;
 
     namespace GreenKoopa {
@@ -50,4 +50,12 @@ namespace Constants {
             {{293, 892, 16, 16}, {326, 892, 16, 16}} // jumping state
         };
     }
+    namespace DryBowser{
+        constexpr float WalkTurnDuration = 0.5f;  
+		constexpr float JUMP_VELOCITY = -600.0f;
+        constexpr float WallJumpFriction = 0.95f;
+        constexpr float RUN_SPEED = 500.0f; 
+		constexpr float BASIC_ATTACK_DURATION = 2.0f;
+        constexpr float BASIC_ATTACK_RANGE = 100.0f; 
+    } 
 }

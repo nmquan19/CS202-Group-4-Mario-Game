@@ -30,7 +30,8 @@ enum class EnemyType {
 	GREEN_KOOPA,
 	RED_KOOPA,
 	PIRANHA_PLANT,
-	HAMMER_BRO
+	HAMMER_BRO,
+	DRY_BOWSER
 };
 
 enum class ItemType {

@@ -8,6 +8,7 @@
 #include "../../Characters/Character.h"
 #include <climits>
 #include <utility>
+#include <memory>
 class KoopaShell : public CollectableObject, public IMovable{    
     public:
      KoopaShell(Vector2 pos, Vector2 sz);
