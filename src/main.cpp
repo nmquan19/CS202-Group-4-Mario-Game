@@ -88,30 +88,90 @@
 //}
 
 
+#include "raylib.h"
+#include "raymath.h"
+#include <vector>
+
+
+class Coin {
+public:
+    Vector2 position;
+    Texture2D texture;
+    Rectangle frameRec;
+    int frame;               // 0 -> 3
+    float frameTime;         // thời gian mỗi frame
+    float timer;             // bộ đếm
+
+    Coin(Vector2 pos, Texture2D tex) {
+        position = pos;
+        texture = tex;
+        frame = 0;
+        frameTime = 0.2f;
+        timer = 0.0f;
+        frameRec = { 0.0f, 0.0f, 100.0f, 100.0f };
+    }
+
+    void Update(float deltaTime) {
+        timer += deltaTime;
+        if (timer >= frameTime) {
+            timer = 0.0f;
+            frame = (frame + 1) % 4; // quay vòng 0 -> 3
+            frameRec.x = frame * 100.0f;
+        }
+    }
+
+    void Draw() {
+        DrawTextureRec(texture, frameRec, position, WHITE);
+    }
+
+    ~Coin() {
+        UnloadTexture(texture); // chỉ nếu bạn sở hữu texture riêng
+    }
+};
+
 int main() {
     const int screenWidth = 800;
-    const int screenHeight = 600;
+    const int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "Palette Test");
+    InitWindow(screenWidth, screenHeight, "Coin Animation Test");
     SetTargetFPS(60);
 
-    TextureManager::getInstance().loadTextures();
-    std::cout <<"Item Size: " << TextureManager::getInstance().getSizeofItemSprite();
+    // Load texture với đường dẫn đúng
+    Texture2D coinTexture = LoadTexture("../assets/item/item_spritesheet.png");
 
-    ObjectPalette palette;
+    // Frame animation setup
+    const int frameWidth = 100;
+    const int frameHeight = 100;
+    const int frameCount = 4;
+    int currentFrame = 0;
+
+    Rectangle sourceRec = { 0, 0, (float)frameWidth, (float)frameHeight };
+    Vector2 position = { screenWidth / 2.0f - frameWidth / 2.0f, screenHeight / 2.0f - frameHeight / 2.0f };
+
+    float frameDuration = 0.2f;  // mỗi frame kéo dài 0.2 giây
+    float frameTimer = 0.0f;
 
     while (!WindowShouldClose()) {
+        // Cập nhật frame animation
+        frameTimer += GetFrameTime();
+        if (frameTimer >= frameDuration) {
+            frameTimer = 0.0f;
+            currentFrame = (currentFrame + 1) % frameCount;
+            sourceRec.x = (float)(currentFrame * frameWidth);
+        }
+
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        palette.handleSelection();
-        palette.drawPalette();      
-    
+        DrawText("Coin animation example", 10, 10, 20, DARKGRAY);
+        DrawTextureRec(coinTexture, sourceRec, position, WHITE);
+
         EndDrawing();
     }
 
-    TextureManager::getInstance().unloadTextures();
+    UnloadTexture(coinTexture);
     CloseWindow();
+
     return 0;
 }
 
