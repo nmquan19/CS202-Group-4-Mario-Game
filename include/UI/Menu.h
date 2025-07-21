@@ -17,7 +17,7 @@ public:
         position = { 0, 0 };
         recButton = { 0, 0, 0, 0 };
         textureButton = LoadTexture(nullptr);
-        scale = 0.2;
+        scale = 0.2f;
     }
     void load(const char* textureFile) {
         textureButton = LoadTexture(textureFile);
@@ -32,7 +32,7 @@ public:
     void draw(Vector2 pos) {
         position = pos;
         setRectangle();
-        DrawTextureEx(textureButton, position, 0, scale / double(1.5), WHITE);
+        DrawTextureEx(textureButton, position, 0, scale / 1.5f, WHITE);
     }
     bool checkCollision(Vector2 pos) {
         if (CheckCollisionPointRec(pos, recButton)) return true;
@@ -109,12 +109,13 @@ private:
     Texture2D logo, board;
     Button check, cross, setting, returnButton;
     Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition;
-    SlideBar slideBar; Vector2 slideBarPosition;
-    float scale = 0.2;
+
+    float scale = 0.2f;
     //Texture2D startButton;
     bool isActive;
     AudioManager audioManager;
 public:
+    SlideBar slideBar; Vector2 slideBarPosition;
     int select;
     bool dialog, exit;
     MenuManager();
