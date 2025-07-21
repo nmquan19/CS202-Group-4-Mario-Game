@@ -189,7 +189,7 @@ void ObjectPalette::drawPalette() {
         std::vector<int> v = { 404, 422, 434, 462 };
 
         for (int i = 0; i <= 3; ++i) {
-            int index = v[i] - 1; 
+            int index = v[i] - 1;
             if (index >= 0 && index < tm.Item_sprite_boxes.size()) {
                 Rectangle src = tm.Item_sprite_boxes[index];
                 Rectangle dest = { 50.0f + (i) * 60.0f, 400.0f, src.width * 3, src.height * 3 };
