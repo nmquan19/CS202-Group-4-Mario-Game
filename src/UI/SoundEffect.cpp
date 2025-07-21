@@ -1,10 +1,15 @@
 #include "../../include/UI/SoundEffect.h"
+#include <string>
+#include <raylib.h>
 
 AudioManager::AudioManager() {
     isMusicPlaying = false;
     
 }
-
+AudioManager& AudioManager::getInstance() {
+    static AudioManager instance;
+    return instance;
+}
 AudioManager::~AudioManager() {
     for (auto& sound : sounds) {
         UnloadSound(sound.second);

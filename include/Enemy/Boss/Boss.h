@@ -14,8 +14,7 @@ class Boss : public Enemy {
 	private : 
 	
 	protected: 
-		InterpolatedAnimationController animController;
-		std::string curAniName; 
+	
 	public :
 		Boss(Vector2 startPos, Vector2 size, Texture2D texture) : Enemy(startPos, texture, size) {}
 		virtual void update(float dt) = 0;

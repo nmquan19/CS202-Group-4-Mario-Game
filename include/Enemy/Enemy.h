@@ -6,6 +6,7 @@
 #include <utility>
 #include <string>
 #include <climits>
+#include "../System/InterpolationController.h"
 class EnemyState; 
 
 class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable {
@@ -54,7 +55,13 @@ public :
 	std::vector<std::pair<int, int>> getSpriteData();
 	virtual void setAnimation(const std::string& ani_type) {};
 	void flipDirection(); 
+	InterpolatedAnimationController& getAnimController() { return animController; }
+	FrameInterpolatedVelocityController& getVelocityController() { return velocityController; }
 protected:
+	InterpolatedAnimationController animController;
+	FrameInterpolatedVelocityController velocityController;
+	std::string curAniName;
+
 	bool isalive; 
 	float aniTimer, aniSpeed; 
     int HP ;

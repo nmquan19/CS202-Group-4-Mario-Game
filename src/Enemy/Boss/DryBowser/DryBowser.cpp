@@ -19,6 +19,7 @@
 #include "../../../../include/Objects/ObjectFactory.h"
 #include "../../../../include/System/Interface.h"
 #include "../../../../include/System/Constant.h"
+#include "../../../../include/System/FrameData.h"
 DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,size,TextureManager::DryBowser_texture){
     HP = 100;
     alive = true;
@@ -37,19 +38,38 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
 }
 
 void DryBowser::update(float dt) {
+    Enemy::update(dt); 
     updateWorldState();
+	hitbox.x = position.x;
+    hitbox.y = position.y; 
 	animController.update(dt);  
+    //velocityController.update(dt); 
     curFrame = animController.getCurrentFrame();
+    if (velocityController.isActiveAtFrame(curFrame))
+    {
+        velocity = velocityController.getVelocityAtFrame(curFrame);
+    }
     spritebox = TextureManager::DryBowser_sprite_boxes[curFrame] ; 
-    const FrameData* data = FrameDatabase::getInstance().getFrameData(curAniName, curFrame);
-    //this->hitbox = data->hitboxes[0];
-    if (data && data->triggerFunction) data->triggerFunction();
+    const FrameData* data = FrameDatabase::getInstance().getFrameData(this->getType(), curAniName, curFrame);
+    if (data)
+    {
+        for(auto& event : data->events) {
+            if (event.eventType != EventType::None) {
+                auto func = FrameEventHandlers::bind(event, this);
+                if (func)
+                {
+                    func();
+                }
+            }
+		}
+        
+       
+    }
     if (currentPhase) currentPhase->update(this, dt);
 }
 
 void DryBowser::draw() {
-	DrawText(TextFormat("Frame: %d", curFrame), 200, 200, 20, RED);
-	DrawText(curAniName.c_str(), 300, 300, 20, RED);
+
     Enemy::draw(); 
 }
 

@@ -32,6 +32,7 @@
     <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
+    <ClCompile Include="src\System\FrameData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -81,6 +82,7 @@
     <ClInclude Include="include\Enemy\Boss\BossPhaseState.h" />
     <ClInclude Include="include\Enemy\Boss\SimulateState.h" />
     <ClInclude Include="include\Enemy\Boss\WorldState.h" />
+    <ClInclude Include="include\System\FrameData.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav" />

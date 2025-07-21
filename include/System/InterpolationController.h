@@ -3,51 +3,16 @@
 #include <cmath>
 #include <algorithm>
 #include <functional>
-#include <vector>
 #include <raylib.h>
 #include <string>
 #pragma once
 #include <cmath>
 #include <algorithm>
 #include <functional>
-#include <unordered_map>
 #include <vector>
 #include <raylib.h>
 #include <string>
-#include "json.hpp"
-enum class EventType
-{  
-    None,
-    ChangeVelocity,
-    SetEasingVelocity, 
-    PlaySound 
-};
-struct FrameData {
-    int frameIndex;
-    EventType eventType = EventType::None; 
-    std::function<void()> triggerFunction;
-    std::vector<Rectangle> hitboxes;
-    std::string eventPayload;
-
-    FrameData() : frameIndex(0), triggerFunction(nullptr) {}
-    FrameData(std::vector<Rectangle> hitboxes,
-        EventType eventType = EventType::None,
-        const std::string& payload = "")
-        : hitboxes(hitboxes), eventType(eventType), eventPayload(payload) {}
-    void load(const nlohmann::json& j);
-
-    nlohmann::json to_json() const;
-};
-class FrameDatabase {
-    std::unordered_map<std::string, std::unordered_map<int, FrameData>> data;
-public:
-    static FrameDatabase& getInstance();
-    void loadFromFile(const std::string& filename);
-    const FrameData* getFrameData(const std::string& animName, int frame) const;
-    const std::unordered_map<int, FrameData>* getAnimation(const std::string& animName) const;
-    const std::unordered_map<std::string, std::unordered_map<int, FrameData>>& getAll() const;
-};
-
+#include <raymath.h>
 class InterpolatedAnimationController {
 private:
     int startFrame;
@@ -80,8 +45,8 @@ class FrameInterpolatedVelocityController {
 private:
     int startFrame;
     int endFrame;
-    float fromVelocity;
-    float toVelocity;
+    Vector2 fromVelocity;
+    Vector2 toVelocity;
     std::function<float(float)> easingFunction;
     bool active = false;
 
@@ -90,8 +55,7 @@ public:
         : startFrame(0), endFrame(0), fromVelocity(0.0f), toVelocity(0.0f),
         easingFunction([](float t) { return t; }) {
     }
-
-    void set(int fromFrame, int toFrame, float fromV, float toV,
+    void set(int fromFrame, int toFrame, Vector2 fromV, Vector2 toV,
         std::function<float(float)> easing = [](float t) { return t; }) {
         startFrame = fromFrame;
         endFrame = toFrame;
@@ -101,7 +65,7 @@ public:
         active = true;
     }
 
-    float getVelocityAtFrame(int currentFrame) const {
+    Vector2 getVelocityAtFrame(int currentFrame) const {
         if (!active || currentFrame < startFrame || currentFrame > endFrame)
             return fromVelocity;
 
@@ -128,6 +92,13 @@ namespace Easing {
     inline float easeOut(float t) { return 1 - (1 - t) * (1 - t); }
     inline float easeInOut(float t) {
         return t < 0.5f ? 2 * t * t : 1 - std::pow(-2 * t + 2, 2) / 2;
+    }
+    inline std::function<float(float)> getEasingFunction(const std::string& ease) {
+        if (ease == "linear") return linear;
+        else if (ease == "easeIn") return easeIn;
+        else if (ease == "easeOut") return easeOut;
+        else if (ease == "easeInOut") return easeInOut;
+        return linear;
     }
 }
 

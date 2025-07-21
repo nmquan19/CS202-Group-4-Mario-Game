@@ -11,7 +11,7 @@ private:
     bool isMusicPlaying = false;
 
 public:
-
+    static AudioManager& getInstance();
     AudioManager();
     ~AudioManager();
 
