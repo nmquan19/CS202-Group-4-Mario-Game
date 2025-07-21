@@ -14,7 +14,7 @@ public:
 
     static Texture2D enemyTextures;
     Texture2D getBlockTexture(BlockType type);
-    Texture2D getCharacterTexture(CharacterType type);
+    Texture2D getCharacterTexture() const;
     void loadTextures();
     void unloadTextures();
 
@@ -25,7 +25,7 @@ private:
     TextureManager() = default;
    
     std::map<BlockType, Texture2D> blockTextures;
-    std::map<CharacterType, Texture2D> characterTextures;
+    Texture2D characterTextures;
  
     bool texturesLoaded = false;
 };

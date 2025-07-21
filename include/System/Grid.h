@@ -6,6 +6,7 @@
 class GridSystem {
 public:
     static const int GRID_SIZE = Constants::TILE_SIZE;
+
     static Vector2 snapToGrid(Vector2 position) {
         return {
             (float)floor(position.x / GRID_SIZE) * GRID_SIZE,

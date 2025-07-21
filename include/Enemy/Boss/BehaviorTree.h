@@ -9,7 +9,7 @@ enum class NodeStatus {
     Success,
     Failure,
     Running
-};
+};  
 
 class BehaviorTreeNode {
 public:

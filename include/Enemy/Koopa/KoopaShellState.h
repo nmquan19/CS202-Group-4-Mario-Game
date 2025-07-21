@@ -10,7 +10,7 @@ public :
 	virtual void enter(KoopaShell* shell) = 0;
 	virtual void exit(KoopaShell* shell) = 0;
 	virtual void update(KoopaShell* shell, float deltaTime) = 0;
-    virtual void checkCollision(KoopaShell* shell, const std::vector<Object*>& candidates) = 0; 
+    virtual void checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& candidates) = 0; 
     virtual ObjectCategory getObjectCategory() const =0 ; 
     virtual std::vector<ObjectCategory> getCollisionTargets() const = 0;
 };
@@ -23,7 +23,7 @@ public:
     void enter(KoopaShell* shell) override;
     void exit(KoopaShell* shell) override;
     void update(KoopaShell* shell, float deltaTime) override;
-    void checkCollision(KoopaShell* shell, const std::vector<Object*>& candidates) override;
+    void checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& candidates) override;
     ObjectCategory getObjectCategory() const override; 
     std::vector<ObjectCategory> getCollisionTargets() const override; 
 
@@ -39,7 +39,7 @@ public:
     void enter(KoopaShell* shell) override;
     void exit(KoopaShell* shell) override;
     void update(KoopaShell* shell, float deltaTime) override;
-    void checkCollision(KoopaShell* shell, const std::vector<Object*>& candidates) override;
+    void checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& candidates) override;
     ObjectCategory getObjectCategory() const override;
 
     std::vector<ObjectCategory> getCollisionTargets() const override;
@@ -57,7 +57,7 @@ public:
     void enter(KoopaShell* shell) override;
     void exit(KoopaShell* shell) override;
     void update(KoopaShell* shell, float deltaTime) override;
-    void checkCollision(KoopaShell* shell, const std::vector<Object*>& candidates) override;
+    void checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& candidates) override;
     ObjectCategory getObjectCategory() const override;
 
     std::vector<ObjectCategory> getCollisionTargets() const override;
@@ -75,7 +75,7 @@ public:
     void enter(KoopaShell* shell) override;
     void exit(KoopaShell* shell) override;
     void update(KoopaShell* shell, float deltaTime) override;
-    void checkCollision(KoopaShell* shell, const std::vector<Object*>& candidates) override;
+    void checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& candidates) override;
     ObjectCategory getObjectCategory() const override;
 
     std::vector<ObjectCategory> getCollisionTargets() const override;
@@ -93,7 +93,7 @@ class KoopaShellKnockedState : public KoopaShellState {
     void enter(KoopaShell* shell) override;
     void exit(KoopaShell* shell) override;
     void update(KoopaShell* shell, float deltaTime) override;
-    void checkCollision(KoopaShell* shell, const std::vector<Object*>& candidates) override;
+    void checkCollision(KoopaShell* shell, const std::vector<std::shared_ptr<Object>>& candidates) override;
     ObjectCategory getObjectCategory() const override;
     std::vector<ObjectCategory> getCollisionTargets() const override;
 

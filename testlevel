@@ -1,5 +1,5 @@
 {
-     "gridSize": 52,
+     "gridSize": 96,
      "objects": [
           {
                "gridX": 3,
@@ -9,6 +9,7 @@
                "type": "GROUND"
           },
           {
+<<<<<<< HEAD
                "gridX": 3,
                "gridY": 12,
                "sizeX": 1.0,
@@ -17,27 +18,67 @@
           },
           {
                "gridX": 3,
-               "gridY": 13,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+<<<<<<< HEAD
+=======
+               "type": "GROUND"
+          },
+          {
+               "gridX": 3,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
+               "gridX": 3,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 3,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+>>>>>>> master
+               "type": "GROUND"
+          },
+          {
                "gridX": 4,
+<<<<<<< HEAD
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 5,
+<<<<<<< HEAD
                "gridY": 13,
+=======
+               "gridY": 17,
+               "sizeX": 0.0,
+               "sizeY": 0.0,
+               "type": "MARIO"
+          },
+          {
+               "gridX": 5,
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 6,
+<<<<<<< HEAD
                "gridY": 12,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -46,12 +87,16 @@
           {
                "gridX": 6,
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 7,
+<<<<<<< HEAD
                "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -67,33 +112,60 @@
           {
                "gridX": 7,
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 8,
+<<<<<<< HEAD
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 9,
+<<<<<<< HEAD
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 10,
+<<<<<<< HEAD
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 11,
+<<<<<<< HEAD
+               "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 12,
+<<<<<<< HEAD
                "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -102,26 +174,27 @@
           {
                "gridX": 12,
                "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 12,
-               "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 13,
+<<<<<<< HEAD
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 14,
+<<<<<<< HEAD
                "gridY": 12,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -130,39 +203,224 @@
           {
                "gridX": 14,
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 15,
+<<<<<<< HEAD
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 16,
+<<<<<<< HEAD
                "gridY": 13,
+=======
+               "gridY": 18,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 17,
-               "gridY": 13,
+               "gridY": 18,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 18,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 19,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 19,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 19,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 20,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 21,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 22,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 23,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 24,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 25,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 26,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 27,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 28,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 29,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 30,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 31,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 32,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 33,
+               "gridY": 14,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GOOMBA"
+          },
+          {
+               "gridX": 33,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 34,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "RED_KOOPA"
+          },
+          {
+               "gridX": 34,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 35,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GOOMBA"
+          },
+          {
+               "gridX": 35,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 36,
                "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
+<<<<<<< HEAD
+               "gridX": 18,
+               "gridY": 13,
+=======
+               "gridX": 36,
+               "gridY": 14,
+>>>>>>> master
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+<<<<<<< HEAD
                "gridX": 18,
                "gridY": 13,
                "sizeX": 1.0,
@@ -196,6 +454,20 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
+=======
+               "gridX": 36,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 36,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+>>>>>>> master
           }
      ],
      "version": "1.0"

@@ -5,17 +5,11 @@
 #include "../System/Interface.h"
 #include "../System/PhysicsManager.h"
 
-struct CharacterStats{
-	float baseSpeed;
-	float jumpForce;
-	float gravity;
-};
-
 class ICharacterState;
 
-class Character : public Object, public IUpdatable, public IMovable {
+class Character : public Object, public IUpdatable, public IMovable, public IDamageable {
 public:
-	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale = 2.0f);
+	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale);
 	~Character();
 	void changeState(ICharacterState& newState);
   
@@ -51,8 +45,8 @@ public:
 	Rectangle getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
-	void checkCollision(const std::vector<Object*>& candidates) override;
-	void onCollision(Object* other) override;
+	void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
+	void onCollision(std::shared_ptr<Object> other) override;
 	bool isActive() const override;
 	void setActive(bool) override;
 	bool isCollided() const override;
@@ -60,6 +54,14 @@ public:
 
 	ObjectType getObjectType() const override;
 	Vector2 getSize() const override;
+
+	void takeDamage(int amount) override;
+	bool isAlive() const override;
+	void die() override;
+
+	void setHoldingProjectile(bool flag);
+	bool isHoldingProjectile() const;
+	void holdProjectile(KoopaShell& p);
 
 	float getWidth() const;
 	float getHeight() const;
@@ -94,6 +96,14 @@ private:
 	float hitBoxHeight;
 	bool active = true;
 
-	void handleEnvironmentCollision(Object* other);
+	int hp;
+	float invincibleTime;
+	float invincibleTimer;
+	
+	KoopaShell* projectile;
+	bool holdingProjectile;
+
+	void handleEnvironmentCollision(std::shared_ptr<Object> other);
+	void handleEnemyCollision(std::shared_ptr<Object> other);
 	//void handleItemCollsion(ICollidable* other);
 };

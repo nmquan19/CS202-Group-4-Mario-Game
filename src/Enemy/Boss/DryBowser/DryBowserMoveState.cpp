@@ -11,7 +11,7 @@ void DryBowserStandingState::enter(Boss* boss) {
 }
 
 void DryBowserStandingState::update(Boss* boss, float dt) {
-    // Standing logic
+
 }
 
 void DryBowserStandingState::exit(Boss* boss) {

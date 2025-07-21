@@ -43,7 +43,6 @@ void DryBowser::update(float dt) {
 	hitbox.x = position.x;
     hitbox.y = position.y; 
 	animController.update(dt);  
-    //velocityController.update(dt); 
     curFrame = animController.getCurrentFrame();
     if (velocityController.isActiveAtFrame(curFrame))
     {
@@ -61,9 +60,7 @@ void DryBowser::update(float dt) {
                     func();
                 }
             }
-		}
-        
-       
+		}       
     }
     if (currentPhase) currentPhase->update(this, dt);
 }
