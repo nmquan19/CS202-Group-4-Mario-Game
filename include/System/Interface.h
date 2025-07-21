@@ -13,6 +13,7 @@ enum class ObjectCategory {
 	TRIGGER,
 	SHELL,
 	BACKGROUND,
+	INTERACTIVE
 };
 
 enum class BlockType {
@@ -57,6 +58,12 @@ enum class TriggerType {
 	DETECTOR,
 	ZONE,
 };
+
+enum class InteractiveType {
+	MOVING_PLATFORM,
+	SPRING
+};
+
 enum class Direction {
 	UP = 1,
 	DOWN,

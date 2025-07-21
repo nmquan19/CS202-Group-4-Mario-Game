@@ -24,18 +24,15 @@ void JumpingState::update(Character* character, float deltaTime){
         character->setFacingRight(true);
     }
     else{
-        // if the player press a button and then dont press anymore the horizontal velocity is gradually reduced.
         character->setVelocity({currentVel.x * 0.95f, currentVel.y});
     }
 
-    // if the user hold the space for long time -> long jump, else -> short jump
     if (IsKeyReleased(KEY_SPACE) && currentVel.y < 0) {
         Vector2 vel = character->getVelocity();
         vel.y *= 0.5f; // Cut jump short
         character->setVelocity(vel);
     }
-
-    // Check landing
+    
     if (character->isOnGround() && currentVel.y >= 0) {
         if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) {
             character->changeState(MovingState::getInstance());
