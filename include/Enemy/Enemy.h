@@ -4,7 +4,10 @@
 #include "../Objects/ObjectFactory.h"
 #include <vector>
 #include <utility>
+#include <string>
 #include <climits>
+#include "../System/InterpolationController.h"
+#include <memory>
 class EnemyState; 
 
 class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable {
@@ -51,7 +54,24 @@ public :
 	virtual void die() override = 0;
 	virtual void handleEnvironmentCollision(std::shared_ptr<Object> other);
 	std::vector<std::pair<int, int>> getSpriteData();
-protected:
+	virtual void setAnimation(const std::string& ani_type) {};
+	void flipDirection(); 
+	InterpolatedAnimationController& getAnimController() { return animController; }
+	FrameInterpolatedVelocityController& getVelocityController() { return velocityController; }
+public: 
+	Vector2 getTargetPos() const { return targetPosition;  }
+	virtual void walkToTarget() {}; 
+	virtual void attack() {}; 
+	virtual bool isAttacking() { return false; }	
+	virtual void patrol() {}; 
+	virtual void idle() {};
+	virtual void avoidDanger() {};
+	virtual bool isNearTarget() { return false; }
+ protected:
+	InterpolatedAnimationController animController;
+	FrameInterpolatedVelocityController velocityController;
+	std::string curAniName;
+	Vector2 targetPosition; 
 	bool isalive; 
 	float aniTimer, aniSpeed; 
     int HP ;

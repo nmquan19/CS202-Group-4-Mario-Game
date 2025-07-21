@@ -47,6 +47,11 @@ void Koopa::onCollision(std::shared_ptr<Object> other) {
 void Koopa::draw() {
 
 
+    if (isActive())
+    {
+        DrawText(TextFormat("Koopa Velocity: %f", velocity.x), 400, 400, 20, RED);
+
+    }
     Rectangle source = spritebox;
     Rectangle dest = hitbox;
     if (knockAnimation && velocity.y > 0) {
@@ -101,52 +106,53 @@ void Koopa::handleCharacterCollision(std::shared_ptr<Object> other) {
 }
 
 void Koopa::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other->getHitBox();
+      Rectangle koopaBox = getHitBox();
+    Rectangle otherBox = other->getHitBox();
+    if (!CheckCollisionRecs(koopaBox, otherBox)) return;
 
-    if (!CheckCollisionRecs(playerHitBox, otherHitBox)) {
-        return;
-    }
+    // Calculate previous position
+    Vector2 prevPos = position - velocity;
 
-    // Calculate overlap amounts for each direction
-    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-    const float MIN_OVERLAP = 0.1f;
-    if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
-        return;
-    }
-  /*  const float MIN_OVERLAP = 2.0f;
+    Rectangle prevBox = {
+        prevPos.x,
+        prevPos.y,
+        koopaBox.width,
+        koopaBox.height
+    };
 
-    if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
-        return;
-    }*/
+    bool wasAbove = (prevBox.y + prevBox.height) <= otherBox.y;
+    bool wasBelow = prevBox.y >= (otherBox.y + otherBox.height);
+    bool wasLeft = (prevBox.x + prevBox.width) <= otherBox.x;
+    bool wasRight = prevBox.x >= (otherBox.x + otherBox.width);
 
-    float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
+    const float snapOffset = 0.01f;  // Prevent sinking into edges
 
-    if (minOverlap == overlapTop) {
-        position.y = otherHitBox.y - playerHitBox.height;
+    if (wasAbove && velocity.y >= 0) {
+        // Landed on top
+        position.y = otherBox.y - koopaBox.height - snapOffset;
         velocity.y = 0;
         onGround = true;
     }
-    else if (minOverlap == overlapBottom) {
-        position.y = otherHitBox.y + otherHitBox.height;
-        if (velocity.y < 0) {
-            velocity.y = 0;
-        }
+    else if (wasBelow && velocity.y <= 0) {
+        // Hit from below
+        position.y = otherBox.y + otherBox.height + snapOffset;
+        velocity.y = 0;
     }
-    else if (minOverlap == overlapLeft && overlapLeft >= MIN_OVERLAP) {
-        position.x = otherHitBox.x - playerHitBox.width;
+    else if (wasLeft && velocity.x >= 0) {
+        // Hit from left
+        position.x = otherBox.x - koopaBox.width - snapOffset;
         velocity.x *= -1;
-		isFacingRight = false;
+        isFacingRight = false;
     }
-    else if (minOverlap == overlapRight && overlapRight >= MIN_OVERLAP) {
-        position.x = otherHitBox.x + otherHitBox.width;
+    else if (wasRight && velocity.x <= 0) {
+        // Hit from right
+        position.x = otherBox.x + otherBox.width + snapOffset;
         velocity.x *= -1;
-		isFacingRight = true;
+        isFacingRight = true;
     }
 }
+
+
 void Koopa::die()   
 {
 }

@@ -9,6 +9,9 @@ class TextureManager {
 public:
     static TextureManager& getInstance();
     static std::vector<Rectangle> Enemy_sprite_boxes;
+	static Texture2D DryBowser_texture;    
+    static std::vector<Rectangle> DryBowser_sprite_boxes;
+
     static Texture2D enemyTextures;
     Texture2D getBlockTexture(BlockType type);
     Texture2D getCharacterTexture() const;

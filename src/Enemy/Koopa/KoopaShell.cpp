@@ -10,6 +10,7 @@
 #include "../../../include/System/Constant.h"
 #include <raymath.h>
 #include <utility>
+#include <memory>
 #include <iostream>
 KoopaShell::KoopaShell(Vector2 pos, Vector2 sz): spritebox({0,0,0,0}), velocity({0,0}), CollectableObject(pos, sz, TextureManager::enemyTextures), aniSpeed(0.2f), aniTimer(0) {   
 	
@@ -90,26 +91,46 @@ void KoopaShell ::applyGravity(float deltaTime) {
     }
 }
 void KoopaShell::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-	Rectangle otherHitBox = other->getHitBox();
-	Rectangle playerHitBox = getHitBox();
-    int minOverlap = getCollidedPart(*other);
-    if (minOverlap == (int)Direction::UP) {
-        position.y = otherHitBox.y - playerHitBox.height;
+    Rectangle koopaBox = getHitBox();
+    Rectangle otherBox = other->getHitBox();
+    if (!CheckCollisionRecs(koopaBox, otherBox)) return;
+
+    // Calculate previous position
+    Vector2 prevPos = position - velocity;
+
+    Rectangle prevBox = {
+        prevPos.x,
+        prevPos.y,
+        koopaBox.width,
+        koopaBox.height
+    };
+
+    bool wasAbove = (prevBox.y + prevBox.height) <= otherBox.y;
+    bool wasBelow = prevBox.y >= (otherBox.y + otherBox.height);
+    bool wasLeft = (prevBox.x + prevBox.width) <= otherBox.x;
+    bool wasRight = prevBox.x >= (otherBox.x + otherBox.width);
+
+    const float snapOffset = 0.01f;  // Prevent sinking into edges
+
+    if (wasAbove && velocity.y >= 0) {
+        // Landed on top
+        position.y = otherBox.y - koopaBox.height - snapOffset;
         velocity.y = 0;
         onGround = true;
     }
-    else if (minOverlap == (int)Direction::DOWN) {
-        position.y = otherHitBox.y + otherHitBox.height;
-        if (velocity.y > 0) {
-            velocity.y = 0;
-        }
+    else if (wasBelow && velocity.y <= 0) {
+        // Hit from below
+        position.y = otherBox.y + otherBox.height + snapOffset;
+        velocity.y = 0;
     }
-    else if (minOverlap ==(int)Direction::LEFT){
-        position.x = otherHitBox.x - playerHitBox.width;
+    else if (wasLeft && velocity.x >= 0) {
+        // Hit from left
+        position.x = otherBox.x - koopaBox.width - snapOffset;
         velocity.x *= -1;
     }
-    else if (minOverlap == (int)Direction::RIGHT){
-        position.x = otherHitBox.x + otherHitBox.width;
+    else if (wasRight && velocity.x <= 0) {
+        // Hit from right
+        position.x = otherBox.x + otherBox.width + snapOffset;
         velocity.x *= -1;
     }
 }

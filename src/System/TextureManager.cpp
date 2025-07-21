@@ -5,6 +5,8 @@
 #include <vector>
 std::vector<Rectangle> TextureManager::Enemy_sprite_boxes;
 Texture2D TextureManager::enemyTextures;
+std::vector<Rectangle> TextureManager::DryBowser_sprite_boxes;
+Texture2D TextureManager::DryBowser_texture;
 TextureManager& TextureManager::getInstance() {
     static TextureManager instance;
     return instance;
@@ -26,7 +28,6 @@ void TextureManager::loadTextures() {
 
     characterTextures = LoadTexture("assets/character_spritesheet.png");
     //Enemy textures 
-	DrawText("Loading enemy textures...", 10, 10, 20, DARKGRAY);
     std::ifstream  enemy_in;
     enemy_in.open("assets/enemy/enemy_output.txt");
     int id, x, y, w, h;
@@ -36,6 +37,16 @@ void TextureManager::loadTextures() {
     }
     enemyTextures = Texture2D(LoadTexture("assets/enemy/enemy_spritesheet.png"));
     enemy_in.close();
+    //Bowser Textures
+    std::ifstream  dryBowser_in;
+    dryBowser_in.open("assets/enemy/DryBowserOutput.txt");
+ 
+    while (dryBowser_in >> id >> x >> y >> w >> h)
+    {
+        DryBowser_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
+    }
+    DryBowser_texture= Texture2D(LoadTexture("assets/enemy/DryBowser.png"));
+    dryBowser_in.close();
     texturesLoaded = true;
 }
 

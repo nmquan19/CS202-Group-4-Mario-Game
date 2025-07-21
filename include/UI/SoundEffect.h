@@ -10,6 +10,7 @@ private:
     std::unordered_map<std::string, Music> backgroundMusics;
     std::unordered_map<std::string, bool> isMusicPlaying;
 public:
+    static AudioManager& getInstance();
     AudioManager();
     ~AudioManager();
 

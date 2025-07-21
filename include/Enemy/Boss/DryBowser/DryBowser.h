@@ -1,0 +1,55 @@
+#pragma once
+#include "../Boss.h"
+#include "DryBowserSimState.h"
+#include <memory>
+#include "../BossPhaseState.h"
+#include "../WorldState.h"
+#include <vector>
+#include "../SimulateState.h"
+#include "../../../Objects/ObjectFactory.h"
+#include "../../../System/Interface.h"
+#include "../../../Enemy/Boss/DryBowser/DryBowserSimState.h"
+#include <raylib.h>
+#include <string>
+class DryBowser : public Boss {
+private:
+    int HP;
+    bool alive = true;
+    WorldState currentWorld;
+    DryBowserSimState simState;
+    std::unique_ptr<BossPhaseState> currentPhase;
+public:
+    DryBowser(Vector2 spawnPosition, Vector2 size = {2,2});
+
+    // Game loop
+    void update(float dt) override;
+    void draw() override;
+
+    // Collision & physics
+    void handleCharacterCollision(std::shared_ptr<Object> other) override;
+    void handleEnvironmentCollision(std::shared_ptr<Object> other) override;
+    void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
+    void onCollision(std::shared_ptr<Object> other) override;
+
+    // Logic
+    void takeDamage(int amount) override;
+    void die() override;
+    bool isAlive() const override;
+
+    // Planning / AI interface
+    void changePhase(std::unique_ptr<BossPhaseState> newPhase) override;
+    const WorldState& getWorldState() const override;
+    std::unique_ptr<BaseSimState> getCurrentSimState() const; 
+    // Typing
+    ObjectType getObjectType() const override;
+    EnemyType getType() const override;
+	void setAnimation(const std::string& animationName) override;
+    //
+    
+	///Behavior Tree implementation
+    void walkToTarget();
+    void attack();
+    bool isAttacking(); 
+private:
+    void updateWorldState();
+};
