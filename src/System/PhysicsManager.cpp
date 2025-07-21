@@ -26,13 +26,19 @@ void PhysicsManager::addObject(std::shared_ptr<Object> object) {
 void PhysicsManager::markForDeletion(std::shared_ptr<Object> object) {
 	if (object) {
 		object->setActive(false);
+		toDeleteObjects.push_back(object);
 	}
 }
 void PhysicsManager::update() {
 
-	objects.erase(std::remove_if(objects.begin(), objects.end(), [](const std::shared_ptr<Object>& obj) {
-		return !obj || !obj->isActive();
-	}), objects.end());
+	for (const auto& obj : toDeleteObjects)
+	{
+		if (std::find(objects.begin(), objects.end(), obj) != objects.end()) {
+			objects.erase(std::remove(objects.begin(), objects.end(), obj), objects.end());
+			std::cout << "Deleted an object in Physics\n";
+		}
+	}
+	toDeleteObjects.clear();
 
 	frameCounter++;
 	if (frameCounter >= REBUILD_FREQUENCY) {

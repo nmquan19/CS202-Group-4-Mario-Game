@@ -8,6 +8,7 @@
 #include "../../include/System/LevelEditor.h"
 #include "../../include/Game/GameStates.h"
 #include "../../include/System/Constant.h"
+#include "../../include/Enemy/TriggerZone.h"
 #include <type_traits>
 #include <variant>
 #include <algorithm>
