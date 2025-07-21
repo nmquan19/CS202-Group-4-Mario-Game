@@ -2,8 +2,8 @@
      "gridSize": 96,
      "objects": [
           {
-               "gridX": 0,
-               "gridY": 13,
+               "gridX": 3,
+               "gridY": 11,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
@@ -25,12 +25,15 @@
           {
                "gridX": 0,
                "gridY": 16,
+               "gridX": 0,
+               "gridY": 16,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 1,
+               "gridY": 16,
                "gridY": 16,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -60,6 +63,7 @@
           {
                "gridX": 3,
                "gridY": 17,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
@@ -69,6 +73,14 @@
                "gridY": 18,
                "sizeX": 1.0,
                "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 3,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+>>>>>>> master
                "type": "GROUND"
           },
           {
@@ -167,6 +179,7 @@
                "gridY": 18,
                "sizeX": 1.0,
                "sizeY": 1.0,
+               "type": "GROUND"
                "type": "GROUND"
           },
           {

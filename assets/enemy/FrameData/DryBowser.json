@@ -1,0 +1,73 @@
+{
+  "Idle": [
+    {
+      "frame": 2,
+      "events": [
+        {
+          "eventType": "PlaySound",
+          "eventPayload": "drybowser_idle.wav"
+        }
+      ],
+      "hitboxes": []
+    },
+    {
+      "frame": 4,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+      "hitboxes": []
+    }
+  ],
+  "Walk": [
+    {
+      "frame": 24,
+      "events": [
+        {
+          "eventType": "PlaySound",
+          "eventPayload": "step.wav"
+        }
+      ],
+      "hitboxes": []
+    }
+  ],
+  "BasicAttack": [
+    {
+      "frame": 76,
+      "events": [
+        {
+          "eventType": "SetEasingVelocity",
+          "eventPayload": "100,0,0,0,76,77,linear"
+        }
+      ],
+      "hitboxes": []
+    },
+    {
+      "frame": 82,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "100,0"
+        },
+        {
+            "eventType":"PlaySound",
+            "eventPayload": "attack.wav"
+        }
+        
+      ],
+      "hitboxes": []
+    },
+    {
+      "frame": 83,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+      "hitboxes": []
+    }
+  ]
+}

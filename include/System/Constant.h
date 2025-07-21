@@ -9,6 +9,7 @@ struct CharacterStats {
 
 namespace Constants {
     constexpr float GRAVITY = 980.0f;
+
     constexpr int TILE_SIZE = 96;
     constexpr float KOOPA_SPEED = 200.0f;
 
@@ -25,6 +26,7 @@ namespace Constants {
         constexpr float KNOCK_VELOCITY = -300.0f;
     }
     namespace Goomba {
+        constexpr Vector2 standardSize = { 0.75, 0.75 };
         constexpr Vector2 standardSize = { 0.75, 0.75 };
         constexpr float WANDERING_SPEED = 100.0f;
         constexpr float STOMPED_DURATION = 0.3f;
@@ -50,4 +52,15 @@ namespace Constants {
             {{293, 892, 16, 16}, {326, 892, 16, 16}} // jumping state
         };
     }
+<<<<<<< HEAD
+    namespace DryBowser{
+        constexpr float WalkTurnDuration = 0.5f;  
+		constexpr float JUMP_VELOCITY = -600.0f;
+        constexpr float WallJumpFriction = 0.95f;
+        constexpr float RUN_SPEED = 500.0f; 
+		constexpr float BASIC_ATTACK_DURATION = 2.0f;
+        constexpr float BASIC_ATTACK_RANGE = 100.0f; 
+    } 
+=======
+>>>>>>> master
 }

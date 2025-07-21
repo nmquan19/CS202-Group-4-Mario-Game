@@ -21,7 +21,8 @@ void KoopaWanderingState::enter(Enemy* enemy)
         switch (koopa->getType()) 
         {
            case EnemyType::GREEN_KOOPA:
-                koopa->velocity.x = Constants::GreenKoopa::WANDERING_SPEED;
+
+                koopa->velocity.x = (koopa->isFacingRight?1: -1)*Constants::GreenKoopa::WANDERING_SPEED;
                 break;
             case EnemyType::RED_KOOPA:
                 koopa->velocity.x = Constants::RedKoopa::WANDERING_SPEED;

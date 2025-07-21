@@ -126,9 +126,18 @@ void GameContext::deleteObjects(){
     for (const auto& obj : ToDeleteObjects)
     {
        if(std::find(Objects.begin(), Objects.end(), obj) != Objects.end()) {
+<<<<<<< HEAD
+            //Objects.erase(std::remove(Objects.begin(), Objects.end(), obj), Objects.end());
+           obj->setActive(false); 
+            /*Objects.erase(std::remove_if(Objects.begin(), Objects.end(), [&](const std::shared_ptr<Object>& o) {
+                return o == obj;
+			   }), Objects.end());*/
+       }
+=======
             Objects.erase(std::remove(Objects.begin(), Objects.end(), obj), Objects.end());
             std::cout << "Deleted an object\n";
 	   }
+>>>>>>> master
     }
 	ToDeleteObjects.clear();
 }
