@@ -53,7 +53,7 @@ void TextureManager::loadTextures() {
     int item_id, item_x, item_y, item_w, item_h;
     while (item_in >> item_id >> item_x >> item_y >> item_w >> item_h){
         Item_sprite_boxes.push_back({ (float)item_x,(float)item_y,(float)item_w, (float)item_h });
-        std::cout << "Loaded ID " << item_id << std::endl;
+        std::cout << "Loaded ID " << item_id << item_x << item_y << item_w << item_h << std::endl;
     }
     itemTextures = LoadTexture("assets/item/item_spritesheet.png");
     item_in.close();
@@ -186,13 +186,11 @@ void ObjectPalette::drawPalette() {
     Rectangle coinRect = { startX + spacing, yItem, iconSize, iconSize };
     Texture2D coinTexture = tm.getItemTexture(ItemType::COIN);
     if (coinTexture.id != 0) {
-        std::vector<int> v = { 404, 422, 434, 462 };
-
         for (int i = 0; i <= 3; ++i) {
-            int index = v[i] - 1;
+            int index = i;
             if (index >= 0 && index < tm.Item_sprite_boxes.size()) {
                 Rectangle src = tm.Item_sprite_boxes[index];
-                Rectangle dest = { 50.0f + (i) * 60.0f, 400.0f, src.width * 3, src.height * 3 };
+                Rectangle dest = { 50.0f + (i) * 60.0f, 400.0f, src.width / 3, src.height / 3 };
                 DrawTexturePro(tm.itemTextures, src, dest, { 0, 0 }, 0.0f, WHITE);
             }
         }
@@ -209,9 +207,14 @@ void ObjectPalette::drawPalette() {
     Rectangle mushroomRect = { startX, yItem, iconSize, iconSize };
     Texture2D mushroomTexture = tm.getItemTexture(ItemType::MUSHROOM); 
     if (mushroomTexture.id != 0) {
-        DrawTexturePro(mushroomTexture,
-            { 0, 0, (float)mushroomTexture.width, (float)mushroomTexture.height },
-            mushroomRect, { 0, 0 }, 0.0f, WHITE);
+        for (int i = 4; i <= 7; ++i) {
+            int index = i;
+            if (index >= 0 && index < tm.Item_sprite_boxes.size()) {
+                Rectangle src = tm.Item_sprite_boxes[index];
+                Rectangle dest = { 50.0f + (i) * 60.0f, 400.0f, src.width / 3, src.height / 3 };
+                DrawTexturePro(tm.itemTextures, src, dest, { 0, 0 }, 0.0f, WHITE);
+            }
+        }
     }
     else {
         DrawRectangleRec(mushroomRect, RED);
