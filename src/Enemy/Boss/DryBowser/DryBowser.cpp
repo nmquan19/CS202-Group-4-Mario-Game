@@ -84,14 +84,27 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 void DryBowser::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
 
     for (auto obj : candidates) {
-        if (CheckCollisionRecs(getHitBox(), obj->getHitBox())) {
-            onCollision(obj);
-        }
     }
 }
 
 void DryBowser::onCollision(std::shared_ptr<Object> other) {
 
+}
+
+std::vector<Rectangle> DryBowser::getHitBox() const {
+    std::vector<Rectangle> hitboxes;
+    
+    hitboxes.push_back(hitbox);
+    
+    Rectangle headBox = {
+        position.x + hitbox.width * 0.55f,
+        position.y + hitbox.height * 0.2f,
+        hitbox.width * 0.3f,
+        hitbox.height * 0.6f
+    };
+    hitboxes.push_back(headBox);
+
+    return hitboxes;
 }
 
 void DryBowser::takeDamage(int amount) {

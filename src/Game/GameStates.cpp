@@ -87,10 +87,10 @@ void EditorState::handleInput(GameContext& context) {
         LevelEditor::getInstance().clearLevel();
     }
     if (IsKeyPressed(KEY_F7) && LevelEditor::getInstance().isInEditMode()) {
-        LevelEditor::getInstance().saveLevel("testlevel");
+        LevelEditor::getInstance().saveLevel("testlevel.json");
     }
     if (IsKeyPressed(KEY_F8) && LevelEditor::getInstance().isInEditMode()) {
-        LevelEditor::getInstance().loadLevel("testlevel");
+        LevelEditor::getInstance().loadLevel("testlevel.json");
     }
 }
 

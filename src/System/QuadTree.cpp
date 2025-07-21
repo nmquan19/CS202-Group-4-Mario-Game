@@ -16,13 +16,17 @@ void QuadTree::clear() {
 
 void QuadTree::insert(std::shared_ptr<Object> object) {
 	if (!object || !object->isActive()) return;
-	Rectangle objBounds = object->getHitBox();
+	std::vector<Rectangle> hitboxes = object->getHitBox();
+	if (hitboxes.empty()) return;
+	Rectangle objBounds = hitboxes[0]; // Use the first hitbox for spatial partitioning
 	if (!CheckCollisionRecs(objBounds, worldBounds)) return;
 	insertIntoNode(root.get(), object);
 }
 
 void QuadTree::insertIntoNode(Node* node, std::shared_ptr<Object> object) {
-	Rectangle objBounds = object->getHitBox();
+	std::vector<Rectangle> hitboxes = object->getHitBox();
+	if (hitboxes.empty()) return;
+	Rectangle objBounds = hitboxes[0]; // Use the first hitbox for spatial partitioning
 	if (!node->isLeaf) {
 		int quadrant = getQuadrant(node, objBounds);
 		if (quadrant != -1) {
@@ -82,7 +86,9 @@ int QuadTree::getQuadrant(Node* node, Rectangle objectBounds) const {
 }
 
 std::vector<std::shared_ptr<Object>> QuadTree::retrieve(std::shared_ptr<Object> object) {
-	return retrieve(object->getHitBox());
+	std::vector<Rectangle> hitboxes = object->getHitBox();
+	if (hitboxes.empty()) return {};
+	return retrieve(hitboxes[0]); // Use the first hitbox for spatial querying
 }
 
 std::vector<std::shared_ptr<Object>> QuadTree::retrieve(Rectangle area) { 
@@ -103,7 +109,7 @@ std::vector<std::shared_ptr<Object>> QuadTree::retrieve(Rectangle area) {
 
 void QuadTree::retrieveFromNode(Node* node, Rectangle area, std::vector<std::shared_ptr<Object>>& result) const {
 	for (auto obj : node->objects) {
-		if (CheckCollisionRecs(obj->getHitBox(), area)) {
+		if (CheckCollisionRecs(obj->getHitBox()[0], area)) {
 			result.push_back(obj);
 		}
 	}
@@ -152,32 +158,34 @@ void QuadTree::drawNodeRecursive(Node* node) const {
 	DrawRectangleLinesEx(node->bounds, 2, color);
 	for (auto obj : node->objects) {
 		if (obj && obj->isActive()) {
-			Rectangle hitBox = obj->getHitBox();
-			Color hitboxColor = BLACK;
-			switch (obj->getObjectCategory()) {
-			case ObjectCategory::CHARACTER:
-				hitboxColor = LIME;
-				break;
-			case ObjectCategory::ENEMY:
-				hitboxColor = MAGENTA;
-				break;
-			case ObjectCategory::BLOCK:
-				hitboxColor = BLUE;
-				break;
-			case ObjectCategory::ITEM:
-				hitboxColor = GOLD;
-				break;
-			case ObjectCategory::PROJECTILE:
-				hitboxColor = ORANGE;
-				break;
-			case ObjectCategory::TRIGGER:
-				hitboxColor = VIOLET;
-				break;
-			default:
-				hitboxColor = LIGHTGRAY;
-				break;
+			for (int i = 0; i < obj->getHitBox().size(); i++) {
+				Rectangle hitBox = obj->getHitBox()[i];
+				Color hitboxColor = BLACK;
+				switch (obj->getObjectCategory()) {
+				case ObjectCategory::CHARACTER:
+					hitboxColor = LIME;
+					break;
+				case ObjectCategory::ENEMY:
+					hitboxColor = MAGENTA;
+					break;
+				case ObjectCategory::BLOCK:
+					hitboxColor = BLUE;
+					break;
+				case ObjectCategory::ITEM:
+					hitboxColor = GOLD;
+					break;
+				case ObjectCategory::PROJECTILE:
+					hitboxColor = ORANGE;
+					break;
+				case ObjectCategory::TRIGGER:
+					hitboxColor = VIOLET;
+					break;
+				default:
+					hitboxColor = LIGHTGRAY;
+					break;
+				}
+				DrawRectangleLinesEx(hitBox, 3, hitboxColor);
 			}
-			DrawRectangleLinesEx(hitBox, 3, hitboxColor);
 		}
 	}
 	if (!node->isLeaf) {
