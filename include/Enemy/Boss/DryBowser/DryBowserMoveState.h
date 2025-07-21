@@ -24,7 +24,7 @@ class DryBowserStandingState : public BossMoveState {
     void update(Boss* boss, float dt) override;
     void exit(Boss* boss) override;
     bool isFinished() const override;
-    bool canBeInterrupted();
+    //bool canBeInterrupted();
     std::string getName() const;
 };
 class DryBowserRunningState : public BossMoveState{
@@ -33,11 +33,9 @@ public:
     void update(Boss* boss, float dt) override;
     void exit(Boss* boss) override;
     bool isFinished() const override;
-    std::vector<std::string> getAllowedTransitions() const;
-    bool canBeInterrupted();
-    bool canTransitionTo(const std::string& nextStateName);
-    std::string getName() const;
-    std::shared_ptr<BossMoveState> getForcedTransition(Boss* boss);
+    //bool canBeInterrupted();
+	std::string getName() const override;
+  
 };
 class DryBowserWalkTurnState : public BossMoveState
 {   
@@ -79,11 +77,8 @@ private:
     void update(Boss* boss, float dt) override;
     void exit(Boss* boss) override;
     bool isFinished() const override;
-    std::vector<std::string> getAllowedTransitions() const;
-    bool canBeInterrupted();
-    bool canTransitionTo(const std::string& nextStateName);
-    std::string getName() const;
-    std::shared_ptr<BossMoveState> getForcedTransition(Boss* boss);
+    //bool canBeInterrupted();
+    std::string getName() const override;
 };
 //class DryBowserTakeDamageState : public BossMoveState {
 //private:

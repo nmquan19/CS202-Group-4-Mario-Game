@@ -37,7 +37,9 @@ void DryBowserRunningState::exit(Boss* boss) {
 bool DryBowserRunningState::isFinished() const {
     return false;
 }
-
+std::string DryBowserRunningState::getName() const {
+    return "Run";
+}
 // ----------------------------
 // BowserWallJumpMoveState
 // ----------------------------
@@ -124,4 +126,8 @@ void DryBowserMeleeAttack1State::exit(Boss* boss) {
 
 bool DryBowserMeleeAttack1State::isFinished() const {
     return timer >= attackDuration;
+}
+
+std::string DryBowserMeleeAttack1State::getName() const {
+    return "MeleeAttack1";
 }

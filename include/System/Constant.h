@@ -27,7 +27,6 @@ namespace Constants {
     }
     namespace Goomba {
         constexpr Vector2 standardSize = { 0.75, 0.75 };
-        constexpr Vector2 standardSize = { 0.75, 0.75 };
         constexpr float WANDERING_SPEED = 100.0f;
         constexpr float STOMPED_DURATION = 0.3f;
         constexpr float KNOCK_VELOCITY = -300.0f;
@@ -52,7 +51,6 @@ namespace Constants {
             {{293, 892, 16, 16}, {326, 892, 16, 16}} // jumping state
         };
     }
-<<<<<<< HEAD
     namespace DryBowser{
         constexpr float WalkTurnDuration = 0.5f;  
 		constexpr float JUMP_VELOCITY = -600.0f;
@@ -61,6 +59,4 @@ namespace Constants {
 		constexpr float BASIC_ATTACK_DURATION = 2.0f;
         constexpr float BASIC_ATTACK_RANGE = 100.0f; 
     } 
-=======
->>>>>>> master
 }

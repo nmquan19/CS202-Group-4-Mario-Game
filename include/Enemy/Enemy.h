@@ -7,6 +7,7 @@
 #include <string>
 #include <climits>
 #include "../System/InterpolationController.h"
+#include <memory>
 class EnemyState; 
 
 class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable {
@@ -57,11 +58,20 @@ public :
 	void flipDirection(); 
 	InterpolatedAnimationController& getAnimController() { return animController; }
 	FrameInterpolatedVelocityController& getVelocityController() { return velocityController; }
-protected:
+public: 
+	Vector2 getTargetPos() const { return targetPosition;  }
+	virtual void walkToTarget() {}; 
+	virtual void attack() {}; 
+	virtual bool isAttacking() { return false; }	
+	virtual void patrol() {}; 
+	virtual void idle() {};
+	virtual void avoidDanger() {};
+	virtual bool isNearTarget() { return false; }
+ protected:
 	InterpolatedAnimationController animController;
 	FrameInterpolatedVelocityController velocityController;
 	std::string curAniName;
-
+	Vector2 targetPosition; 
 	bool isalive; 
 	float aniTimer, aniSpeed; 
     int HP ;

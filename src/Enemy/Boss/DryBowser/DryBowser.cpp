@@ -10,6 +10,7 @@
 #include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../../../include/System/InterpolationController.h"
 #include "../../../../include/Enemy/Boss/DryBowser/DryBowserPhase.h"
+#include "../../../../include/Enemy/Boss/DryBowser/DryBowserMoveState.h"
 #include "../../../../include/Enemy/Enemy.h"
 #include <cstdlib>
 #include <string>
@@ -41,12 +42,14 @@ void DryBowser::update(float dt) {
     Enemy::update(dt); 
     updateWorldState();
 	hitbox.x = position.x;
+    targetPosition = { 200,200 }; 
     hitbox.y = position.y; 
 	animController.update(dt);  
     curFrame = animController.getCurrentFrame();
     if (velocityController.isActiveAtFrame(curFrame))
     {
-        velocity = velocityController.getVelocityAtFrame(curFrame);
+		Vector2 mulplier = velocityController.getVelocityAtFrame(curFrame);
+        velocity = { velocity.x * mulplier.x,velocity.y * mulplier.y };
     }
     spritebox = TextureManager::DryBowser_sprite_boxes[curFrame] ; 
     const FrameData* data = FrameDatabase::getInstance().getFrameData(this->getType(), curAniName, curFrame);
@@ -70,24 +73,24 @@ void DryBowser::draw() {
     Enemy::draw(); 
 }
 
-void DryBowser::handleCharacterCollision(Object* other) {
+void DryBowser::handleCharacterCollision(std::shared_ptr<Object> other) {
 }
 
-void DryBowser::handleEnvironmentCollision(Object* other) {
+void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 
 
 }
 
-void DryBowser::checkCollision(const std::vector<Object*>& candidates) {
+void DryBowser::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
 
-    for (auto* obj : candidates) {
+    for (auto obj : candidates) {
         if (CheckCollisionRecs(getHitBox(), obj->getHitBox())) {
             onCollision(obj);
         }
     }
 }
 
-void DryBowser::onCollision(Object* other) {
+void DryBowser::onCollision(std::shared_ptr<Object> other) {
 
 }
 
@@ -152,5 +155,31 @@ void DryBowser::setAnimation(const std::string& aniName) {
     else if (aniName == "BasicAttack") {
         animController.set(73, 86, Constants::DryBowser::BASIC_ATTACK_DURATION, Easing::easeOut,false,true);
     }
+    else if (aniName == "Run")
+    {
+        animController.set(32, 42, 2.f, Easing::linear, false, true);
+    }
     curAniName = aniName;
+}
+
+
+void DryBowser::walkToTarget() {
+
+    
+    if (currentPhase)
+    {
+        if(currentPhase->getCurMove() !="Run")
+           currentPhase->changeMoveState(this, std::make_shared<DryBowserRunningState>());
+    }
+}
+void DryBowser::attack() {
+    if (currentPhase)
+    {
+        if (currentPhase->getCurMove() != "MeleeAttack1")
+            currentPhase->changeMoveState(this, std::make_shared<DryBowserMeleeAttack1State>());
+    }
+}
+bool DryBowser::isAttacking()
+{
+   return !animController.isFinished(); 
 }

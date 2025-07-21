@@ -26,10 +26,10 @@ public:
     void draw() override;
 
     // Collision & physics
-    void handleCharacterCollision(Object* other) override;
-    void handleEnvironmentCollision(Object* other) override;
-    void checkCollision(const std::vector<Object*>& candidates) override;
-    void onCollision(Object* other) override;
+    void handleCharacterCollision(std::shared_ptr<Object> other) override;
+    void handleEnvironmentCollision(std::shared_ptr<Object> other) override;
+    void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
+    void onCollision(std::shared_ptr<Object> other) override;
 
     // Logic
     void takeDamage(int amount) override;
@@ -44,6 +44,12 @@ public:
     ObjectType getObjectType() const override;
     EnemyType getType() const override;
 	void setAnimation(const std::string& animationName) override;
+    //
+    
+	///Behavior Tree implementation
+    void walkToTarget();
+    void attack();
+    bool isAttacking(); 
 private:
     void updateWorldState();
 };

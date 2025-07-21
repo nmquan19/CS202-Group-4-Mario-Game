@@ -6,13 +6,24 @@
 #include <deque>
 #include "../Boss.h"
 #include "../BossMoveState.h"
+#include <string>
+#include <string>
 class DryBowser;
 
 class DryBowserPhase1BT : public BossPhaseState {
     std::shared_ptr<BehaviorTreeNode> root;
    std::shared_ptr<BossMoveState> currentState; 
 public:
-    DryBowserPhase1BT():root(nullptr), currentState(nullptr) {
+    DryBowserPhase1BT() {
+        auto sequence = std::make_shared<SequenceNode>();
+
+        auto walkNode = std::make_shared<WalkToTargetNode>();
+        auto attackNode = std::make_shared<AttackNode>();
+
+        sequence->addChild(walkNode);
+        sequence->addChild(attackNode);
+
+        root = sequence;
     }
      void enter(Boss* boss)
     {
@@ -25,12 +36,16 @@ public:
     }
      void changeMoveState(Boss* boss, std::shared_ptr<BossMoveState> moveState)
      {
-         currentState->exit(boss);
+         
+         if(currentState) currentState->exit(boss);
          currentState = moveState; 
-         currentState->enter(boss);
+         if (currentState) currentState->enter(boss);
      }
     void update(Boss* boss, float dt) override {
         if(root)root->tick(boss, dt);
+    }
+    std::string getCurMove() const {
+		return currentState ? currentState->getName() : "None"; 
     }
 };
 
@@ -52,5 +67,8 @@ public:
         currentState->exit(boss);
         currentState = moveState;
         currentState->enter(boss);
+    }
+    std::string getCurMove() const {
+        return currentState ? currentState->getName() : "None";
     }
 };

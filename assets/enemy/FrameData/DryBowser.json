@@ -69,5 +69,28 @@
       ],
       "hitboxes": []
     }
+  ],
+  
+  "Run": [
+    {
+      "frame": 32,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "100,0"
+        }
+      ],
+      "hitboxes": []
+    },
+    {
+      "frame": 42,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+      "hitboxes": []
+    }
   ]
 }
