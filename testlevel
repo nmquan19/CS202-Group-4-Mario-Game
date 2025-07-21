@@ -81,9 +81,9 @@
           {
                "gridX": 5,
                "gridY": 17,
-               "sizeX": 0.0,
-               "sizeY": 0.0,
-               "type": "MARIO"
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
           },
           {
                "gridX": 5,
@@ -140,6 +140,13 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
+          },
+          {
+               "gridX": 13,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GREEN_KOOPA"
           },
           {
                "gridX": 13,
@@ -206,6 +213,13 @@
           },
           {
                "gridX": 20,
+               "gridY": 14,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GOOMBA"
+          },
+          {
+               "gridX": 20,
                "gridY": 16,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -224,6 +238,13 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
+          },
+          {
+               "gridX": 23,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GOOMBA"
           },
           {
                "gridX": 23,

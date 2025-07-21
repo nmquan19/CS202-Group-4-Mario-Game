@@ -4,6 +4,8 @@
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
 #include "../../include/System/PhysicsManager.h"
+#include "../../include/System/PhysicsBody.h"
+#include "../../include/System/PhysicsFactory.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/System/LevelEditor.h"
 #include "../../include/Game/GameStates.h"
@@ -31,7 +33,7 @@ GameContext& GameContext::getInstance() {
 }
 void GameContext::setState(GameState* newState) {
     if (currentState != newState) {
-        if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState || currentState != editorState)) {
+        if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState && newState != editorState)) {
             LevelEditor::getInstance().cleanup();
             PhysicsManager::getInstance().cleanup();
             character.reset();
@@ -41,11 +43,15 @@ void GameContext::setState(GameState* newState) {
         currentState = newState;
 
         if (newState == gamePlayState) {
+            PhysicsManager::getInstance().initializeWorld({0.0f, 980.0f}); // Mario-style gravity
             PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
             LevelEditor::getInstance().setEditMode(false);
             LevelEditor::getInstance().loadLevel("testlevel");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
-            PhysicsManager::getInstance().addObject(character);
+            
+            // Add character to physics world using factory
+            BodyCreateInfo charInfo = PhysicsFactory::createCharacterBody({500, 500}, {32, 32});
+            PhysicsManager::getInstance().addObject(character, charInfo);
         }
     }
 }
@@ -90,18 +96,38 @@ void GameContext::spawnObject() {
     for (const auto& request : ToSpawnObjects) {
         
         std::shared_ptr<Object> object = nullptr;
+        BodyCreateInfo bodyInfo;
 
         std::visit([&](auto&& actualType) {
             using T = std::decay_t<decltype(actualType)>;
 
             if constexpr (std::is_same_v<T, BlockType>) {
                 object = ObjectFactory::createBlock(actualType, GridSystem::getGridCoord(request.worldpos));
+                
+                // Create static physics body for blocks using factory
+                bodyInfo = PhysicsFactory::createGroundBody(
+                    request.worldpos,
+                    {request.size.x * Constants::TILE_SIZE, request.size.y * Constants::TILE_SIZE}
+                );
             }
             else if constexpr (std::is_same_v<T, EnemyType>) {
                 object = ObjectFactory::createEnemy(actualType, request.worldpos, request.size);
+                
+                // Create dynamic physics body for enemies using factory
+                bodyInfo = PhysicsFactory::createEnemyBody(
+                    request.worldpos,
+                    {request.size.x * Constants::TILE_SIZE, request.size.y * Constants::TILE_SIZE},
+                    actualType
+                );
             }
             else if constexpr (std::is_same_v<T, KoopaShellType>) {
                 object = ObjectFactory::createKoopaShell(actualType, request.worldpos, request.size);
+                
+                // Create dynamic physics body for shells using factory
+                bodyInfo = PhysicsFactory::createKoopaShellBody(
+                    request.worldpos,
+                    {request.size.x * Constants::TILE_SIZE, request.size.y * Constants::TILE_SIZE}
+                );
             }
             }, request.type);
 
@@ -110,7 +136,9 @@ void GameContext::spawnObject() {
             if (request.onSpawn) {
                 request.onSpawn(object);
             }
-            PhysicsManager::getInstance().addObject(object);
+            
+            // Add to physics world
+            PhysicsManager::getInstance().addObject(object, bodyInfo);
         }
     }
     ToSpawnObjects.clear();

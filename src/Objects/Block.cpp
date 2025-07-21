@@ -1,6 +1,9 @@
 #include "../../include/Objects/Block.h"
 #include "../../include/System/Grid.h"
 #include "../../include/System/TextureManager.h"
+#include "../../include/System/PhysicsManager.h"
+#include "../../include/System/PhysicsBody.h"
+#include "../../include/Game/GameContext.h"
 #include <vector>
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
@@ -65,6 +68,16 @@ Vector2 Block::getPosition() const {
 
 void Block::setPosition(Vector2 newPos) {
     position = newPos;
+    hitbox.x = position.x;
+    hitbox.y = position.y;
+    
+    // Update Box2D physics body if it exists
+    auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+        GameContext::getInstance().getSharedPtrFromRaw(this)
+    );
+    if (physicsBody) {
+        physicsBody->setPosition(newPos);
+    }
 }
 
 bool Block::isSolid() const {

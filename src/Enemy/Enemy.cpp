@@ -7,6 +7,9 @@
 #include "../../include/Enemy/EnemyState.h"
 #include <algorithm>
 #include "../../include/System/Grid.h"
+#include "../../include/System/PhysicsManager.h"
+#include "../../include/System/PhysicsBody.h"
+#include "../../include/Game/GameContext.h"
 #include <utility>
 Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f) {
     isalive = true;
@@ -45,17 +48,24 @@ void Enemy::update(float deltaTime)
         curFrame += 1;
         aniTimer = 0;
     }
-    position += velocity* deltaTime;
-    if (getBottom() >= groundLevel) {
-        position.y = groundLevel - (spritebox.height * scale);
-        onGround = true;  
-        if (velocity.y > 0) {
-            velocity.y = 0;
-        }
+    
+    // Sync position and velocity with Box2D physics body
+    auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+        GameContext::getInstance().getSharedPtrFromRaw(this)
+    );
+    if (physicsBody) {
+        position = physicsBody->getPosition();
+        velocity = physicsBody->getVelocity();
+        
+        // Update hitbox position
+        hitbox.x = position.x;
+        hitbox.y = position.y;
     }
-    else {
-        onGround = false; 
-    }
+    
+    // Ground detection is now handled by Box2D contact listener
+    onGround = PhysicsManager::getInstance().isObjectOnGround(
+        GameContext::getInstance().getSharedPtrFromRaw(this)
+    );
 }
 
 void Enemy::draw() {
@@ -146,9 +156,24 @@ bool Enemy::isActive() const {
 }
 void Enemy::setVelocity(Vector2 newVelocity) {
     velocity = newVelocity;
+    
+    // Update Box2D physics body
+    auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+        GameContext::getInstance().getSharedPtrFromRaw(this)
+    );
+    if (physicsBody) {
+        physicsBody->setVelocity(newVelocity);
+    }
 }
 
 Vector2 Enemy::getVelocity() {
+    // Get velocity from Box2D physics body if available
+    auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+        GameContext::getInstance().getSharedPtrFromRaw(this)
+    );
+    if (physicsBody) {
+        velocity = physicsBody->getVelocity();
+    }
     return velocity;
 }
 
@@ -162,6 +187,18 @@ float Enemy::getSpeed() {
 
 void Enemy::setPosition(Vector2 newPosition) {
     position = newPosition;
+    
+    // Update Box2D physics body
+    auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+        GameContext::getInstance().getSharedPtrFromRaw(this)
+    );
+    if (physicsBody) {
+        physicsBody->setPosition(newPosition);
+    }
+    
+    // Update hitbox
+    hitbox.x = position.x;
+    hitbox.y = position.y;
 }
 
 Vector2 Enemy::getPosition() const {

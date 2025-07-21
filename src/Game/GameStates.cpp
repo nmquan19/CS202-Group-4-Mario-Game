@@ -56,7 +56,9 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     }
     context.spawnObject();  
     context.deleteObjects();
-    PhysicsManager::getInstance().update();
+    
+    // Update Box2D physics with deltaTime
+    PhysicsManager::getInstance().update(deltaTime);
     LevelEditor::getInstance().update();
 }
 

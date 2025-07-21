@@ -5,6 +5,9 @@
 #include "../../include/System/TextureManager.h"
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
+#include "../../include/System/PhysicsManager.h"
+#include "../../include/System/PhysicsBody.h"
+#include "../../include/Game/GameContext.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -60,9 +63,18 @@ void Character::update(float deltaTime) {
 
 	if(holdingProjectile && projectile != nullptr) {
 		if(IsKeyPressed(KEY_X)) {
-			projectile->setActive(true);
-			projectile->setVelocity(Vector2{this->isFacingRight() ? 200.0f : -200.0f, 980.0f});
-			projectile->setPosition(Vector2{this->position.x + (this->isFacingRight() ? this->getWidth() : -20.0f), this->getCenterY()});
+			Vector2 throwDirection = isFacingRight() ? Vector2{300.0f, -100.0f} : Vector2{-300.0f, -100.0f};
+			
+			// Get physics body and apply force
+			auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+				GameContext::getInstance().getSharedPtrFromRaw(projectile)
+			);
+			if (physicsBody) {
+				physicsBody->setVelocity(throwDirection);
+			}
+			
+			setHoldingProjectile(false);
+			projectile = nullptr;
 		}
 	}
 
@@ -70,36 +82,15 @@ void Character::update(float deltaTime) {
 		projectile->update(deltaTime);
 	}
 	
-	applyGravity(deltaTime);
-    position.x += velocity.x * deltaTime;
-    position.y += velocity.y * deltaTime;
-	
-	if (!onGround) {
-        return;
-    }
-
-    Rectangle groundCheckBox = {
-        position.x + 5,
-        position.y + (spriteRec.height * scale),
-        (spriteRec.width * scale) - 10,
-        5.0f
-    };
-
-    std::vector<std::shared_ptr<Object>> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
-    
-    bool stillOnGround = false;
-    for (auto obj : nearbyObjects) {
-        if (obj.get() != this && obj->getObjectCategory() == ObjectCategory::BLOCK) {
-            if (CheckCollisionRecs(groundCheckBox, obj->getHitBox())) {
-                stillOnGround = true;
-                break;
-            }
-        }
-    }
-    
-    if (!stillOnGround) {
-        setOnGround(false);
-    }
+	// Note: Physics (gravity, position updates) are now handled by Box2D
+	// We just need to sync our position with the physics body
+	auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+		GameContext::getInstance().getSharedPtrFromRaw(this)
+	);
+	if (physicsBody) {
+		position = physicsBody->getPosition();
+		velocity = physicsBody->getVelocity();
+	}
 }
 
 void Character::draw() {
@@ -172,22 +163,44 @@ bool Character::isOnGround() const{
 
 void Character::jump(){
 	if(onGround){
-		velocity.y = -jumpForce;
+		// Use Box2D physics for jumping
+		auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+			GameContext::getInstance().getSharedPtrFromRaw(this)
+		);
+		if (physicsBody) {
+			Vector2 currentVel = physicsBody->getVelocity();
+			currentVel.y = -jumpForce;
+			physicsBody->setVelocity(currentVel);
+		}
 		setOnGround(false);
 	}
 }
 
 void Character::applyGravity(float deltaTime){
-	if(!onGround){
-		velocity.y += gravity * deltaTime;
-	}
+	// Gravity is now handled by Box2D physics world
+	// This method is kept for compatibility but does nothing
 }
 
 void Character::setVelocity(Vector2 newVelocity){
 	velocity = newVelocity;
+	
+	// Update Box2D physics body
+	auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+		GameContext::getInstance().getSharedPtrFromRaw(this)
+	);
+	if (physicsBody) {
+		physicsBody->setVelocity(newVelocity);
+	}
 }
 
 Vector2 Character::getVelocity(){
+	// Get velocity from Box2D physics body if available
+	auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+		GameContext::getInstance().getSharedPtrFromRaw(this)
+	);
+	if (physicsBody) {
+		velocity = physicsBody->getVelocity();
+	}
 	return velocity;
 }
 
@@ -201,6 +214,14 @@ float Character::getSpeed(){
 
 void Character::setPosition(Vector2 newPosition){
 	position = newPosition;
+	
+	// Update Box2D physics body
+	auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
+		GameContext::getInstance().getSharedPtrFromRaw(this)
+	);
+	if (physicsBody) {
+		physicsBody->setPosition(newPosition);
+	}
 }
 
 Vector2 Character::getPosition() const {

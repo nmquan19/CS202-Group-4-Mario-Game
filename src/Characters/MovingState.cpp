@@ -3,6 +3,8 @@
 #include "..\..\include\Characters\JumpingState.h"
 #include "..\..\include\Characters\Character.h"
 
+#include <iostream>
+
 void MovingState::enter(Character* character) {
 	character->setAniTime(0);
 	character->setAniSpeed(0.1f);
@@ -10,6 +12,7 @@ void MovingState::enter(Character* character) {
 }
 
 void MovingState::update(Character* character, float deltaTime) {
+	std::cout << "Moving state\n";
 	if (IsKeyPressed(KEY_SPACE) && character->isOnGround()) {
         character->changeState(JumpingState::getInstance());
         return;
@@ -28,6 +31,7 @@ void MovingState::update(Character* character, float deltaTime) {
 		character->setVelocity({speed, currentVel.y});
 		character->setFacingRight(true);
 		moving = true;
+		std::cout << "Move right\n";
 	}
 	if (!moving) {
 		character->changeState(IdleState::getInstance());
