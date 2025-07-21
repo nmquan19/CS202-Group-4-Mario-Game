@@ -61,7 +61,7 @@ void Character::update(float deltaTime) {
 
 	if(holdingProjectile && projectile != nullptr) {
 		if(IsKeyPressed(KEY_X)) {
-			projectile->setActive(true);
+			projectile->setActive(true); 
 			projectile->setVelocity(Vector2{this->isFacingRight() ? 200.0f : -200.0f, 980.0f});
 			projectile->setPosition(Vector2{this->position.x + (this->isFacingRight() ? this->getWidth() : -20.0f), this->getCenterY()});
 		}

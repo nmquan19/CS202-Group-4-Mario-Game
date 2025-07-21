@@ -5,10 +5,10 @@
 #include "../../../include/Enemy/Goomba/GoombaState.h"
 #include "../../../include/Objects/ObjectFactory.h"
 #include "../../../include/System/Interface.h"
-#include "../../../include/System/Constant.h"
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
+#include <memory>
 Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(startPos, velocity,accelleration, TextureManager::enemyTextures )
 {    
     scale = 5; 
@@ -132,8 +132,12 @@ void Goomba::update(float deltaTime) {
     if (!stompedAnimation) {
         applyGravity(deltaTime);
     }
-    currentState->update(this, deltaTime);
-    currentState->checkCondition(this);
+    if (currentState)
+    {
+        currentState->update(this, deltaTime);
+        currentState->checkCondition(this);
+    }
+    
     hitbox.x = position.x;
     hitbox.y = position.y;
     if (position.x < 0)

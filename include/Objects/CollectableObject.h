@@ -39,5 +39,5 @@ protected:
     Texture2D texture;   
     ItemType type = ItemType::COIN;
 	Rectangle hitBox;
-    std::unique_ptr<TriggerZone> triggerZone = nullptr;
+    std::shared_ptr<TriggerZone> triggerZone = nullptr;
 };

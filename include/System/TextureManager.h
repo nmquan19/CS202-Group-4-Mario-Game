@@ -10,6 +10,9 @@ public:
     static TextureManager& getInstance();
 
     static std::vector<Rectangle> Enemy_sprite_boxes;
+	static Texture2D DryBowser_texture;    
+    static std::vector<Rectangle> DryBowser_sprite_boxes;
+
     static Texture2D enemyTextures;
 
     static std::vector<Rectangle> Item_sprite_boxes;

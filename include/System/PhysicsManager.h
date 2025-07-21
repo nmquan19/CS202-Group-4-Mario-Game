@@ -27,6 +27,7 @@ public:
 private:
 	PhysicsManager() = default;
 	std::vector<std::shared_ptr<Object>> objects;	
+	std::vector<std::shared_ptr<Object>> toDeleteObjects;
 	std::unique_ptr<QuadTree> quadTree; 
 	static PhysicsManager* instance;
 	const int REBUILD_FREQUENCY = 2;

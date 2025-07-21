@@ -8,6 +8,7 @@
 #include "../../include/System/LevelEditor.h"
 #include "../../include/Game/GameStates.h"
 #include "../../include/System/Constant.h"
+#include "../../include/Enemy/TriggerZone.h"
 #include <type_traits>
 #include <variant>
 #include <algorithm>
@@ -57,6 +58,20 @@ void GameContext::handleInput() {
 }
 
 void GameContext::update(float deltaTime) {
+    if (currentState == gamePlayState) {
+        audioManager.SetSoundEffectVolume(menuManager.slideBar.getValue());
+        audioManager.SetBackgroundMusicVolume(menuManager.slideBar.getValue());
+        if (!audioManager.isPlaying()) {
+            audioManager.PlayBackgroundMusic("theme1");
+        }
+        audioManager.UpdateBackgroundMusic("theme1");
+    }
+    else {
+        if (audioManager.isPlaying()) {
+            audioManager.StopBackgroundMusic("theme1");
+        }
+    }
+
     if (currentState) {
         currentState->update(*this, deltaTime);
     }
@@ -119,18 +134,22 @@ void GameContext::spawnObject() {
 
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
+        PhysicsManager::getInstance().markForDeletion(object);
         ToDeleteObjects.push_back(object);
     }
 }
-void GameContext::deleteObjects(){
+void GameContext::deleteObjects() {
     for (const auto& obj : ToDeleteObjects)
     {
-       if(std::find(Objects.begin(), Objects.end(), obj) != Objects.end()) {
-            Objects.erase(std::remove(Objects.begin(), Objects.end(), obj), Objects.end());
-            std::cout << "Deleted an object\n";
-	   }
+        if (std::find(Objects.begin(), Objects.end(), obj) != Objects.end()) {
+            //Objects.erase(std::remove(Objects.begin(), Objects.end(), obj), Objects.end());
+            obj->setActive(false);
+            /*Objects.erase(std::remove_if(Objects.begin(), Objects.end(), [&](const std::shared_ptr<Object>& o) {
+                return o == obj;
+               }), Objects.end());*/
+        }
+        ToDeleteObjects.clear();
     }
-	ToDeleteObjects.clear();
 }
 
 std::shared_ptr<Object> GameContext::getSharedPtrFromRaw(Object* rawPtr) {

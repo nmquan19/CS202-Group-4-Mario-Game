@@ -24,6 +24,18 @@
     <ClInclude Include="include\Characters\IdleState.h" />
     <ClInclude Include="include\Characters\JumpingState.h" />
     <ClInclude Include="include\Characters\MovingState.h" />
+    <ClInclude Include="include\Enemy\Boss\BehaviorTree.h" />
+    <ClInclude Include="include\Enemy\Boss\Boss.h" />
+    <ClInclude Include="include\Enemy\Boss\BossAction.h" />
+    <ClInclude Include="include\Enemy\Boss\BossMoveState.h" />
+    <ClInclude Include="include\Enemy\Boss\BossPhaseState.h" />
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowser.h" />
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserMoveState.h" />
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserPhase.h" />
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserSimState.h" />
+    <ClInclude Include="include\Enemy\Boss\GOAPPlanner.h" />
+    <ClInclude Include="include\Enemy\Boss\SimulateState.h" />
+    <ClInclude Include="include\Enemy\Boss\WorldState.h" />
     <ClInclude Include="include\Enemy\Enemy.h" />
     <ClInclude Include="include\Enemy\EnemyFactory.h" />
     <ClInclude Include="include\Enemy\EnemyState.h" />
@@ -44,6 +56,7 @@
     <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Scenes\Scene.h" />
     <ClInclude Include="include\System\Constant.h" />
+    <ClInclude Include="include\System\FrameData.h" />
     <ClInclude Include="include\System\Grid.h" />
     <ClInclude Include="include\System\Interface.h" />
     <ClInclude Include="include\System\json.hpp" />
@@ -54,12 +67,17 @@
     <ClInclude Include="include\UI\Menu.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
     <ClInclude Include="include\UI\UI.h" />
+    <ClInclude Include="src\Enemy\Boss\Boss.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\Enemy\Boss\BT_Factory.h" />
     <ClCompile Include="src\Characters\Character.cpp" />
     <ClCompile Include="src\Characters\IdleState.cpp" />
     <ClCompile Include="src\Characters\JumpingState.cpp" />
     <ClCompile Include="src\Characters\MovingState.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
     <ClCompile Include="src\Enemy\Enemy.cpp" />
     <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
     <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
@@ -77,6 +95,8 @@
     <ClCompile Include="src\Objects\CollectableObject.cpp" />
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
+    <ClCompile Include="src\System\FrameData.cpp" />
+    <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />
     <ClCompile Include="src\System\PhysicsManager.cpp" />
     <ClCompile Include="src\System\QuadTree.cpp" />
@@ -112,6 +132,7 @@
     <Media Include="assets\sound\notice2.wav" />
     <Media Include="assets\sound\point.wav" />
     <Media Include="assets\sound\strike.wav" />
+    <Media Include="assets\sound\theme1.wav" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
