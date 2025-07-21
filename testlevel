@@ -12,6 +12,38 @@
 <<<<<<< HEAD
                "gridX": 3,
                "gridY": 12,
+=======
+               "gridX": 0,
+               "gridY": 14,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 0,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 0,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 1,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 2,
+               "gridY": 16,
+>>>>>>> master
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
