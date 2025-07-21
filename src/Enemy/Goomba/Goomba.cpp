@@ -9,9 +9,11 @@
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include <memory>
 Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(startPos, velocity,accelleration, TextureManager::enemyTextures )
 {    
+    HP = 1;
     scale = 5; 
 	stompedAnimation = false;
     changeState(&GoombaWanderingState::GetInstance());
@@ -56,7 +58,7 @@ void Goomba::checkCollision(const std::vector<std::shared_ptr<Object>>& candidat
 			this->changeState(&GoombaKnockState::GetInstance());
             break;
         case ObjectCategory::CHARACTER:
-			handleCharacterCollision(candidate);
+			//handleCharacterCollision(candidate);
             break;
         }
     }
@@ -79,9 +81,7 @@ void Goomba::handleCharacterCollision(std::shared_ptr<Object> other) {
       
     float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
     if (minOverlap == overlapBottom) {
-        auto player = dynamic_cast<Character*>(other.get());
-        Vector2 currVel = player->getVelocity();
-        player->setVelocity({ currVel.x, -500 });
+        std::cout << "called" << std::endl;
         die(); 
 		this->changeState(&GoombaStompedState::GetInstance());
     }
@@ -134,11 +134,18 @@ void Goomba::handleEnvironmentCollision(std::shared_ptr<Object> other) {
         velocity.x *= -1;
     }
 }
+
 void Goomba::die()
 {
+    setActive(false);
 }
+
 void Goomba::takeDamage(int amount) {
- 
+    HP -= amount;
+    this->changeState(&GoombaStompedState::GetInstance());
+    if (HP <= 0) {
+        die();
+    }
 }
 
 void Goomba::update(float deltaTime) {

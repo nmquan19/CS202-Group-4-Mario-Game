@@ -82,7 +82,7 @@ void Koopa::checkCollision(const std::vector<std::shared_ptr<Object>>& candidate
             this->changeState(&KoopaKnockState::GetInstance());
             break;
         case ObjectCategory::CHARACTER:
-            handleCharacterCollision(candidate);
+            //handleCharacterCollision(candidate);
             break;
         }
     }
@@ -167,7 +167,13 @@ void Koopa::die()
 {
 }
 void Koopa::takeDamage(int amount) {
-
+    HP -= amount;
+    if (HP <= 0) {
+        die();
+    }
+    else {
+        this->changeState(&KoopaStompedState::GetInstance());
+    }
 }
 
 void Koopa::update(float deltaTime) {

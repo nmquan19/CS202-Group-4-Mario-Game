@@ -69,6 +69,10 @@ public:
 	float getCenterX() const;
 	float getCenterY() const;
 	Vector2 getCenter() const;
+
+	friend class IdleState;
+	friend class MovingState;
+	friend class JumpingState;
 	
 private:
 	ICharacterState* currentState;
@@ -97,8 +101,8 @@ private:
 	bool active = true;
 
 	int hp;
-	float invincibleTime;
 	float invincibleTimer;
+	float bounceTimer;
 	
 	KoopaShell* projectile;
 	bool holdingProjectile;

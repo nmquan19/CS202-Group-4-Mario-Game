@@ -106,12 +106,18 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\button\board.png" />
-    <Image Include="assets\button\check.png" />
-    <Image Include="assets\button\cross.png" />
-    <Image Include="assets\button\play.png" />
-    <Image Include="assets\button\return.png" />
-    <Image Include="assets\button\setting.png" />
     <Image Include="assets\romulus.png" />
     <Image Include="assets\Super Mario Bros.png" />
+    <Image Include="assets\button\check.png" />
+    <Image Include="assets\button\check_selected.png" />
+    <Image Include="assets\button\cross.png" />
+    <Image Include="assets\button\cross_selected.png" />
+    <Image Include="assets\button\home.png" />
+    <Image Include="assets\button\option.png" />
+    <Image Include="assets\button\play.png" />
+    <Image Include="assets\button\return.png" />
+    <Image Include="assets\button\return_selected.png" />
+    <Image Include="assets\button\setting.png" />
+    <Image Include="assets\button\setting_selected.png" />
   </ItemGroup>
 </Project>

@@ -9,7 +9,6 @@ struct CharacterStats {
 
 namespace Constants {
     constexpr float GRAVITY = 980.0f;
-
     constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
 
@@ -38,6 +37,7 @@ namespace Constants {
         constexpr float REVIVE_DURATION = 1.5f;
 	}
     namespace Character {
+        constexpr float BOUNCE_VELOCITY = -300.0f;
         constexpr CharacterStats MARIO_STATS = {220.0f, 550.0f};
         constexpr CharacterStats LUIGI_STATS = {175.0f, 730.0f};
         const std::vector<std::vector<Rectangle>> MARIO_FRAME_DATA = {
