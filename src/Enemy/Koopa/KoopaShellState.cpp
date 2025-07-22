@@ -8,6 +8,7 @@
 #include "../../../include/System/TextureManager.h"
 #include "../../../include/System/Constant.h"
 void KoopaShellIdleState::enter(KoopaShell* shell) {
+    shell->setCollectable(true); 
     shell->velocity = { 0,0 }; 
     shell->timer = 0.0f; 
     shell->curFrame = 0;
@@ -15,6 +16,8 @@ void KoopaShellIdleState::enter(KoopaShell* shell) {
 }
 
 void KoopaShellIdleState::exit(KoopaShell* shell) {
+
+    shell->setCollectable(false);
     shell->curFrame = shell->getSpriteData()[0].second - shell->getSpriteData()[0].first;
 }
 
@@ -54,6 +57,7 @@ std::vector<ObjectCategory> KoopaShellIdleState::getCollisionTargets() const {
 }
 
 void KoopaShellMovingState::enter(KoopaShell* shell) {
+
     shell->curFrame = 0; 
     shell->aniSpeed = 0.05;  
     shell->spritebox = TextureManager::Enemy_sprite_boxes[shell->getSpriteData()[1].first];
@@ -82,6 +86,11 @@ void KoopaShellMovingState::checkCollision(KoopaShell* shell, const std::vector<
                 {
 					shell->velocity = { 0, 0 };
                     shell->changeState(&KoopaShellIdleState::getInstance()); 
+                }
+                else if (shell->getCollidedPart(*obj) == (int)Direction::LEFT || shell->getCollidedPart(*obj) == (int)Direction::RIGHT)
+                {
+					std::shared_ptr<Character> character = std::dynamic_pointer_cast<Character>(obj);
+                    character->takeDamage(1); 
                 }
                 break;
             case ObjectCategory::BLOCK:
@@ -134,7 +143,7 @@ void KoopaShellRevivingState::update(KoopaShell* shell, float deltaTime) {
         }
         Vector2 spawnPosition = { shell->getPosition().x + (shell->size.x * Constants::TILE_SIZE) / 2, shell->getPosition().y + shell->size.y * Constants::TILE_SIZE };
 
-        GameContext::getInstance().addObject(type, spawnPosition, { 1,1.5 });
+        GameContext::getInstance().addObject(type, spawnPosition, { 0.75,1 });
         //GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(shell));
 		shell->active = false;
         shell->changeState(nullptr);
@@ -184,7 +193,9 @@ void KoopaShellCollectedState::enter(KoopaShell* shell) {
 }
 
 void KoopaShellCollectedState::exit(KoopaShell* shell) {
-    shell->changeState(&KoopaShellMovingState::getInstance());
+	shell->spritebox = { 0,0, 0, 0 };
+    
+    //shell->changeState(&KoopaShellMovingState::getInstance());
 }
 
 void KoopaShellCollectedState::update(KoopaShell* shell, float deltaTime) {

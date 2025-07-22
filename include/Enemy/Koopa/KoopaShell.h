@@ -34,7 +34,10 @@ class KoopaShell : public CollectableObject, public IMovable{
 	 bool isMovingState() const;  
      virtual KoopaShellType getType() const =0; 
      std::vector<std::pair<int, int>> getSpriteData() const;   
+     void onRelease(); 
      Vector2 getSize() const { return size; };
+     virtual std::shared_ptr<KoopaShell> clone() const = 0;
+
 private:
       float aniTimer;
 	  float aniSpeed;    
@@ -46,6 +49,7 @@ private:
 	  KoopaShellState* currentState;
       KoopaShellState* pendingState; 
       float groundLevel = (float)INT_MAX;
+
 	  int curFrame = 0;
 };
 
@@ -53,7 +57,7 @@ class KoopaGreenShell : public KoopaShell {
     public:
         KoopaGreenShell(Vector2 pos, Vector2 sz);
         ObjectType getObjectType() const override;
-
+        std::shared_ptr<KoopaShell> clone() const override; 
         KoopaShellType getType() const ;
 }; 
 
@@ -62,6 +66,6 @@ public:
 
     KoopaRedShell(Vector2 pos, Vector2 sz);
     ObjectType getObjectType() const override;
-
+    std::shared_ptr<KoopaShell> clone() const override;
     KoopaShellType getType() const ;
 };

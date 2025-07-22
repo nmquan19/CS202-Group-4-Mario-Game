@@ -82,7 +82,7 @@ void Koopa::checkCollision(const std::vector<std::shared_ptr<Object>>& candidate
             this->changeState(&KoopaKnockState::GetInstance());
             break;
         case ObjectCategory::CHARACTER:
-            //handleCharacterCollision(candidate);
+            handleCharacterCollision(candidate);
             break;
         }
     }
@@ -104,6 +104,7 @@ void Koopa::handleCharacterCollision(std::shared_ptr<Object> other) {
     float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
 
     float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
+	DrawText(TextFormat("Koopa Collision: %f", minOverlap), 500, 500, 20, RED);
     if (minOverlap == overlapBottom) {
         die();
         this->changeState(&KoopaStompedState::GetInstance());

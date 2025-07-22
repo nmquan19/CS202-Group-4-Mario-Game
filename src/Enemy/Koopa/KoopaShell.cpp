@@ -12,9 +12,11 @@
 #include <utility>
 #include <memory>
 #include <iostream>
+#include "../../../include/Game/GameContext.h"
 KoopaShell::KoopaShell(Vector2 pos, Vector2 sz): spritebox({0,0,0,0}), velocity({0,0}), CollectableObject(pos, sz, TextureManager::enemyTextures), aniSpeed(0.2f), aniTimer(0) {   
 	
 }
+
 
 void KoopaShell::onCollect(Character* player) {
     if (!player) return;
@@ -30,11 +32,14 @@ void KoopaShell::onCollect(Character* player) {
 void KoopaShell::update(float deltaTime) {
     aniTimer += deltaTime; 
     CollectableObject::update(deltaTime); 
+
 	if(currentState)currentState->update(this, deltaTime);
     if (pendingState) {
         applyQueueState();
     }
-	position += velocity*deltaTime; 
+	DrawText(TextFormat("KoopaShell pos %f",position.x), 100, 100, 20, RED);
+	DrawText(TextFormat("KoopaShell velocity %f", velocity.x), 100, 120, 20, RED);
+    position += velocity * deltaTime;
     applyGravity(deltaTime);
     if (aniTimer >= aniSpeed) {
         curFrame += 1;
@@ -51,7 +56,17 @@ void KoopaShell::update(float deltaTime) {
     else {
         onGround = false;
     }
-  
+    if (position.x < 0)
+    {
+        position.x = 0;
+        velocity.x *= -1;
+       
+    }
+    if (position.x > 1920 - hitBox.width)
+    {
+        position.x = 1920 - hitBox.width;
+        velocity.x *= -1;
+    }
 }
 void KoopaShell::setVelocity(Vector2 newVelocity) {
     velocity = newVelocity;
@@ -104,7 +119,7 @@ void KoopaShell::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     if (!CheckCollisionRecs(koopaBox, otherBox)) return;
 
     // Calculate previous position
-    Vector2 prevPos = position - velocity;
+    Vector2 prevPos = position - velocity*0.16;
 
     Rectangle prevBox = {
         prevPos.x,
@@ -118,7 +133,7 @@ void KoopaShell::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     bool wasLeft = (prevBox.x + prevBox.width) <= otherBox.x;
     bool wasRight = prevBox.x >= (otherBox.x + otherBox.width);
 
-    const float snapOffset = 0.01f;  // Prevent sinking into edges
+    const float snapOffset = 0.01f; 
 
     if (wasAbove && velocity.y >= 0) {
         // Landed on top
@@ -127,7 +142,6 @@ void KoopaShell::handleEnvironmentCollision(std::shared_ptr<Object> other) {
         onGround = true;
     }
     else if (wasBelow && velocity.y <= 0) {
-        // Hit from below
         position.y = otherBox.y + otherBox.height + snapOffset;
         velocity.y = 0;
     }
@@ -195,4 +209,14 @@ ObjectType KoopaGreenShell::getObjectType() const {
 }
 ObjectType KoopaRedShell::getObjectType() const {
     return KoopaShellType::RED_KOOPA_SHELL;
+}
+void KoopaShell::onRelease() {
+    GameContext::getInstance().addObject(this->getType(), this->position, { 0.75,0.75 });
+}   
+
+std::shared_ptr<KoopaShell> KoopaGreenShell::clone()const {
+    return std::make_shared<KoopaGreenShell>(*this);  
+}
+std::shared_ptr<KoopaShell> KoopaRedShell::clone() const {
+    return std::make_shared<KoopaRedShell>(*this); 
 }

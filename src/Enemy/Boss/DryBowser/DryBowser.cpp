@@ -49,6 +49,7 @@ void DryBowser::update(float dt) {
     else if (IsKeyPressed(KEY_SPACE)) {
         targetPosition = { 800, 100 }; 
 	}
+    applyGravity(dt);  
     hitbox.y = position.y; 
 	animController.update(dt);  
     curFrame = animController.getCurrentFrame();
@@ -92,6 +93,8 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 void DryBowser::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
 
     for (auto obj : candidates) {
+
+        
     }
 }
 

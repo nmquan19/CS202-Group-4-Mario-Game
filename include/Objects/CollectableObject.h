@@ -32,9 +32,12 @@ public:
 
     Vector2 getPosition() const override;
     void setPosition(Vector2 newPos) override;  
-
+	void setCollectable(bool c);
+	bool isCollectable() const;
     ObjectType getObjectType() const;
+    virtual void onRelease() {} 
 protected:
+	bool canbeCollected = true; 
     Texture2D texture;   
     ItemType type = ItemType::COIN;
 	Rectangle hitBox;

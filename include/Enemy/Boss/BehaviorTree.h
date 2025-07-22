@@ -12,25 +12,6 @@ enum class NodeStatus{
     Idle,
     Skipped
 };  
-using ConditionFunction = std::function<bool(Enemy*)>;
-
-class ConditionRegistry {
-public:
-    static ConditionRegistry& getInstance() {
-        static ConditionRegistry instance;
-        return instance;
-    }
-    void registerCondition(const std::string& name, ConditionFunction fn) {
-        conditions[name] = fn;
-    }
-    ConditionFunction get(const std::string& name) {
-        return conditions.at(name);
-    }
-
-private:
-    std::unordered_map<std::string, ConditionFunction> conditions;
-};
-
 class BehaviorTreeNode {
 public:
     virtual ~BehaviorTreeNode() = default;
@@ -186,26 +167,3 @@ public:
     IdleNode() :ActionNode() {}
     NodeStatus tick(Enemy* boss, float dt) override;
 };
-
-class RunIf : public DecoratorNode {
-private:
-    std::string conditionName;
-    ConditionFunction condition;
-
-public:
-	RunIf() : DecoratorNode(nullptr) {}
-    RunIf(const std::string& condName, std::shared_ptr<BehaviorTreeNode> child)
-        : conditionName(condName),
-        condition(ConditionRegistry::getInstance().get(condName)),DecoratorNode(child) {
-    }
-
-    NodeStatus tick(Enemy* boss, float dt) override {
-        if (condition(boss)) {
-            return child->tick(boss, dt);
-        }
-        return NodeStatus::Failure;
-    }
-
-    std::string getConditionName() const { return conditionName; }
-};
-

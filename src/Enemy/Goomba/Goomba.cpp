@@ -81,7 +81,6 @@ void Goomba::handleCharacterCollision(std::shared_ptr<Object> other) {
       
     float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
     if (minOverlap == overlapBottom) {
-        std::cout << "called" << std::endl;
         die(); 
 		this->changeState(&GoombaStompedState::GetInstance());
     }
