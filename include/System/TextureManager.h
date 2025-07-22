@@ -11,9 +11,10 @@ public:
     static std::vector<Rectangle> Enemy_sprite_boxes;
 	static Texture2D DryBowser_texture;   
     static std::vector<Rectangle> DryBowser_sprite_boxes;
+    static Texture2D blocksTexture;
 
     static Texture2D enemyTextures;
-    Texture2D getBlockTexture(BlockType type);
+    
     Texture2D getCharacterTexture() const;
     Texture2D getItemTexture() const;
     void loadTextures(); 
@@ -24,8 +25,6 @@ public:
 
 private:
     TextureManager() = default;
-   
-    std::map<BlockType, Texture2D> blockTextures;
     Texture2D characterTextures;
     Texture2D itemTextures;
  
@@ -53,7 +52,7 @@ private:
     float startX = paletteRect.x + 50;
     float yBlock = paletteRect.y + 50;
     float yEnemy = yBlock + 150;
-    yInteractive = yEnemy + 150;
+    float yInteractive = yEnemy + 150;
     float spacing = 120;
     float iconSize = 100;
 };

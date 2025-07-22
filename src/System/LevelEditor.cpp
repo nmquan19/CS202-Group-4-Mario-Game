@@ -161,6 +161,12 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
                 gridBlocks[key].push(newChar);
             }
         }
+        else if constexpr (std::is_same_v<T, InteractiveType>) {
+            std::shared_ptr<Object> newInter = ObjectFactory::createSpring(gridCoord);
+            if (newInter) {
+                gridBlocks[key].push(newInter);
+            }
+        }
     }, type);
 }
 
@@ -333,10 +339,18 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
     else if (std::holds_alternative<CharacterType>(type)) {
         CharacterType charType = std::get<CharacterType>(type);
         switch (charType) {
-
             case CharacterType::LUIGI: return "LUIGI";
                 break;
             default: return "MARIO";
+                break;
+        }
+    }
+    else if (std::holds_alternative<InteractiveType>(type)) {
+        InteractiveType inter = std::get<InteractiveType>(type);
+        switch (inter) {
+            case InteractiveType::SPRING: return "SPRING";
+                break;
+            default: return "SPRING";
                 break;
         }
     }
@@ -353,7 +367,7 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
 	if (typeStr == "GREEN_KOOPA") return EnemyType::GREEN_KOOPA;
 	if (typeStr == "RED_KOOPA") return EnemyType::RED_KOOPA;
     if (typeStr == "GOOMBA") return EnemyType::GOOMBA;
-
+    if (typeStr == "SPRING") return InteractiveType::SPRING;
     return BlockType::GROUND;
 }
 

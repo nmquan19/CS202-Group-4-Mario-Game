@@ -1,5 +1,6 @@
 #include "../../include/System/TextureManager.h"
 #include "../../include/System/Interface.h"
+#include "../../include/System/Constant.h"
 #include <raylib.h>
 #include <fstream>
 #include <vector>
@@ -7,13 +8,10 @@ std::vector<Rectangle> TextureManager::Enemy_sprite_boxes;
 Texture2D TextureManager::enemyTextures;
 std::vector<Rectangle> TextureManager::DryBowser_sprite_boxes;
 Texture2D TextureManager::DryBowser_texture;
+Texture2D TextureManager::blocksTexture;
 TextureManager& TextureManager::getInstance() {
     static TextureManager instance;
     return instance;
-}
-
-Texture2D TextureManager::getBlockTexture(BlockType type) {
-    return blockTextures[type];
 }
 
 Texture2D TextureManager::getCharacterTexture() const {
@@ -27,8 +25,7 @@ Texture2D TextureManager::getItemTexture() const {
 void TextureManager::loadTextures() {
     if (texturesLoaded) return;
 
-    blockTextures[BlockType::GROUND] = LoadTexture("assets/ground_block.png");
-    blockTextures[BlockType::BRICK] = LoadTexture("assets/brick_block.png");
+    blocksTexture = LoadTexture("assets/item2_sprites.png");
 
     characterTextures = LoadTexture("assets/character_spritesheet.png");
 
@@ -59,11 +56,6 @@ void TextureManager::loadTextures() {
 void TextureManager::unloadTextures() {
     if (!texturesLoaded) return;
 
-    for (auto& pair : blockTextures) {
-        UnloadTexture(pair.second);
-    } 
-    blockTextures.clear();
-
     UnloadTexture(characterTextures);
 	UnloadTexture(enemyTextures);
     UnloadTexture(itemTextures);
@@ -75,24 +67,19 @@ void ObjectPalette::drawPalette() {
     DrawRectangleLinesEx(paletteRect, 2, BLACK);
 
     TextureManager& tm = TextureManager::getInstance();
-   
+    Texture2D blocksTexture = TextureManager::blocksTexture;
+
     // Ground Block
     Rectangle groundRect = { startX, yBlock, iconSize, iconSize };
-    Texture2D groundTexture = tm.getBlockTexture(BlockType::GROUND);
-    if (groundTexture.id != 0) {
-        DrawTexturePro(groundTexture, 
-            { 0, 0, (float)groundTexture.width, (float)groundTexture.height },
-            groundRect, { 0, 0 }, 0.0f, WHITE);
+    if (blocksTexture.id != 0) {
+        DrawTexturePro(blocksTexture, Constants::PaletteResources::GROUND, groundRect, { 0, 0 }, 0.0f, WHITE);
     }
     DrawRectangleLinesEx(groundRect, 2, (isBlock() && getBlockType() == BlockType::GROUND) ? RED : BLACK);
 
     // Brick Block
     Rectangle brickRect = { startX + spacing, yBlock, iconSize, iconSize };
-    Texture2D brickTexture = tm.getBlockTexture(BlockType::BRICK);
-    if (brickTexture.id != 0) {
-        DrawTexturePro(brickTexture,
-            { 0, 0, (float)brickTexture.width, (float)brickTexture.height },
-            brickRect, { 0, 0 }, 0.0f, WHITE);
+    if (blocksTexture.id != 0) {
+        DrawTexturePro(blocksTexture, Constants::PaletteResources::BRICK, brickRect, { 0, 0 }, 0.0f, WHITE);
     } 
     DrawRectangleLinesEx(brickRect, 2, (isBlock() && getBlockType() == BlockType::BRICK) ? RED : BLACK);
     
@@ -112,7 +99,6 @@ void ObjectPalette::drawPalette() {
     }
     DrawRectangleLinesEx(greenKoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GREEN_KOOPA) ? RED : BLACK);
 
-
     // Spring
     Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
     Texture2D springTexture = tm.getItemTexture();
@@ -120,7 +106,6 @@ void ObjectPalette::drawPalette() {
         Rectangle springSource = {1, 467, 16, 16};
         DrawTexturePro(springTexture, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
     }
-    DrawRectangleLinesEx(springRect, 2, PINK);
     DrawText("SPRING", springRect.x + 10, springRect.y + iconSize + 5, 10, BLACK);
 }
 
