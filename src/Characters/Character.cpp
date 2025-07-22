@@ -454,27 +454,4 @@ void Character::handleSpringCollision(std::shared_ptr<Spring> other) {
 	if (minOverlap == overlapTop && velocity.y > 0) {
 		velocity.y = Constants::Spring::BOUNCE_VELOCITY;
 	}
-  
-	hp -= amount;
-	invincibleTimer = 0.3f;
-}
-
-bool Character::isAlive() const {
-	return hp > 0;
-}
-
-void Character::die() {
-
-}
-
-void Character::setHoldingProjectile(bool flag) {
-	holdingProjectile = flag;
-}
-
-bool Character::isHoldingProjectile() const {
-	return holdingProjectile;
-}
-
-void Character::holdProjectile(KoopaShell& p) {
-	projectile = &p;
 }

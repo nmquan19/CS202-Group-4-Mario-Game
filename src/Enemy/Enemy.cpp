@@ -35,7 +35,7 @@ std::vector<ObjectCategory> Enemy::getCollisionTargets() const
 }
 void Enemy::applyGravity(float deltaTime) {
     if (!onGround) {
-        velocity.y +=  980* deltaTime;
+        velocity.y +=  980 * deltaTime;
     }
 }
 void Enemy::update(float deltaTime)
