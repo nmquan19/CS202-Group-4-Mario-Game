@@ -20,6 +20,10 @@ Texture2D TextureManager::getCharacterTexture() const {
     return characterTextures;
 }
 
+Texture2D TextureManager::getItemTexture() const {
+    return itemTextures;
+}
+
 void TextureManager::loadTextures() {
     if (texturesLoaded) return;
 
@@ -27,6 +31,8 @@ void TextureManager::loadTextures() {
     blockTextures[BlockType::BRICK] = LoadTexture("assets/brick_block.png");
 
     characterTextures = LoadTexture("assets/character_spritesheet.png");
+
+    itemTextures = LoadTexture("assets/item_sprites.png");
     //Enemy textures 
     std::ifstream  enemy_in;
     enemy_in.open("assets/enemy/enemy_output.txt");
@@ -60,6 +66,7 @@ void TextureManager::unloadTextures() {
 
     UnloadTexture(characterTextures);
 	UnloadTexture(enemyTextures);
+    UnloadTexture(itemTextures);
     texturesLoaded = false;
 }
 
@@ -71,6 +78,7 @@ void ObjectPalette::drawPalette() {
     float yBlock = paletteRect.y + 10;
     float yEnemy = yBlock + 80;
     float yCharacter = yEnemy + 80;
+    float yInteractive = yCharacter + 80;
     float spacing = 80;
     float iconSize = 50;
 
@@ -156,6 +164,19 @@ void ObjectPalette::drawPalette() {
     }
     DrawRectangleLinesEx(luigiRect, 2, (isCharacter() && getCharacterType() == CharacterType::LUIGI) ? RED : BLACK);
     DrawText("LUIGI", luigiRect.x + 10, luigiRect.y + iconSize + 5, 10, BLACK);
+
+    // Spring
+    Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
+    Texture2D springTexture = tm.getItemTexture();
+    if (springTexture.id != 0) {
+        Rectangle springSource = {1, 467, 16, 16};
+        DrawTexturePro(springTexture, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
+    }
+    else {
+        DrawRectangleRec(springRect, PINK);
+    }
+    DrawRectangleLinesEx(springRect, 2, PINK);
+    DrawText("SPRING", springRect.x + 10, springRect.y + iconSize + 5, 10, BLACK);
 }
 
 void ObjectPalette::handleSelection() {
@@ -168,6 +189,7 @@ void ObjectPalette::handleSelection() {
     float yBlock = paletteRect.y + 10;
     float yEnemy = yBlock + 80;
     float yCharacter = yEnemy + 80;
+    float yInteractive = yCharacter + 80;
     float spacing = 80;
     float iconSize = 50;
 
@@ -184,6 +206,8 @@ void ObjectPalette::handleSelection() {
 
     Rectangle gkoopaRect = { startX + spacing, yEnemy, 50, 50 };
     Rectangle rkoopaRect = { startX + 2*spacing, yEnemy, 50, 50 };
+
+    Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
 
     if (CheckCollisionPointRec(mousePos, groundRect)) {
         selected = BlockType::GROUND;
@@ -205,5 +229,8 @@ void ObjectPalette::handleSelection() {
     }
     else if (CheckCollisionPointRec(mousePos, luigiRect)) {
         selected = CharacterType::LUIGI;
+    }
+    else if (CheckCollisionPointRec(mousePos, springRect)) {
+        selected = InteractiveType::SPRING;
     }
 }

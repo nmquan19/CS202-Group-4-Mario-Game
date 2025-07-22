@@ -15,6 +15,7 @@
 #include <utility>
 Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures)
 {
+    HP = 1;
     stompedAnimation = false;
     isFacingRight = velocity.x > 0;
 
@@ -169,11 +170,9 @@ void Koopa::die()
 }
 void Koopa::takeDamage(int amount) {
     HP -= amount;
+    this->changeState(&KoopaStompedState::GetInstance());
     if (HP <= 0) {
         die();
-    }
-    else {
-        this->changeState(&KoopaStompedState::GetInstance());
     }
 }
 

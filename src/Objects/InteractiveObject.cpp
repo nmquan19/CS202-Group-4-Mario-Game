@@ -1,20 +1,13 @@
 #include "../../include/Objects/InteractiveObject.h"
+#include "../../include/System/Constant.h"
 
 InteractiveObject::InteractiveObject(Vector2 position, Vector2 size) {
     this->position = position;
-    this->hitBox = {position.x, position.y, size.x, size.y};
+    this->hitBox = {position.x, position.y, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE };
 }
 
-void InteractiveObject::update(float deltaTime) {
-
-}
-
-void InteractiveObject::draw() {
-
-}
-
-Rectangle InteractiveObject::getHitBox() const {
-    return hitBox;
+std::vector<Rectangle> InteractiveObject::getHitBox() const {
+    return { hitBox };
 }
 
 ObjectCategory InteractiveObject::getObjectCategory() const {
@@ -22,7 +15,7 @@ ObjectCategory InteractiveObject::getObjectCategory() const {
 }
 
 std::vector<ObjectCategory> InteractiveObject::getCollisionTargets() const {
-
+    return { ObjectCategory::CHARACTER };
 }
 
 void InteractiveObject::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
