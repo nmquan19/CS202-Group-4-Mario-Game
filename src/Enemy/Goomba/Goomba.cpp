@@ -19,7 +19,7 @@ Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(
     changeState(&GoombaWanderingState::GetInstance());
 }
 Goomba::Goomba(Vector2 startPos, Vector2 size) : Enemy(startPos,TextureManager::enemyTextures, size)
-{
+{   
     stompedAnimation = false;
 
     changeState(&GoombaWanderingState::GetInstance());
@@ -57,33 +57,7 @@ void Goomba::checkCollision(const std::vector<std::shared_ptr<Object>>& candidat
         case ObjectCategory::PROJECTILE:
 			this->changeState(&GoombaKnockState::GetInstance());
             break;
-        case ObjectCategory::CHARACTER:
-			//handleCharacterCollision(candidate);
-            break;
         }
-    }
-}
-void Goomba::handleCharacterCollision(std::shared_ptr<Object> other) {
-    std::vector<Rectangle> playerHitBoxes = getHitBox();
-    std::vector<Rectangle> otherHitBoxes = other->getHitBox();
-    
-    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
-    
-    Rectangle playerHitBox = playerHitBoxes[0];
-    Rectangle otherHitBox = otherHitBoxes[0];
-
-    if (!CheckCollisionRecs(playerHitBox, otherHitBox)) return;
-
-    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-      
-    float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
-    if (minOverlap == overlapBottom) {
-        std::cout << "called" << std::endl;
-        die(); 
-		this->changeState(&GoombaStompedState::GetInstance());
     }
 }
 

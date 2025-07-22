@@ -34,6 +34,9 @@
     <ClCompile Include="src\UI\SoundEffect.cpp" />
     <ClCompile Include="src\UI\UI.cpp" />
     <ClCompile Include="include\Enemy\Boss\BT_Factory.h" />
+    <ClCompile Include="src\System\Resources.cpp" />
+    <ClCompile Include="src\Objects\InteractiveObject.cpp" />
+    <ClCompile Include="src\Objects\Spring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -84,6 +87,10 @@
     <ClInclude Include="include\UI\SoundEffect.h" />
     <ClInclude Include="include\UI\UI.h" />
     <ClInclude Include="src\Enemy\Boss\Boss.cpp" />
+    <ClInclude Include="include\System\InterpolationController.h" />
+    <ClInclude Include="include\Objects\InteractiveObject.h" />
+    <ClInclude Include="include\Objects\Spring.h" />
+    <ClInclude Include="include\Objects\SpringState.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav" />

@@ -49,6 +49,7 @@ void GameContext::setState(GameState* newState) {
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
             PhysicsManager::getInstance().addObject(character);
             addObject(EnemyType::DRY_BOWSER, {500,700}, {8, 8});
+            addObject(InteractiveType::SPRING, { 500, 950 }, { 1, 1 });
         }
     }
 }
@@ -119,6 +120,9 @@ void GameContext::spawnObject() {
             }
             else if constexpr (std::is_same_v<T, KoopaShellType>) {
                 object = ObjectFactory::createKoopaShell(actualType, request.worldpos, request.size);
+            }
+            else if constexpr (std::is_same_v<T, InteractiveType>) {
+                object = ObjectFactory::createSpring(request.worldpos, request.size);
             }
             }, request.type);
 
