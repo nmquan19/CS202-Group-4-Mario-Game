@@ -8,11 +8,8 @@
 
 class Item : public Object, public IUpdatable {
 public:
-    Item(Vector2 startPos, Texture2D texture, Vector2 size);
-    ~Item();
-
-    void update(float deltaTime) override;
-    void draw() override;
+    Item();
+    virtual ~Item();
 
     Rectangle getHitBox() const override;
     ObjectCategory getObjectCategory() const override;

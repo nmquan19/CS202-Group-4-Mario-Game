@@ -35,6 +35,7 @@ void GameContext::setState(GameState* newState) {
         if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState || currentState != editorState)) {
             LevelEditor::getInstance().cleanup();
             PhysicsManager::getInstance().cleanup();
+            clearGame(); // Delete remaining objects in GameContext
             character.reset();
         }
 
@@ -44,9 +45,10 @@ void GameContext::setState(GameState* newState) {
         if (newState == gamePlayState) {
             PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
             LevelEditor::getInstance().setEditMode(false);
-            LevelEditor::getInstance().loadLevel("testlevel");
+            LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
             PhysicsManager::getInstance().addObject(character);
+            addObject(EnemyType::DRY_BOWSER, {500,700}, {8, 8});
         }
     }
 }
@@ -59,8 +61,8 @@ void GameContext::handleInput() {
 
 void GameContext::update(float deltaTime) {
     if (currentState == gamePlayState) {
-        audioManager.SetSoundEffectVolume(menuManager.slideBar.getValue());
-        audioManager.SetBackgroundMusicVolume(menuManager.slideBar.getValue());
+        audioManager.SetSoundEffectVolume(menuManager.slideBarSound.getValue());
+        audioManager.SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue());
         if (!audioManager.isPlaying()) {
             audioManager.PlayBackgroundMusic("theme1");
         }
@@ -142,11 +144,10 @@ void GameContext::deleteObjects() {
     for (const auto& obj : ToDeleteObjects)
     {
         if (std::find(Objects.begin(), Objects.end(), obj) != Objects.end()) {
-            //Objects.erase(std::remove(Objects.begin(), Objects.end(), obj), Objects.end());
             obj->setActive(false);
-            /*Objects.erase(std::remove_if(Objects.begin(), Objects.end(), [&](const std::shared_ptr<Object>& o) {
+            Objects.erase(std::remove_if(Objects.begin(), Objects.end(), [&](const std::shared_ptr<Object>& o) {
                 return o == obj;
-               }), Objects.end());*/
+            }), Objects.end());
         }
         ToDeleteObjects.clear();
     }
@@ -159,4 +160,11 @@ std::shared_ptr<Object> GameContext::getSharedPtrFromRaw(Object* rawPtr) {
         }
     }
     return nullptr;
+}
+
+void GameContext::clearGame() {
+    for (auto obj : Objects) {
+        mark_for_deletion_Object(obj);
+    }
+    Objects.clear();
 }

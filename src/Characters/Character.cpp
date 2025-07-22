@@ -96,7 +96,7 @@ void Character::update(float deltaTime) {
     bool stillOnGround = false;
     for (auto obj : nearbyObjects) {
         if (obj.get() != this && obj->getObjectCategory() == ObjectCategory::BLOCK) {
-            if (CheckCollisionRecs(groundCheckBox, obj->getHitBox())) {
+            if (CheckCollisionRecs(groundCheckBox, obj->getHitBox()[0])) {
                 stillOnGround = true;
                 break;
             }
@@ -240,8 +240,8 @@ void Character::updateHitBox(){
 	hitBoxHeight = spriteRec.height * scale;
 }
 
-Rectangle Character::getHitBox() const {
-	return {position.x, position.y, hitBoxWidth, hitBoxHeight};
+std::vector<Rectangle> Character::getHitBox() const {
+	return {{position.x, position.y, hitBoxWidth, hitBoxHeight}};
 }
 
 bool Character::isActive() const {
@@ -301,15 +301,19 @@ void Character::onCollision(std::shared_ptr<Object> other) {
 }
 
 void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other->getHitBox();
+	std::vector<Rectangle> playerHitBoxes = getHitBox();
+	std::vector<Rectangle> otherHitBoxes = other->getHitBox();
+	
+	if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
+	
+	// Use the first hitbox for collision calculations (main hitbox)
+	Rectangle playerHitBox = playerHitBoxes[0];
+	Rectangle otherHitBox = otherHitBoxes[0];
 
-    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-    
-	const float MIN_OVERLAP = 2.0f;
+	float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
+	float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
+	float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
+	float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;	const float MIN_OVERLAP = 2.0f;
 
 	if(overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
 		return;
@@ -338,20 +342,25 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 }
 
 void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other->getHitBox();
+	std::vector<Rectangle> characterHitboxes = getHitBox();
+	std::vector<Rectangle> otherHitboxes = other->getHitBox();
+	
+	if (characterHitboxes.empty() || otherHitboxes.empty()) return;
+	
+	// Use the first hitbox for collision calculations (main hitbox)
+	Rectangle characterHitbox = characterHitboxes[0];
+	Rectangle otherHitbox = otherHitboxes[0];
 
-	float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-
-	float minOverlap = std::min({ overlapLeft, overlapRight, overlapBottom, overlapTop });
+	float overlapLeft = (characterHitbox.x + characterHitbox.width) - otherHitbox.x;
+	float overlapRight = (otherHitbox.x + otherHitbox.width) - characterHitbox.x;
+	float overlapTop = (characterHitbox.y + characterHitbox.height) - otherHitbox.y;
+	float overlapBottom = (otherHitbox.y + otherHitbox.height) - characterHitbox.y;    
+	float minOverlap = std::min({overlapLeft, overlapRight, overlapTop, overlapBottom});
 
 	if(minOverlap == overlapTop && velocity.y > 0) {
 		DrawText("deal damage", 50, 200, 30, BLACK);
 		invincibleTimer = 0.2f;
-		velocity.y = -500.0f;
+		velocity.y = Constants::Character::BOUNCE_VELOCITY;
 		setOnGround(false);
 		auto enemy = dynamic_cast<Enemy*>(other.get());
 		enemy->takeDamage(1);

@@ -12,7 +12,7 @@ public:
     TriggerZone(CollectableObject* owner, Vector2 pos, Vector2 sz);
     void update(float deltaTime);
     void draw() override;
-    Rectangle getHitBox() const override;
+    std::vector<Rectangle> getHitBox() const override;
     ObjectCategory getObjectCategory() const override;
     std::vector<ObjectCategory> getCollisionTargets() const override;
     void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;

@@ -48,5 +48,5 @@ public:
     void spawnObject();
 	void deleteObjects();
     std::shared_ptr<Object> getSharedPtrFromRaw(Object* rawPtr);
-
+    void clearGame();
 };

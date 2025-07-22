@@ -25,7 +25,7 @@ public:
 
 	virtual void draw() override = 0;  
 
-	virtual Rectangle getHitBox() const override = 0;  
+	virtual std::vector<Rectangle> getHitBox() const override = 0;  
 	virtual ObjectCategory getObjectCategory() const override = 0;  
 	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;  
 	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0;
@@ -40,23 +40,17 @@ protected:
 	bool collided = false;  
 };  
 
-class ObjectFactory {  
-public:  
-	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);  
-	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 3.0f);  
-	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);  
-	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);  
-	static std::unique_ptr<Object> createItem(ItemType type, Vector2 startPos, Vector2 size);  
-	static std::unique_ptr<Item> createCoin(Vector2 startPos, Vector2 size);  
-	static std::unique_ptr<Item> createMushroom(Vector2 startPos, Vector2 size);  
-
-private:  
-	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);  
-	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);  
-	static std::unique_ptr<Item> createSpecificItem(ItemType type, Vector2 startPos, Vector2 size);  
-
-	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, Vector2 startPosition, float scale);  
-	static std::unique_ptr<KoopaShell> createSpecificKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);  
-	static CharacterStats getStats(CharacterType type);  
-	static std::vector<std::vector<Rectangle>> getFrameData(CharacterType type);  
+class ObjectFactory {
+public:
+	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
+	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 3.0f);
+	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
+	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
+private:
+	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
+	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
+	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, Vector2 startPosition, float scale);
+	static std::unique_ptr<KoopaShell> createSpecificKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
+	static CharacterStats getStats(CharacterType type);
+    static std::vector<std::vector<Rectangle>> getFrameData(CharacterType type);
 };

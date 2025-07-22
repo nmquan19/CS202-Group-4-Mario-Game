@@ -134,8 +134,13 @@ std::unique_ptr<KoopaShell> ObjectFactory::createSpecificKoopaShell(KoopaShellTy
 
 
 int Object::getCollidedPart(const Object& other){
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other.getHitBox();
+    std::vector<Rectangle> playerHitBoxes = getHitBox();
+    std::vector<Rectangle> otherHitBoxes = other.getHitBox();
+    
+    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return 0;
+    
+    Rectangle playerHitBox = playerHitBoxes[0];
+    Rectangle otherHitBox = otherHitBoxes[0];
 
     float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
     float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;

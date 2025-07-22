@@ -26,8 +26,8 @@ public:
         UnloadTexture(textureButton);
     }
     void setRectangle() {
-        recButton = { position.x, position.y, static_cast<float>(textureButton.width) * scale / float(1.75),
-            static_cast<float>(textureButton.height) * scale / float(1.75) };
+        recButton = { position.x - 5, position.y - 15, static_cast<float>(textureButton.width) * scale / 1.5f,
+            static_cast<float>(textureButton.height) * scale / 1.5f };
     }
     void draw(Vector2 pos) {
         position = pos;
@@ -66,7 +66,7 @@ public:
     ~SlideBar() {}
 
     float getValue() { return percent; }
-
+    Rectangle getBorder() { return border; }
     void HandleSlideBar() {
 
         Vector2 mousePos = GetMousePosition();
@@ -107,15 +107,15 @@ public:
 class MenuManager : public UIManager {
 private:
     Texture2D logo, board;
-    Button check, cross, setting, returnButton;
+    Button check, cross, setting, returnButton, home, play;
+    Button check_selected, cross_selected, setting_selected, returnButton_selected;
     Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition;
 
     float scale = 0.2f;
-    //Texture2D startButton;
     bool isActive;
     AudioManager audioManager;
 public:
-    SlideBar slideBar; Vector2 slideBarPosition;
+    SlideBar slideBarMusic, slideBarSound; Vector2 slideBarMusicPosition, slideBarSoundPosition;
     int select;
     bool dialog, exit;
     MenuManager();

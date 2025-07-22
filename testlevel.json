@@ -1,157 +1,184 @@
-
 {
      "gridSize": 64,
      "objects": [
           {
                "gridX": 1,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 1,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 1,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 1,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 1,
                "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 1,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 1,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.5,
+               "type": "GREEN_KOOPA"
+          },
+          {
+               "gridX": 1,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 2,
-               "gridY": 15,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 3,
-               "gridY": 15,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 4,
-               "gridY": 15,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 5,
-               "gridY": 15,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 6,
-               "gridY": 15,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 7,
-               "gridY": 15,
+               "gridY": 16,
+               "sizeX": 0.75,
+               "sizeY": 0.75,
+               "type": "GOOMBA"
+          },
+          {
+               "gridX": 7,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 8,
-               "gridY": 15,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 8,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 9,
-               "gridY": 15,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 10,
-               "gridY": 15,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 11,
-               "gridY": 14,
+               "gridY": 16,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GOOMBA"
+               "type": "GROUND"
           },
           {
                "gridX": 11,
-               "gridY": 15,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 12,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GOOMBA"
-          },
-          {
-               "gridX": 12,
-               "gridY": 15,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
                "gridX": 13,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 14,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 15,
+               "gridY": 16,
+               "sizeX": 0.75,
+               "sizeY": 0.75,
+               "type": "GOOMBA"
+          },
+          {
+               "gridX": 15,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "GROUND"
+          },
+          {
+               "gridX": 16,
                "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
-               "gridX": 14,
-               "gridY": 13,
+               "gridX": 16,
+               "gridY": 16,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
           },
           {
-               "gridX": 14,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 14,
-               "gridY": 15,
+               "gridX": 16,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "GROUND"
