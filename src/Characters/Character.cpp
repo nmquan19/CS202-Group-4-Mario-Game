@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-
+#include <memory>
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale)
 	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(5), projectile(nullptr), holdingProjectile(false),
 	invincibleTimer(0),
@@ -65,9 +65,10 @@ void Character::update(float deltaTime) {
 
 	if(holdingProjectile && projectile != nullptr) {
 		if(IsKeyPressed(KEY_X)) {
-			projectile->setActive(true); 
-			projectile->setVelocity(Vector2{this->isFacingRight() ? 200.0f : -200.0f, 980.0f});
-			projectile->setPosition(Vector2{this->position.x + (this->isFacingRight() ? this->getWidth() : -20.0f), this->getCenterY()});
+			projectile->setPosition(Vector2{ this->position.x + (this->isFacingRight() ? this->getWidth() : -20.0f), this->getCenterY() });
+			projectile->onRelease();
+			projectile->changeState(nullptr); 
+			projectile = nullptr; 
 		}
 	}
 
@@ -399,7 +400,7 @@ void Character::takeDamage(int amount) {
 		return;
 	}
 	hp -= amount;
-	invincibleTimer = 1.0f;
+	invincibleTimer = 0.3f;
 }
 
 bool Character::isAlive() const {
