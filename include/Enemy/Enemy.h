@@ -66,7 +66,7 @@ public:
 	virtual void patrol() {}; 
 	virtual void idle() {};
 	virtual void avoidDanger() {};
-	virtual bool isNearTarget() { return false; }
+	virtual bool isNearTarget() const { return false; }
  protected:
 	InterpolatedAnimationController animController;
 	FrameInterpolatedVelocityController velocityController;

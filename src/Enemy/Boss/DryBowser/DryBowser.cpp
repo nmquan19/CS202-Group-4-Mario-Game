@@ -42,7 +42,13 @@ void DryBowser::update(float dt) {
     Enemy::update(dt); 
     updateWorldState();
 	hitbox.x = position.x;
-    targetPosition = { 200,200 }; 
+    if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        Vector2 mousePos = GetMousePosition();
+        targetPosition = { mousePos.x, mousePos.y };
+    }
+    else if (IsKeyPressed(KEY_SPACE)) {
+        targetPosition = { 800, 100 }; 
+	}
     hitbox.y = position.y; 
 	animController.update(dt);  
     curFrame = animController.getCurrentFrame();
@@ -71,6 +77,8 @@ void DryBowser::update(float dt) {
 void DryBowser::draw() {
 
     Enemy::draw(); 
+	DrawText(TextFormat("NearTarget: %s", isNearTarget() ? "Yes" : "No"), 300, 300, 20, RED);
+	DrawRectangle(targetPosition.x, targetPosition.y, 50,50, RED);
 }
 
 void DryBowser::handleCharacterCollision(std::shared_ptr<Object> other) {
@@ -152,12 +160,12 @@ void DryBowser::setAnimation(const std::string& aniName) {
     else if (aniName == "Walk") {
         animController.set(18, 25, 0.25f, Easing::linear, false, true);
     }
-    else if (aniName == "BasicAttack") {
-        animController.set(73, 86, Constants::DryBowser::BASIC_ATTACK_DURATION, Easing::easeOut,false,true);
+    else if (aniName == "MeleeAttack1") {
+        animController.set(73, 86, Constants::DryBowser::BASIC_ATTACK_DURATION, Easing::easeOut,false,false);
     }
     else if (aniName == "Run")
     {
-        animController.set(32, 42, 2.f, Easing::linear, false, true);
+        animController.set(32, 40, 2.f, Easing::linear, false, true);
     }
     curAniName = aniName;
 }
@@ -181,5 +189,17 @@ void DryBowser::attack() {
 }
 bool DryBowser::isAttacking()
 {
-   return !animController.isFinished(); 
+	DrawText(TextFormat("Ended: %s", animController.isFinished() ? "Yes" : "No"), 200, 300, 20, RED);
+    return  currentPhase->getCurMove() == "MeleeAttack1" && !animController.isFinished();
+}
+bool DryBowser::isNearTarget() const
+{
+	return abs(targetPosition.x - position.x) < 100 && abs(targetPosition.y - position.y)< 100;
+}
+void DryBowser::idle() {
+    if (currentPhase)
+    {
+        if (currentPhase->getCurMove() != "Idle")
+            currentPhase->changeMoveState(this, std::make_shared<DryBowserStandingState>());
+    }
 }

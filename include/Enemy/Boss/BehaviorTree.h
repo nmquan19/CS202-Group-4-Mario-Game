@@ -12,6 +12,24 @@ enum class NodeStatus{
     Idle,
     Skipped
 };  
+using ConditionFunction = std::function<bool(Enemy*)>;
+
+class ConditionRegistry {
+public:
+    static ConditionRegistry& getInstance() {
+        static ConditionRegistry instance;
+        return instance;
+    }
+    void registerCondition(const std::string& name, ConditionFunction fn) {
+        conditions[name] = fn;
+    }
+    ConditionFunction get(const std::string& name) {
+        return conditions.at(name);
+    }
+
+private:
+    std::unordered_map<std::string, ConditionFunction> conditions;
+};
 
 class BehaviorTreeNode {
 public:
@@ -29,6 +47,7 @@ public:
     SequenceNode(std::initializer_list<std::shared_ptr<BehaviorTreeNode>> nodes);
     NodeStatus tick(Enemy* enemy, float dt) override;
     void addChild(std::shared_ptr<BehaviorTreeNode> child);
+	std::vector<std::shared_ptr<BehaviorTreeNode>> getChildren() const { return children; }
     void reset() override;  
 };
 
@@ -38,9 +57,13 @@ private:
     size_t current = 0;
 
 public:
+	SelectorNode() = default;
     SelectorNode(std::initializer_list<std::shared_ptr<BehaviorTreeNode>> nodes);
     NodeStatus tick(Enemy* enemy, float dt) override;
+    void addChild(std::shared_ptr<BehaviorTreeNode> child);
     void reset() override; 
+    std::vector<std::shared_ptr<BehaviorTreeNode>> getChildren() const { return children; }
+
 };
 
 
@@ -51,13 +74,15 @@ protected :
     std::shared_ptr<BehaviorTreeNode> child; 
 public : 
     DecoratorNode(std::shared_ptr<BehaviorTreeNode> childNode);  
-	std::shared_ptr<BehaviorTreeNode> getChild() const;
+	virtual std::shared_ptr<BehaviorTreeNode> getChild() const;
+    void setChild(std::shared_ptr<BehaviorTreeNode> childNode);
     virtual NodeStatus tick(Enemy* boss, float dt) override = 0;
     virtual void reset() override;
 };
 
 class InverterNode : public DecoratorNode {
 public:
+	InverterNode() :DecoratorNode(nullptr) {}
     InverterNode(std::shared_ptr<BehaviorTreeNode> childNode)
 		: DecoratorNode(childNode) {
 	}
@@ -66,6 +91,7 @@ public:
 class ForceSuccessNode : public DecoratorNode
 {
 public: 
+	ForceSuccessNode() = default;
     ForceSuccessNode(std::shared_ptr<BehaviorTreeNode> childNode)
         : DecoratorNode(childNode) {
 	}   
@@ -74,6 +100,7 @@ public:
 class ForceFailureNode : public DecoratorNode
 {
 public:
+	ForceFailureNode() = default;
     ForceFailureNode(std::shared_ptr<BehaviorTreeNode> childNode)
         : DecoratorNode(childNode) {
     } 
@@ -85,6 +112,7 @@ private:
     int num_cycles;  
     int num_attempt = 0; 
 public:
+	RepeatNode() : DecoratorNode(nullptr), num_cycles(1), num_attempt(0) {}
     RepeatNode(std::shared_ptr<BehaviorTreeNode> childNode, int cycles = 1)
         : DecoratorNode(childNode), num_cycles(cycles),num_attempt(0) {}
     
@@ -99,6 +127,7 @@ private:
 	int num_attempt = 0;
 	int num_cycles = 0; 
 public:
+	RepeatUntilSuccessNode() : DecoratorNode(nullptr), num_attempt(0), num_cycles(0) {}
     RepeatUntilSuccessNode(std::shared_ptr<BehaviorTreeNode> childNode)
         : DecoratorNode(childNode) {
     }
@@ -110,25 +139,24 @@ public:
 class KeepRunningUntilFailureNode : public DecoratorNode
 {
 public:
+	KeepRunningUntilFailureNode() : DecoratorNode(nullptr) {}
     KeepRunningUntilFailureNode(std::shared_ptr<BehaviorTreeNode> childNode)
         : DecoratorNode(childNode) {
     }
     NodeStatus tick(Enemy* boss, float dt) override;
 }; 
-class RunOnceNode : public BehaviorTreeNode {
+class RunOnceNode : public DecoratorNode {
 private:
-    std::shared_ptr<BehaviorTreeNode> child;
     bool hasRun = false;
     NodeStatus finalStatus = NodeStatus::Idle;
     bool thenSkip = true;
 
 public:
+	RunOnceNode() : DecoratorNode(nullptr), thenSkip(true) {}
     RunOnceNode(std::shared_ptr<BehaviorTreeNode> child, bool thenSkip = true)
-        : child(child), thenSkip(thenSkip) {
+        : DecoratorNode(child), thenSkip(thenSkip) {
     }
-
     NodeStatus tick(Enemy* boss, float dt) override; 
-
     void reset() override;
 };
 
@@ -151,5 +179,33 @@ class AttackNode : public ActionNode {
 public: 
     AttackNode() :ActionNode() {}
     NodeStatus tick(Enemy* boss, float dt) override;
+};
+
+class IdleNode : public ActionNode {
+public:
+    IdleNode() :ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+
+class RunIf : public DecoratorNode {
+private:
+    std::string conditionName;
+    ConditionFunction condition;
+
+public:
+	RunIf() : DecoratorNode(nullptr) {}
+    RunIf(const std::string& condName, std::shared_ptr<BehaviorTreeNode> child)
+        : conditionName(condName),
+        condition(ConditionRegistry::getInstance().get(condName)),DecoratorNode(child) {
+    }
+
+    NodeStatus tick(Enemy* boss, float dt) override {
+        if (condition(boss)) {
+            return child->tick(boss, dt);
+        }
+        return NodeStatus::Failure;
+    }
+
+    std::string getConditionName() const { return conditionName; }
 };
 

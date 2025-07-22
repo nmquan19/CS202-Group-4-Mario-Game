@@ -75,8 +75,10 @@
     <ClCompile Include="src\Characters\JumpingState.cpp" />
     <ClCompile Include="src\Characters\MovingState.cpp" />
     <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
     <ClCompile Include="src\Enemy\Enemy.cpp" />
     <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
     <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
