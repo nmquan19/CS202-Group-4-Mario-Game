@@ -79,15 +79,17 @@ void KoopaShell::onCollision(std::shared_ptr<Object> other) {
 }
 
 void KoopaShell::draw() {
-    Rectangle sourceRec = this->spritebox;
-    if (isKnocked)
-    {
-        sourceRec.height *= -1; 
-    }
-    Vector2 origin = { 0, 0 };
-    std::vector<Rectangle> hitBoxes = getHitBox();
-    if (!hitBoxes.empty()) {
-        DrawTexturePro(this->texture, sourceRec, hitBoxes[0], origin, 0.0f, WHITE);
+    if (isActive()) {
+        Rectangle sourceRec = this->spritebox;
+        if (isKnocked)
+        {
+            sourceRec.height *= -1;
+        }
+        Vector2 origin = { 0, 0 };
+        std::vector<Rectangle> hitBoxes = getHitBox();
+        if (!hitBoxes.empty()) {
+            DrawTexturePro(this->texture, sourceRec, hitBoxes[0], origin, 0.0f, WHITE);
+        }
     }
 }
 

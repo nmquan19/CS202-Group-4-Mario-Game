@@ -61,9 +61,10 @@ namespace Constants {
     } 
     namespace Spring {
         constexpr float BOUNCE_VELOCITY = -800.0f;
+        constexpr Vector2 STANDARD_SIZE = { 1, 1 };
     }
     namespace PaletteResources {
-        constexpr Rectangle brick = { 12, 111, 128, 86 };
-        constexpr Rectangle ground = { 786, 111, 128, 86 };
+        constexpr Rectangle BRICK = { 12, 111, 128, 86 };
+        constexpr Rectangle GROUND = { 786, 111, 128, 86 };
     }
 }

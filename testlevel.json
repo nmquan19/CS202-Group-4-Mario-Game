@@ -3,6 +3,48 @@
      "objects": [
           {
                "gridX": 0,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
                "gridY": 21,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -21,6 +63,7 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
+               "type": "BRICK"
           },
           {
                "gridX": 1,
@@ -95,6 +138,7 @@
           {
                "gridX": 6,
                "gridY": 22,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
@@ -126,6 +170,7 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
+               "type": "BRICK"
           },
           {
                "gridX": 8,
@@ -136,7 +181,7 @@
           },
           {
                "gridX": 9,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
@@ -157,7 +202,7 @@
           },
           {
                "gridX": 10,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
@@ -174,11 +219,12 @@
                "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
+               "type": "BRICK"
                "type": "BRICK"
           },
           {
                "gridX": 11,
-               "gridY": 17,
+               "gridY": 23,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
@@ -206,7 +252,7 @@
           },
           {
                "gridX": 12,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
@@ -227,7 +273,7 @@
           },
           {
                "gridX": 13,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
@@ -707,12 +753,14 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
+               "type": "BRICK"
           },
           {
                "gridX": 35,
                "gridY": 16,
                "sizeX": 1.0,
                "sizeY": 1.0,
+               "type": "BRICK"
                "type": "BRICK"
           },
           {
