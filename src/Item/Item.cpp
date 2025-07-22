@@ -34,8 +34,8 @@ void Item::draw() {
     DrawTexturePro(texture, sourceRec, hitbox, { 0,0 }, 0.0f, WHITE);
 }
 
-Rectangle Item::getHitBox() const {
-    return hitbox;
+std::vector<Rectangle> Item::getHitBox() const {
+    return { hitbox }; // Đưa Rectangle đơn vào trong vector
 }
 
 ObjectCategory Item::getObjectCategory() const {
@@ -58,8 +58,11 @@ void Item::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates
         if (!obj->isActive()) continue;
 
         for (ObjectCategory targetCat : getCollisionTargets()) {
-            if (obj->getObjectCategory() == targetCat && CheckCollisionRecs(hitbox, obj->getHitBox())) {
-                onCollision(obj);
+            for (const Rectangle& candidateHitBox : obj->getHitBox()) {
+                if (obj->getObjectCategory() == targetCat && CheckCollisionRecs(hitbox, candidateHitBox)) {
+                    onCollision(obj);
+                    break; // Exit the loop once a collision is detected
+                }
             }
         }
     }

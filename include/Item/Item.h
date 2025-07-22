@@ -8,10 +8,10 @@
 
 class Item : public Object, public IUpdatable {
 public:
-    Item();
+    Item(Vector2 startPos, Texture2D texture, Vector2 size);
     virtual ~Item();
 
-    Rectangle getHitBox() const override;
+    std::vector<Rectangle> getHitBox() const override;
     ObjectCategory getObjectCategory() const override;
     void onCollision(std::shared_ptr<Object> other) override;
     std::vector<ObjectCategory> getCollisionTargets() const override;
@@ -21,6 +21,9 @@ public:
     void setPosition(Vector2 newPosition);
     bool isActive() const override;
     void setActive(bool flag) override;
+
+	virtual void update(float deltaTime) override;
+	void draw() override;
 
     bool isCollided() const override;
     void setCollided(bool) override;
