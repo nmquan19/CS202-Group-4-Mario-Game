@@ -21,7 +21,10 @@ NodeStatus SequenceNode::tick(Enemy* boss, float dt) {
     while (current < children.size()) {
         NodeStatus status = children[current]->tick(boss, dt);
         if (status == NodeStatus::Running)
+        {
+            DrawText("Running", 200, 400, 20, RED);
             return NodeStatus::Running;
+        }
         if (status == NodeStatus::Failure) {
             current = 0;
             return NodeStatus::Failure;
@@ -29,6 +32,7 @@ NodeStatus SequenceNode::tick(Enemy* boss, float dt) {
         ++current;
     }
     current = 0;
+    reset();
     return NodeStatus::Success;
 }
 
@@ -49,7 +53,11 @@ NodeStatus SelectorNode::tick(Enemy* boss, float dt) {
         ++current;
     }
     current = 0;
+    reset(); 
     return NodeStatus::Failure;
+}
+void SelectorNode::addChild(std::shared_ptr<BehaviorTreeNode> child) {
+    children.push_back(child);
 }
 void SelectorNode::reset() {
     current = 0;
@@ -72,7 +80,9 @@ DecoratorNode::DecoratorNode(std::shared_ptr<BehaviorTreeNode> childNode)
 std::shared_ptr<BehaviorTreeNode> DecoratorNode::getChild() const {
     return child; 
 }
-
+void DecoratorNode::setChild(std::shared_ptr<BehaviorTreeNode> childNode) {
+    child = childNode; 
+}
 NodeStatus InverterNode::tick(Enemy* boss, float dt)
 {
     switch (child->tick(boss, dt))
@@ -170,7 +180,7 @@ NodeStatus RunOnceNode::tick(Enemy* boss, float dt){
     if (hasRun) {
         return thenSkip ? NodeStatus::Skipped : finalStatus;
     }
-
+	//if (!child) return NodeStatus::Failure;
     NodeStatus status = child->tick(boss, dt);
     if (status == NodeStatus::Success || status == NodeStatus::Failure) {
         finalStatus = status;
@@ -183,7 +193,6 @@ NodeStatus RunOnceNode::tick(Enemy* boss, float dt){
 
 // WalkToTargetNode.cpp
 NodeStatus WalkToTargetNode::tick(Enemy* boss, float dt) {
-	DrawText("Walking to target", 200, 200, 20, RED);
     if (!boss) return NodeStatus::Failure;
 
     if (boss->isNearTarget()) {
@@ -193,11 +202,16 @@ NodeStatus WalkToTargetNode::tick(Enemy* boss, float dt) {
     return NodeStatus::Running;
 }
 NodeStatus AttackNode::tick(Enemy* boss, float dt) {
-    DrawText("Attacking", 200, 200, 20, RED);
     if (!boss) return NodeStatus::Failure;
+    DrawText("Attacking", 200, 200, 20, RED);
     boss->attack();
     if( boss->isAttacking()) {
         return NodeStatus::Running;
 	}
+    return NodeStatus::Success;
+}
+NodeStatus IdleNode::tick(Enemy* boss, float dt) {
+    DrawText("Idling", 200, 200, 20, RED);
+    boss->idle();
     return NodeStatus::Success;
 }

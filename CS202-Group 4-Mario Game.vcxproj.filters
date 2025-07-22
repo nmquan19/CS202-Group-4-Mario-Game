@@ -37,6 +37,8 @@
     <ClCompile Include="src\System\Resources.cpp" />
     <ClCompile Include="src\Objects\InteractiveObject.cpp" />
     <ClCompile Include="src\Objects\Spring.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />

@@ -77,13 +77,13 @@
       "events": [
         {
           "eventType": "ChangeVelocity",
-          "eventPayload": "100,0"
+          "eventPayload": "300,0"
         }
       ],
       "hitboxes": []
     },
     {
-      "frame": 42,
+      "frame": 40,
       "events": [
         {
           "eventType": "ChangeVelocity",

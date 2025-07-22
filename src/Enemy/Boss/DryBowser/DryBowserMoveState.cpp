@@ -21,7 +21,9 @@ void DryBowserStandingState::exit(Boss* boss) {
 bool DryBowserStandingState::isFinished() const {
     return false;
 }
-
+std::string DryBowserStandingState::getName() const {
+    return "Idle";
+}
 void DryBowserRunningState::enter(Boss* boss) {
     float speed = boss->FacingRight() ? Constants::DryBowser::RUN_SPEED: -Constants::DryBowser::RUN_SPEED;
     boss->setAnimation("Run");
@@ -113,6 +115,7 @@ bool DryBowserJumpingState::isFinished() const {
 // ----------------------------
 void DryBowserMeleeAttack1State::enter(Boss* boss) {
 
+    boss->setVelocity({ 0,0 }); 
     boss->setAnimation("MeleeAttack1");
     timer = 0.0f;
 }

@@ -1,0 +1,17 @@
+{
+    "children": [
+        {
+            "type": "WalkToTarget"
+        },
+        {
+            "type": "Attack"
+        },
+        {
+            "child": {
+                "type": "Idle"
+            },
+            "type": "RunOnce"
+        }
+    ],
+    "type": "Sequence"
+}
