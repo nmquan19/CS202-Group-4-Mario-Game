@@ -15,7 +15,8 @@ public:
     static Texture2D enemyTextures;
     Texture2D getBlockTexture(BlockType type);
     Texture2D getCharacterTexture() const;
-    void loadTextures();
+    Texture2D getItemTexture() const;
+    void loadTextures(); 
     void unloadTextures();
 
     TextureManager(const TextureManager&) = delete;
@@ -26,6 +27,7 @@ private:
    
     std::map<BlockType, Texture2D> blockTextures;
     Texture2D characterTextures;
+    Texture2D itemTextures;
  
     bool texturesLoaded = false;
 };
@@ -37,9 +39,11 @@ public:
 
     bool isBlock() const { return std::holds_alternative<BlockType>(selected); }
     bool isEnemy() const { return std::holds_alternative<EnemyType>(selected); }
+    bool isInteractive() const { return std::holds_alternative<InteractiveType>(selected); }
 
     BlockType getBlockType() const { return std::get<BlockType>(selected); }
     EnemyType getEnemyType() const { return std::get<EnemyType>(selected); }
+    InteractiveType getInteractiveType() const { return std::get<InteractiveType>(selected); }
 
     Rectangle getPaletteRect() const { return paletteRect; }
 	ObjectType getSelectedType() const { return selected; }
@@ -49,6 +53,7 @@ private:
     float startX = paletteRect.x + 50;
     float yBlock = paletteRect.y + 50;
     float yEnemy = yBlock + 150;
+    yInteractive = yEnemy + 150;
     float spacing = 120;
     float iconSize = 100;
 };

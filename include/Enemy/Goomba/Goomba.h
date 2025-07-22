@@ -22,7 +22,6 @@ class Goomba: public Enemy
       void update(float deltaTime); 
 	  void draw() override;
       void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
-	  void handleCharacterCollision(std::shared_ptr<Object> other);
       void die() override;  
       void takeDamage(int damage) override;
 	  ObjectType getObjectType() const override;

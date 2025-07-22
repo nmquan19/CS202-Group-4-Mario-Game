@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
+#include "../../include/Objects/Spring.h"
 
 
 std::unique_ptr<Object> ObjectFactory::createBlock(BlockType type, Vector2 gridPos) {
@@ -103,6 +104,11 @@ std::unique_ptr<KoopaShell> ObjectFactory::createSpecificKoopaShell(KoopaShellTy
         return nullptr;
     }
 }
+
+std::unique_ptr<Object> ObjectFactory::createSpring(Vector2 position, Vector2 size) {
+    return std::make_unique<Spring>(position, size);
+}
+
 int Object::getCollidedPart(const Object& other)
 {
     std::vector<Rectangle> playerHitBoxes = getHitBox();

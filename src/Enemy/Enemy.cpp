@@ -31,11 +31,11 @@ std::vector<Rectangle> Enemy::getHitBox() const {
 }
 std::vector<ObjectCategory> Enemy::getCollisionTargets() const 
 {
-	return { ObjectCategory::CHARACTER, ObjectCategory::ENEMY, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE };
+	return { ObjectCategory::ENEMY, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE };
 }
 void Enemy::applyGravity(float deltaTime) {
     if (!onGround) {
-        velocity.y +=  980* deltaTime;
+        velocity.y +=  980 * deltaTime;
     }
 }
 void Enemy::update(float deltaTime)

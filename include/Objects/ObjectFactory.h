@@ -43,6 +43,7 @@ public:
 	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 4.5f);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
+	static std::unique_ptr<Object> createSpring(Vector2 position, Vector2 size);
 private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);

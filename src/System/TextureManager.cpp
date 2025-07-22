@@ -20,6 +20,10 @@ Texture2D TextureManager::getCharacterTexture() const {
     return characterTextures;
 }
 
+Texture2D TextureManager::getItemTexture() const {
+    return itemTextures;
+}
+
 void TextureManager::loadTextures() {
     if (texturesLoaded) return;
 
@@ -27,6 +31,8 @@ void TextureManager::loadTextures() {
     blockTextures[BlockType::BRICK] = LoadTexture("assets/brick_block.png");
 
     characterTextures = LoadTexture("assets/character_spritesheet.png");
+
+    itemTextures = LoadTexture("assets/item_sprites.png");
     //Enemy textures 
     std::ifstream  enemy_in;
     enemy_in.open("assets/enemy/enemy_output.txt");
@@ -60,6 +66,7 @@ void TextureManager::unloadTextures() {
 
     UnloadTexture(characterTextures);
 	UnloadTexture(enemyTextures);
+    UnloadTexture(itemTextures);
     texturesLoaded = false;
 }
 
@@ -104,6 +111,17 @@ void ObjectPalette::drawPalette() {
         DrawTexturePro(tm.enemyTextures, greenKoopaSource, greenKoopaRect, {0, 0}, 0.0f, WHITE);
     }
     DrawRectangleLinesEx(greenKoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GREEN_KOOPA) ? RED : BLACK);
+
+
+    // Spring
+    Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
+    Texture2D springTexture = tm.getItemTexture();
+    if (springTexture.id != 0) {
+        Rectangle springSource = {1, 467, 16, 16};
+        DrawTexturePro(springTexture, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
+    }
+    DrawRectangleLinesEx(springRect, 2, PINK);
+    DrawText("SPRING", springRect.x + 10, springRect.y + iconSize + 5, 10, BLACK);
 }
 
 void ObjectPalette::handleSelection() {
@@ -121,6 +139,8 @@ void ObjectPalette::handleSelection() {
     Rectangle gkoopaRect = { startX + spacing, yEnemy, iconSize, iconSize };
     Rectangle rkoopaRect = { startX + 2*spacing, yEnemy, iconSize, iconSize };
 
+    Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
+
     if (CheckCollisionPointRec(mousePos, groundRect)) {
         selected = BlockType::GROUND;
     }
@@ -135,5 +155,8 @@ void ObjectPalette::handleSelection() {
     }
     else if (CheckCollisionPointRec(mousePos, rkoopaRect)) {
         selected = EnemyType::RED_KOOPA;
+    }
+    else if (CheckCollisionPointRec(mousePos, springRect)) {
+        selected = InteractiveType::SPRING;
     }
 }
