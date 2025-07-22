@@ -5,12 +5,15 @@
 #include "../../../include/Enemy/Goomba/GoombaState.h"
 #include "../../../include/Objects/ObjectFactory.h"
 #include "../../../include/System/Interface.h"
+#include "../../../include/Characters/Character.h"
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include <memory>
 Goomba::Goomba(Vector2 startPos,Vector2 velocity, Vector2 accelleration): Enemy(startPos, velocity,accelleration, TextureManager::enemyTextures )
 {    
+    HP = 1;
     scale = 5; 
 	stompedAnimation = false;
     changeState(&GoombaWanderingState::GetInstance());
@@ -55,14 +58,19 @@ void Goomba::checkCollision(const std::vector<std::shared_ptr<Object>>& candidat
 			this->changeState(&GoombaKnockState::GetInstance());
             break;
         case ObjectCategory::CHARACTER:
-			handleCharacterCollision(candidate);
+			//handleCharacterCollision(candidate);
             break;
         }
     }
 }
 void Goomba::handleCharacterCollision(std::shared_ptr<Object> other) {
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other->getHitBox();
+    std::vector<Rectangle> playerHitBoxes = getHitBox();
+    std::vector<Rectangle> otherHitBoxes = other->getHitBox();
+    
+    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
+    
+    Rectangle playerHitBox = playerHitBoxes[0];
+    Rectangle otherHitBox = otherHitBoxes[0];
 
     if (!CheckCollisionRecs(playerHitBox, otherHitBox)) return;
 
@@ -73,14 +81,20 @@ void Goomba::handleCharacterCollision(std::shared_ptr<Object> other) {
       
     float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
     if (minOverlap == overlapBottom) {
+        std::cout << "called" << std::endl;
         die(); 
 		this->changeState(&GoombaStompedState::GetInstance());
     }
 }
 
 void Goomba::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other->getHitBox();
+    std::vector<Rectangle> playerHitBoxes = getHitBox();
+    std::vector<Rectangle> otherHitBoxes = other->getHitBox();
+    
+    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
+    
+    Rectangle playerHitBox = playerHitBoxes[0];
+    Rectangle otherHitBox = otherHitBoxes[0];
 
     if (!CheckCollisionRecs(playerHitBox, otherHitBox)) {
         return;
@@ -120,11 +134,18 @@ void Goomba::handleEnvironmentCollision(std::shared_ptr<Object> other) {
         velocity.x *= -1;
     }
 }
+
 void Goomba::die()
 {
+    setActive(false);
 }
+
 void Goomba::takeDamage(int amount) {
- 
+    HP -= amount;
+    this->changeState(&GoombaStompedState::GetInstance());
+    if (HP <= 0) {
+        die();
+    }
 }
 
 void Goomba::update(float deltaTime) {

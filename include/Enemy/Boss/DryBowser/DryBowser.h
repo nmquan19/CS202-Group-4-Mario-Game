@@ -30,6 +30,7 @@ public:
     void handleEnvironmentCollision(std::shared_ptr<Object> other) override;
     void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
     void onCollision(std::shared_ptr<Object> other) override;
+    std::vector<Rectangle> getHitBox() const override; // Override to provide multiple hitboxes
 
     // Logic
     void takeDamage(int amount) override;

@@ -11,7 +11,10 @@ LedgeDetector::LedgeDetector(float castLength)
 
 void LedgeDetector::update(Enemy* enemy, float deltaTime) 
 {
-    Rectangle hitbox =enemy->getHitBox();
+    std::vector<Rectangle> hitboxes = enemy->getHitBox();
+    if (hitboxes.empty()) return;
+    
+    Rectangle hitbox = hitboxes[0]; // Use the first hitbox
     
     Vector2 origin = { hitbox.x + enemy->FacingRight()*hitbox.width, hitbox.y + hitbox.height};
     hitBox = {
@@ -28,9 +31,9 @@ bool LedgeDetector::isNearLedge() const
     return nearLedge;
 }
 
-Rectangle LedgeDetector::getHitBox() const
+std::vector<Rectangle> LedgeDetector::getHitBox() const
 {
-    return hitBox; 
+    return {hitBox}; 
 }
 
 ObjectCategory LedgeDetector::getObjectCategory() const

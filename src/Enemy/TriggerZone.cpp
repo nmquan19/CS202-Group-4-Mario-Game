@@ -6,30 +6,35 @@
 #include "../../include/Characters/Character.h"
 #include "../../include/Objects/CollectableObject.h"
 #include <raymath.h>
+#include <iostream>
 #include "../../include/System/Grid.h"
 TriggerZone::TriggerZone(CollectableObject* ownerItem, Vector2 pos, Vector2 sz)
     : owner(ownerItem) {
     position = pos;
     size = sz*1.5;
-    position.x = owner->getPosition().x + (owner->getHitBox().width - size.x * GridSystem::GRID_SIZE) / 2;
-    position.y = owner->getPosition().y + (owner->getHitBox().height - size.y * GridSystem::GRID_SIZE) / 2;
+    position.x = owner->getPosition().x + (owner->getHitBox()[0].width - size.x * GridSystem::GRID_SIZE) / 2;
+    position.y = owner->getPosition().y + (owner->getHitBox()[0].height - size.y * GridSystem::GRID_SIZE) / 2;
 
     hitBox = Rectangle{ position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
     this->active = true;
-     //PhysicsManager::getInstance().addObject(this); 
 } 
 
 void TriggerZone::update(float deltaTime) {
-    position.x = owner->getPosition().x+ (owner->getHitBox().width - size.x*GridSystem::GRID_SIZE)/2 ;
-    position.y = owner->getPosition().y + (owner->getHitBox().height - size.y*GridSystem::GRID_SIZE)/2;
+    if (!isActive()) return;
+    std::vector<Rectangle> ownerHitBoxes = owner->getHitBox();
+    if (!ownerHitBoxes.empty()) {
+        Rectangle ownerHitBox = ownerHitBoxes[0];
+        position.x = owner->getPosition().x+ (ownerHitBox.width - size.x*GridSystem::GRID_SIZE)/2 ;
+        position.y = owner->getPosition().y + (ownerHitBox.height - size.y*GridSystem::GRID_SIZE)/2;
+    }
 	hitBox = Rectangle{ position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
 }
 
 void TriggerZone::draw() {
 }
 
-Rectangle TriggerZone::getHitBox() const {
-    return hitBox;
+std::vector<Rectangle> TriggerZone::getHitBox() const {
+    return {hitBox};
 }
 
 ObjectCategory TriggerZone::getObjectCategory() const {
@@ -44,6 +49,7 @@ void TriggerZone::checkCollision(const std::vector<std::shared_ptr<Object>>& can
     for (auto obj : candidates) {
         if (!obj->isActive()) continue;
         setCollided(true);
+        std::cout << "Collide trigger\n";
         if (IsKeyDown(KEY_E))
         {
             onCollision(obj);
@@ -55,6 +61,7 @@ void TriggerZone::onCollision(std::shared_ptr<Object> other) {
     if (!owner || !other) return;
     if (other->getObjectCategory() != ObjectCategory::CHARACTER) return;
     Character* player = dynamic_cast<Character*>(other.get());
+    std::cout << "char\n";
     if (player) {
         owner->onCollect(player);
         owner->setActive(false);

@@ -13,6 +13,7 @@ enum class ObjectCategory {
 	TRIGGER,
 	SHELL,
 	BACKGROUND, 
+	INTERACTIVE
 };
 
 enum class BlockType {
@@ -57,6 +58,12 @@ enum class TriggerType {
 	DETECTOR,
 	ZONE,
 };
+
+enum class InteractiveType {
+	MOVING_PLATFORM,
+	SPRING
+};
+
 enum class Direction {
 	UP =1 ,
 	DOWN,
@@ -72,7 +79,7 @@ public:
 class ICollidable {
 public:
 	virtual ~ICollidable() = default;
-	virtual Rectangle getHitBox() const = 0;
+	virtual std::vector<Rectangle> getHitBox() const = 0;
 	virtual ObjectCategory getObjectCategory() const = 0;
 	virtual std::vector<ObjectCategory> getCollisionTargets() const = 0;
 	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) = 0;

@@ -11,20 +11,23 @@
 #include <raymath.h>
 #include <utility>
 #include <memory>
+#include <iostream>
 KoopaShell::KoopaShell(Vector2 pos, Vector2 sz): spritebox({0,0,0,0}), velocity({0,0}), CollectableObject(pos, sz, TextureManager::enemyTextures), aniSpeed(0.2f), aniTimer(0) {   
 	
 }
 
 void KoopaShell::onCollect(Character* player) {
     if (!player) return;
+    std::cout << "On collect\n";
     TraceLog(LOG_INFO, "KoopaShell collected!");
     player->setHoldingProjectile(true);
     player->holdProjectile(*this);
 	this->changeState(&KoopaShellCollectedState::getInstance());
+    player->holdProjectile(*this);
+    player->setHoldingProjectile(true);
 }
 
 void KoopaShell::update(float deltaTime) {
-
     aniTimer += deltaTime; 
     CollectableObject::update(deltaTime); 
 	if(currentState)currentState->update(this, deltaTime);
@@ -67,7 +70,10 @@ void KoopaShell::draw() {
         sourceRec.height *= -1; 
     }
     Vector2 origin = { 0, 0 };
-    DrawTexturePro(this->texture, sourceRec, getHitBox(), origin, 0.0f, WHITE);
+    std::vector<Rectangle> hitBoxes = getHitBox();
+    if (!hitBoxes.empty()) {
+        DrawTexturePro(this->texture, sourceRec, hitBoxes[0], origin, 0.0f, WHITE);
+    }
 }
 
 void KoopaShell::changeState(KoopaShellState* newState) {
@@ -88,8 +94,13 @@ void KoopaShell ::applyGravity(float deltaTime) {
     }
 }
 void KoopaShell::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    Rectangle koopaBox = getHitBox();
-    Rectangle otherBox = other->getHitBox();
+    std::vector<Rectangle> koopaBoxes = getHitBox();
+    std::vector<Rectangle> otherBoxes = other->getHitBox();
+    
+    if (koopaBoxes.empty() || otherBoxes.empty()) return;
+    
+    Rectangle koopaBox = koopaBoxes[0];
+    Rectangle otherBox = otherBoxes[0];
     if (!CheckCollisionRecs(koopaBox, otherBox)) return;
 
     // Calculate previous position

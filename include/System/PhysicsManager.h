@@ -16,6 +16,7 @@ public:
 	void markForDeletion(std::shared_ptr<Object> object);
 	void update();
 	bool checkCollision(const Rectangle& rect1, const Rectangle& rect2);
+	bool checkCollision(const std::vector<Rectangle>& hitboxes1, const std::vector<Rectangle>& hitboxes2);
 	std::vector<std::shared_ptr<Object>> getObjectsInLayer(ObjectCategory objectCategory);
 
 	void setWorldBounds(Rectangle bounds);
@@ -27,6 +28,7 @@ public:
 private:
 	PhysicsManager() = default;
 	std::vector<std::shared_ptr<Object>> objects;	
+	std::vector<std::shared_ptr<Object>> toDeleteObjects;
 	std::unique_ptr<QuadTree> quadTree; 
 	static PhysicsManager* instance;
 	const int REBUILD_FREQUENCY = 2;

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "../../include/System/PhysicsManager.h"
 #include <memory>
+#include <iostream>
 #include <vector>
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
@@ -25,13 +26,19 @@ void PhysicsManager::addObject(std::shared_ptr<Object> object) {
 void PhysicsManager::markForDeletion(std::shared_ptr<Object> object) {
 	if (object) {
 		object->setActive(false);
+		toDeleteObjects.push_back(object);
 	}
 }
 void PhysicsManager::update() {
 
-	objects.erase(std::remove_if(objects.begin(), objects.end(), [](const std::shared_ptr<Object>& obj) {
-		return !obj || !obj->isActive();
-	}), objects.end());
+	for (const auto& obj : toDeleteObjects)
+	{
+		if (std::find(objects.begin(), objects.end(), obj) != objects.end()) {
+			objects.erase(std::remove(objects.begin(), objects.end(), obj), objects.end());
+			std::cout << "Deleted an object in Physics\n";
+		}
+	}
+	toDeleteObjects.clear();
 
 	frameCounter++;
 	if (frameCounter >= REBUILD_FREQUENCY) {
@@ -70,6 +77,17 @@ void PhysicsManager::update() {
 
 bool PhysicsManager::checkCollision(const Rectangle& rect1, const Rectangle& rect2) {
 	return CheckCollisionRecs(rect1, rect2);
+}
+
+bool PhysicsManager::checkCollision(const std::vector<Rectangle>& hitboxes1, const std::vector<Rectangle>& hitboxes2) {
+	for (const auto& rect1 : hitboxes1) {
+		for (const auto& rect2 : hitboxes2) {
+			if (CheckCollisionRecs(rect1, rect2)) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 std::vector<std::shared_ptr<Object>> PhysicsManager::getObjectsInLayer(ObjectCategory objectCategory) {

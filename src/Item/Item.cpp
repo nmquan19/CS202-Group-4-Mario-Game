@@ -13,8 +13,8 @@ Item::~Item() {
 	PhysicsManager::getInstance().markForDeletion(this);
 }
 
-Rectangle Item::getHitBox() const{
-	return hitbox;
+std::vector<Rectangle> Item::getHitBox() const{
+	return {hitbox};
 }
 
 
