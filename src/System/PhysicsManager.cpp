@@ -79,6 +79,17 @@ bool PhysicsManager::checkCollision(const Rectangle& rect1, const Rectangle& rec
 	return CheckCollisionRecs(rect1, rect2);
 }
 
+bool PhysicsManager::checkCollision(const std::vector<Rectangle>& hitboxes1, const std::vector<Rectangle>& hitboxes2) {
+	for (const auto& rect1 : hitboxes1) {
+		for (const auto& rect2 : hitboxes2) {
+			if (CheckCollisionRecs(rect1, rect2)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 std::vector<std::shared_ptr<Object>> PhysicsManager::getObjectsInLayer(ObjectCategory objectCategory) {
 	std::vector<std::shared_ptr<Object>> result;
 	for (const auto object : objects) {

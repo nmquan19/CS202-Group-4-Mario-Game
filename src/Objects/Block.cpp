@@ -25,8 +25,8 @@ void Block::draw() {
     DrawTexturePro(texture, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
 }
 
-Rectangle Block::getHitBox() const {
-   return hitbox;
+std::vector<Rectangle> Block::getHitBox() const {
+   return {hitbox};
 }
 
 ObjectCategory Block::getObjectCategory() const {

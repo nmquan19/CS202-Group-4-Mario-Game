@@ -18,7 +18,7 @@ public:
 	virtual void update(float deltaTime) override;
 	virtual void draw();
 
-	Rectangle getHitBox() const override;
+	std::vector<Rectangle> getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
 	virtual void onCollision(std::shared_ptr<Object> other) override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
