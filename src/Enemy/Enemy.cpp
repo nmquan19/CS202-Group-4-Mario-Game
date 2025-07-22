@@ -181,7 +181,6 @@ Vector2 Enemy::getPosition() const {
     return position;
 }
 
-
 void Enemy::setActive(bool flag) {
     active = flag;
 }
@@ -193,7 +192,6 @@ bool Enemy::isCollided() const {
 void Enemy::setCollided(bool flag) {
     collided = flag;
 }
-
 
 float Enemy::getWidth() const {
     return spritebox.width * scale;

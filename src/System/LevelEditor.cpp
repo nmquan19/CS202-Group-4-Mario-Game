@@ -43,47 +43,9 @@ void LevelEditor::update() {
         palette.handleSelection();
         handleMouseInput();
     }
-    else if (!clearing) {
-        for (auto& it : gridBlocks) {
-            Object* obj = it.second.top().get();
-            if (!obj) continue;
-
-            Enemy* enemy = dynamic_cast<Enemy*>(obj);
-            bool shouldUpdate = false;
-
-            if (enemy) {
-                shouldUpdate = enemy->isAlive();
-            }
-            else {
-                shouldUpdate = obj->isActive();
-            }
-
-            if (shouldUpdate) {
-                IUpdatable* updatable = dynamic_cast<IUpdatable*>(obj);
-                if (updatable){
-                    updatable->update(GetFrameTime());
-                }
-            }
-        }
-    }
 }
 
 void LevelEditor::draw() {
-    if (editMode) {
-        GridSystem::drawGrid(GetScreenWidth(), GetScreenHeight());
-
-        Vector2 mousePos = GetMousePosition();
-        Vector2 gridCoord = GridSystem::getGridCoord(mousePos);
-        Rectangle highlightRect = GridSystem::getGridRect(gridCoord);
-        DrawRectangleLinesEx(highlightRect, 3, GREEN);
-        palette.drawPalette();
-
-        DrawText("F7: Save Level", 20, 100, 16, DARKBLUE);
-        DrawText("F8: Load Level", 20, 120, 16, DARKBLUE);
-        DrawText("F9: Clear Level", 20, 140, 16, DARKBLUE);
-        DrawText(("Number of grids used: " + std::to_string(gridBlocks.size())).c_str(), 20, 160, 16, DARKBLUE);
-    }
-
     if (!clearing) {
         for (auto& it : gridBlocks) {
             Object* obj = it.second.top().get();
@@ -104,6 +66,20 @@ void LevelEditor::draw() {
             }
         }
     }
+    if (editMode) {
+        GridSystem::drawGrid(GetScreenWidth(), GetScreenHeight());
+
+        Vector2 mousePos = GetMousePosition();
+        Vector2 gridCoord = GridSystem::getGridCoord(mousePos);
+        Rectangle highlightRect = GridSystem::getGridRect(gridCoord);
+        DrawRectangleLinesEx(highlightRect, 3, GREEN);
+        palette.drawPalette();
+
+        DrawText("F7: Save Level", 20, 100, 16, DARKBLUE);
+        DrawText("F8: Load Level", 20, 120, 16, DARKBLUE);
+        DrawText("F9: Clear Level", 20, 140, 16, DARKBLUE);
+        DrawText(("Number of grids used: " + std::to_string(gridBlocks.size())).c_str(), 20, 160, 16, DARKBLUE);
+    }
     
     const char* modeText = editMode ? "EDIT MODE" : "PLAY MODE";
     DrawText(modeText, 20, 70, 20, editMode ? GREEN : BLUE);
@@ -112,14 +88,55 @@ void LevelEditor::draw() {
 void LevelEditor::handleMouseInput() {
     Vector2 mousePos = GetMousePosition();
     Vector2 gridCoord = GridSystem::getGridCoord(mousePos);
-
+    
+    // Thêm kiểm tra bounds để đảm bảo mouse position hợp lệ
+    if (mousePos.x < 0 || mousePos.y < 0 || 
+        mousePos.x >= GetScreenWidth() || mousePos.y >= GetScreenHeight()) {
+        return;
+    }
+    
+    // Kiểm tra xem mouse có thực sự trong grid bounds không
+    Rectangle gridRect = GridSystem::getGridRect(gridCoord);
+    bool mouseInGrid = CheckCollisionPointRec(mousePos, gridRect);
+    
+    // Thêm biến static để tránh spam placement
+    static Vector2 lastPlacedGrid = {-1, -1};
+    static Vector2 lastRemovedGrid = {-1, -1};
+    static bool wasLeftPressed = false;
+    static bool wasRightPressed = false;
+    
     bool clickingOnPalette = CheckCollisionPointRec(mousePos, palette.getPaletteRect());
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && !clickingOnPalette) {
-        placeObject(palette.getSelectedType(), gridCoord);
+    bool leftPressed = IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+    bool rightPressed = IsMouseButtonDown(MOUSE_RIGHT_BUTTON);
+    
+    // Chỉ place/remove khi mouse thực sự trong grid
+    if (leftPressed && !clickingOnPalette && mouseInGrid) {
+        // Chỉ đặt khi grid position thay đổi hoặc mới bắt đầu nhấn
+        if (!wasLeftPressed || 
+            (gridCoord.x != lastPlacedGrid.x || gridCoord.y != lastPlacedGrid.y)) {
+            placeObject(palette.getSelectedType(), gridCoord);
+            lastPlacedGrid = gridCoord;
+        }
     }
-    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-        removeObject(gridCoord);
+    
+    if (rightPressed && mouseInGrid) {
+        if (!wasRightPressed || 
+            (gridCoord.x != lastRemovedGrid.x || gridCoord.y != lastRemovedGrid.y)) {
+            removeObject(gridCoord);
+            lastRemovedGrid = gridCoord;
+        }
     }
+    
+    // Reset khi không nhấn chuột
+    if (!leftPressed) {
+        lastPlacedGrid = {-1, -1};
+    }
+    if (!rightPressed) {
+        lastRemovedGrid = {-1, -1};
+    }
+    
+    wasLeftPressed = leftPressed;
+    wasRightPressed = rightPressed;
 }
 
 void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {

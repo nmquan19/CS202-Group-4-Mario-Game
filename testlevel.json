@@ -2,186 +2,1740 @@
      "gridSize": 64,
      "objects": [
           {
-               "gridX": 1,
-               "gridY": 15,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 1,
-               "gridY": 16,
+               "gridX": 0,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
                "gridX": 0,
-               "gridY": 17,
+               "gridY": 23,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 1,
-               "gridY": 16,
-               "sizeX": 0.75,
-               "sizeY": 1,
-               "type": "GREEN_KOOPA"
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 1,
-               "gridY": 17,
+               "gridY": 23,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 1,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 1,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 1,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 1,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 2,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 2,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 2,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 2,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 2,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 2,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 3,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 3,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 3,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 3,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 3,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 3,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 4,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 4,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 4,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 4,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 4,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 4,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 5,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 5,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 5,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 5,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 5,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 5,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 6,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 6,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 6,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 6,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 6,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 6,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 7,
-               "gridY": 16,
-               "sizeX": 0.75,
-               "sizeY": 0.75,
-               "type": "GOOMBA"
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 7,
-               "gridY": 17,
+               "gridY": 23,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 7,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 7,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 7,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 7,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 8,
-               "gridY": 16,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
           },
           {
                "gridX": 8,
-               "gridY": 17,
+               "gridY": 23,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 8,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 8,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 8,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 8,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 9,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 9,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 9,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 9,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 9,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 9,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 10,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 10,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 10,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 10,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 10,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 10,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 11,
-               "gridY": 16,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
           },
           {
                "gridX": 11,
-               "gridY": 17,
+               "gridY": 23,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 11,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 11,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 11,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 11,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 12,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 12,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 12,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 12,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 12,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 12,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 12,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 13,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 13,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 13,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 13,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 13,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 13,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 14,
-               "gridY": 17,
+               "gridY": 19,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 14,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 14,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 14,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 14,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 14,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 14,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 15,
-               "gridY": 16,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 15,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 15,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 15,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 15,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 15,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 15,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 16,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 16,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 16,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 16,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 16,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 16,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 16,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 19,
+               "gridY": 18,
                "sizeX": 0.75,
                "sizeY": 0.75,
                "type": "GOOMBA"
           },
           {
-               "gridX": 15,
-               "gridY": 17,
+               "gridX": 19,
+               "gridY": 19,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
           },
           {
-               "gridX": 16,
-               "gridY": 15,
+               "gridX": 19,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
           },
           {
-               "gridX": 16,
+               "gridX": 19,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 19,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 19,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 19,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 19,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 20,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 20,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 20,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 20,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 20,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 20,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 20,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 21,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 21,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 21,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 21,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 21,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 21,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 21,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 22,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 22,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 22,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 22,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 22,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 22,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 22,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 18,
+               "sizeX": 0.75,
+               "sizeY": 0.75,
+               "type": "GOOMBA"
+          },
+          {
+               "gridX": 23,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 24,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 24,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 24,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 24,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 24,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 24,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 24,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 27,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 27,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 27,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 27,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 27,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 27,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 28,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 28,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 28,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 28,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 28,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 28,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 29,
                "gridY": 16,
-               "sizeX": 1.0,
+               "sizeX": 0.75,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "GREEN_KOOPA"
           },
           {
-               "gridX": 16,
-               "gridY": 17,
+               "gridX": 29,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 29,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 29,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 29,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 29,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 29,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 30,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 30,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 30,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 30,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 30,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 30,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 31,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 31,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 31,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 31,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 31,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 31,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 32,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 32,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 32,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 32,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 32,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 32,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 33,
+               "gridY": 21,
+               "sizeX": 0.75,
+               "sizeY": 0.75,
+               "type": "GOOMBA"
+          },
+          {
+               "gridX": 33,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 33,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 33,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 33,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 33,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 33,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 36,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 36,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 36,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 36,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 36,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 36,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 36,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 37,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 37,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 37,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 37,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 37,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 37,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           }
      ],
      "version": "1.0"
