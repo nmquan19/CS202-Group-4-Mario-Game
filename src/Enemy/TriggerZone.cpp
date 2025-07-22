@@ -11,7 +11,7 @@
 TriggerZone::TriggerZone(CollectableObject* ownerItem, Vector2 pos, Vector2 sz)
     : owner(ownerItem) {
     position = pos;
-    size = sz*1.5;
+    size = sz*2;
     position.x = owner->getPosition().x + (owner->getHitBox()[0].width - size.x * GridSystem::GRID_SIZE) / 2;
     position.y = owner->getPosition().y + (owner->getHitBox()[0].height - size.y * GridSystem::GRID_SIZE) / 2;
 
@@ -46,10 +46,10 @@ std::vector<ObjectCategory> TriggerZone::getCollisionTargets() const {
 }
 
 void TriggerZone::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
+    if (!owner->isCollectable()) return;
     for (auto obj : candidates) {
         if (!obj->isActive()) continue;
         setCollided(true);
-        std::cout << "Collide trigger\n";
         if (IsKeyDown(KEY_E))
         {
             onCollision(obj);
@@ -61,7 +61,6 @@ void TriggerZone::onCollision(std::shared_ptr<Object> other) {
     if (!owner || !other) return;
     if (other->getObjectCategory() != ObjectCategory::CHARACTER) return;
     Character* player = dynamic_cast<Character*>(other.get());
-    std::cout << "char\n";
     if (player) {
         owner->onCollect(player);
         owner->setActive(false);

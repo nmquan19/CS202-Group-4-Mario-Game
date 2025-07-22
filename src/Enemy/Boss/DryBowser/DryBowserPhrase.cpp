@@ -1,0 +1,64 @@
+#include "../../../../include/Enemy/Boss/BehaviorTree.h"
+#include "../../../../include/Enemy/Boss/DryBowser/DryBowserPhase.h"
+#include "../../../../include/Enemy/Boss/BT_Factory.h"
+#include <fstream>
+#include <iostream>
+DryBowserPhase1BT::DryBowserPhase1BT() {
+       
+
+      root = BTFactory::getInstance().createTree(EnemyType::DRY_BOWSER);
+		//nlohmann::json jsonData = BTFactory::getInstance().to_json(root);
+      /*  std::ofstream file;
+		file.open("assets/enemy/BT/DryBowserPhase1BT.json");
+        if (file.is_open()) {
+            
+            std::cout << "File opened for writing: " << "\n";
+            file << jsonData.dump(4);
+            file.close();
+        }
+        else
+        {
+            std::cerr << "Failed to open file for writing: " <<"\n";
+        }*/
+        
+}
+void DryBowserPhase1BT::enter(Boss* boss)
+{
+
+}
+void DryBowserPhase1BT::exit(Boss* boss)
+{
+
+}
+void DryBowserPhase1BT::changeMoveState(Boss* boss, std::shared_ptr<BossMoveState> moveState)
+{
+
+        if (currentState) currentState->exit(boss);
+        currentState = moveState;
+        if (currentState) currentState->enter(boss);
+}
+void DryBowserPhase1BT::update(Boss* boss, float dt){
+        if (root)root->tick(boss, dt);
+}
+std::string DryBowserPhase1BT::getCurMove() const {
+        return currentState ? currentState->getName() : "None";
+}
+
+void DryBowserPhase2GOAP ::enter(Boss* boss) {
+    
+}
+void DryBowserPhase2GOAP::exit(Boss* boss) {
+
+}
+void DryBowserPhase2GOAP::update(Boss* boss, float dt)  {
+   
+}
+void DryBowserPhase2GOAP::changeMoveState(Boss* boss, std::shared_ptr<BossMoveState> moveState)
+{
+        /*currentState->exit(boss);
+        currentState = moveState;
+        currentState->enter(boss);*/
+}
+std::string DryBowserPhase2GOAP::getCurMove() const {
+        return currentState ? currentState->getName() : "None";
+}

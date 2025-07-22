@@ -45,11 +45,15 @@ public:
     ObjectType getObjectType() const override;
     EnemyType getType() const override;
 	void setAnimation(const std::string& animationName) override;
+   
+    //
     
 	///Behavior Tree implementation
     void walkToTarget();
-    void attack();
+    void attack() override;
     bool isAttacking(); 
+	bool isNearTarget() const;
+    void idle() override;
 private:
     void updateWorldState();
 };

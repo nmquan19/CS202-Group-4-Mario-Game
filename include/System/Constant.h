@@ -13,13 +13,13 @@ namespace Constants {
     constexpr float KOOPA_SPEED = 200.0f;
 
     namespace GreenKoopa {
-		constexpr Vector2 standardSize = { 1, 1.5};
+		constexpr Vector2 standardSize = { 0.75, 1};
         constexpr float WANDERING_SPEED = 100.0f;
         constexpr float STOMPED_DURATION = 0.3f;
         constexpr float KNOCK_VELOCITY = -300.0f;
     }
     namespace RedKoopa {
-        constexpr Vector2 standardSize = {1, 1.5};
+        constexpr Vector2 standardSize = {0.75, 1};
         constexpr float WANDERING_SPEED = 150.0f;
         constexpr float STOMPED_DURATION = 0.3f;
         constexpr float KNOCK_VELOCITY = -300.0f;
@@ -31,7 +31,7 @@ namespace Constants {
         constexpr float KNOCK_VELOCITY = -300.0f;
 	}
     namespace KoopaShell {
-        constexpr Vector2 standardSize = { 1, 1 };
+        constexpr Vector2 standardSize = { 0.75, 0.75 };
         constexpr float MOVING_SPEED = 500.0f;
         constexpr float IDLE_DURATION = 4.5f;
         constexpr float REVIVE_DURATION = 1.5f;
