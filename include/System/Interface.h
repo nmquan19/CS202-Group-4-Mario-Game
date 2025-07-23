@@ -104,4 +104,4 @@ public:
 	virtual void setVelocity(Vector2 newVelocity) = 0;
 	virtual Vector2 getVelocity() = 0;
 };
-using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType>;
+using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType, InteractiveType>;

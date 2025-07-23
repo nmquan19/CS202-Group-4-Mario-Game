@@ -10,8 +10,9 @@ public:
     static TextureManager& getInstance();
 
     static std::vector<Rectangle> Enemy_sprite_boxes;
-	static Texture2D DryBowser_texture;    
+	static Texture2D DryBowser_texture;   
     static std::vector<Rectangle> DryBowser_sprite_boxes;
+    static Texture2D blocksTexture;
 
     static Texture2D enemyTextures;
 
@@ -19,9 +20,10 @@ public:
     static Texture2D itemTextures;
     Texture2D getItemTexture(ItemType type) const;
 
-    Texture2D getBlockTexture(BlockType type);
+    
     Texture2D getCharacterTexture() const;
-    void loadTextures();
+    Texture2D getItemTexture() const;
+    void loadTextures(); 
     void unloadTextures();
 
     TextureManager(const TextureManager&) = delete;
@@ -32,9 +34,8 @@ public:
 
 private:
     TextureManager() = default;
-   
-    std::map<BlockType, Texture2D> blockTextures;
     Texture2D characterTextures;
+    Texture2D itemTextures;
 
     bool texturesLoaded = false;
 	bool itemTexturesLoaded = false;
@@ -47,12 +48,12 @@ public:
 
     bool isBlock() const { return std::holds_alternative<BlockType>(selected); }
     bool isEnemy() const { return std::holds_alternative<EnemyType>(selected); }
-    bool isCharacter() const {return std::holds_alternative<CharacterType>(selected); }
+    bool isInteractive() const { return std::holds_alternative<InteractiveType>(selected); }
     bool isItem() const { return std::holds_alternative<ItemType>(selected); }
 
     BlockType getBlockType() const { return std::get<BlockType>(selected); }
     EnemyType getEnemyType() const { return std::get<EnemyType>(selected); }
-    CharacterType getCharacterType() const {return std::get<CharacterType>(selected); }
+    InteractiveType getInteractiveType() const { return std::get<InteractiveType>(selected); }
     ItemType getItemType() const { return std::get<ItemType>(selected); }
 
     Rectangle getPaletteRect() const { return paletteRect; }
@@ -60,6 +61,12 @@ public:
 
 
 private:
-    Rectangle paletteRect = { (float)GetScreenWidth() - 320, 50, 300, 200 };
+    Rectangle paletteRect = { (float)GetScreenWidth() - 500, 0, (float)GetScreenWidth(), (float)GetScreenHeight() };
     ObjectType selected = BlockType::GROUND;
+    float startX = paletteRect.x + 50;
+    float yBlock = paletteRect.y + 50;
+    float yEnemy = yBlock + 150;
+    float yInteractive = yEnemy + 150;
+    float spacing = 120;
+    float iconSize = 100;
 };

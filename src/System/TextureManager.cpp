@@ -1,5 +1,6 @@
-﻿#include "../../include/System/TextureManager.h"
+#include "../../include/System/TextureManager.h"
 #include "../../include/System/Interface.h"
+#include "../../include/System/Constant.h"
 #include <raylib.h>
 #include <fstream>
 #include <vector>
@@ -12,13 +13,10 @@ Texture2D TextureManager::itemTextures;
 
 std::vector<Rectangle> TextureManager::DryBowser_sprite_boxes;
 Texture2D TextureManager::DryBowser_texture;
+Texture2D TextureManager::blocksTexture;
 TextureManager& TextureManager::getInstance() {
     static TextureManager instance;
     return instance;
-}
-
-Texture2D TextureManager::getBlockTexture(BlockType type) {
-    return blockTextures[type];
 }
 
 Texture2D TextureManager::getItemTexture(ItemType type) const {
@@ -29,13 +27,18 @@ Texture2D TextureManager::getCharacterTexture() const {
     return characterTextures;
 }
 
+Texture2D TextureManager::getItemTexture() const {
+    return itemTextures;
+}
+
 void TextureManager::loadTextures() {
     if (texturesLoaded) return;
 
-    blockTextures[BlockType::GROUND] = LoadTexture("assets/ground_block.png");
-    blockTextures[BlockType::BRICK] = LoadTexture("assets/brick_block.png");
+    blocksTexture = LoadTexture("assets/item2_sprites.png");
 
     characterTextures = LoadTexture("assets/character_spritesheet.png");
+
+    itemTextures = LoadTexture("assets/item_sprites.png");
     //Enemy textures 
     std::ifstream  enemy_in;
     enemy_in.open("assets/enemy/enemy_output.txt");
@@ -75,13 +78,9 @@ void TextureManager::loadTextures() {
 void TextureManager::unloadTextures() {
     if (!texturesLoaded) return;
 
-    for (auto& pair : blockTextures) {
-        UnloadTexture(pair.second);
-    }
-    blockTextures.clear();
-
     UnloadTexture(characterTextures);
 	UnloadTexture(enemyTextures);
+    UnloadTexture(itemTextures);
     texturesLoaded = false;
 
 	UnloadTexture(itemTextures);
@@ -94,58 +93,28 @@ void ObjectPalette::drawPalette() {
     DrawRectangleRec(paletteRect, LIGHTGRAY);
     DrawRectangleLinesEx(paletteRect, 2, BLACK);
 
-    float startX = paletteRect.x + 10;
-    float yBlock = paletteRect.y + 10;
-    float yEnemy = yBlock + 80;
-    float yCharacter = yEnemy + 80;
-    float spacing = 80;
-    float iconSize = 50;
-
     TextureManager& tm = TextureManager::getInstance();
+    Texture2D blocksTexture = TextureManager::blocksTexture;
 
-    //Item
-    //Rectangle ItemRect =
-
-
-    // Draw Block Section
-    DrawText("BLOCKS", startX, yBlock - 20, 12, BLACK);
-    
     // Ground Block
     Rectangle groundRect = { startX, yBlock, iconSize, iconSize };
-    Texture2D groundTexture = tm.getBlockTexture(BlockType::GROUND);
-    if (groundTexture.id != 0) {
-        DrawTexturePro(groundTexture, 
-            { 0, 0, (float)groundTexture.width, (float)groundTexture.height },
-            groundRect, { 0, 0 }, 0.0f, WHITE);
-    } else {
-        DrawRectangleRec(groundRect, BROWN);
+    if (blocksTexture.id != 0) {
+        DrawTexturePro(blocksTexture, Constants::PaletteResources::GROUND, groundRect, { 0, 0 }, 0.0f, WHITE);
     }
     DrawRectangleLinesEx(groundRect, 2, (isBlock() && getBlockType() == BlockType::GROUND) ? RED : BLACK);
-    DrawText("GROUND", groundRect.x - 5, groundRect.y + iconSize + 5, 10, BLACK);
 
     // Brick Block
     Rectangle brickRect = { startX + spacing, yBlock, iconSize, iconSize };
-    Texture2D brickTexture = tm.getBlockTexture(BlockType::BRICK);
-    if (brickTexture.id != 0) {
-        DrawTexturePro(brickTexture,
-            { 0, 0, (float)brickTexture.width, (float)brickTexture.height },
-            brickRect, { 0, 0 }, 0.0f, WHITE);
-    } else {
-        DrawRectangleRec(brickRect, ORANGE);
-    }
+    if (blocksTexture.id != 0) {
+        DrawTexturePro(blocksTexture, Constants::PaletteResources::BRICK, brickRect, { 0, 0 }, 0.0f, WHITE);
+    } 
     DrawRectangleLinesEx(brickRect, 2, (isBlock() && getBlockType() == BlockType::BRICK) ? RED : BLACK);
-    DrawText("BRICK", brickRect.x + 5, brickRect.y + iconSize + 5, 10, BLACK);
-
-    // Draw Enemy Section
-    DrawText("ENEMIES", startX, yEnemy - 20, 12, BLACK);
     
     // Goomba
     Rectangle goombaRect = { startX, yEnemy, iconSize, iconSize };
     if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
-        Rectangle goombaSource = tm.Enemy_sprite_boxes[0]; // Assuming first sprite is Goomba
+        Rectangle goombaSource = tm.Enemy_sprite_boxes[0]; 
         DrawTexturePro(tm.enemyTextures, goombaSource, goombaRect, { 0, 0 }, 0.0f, WHITE);
-    } else {
-        DrawRectangleRec(goombaRect, DARKBROWN);
     }
     DrawRectangleLinesEx(goombaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GOOMBA) ? RED : BLACK);
     DrawText("GOOMBA", goombaRect.x - 5, goombaRect.y + iconSize + 5, 10, BLACK);
@@ -176,66 +145,14 @@ void ObjectPalette::drawPalette() {
     DrawRectangleLinesEx(marioRect, 2, (isCharacter() && getCharacterType() == CharacterType::MARIO) ? RED : BLACK);
     DrawText("MARIO", marioRect.x + 5, marioRect.y + iconSize + 5, 10, BLACK);
 
-    // Luigi (optional)
-    Rectangle luigiRect = { startX + spacing, yCharacter, iconSize, iconSize };
-    Texture2D luigiTexture = tm.getCharacterTexture();
-    if (luigiTexture.id != 0) {
-        Rectangle luigiSource = { 11, 893, 12, 15 }; // Adjust based on your sprite sheet
-        DrawTexturePro(luigiTexture, luigiSource, luigiRect, { 0, 0 }, 0.0f, WHITE);
-    } else {
-        DrawRectangleRec(luigiRect, DARKGREEN);
+    // Spring
+    Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
+    Texture2D springTexture = tm.getItemTexture();
+    if (springTexture.id != 0) {
+        Rectangle springSource = {1, 467, 16, 16};
+        DrawTexturePro(springTexture, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
     }
-    DrawRectangleLinesEx(luigiRect, 2, (isCharacter() && getCharacterType() == CharacterType::LUIGI) ? RED : BLACK);
-    DrawText("LUIGI", luigiRect.x + 10, luigiRect.y + iconSize + 5, 10, BLACK);
-
-
-    //Draw Item
-    float yItem = yCharacter + 80;
-    DrawText("ITEMS", startX, yItem - 20, 12, BLACK);
-
-    //coin
-    Rectangle coinRect = { startX + spacing, yItem, iconSize, iconSize };
-    Texture2D coinTexture = tm.getItemTexture(ItemType::COIN);
-    if (coinTexture.id != 0) {
-        for (int i = 0; i <= 3; ++i) {
-            int index = i;
-            if (index >= 0 && index < tm.Item_sprite_boxes.size()) {
-                Rectangle src = tm.Item_sprite_boxes[index];
-                Rectangle dest = { 50.0f + (i) * 60.0f, 400.0f, src.width / 3, src.height / 3 };
-                DrawTexturePro(tm.itemTextures, src, dest, { 0, 0 }, 0.0f, WHITE);
-            }
-        }
-
-    }
-    else {
-        DrawRectangleRec(coinRect, GOLD);
-    }
-    DrawRectangleLinesEx(coinRect, 2, (isItem() && getItemType() == ItemType::COIN) ? RED : BLACK);
-    DrawText("COIN", coinRect.x + 10, coinRect.y + iconSize + 5, 10, BLACK);
-
-
-    //mushroom
-    Rectangle mushroomRect = { startX, yItem, iconSize, iconSize };
-    Texture2D mushroomTexture = tm.getItemTexture(ItemType::MUSHROOM); 
-    if (mushroomTexture.id != 0) {
-        for (int i = 4; i <= 7; ++i) {
-            int index = i;
-            if (index >= 0 && index < tm.Item_sprite_boxes.size()) {
-                Rectangle src = tm.Item_sprite_boxes[index];
-                Rectangle dest = { 50.0f + (i) * 60.0f, 400.0f, src.width / 3, src.height / 3 };
-                DrawTexturePro(tm.itemTextures, src, dest, { 0, 0 }, 0.0f, WHITE);
-            }
-        }
-    }
-    else {
-        DrawRectangleRec(mushroomRect, RED);
-    }
-    DrawRectangleLinesEx(mushroomRect, 2, (isItem() && getItemType() == ItemType::MUSHROOM) ? RED : BLACK);
-    DrawText("MUSHROOM", mushroomRect.x - 5, mushroomRect.y + iconSize + 5, 10, BLACK);
-
-
-
-
+    DrawText("SPRING", springRect.x + 10, springRect.y + iconSize + 5, 10, BLACK);
 }
 
 void ObjectPalette::handleSelection() {
@@ -244,26 +161,16 @@ void ObjectPalette::handleSelection() {
     Vector2 mousePos = GetMousePosition();
     if (!CheckCollisionPointRec(mousePos, paletteRect)) return;
 
-    float startX = paletteRect.x + 10;
-    float yBlock = paletteRect.y + 10;
-    float yEnemy = yBlock + 80;
-    float yCharacter = yEnemy + 80;
-    float spacing = 80;
-    float iconSize = 50;
-
     // Block selection rectangles
     Rectangle groundRect = { startX, yBlock, iconSize, iconSize };
     Rectangle brickRect = { startX + spacing, yBlock, iconSize, iconSize };
     
     // Enemy selection rectangles
     Rectangle goombaRect = { startX, yEnemy, iconSize, iconSize };
-    
-    // Character selection rectangles
-    Rectangle marioRect = { startX, yCharacter, iconSize, iconSize };
-    Rectangle luigiRect = { startX + spacing, yCharacter, iconSize, iconSize };
+    Rectangle gkoopaRect = { startX + spacing, yEnemy, iconSize, iconSize };
+    Rectangle rkoopaRect = { startX + 2*spacing, yEnemy, iconSize, iconSize };
 
-    Rectangle gkoopaRect = { startX + spacing, yEnemy, 50, 50 };
-    Rectangle rkoopaRect = { startX + 2*spacing, yEnemy, 50, 50 };
+    Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
 
     if (CheckCollisionPointRec(mousePos, groundRect)) {
         selected = BlockType::GROUND;
@@ -280,10 +187,7 @@ void ObjectPalette::handleSelection() {
     else if (CheckCollisionPointRec(mousePos, rkoopaRect)) {
         selected = EnemyType::RED_KOOPA;
     }
-    else if (CheckCollisionPointRec(mousePos, marioRect)) {
-        selected = CharacterType::MARIO;
-    }
-    else if (CheckCollisionPointRec(mousePos, luigiRect)) {
-        selected = CharacterType::LUIGI;
+    else if (CheckCollisionPointRec(mousePos, springRect)) {
+        selected = InteractiveType::SPRING;
     }
 }

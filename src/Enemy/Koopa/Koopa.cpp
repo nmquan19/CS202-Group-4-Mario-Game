@@ -15,6 +15,7 @@
 #include <utility>
 Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures)
 {
+    HP = 1;
     stompedAnimation = false;
     isFacingRight = velocity.x > 0;
 
@@ -81,33 +82,7 @@ void Koopa::checkCollision(const std::vector<std::shared_ptr<Object>>& candidate
             // implement
             this->changeState(&KoopaKnockState::GetInstance());
             break;
-        case ObjectCategory::CHARACTER:
-            handleCharacterCollision(candidate);
-            break;
         }
-    }
-}
-void Koopa::handleCharacterCollision(std::shared_ptr<Object> other) {
-    std::vector<Rectangle> playerHitBoxes = getHitBox();
-    std::vector<Rectangle> otherHitBoxes = other->getHitBox();
-    
-    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
-    
-    Rectangle playerHitBox = playerHitBoxes[0];
-    Rectangle otherHitBox = otherHitBoxes[0];
-
-    if (!CheckCollisionRecs(playerHitBox, otherHitBox)) return;
-
-    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-
-    float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
-	DrawText(TextFormat("Koopa Collision: %f", minOverlap), 500, 500, 20, RED);
-    if (minOverlap == overlapBottom) {
-        die();
-        this->changeState(&KoopaStompedState::GetInstance());
     }
 }
 
@@ -169,11 +144,9 @@ void Koopa::die()
 }
 void Koopa::takeDamage(int amount) {
     HP -= amount;
+    this->changeState(&KoopaStompedState::GetInstance());
     if (HP <= 0) {
         die();
-    }
-    else {
-        this->changeState(&KoopaStompedState::GetInstance());
     }
 }
 

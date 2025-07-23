@@ -37,7 +37,7 @@ namespace Constants {
         constexpr float REVIVE_DURATION = 1.5f;
 	}
     namespace Character {
-        constexpr float BOUNCE_VELOCITY = -300.0f;
+        constexpr float BOUNCE_AFTER_STRIKE_VELOCITY = -300.0f;
         constexpr CharacterStats MARIO_STATS = {220.0f, 550.0f};
         constexpr CharacterStats LUIGI_STATS = {175.0f, 730.0f};
         const std::vector<std::vector<Rectangle>> MARIO_FRAME_DATA = {
@@ -59,4 +59,12 @@ namespace Constants {
 		constexpr float BASIC_ATTACK_DURATION = 2.0f;
         constexpr float BASIC_ATTACK_RANGE = 100.0f; 
     } 
+    namespace Spring {
+        constexpr float BOUNCE_VELOCITY = -800.0f;
+        constexpr Vector2 STANDARD_SIZE = { 1, 1 };
+    }
+    namespace PaletteResources {
+        constexpr Rectangle BRICK = { 12, 111, 128, 86 };
+        constexpr Rectangle GROUND = { 786, 111, 128, 86 };
+    }
 }

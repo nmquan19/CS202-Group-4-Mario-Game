@@ -65,12 +65,12 @@ void GamePlayState::draw(GameContext& context) {
     ClearBackground(WHITE);
     DrawText("Press Enter", 500, 100, 20, BLACK);
 
+    // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
     if (context.character) context.character->draw();
     for (auto obj : context.Objects)
     {
         obj->draw();
     }
-    // LevelEditor::getInstance().draw();
     PhysicsManager::getInstance().drawDebug();
     DrawFPS(20, 50);
     context.menuManager.DrawSetting();
@@ -104,7 +104,6 @@ void EditorState::draw(GameContext& context) {
     DrawText("Editor Mode", 500, 100, 20, BLACK);
     LevelEditor::getInstance().draw();
     DrawFPS(20, 50);
-    context.menuManager.DrawSetting();
     EndDrawing();
 }
 

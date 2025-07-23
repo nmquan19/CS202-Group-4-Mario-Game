@@ -3,6 +3,7 @@
 #include <vector>  
 #include <memory>  
 #include "../System/Interface.h"  
+#include "../System/Constant.h"
 #include <raylib.h>  
 // Forward declaration for Item class  
 class Item;  
@@ -46,6 +47,7 @@ public:
 	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 3.0f);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
+	static std::unique_ptr<Object> createSpring(Vector2 position, Vector2 size = Constants::Spring::STANDARD_SIZE);
 private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);

@@ -48,7 +48,8 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
             PhysicsManager::getInstance().addObject(character);
-            addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
+            // addObject(InteractiveType::SPRING, { 500, 950 }, { 1, 1 });
+            // addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
         }
     }
 }
@@ -119,6 +120,9 @@ void GameContext::spawnObject() {
             }
             else if constexpr (std::is_same_v<T, KoopaShellType>) {
                 object = ObjectFactory::createKoopaShell(actualType, request.worldpos, request.size);
+            }
+            else if constexpr (std::is_same_v<T, InteractiveType>) {
+                object = ObjectFactory::createSpring(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
             }
             }, request.type);
 

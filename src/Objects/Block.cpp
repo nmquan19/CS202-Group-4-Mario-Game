@@ -17,12 +17,18 @@ Block::~Block() {}
 void Block::draw() {
     if (!active) return;
 
-    Texture2D texture = TextureManager::getInstance().getBlockTexture(getType());
-
     Rectangle destRec = { position.x, position.y, hitbox.width, hitbox.height};
-    Rectangle sourceRec = { 0, 0, (float)texture.width, (float)texture.height };
+    Rectangle srcRec;
 
-    DrawTexturePro(texture, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
+    switch (blockType) {
+        case(BlockType::GROUND): srcRec = Constants::PaletteResources::GROUND;
+            break;
+        case(BlockType::BRICK): srcRec = Constants::PaletteResources::BRICK;
+            break;
+        default: srcRec = Constants::PaletteResources::BRICK;
+    }
+
+    DrawTexturePro(TextureManager::blocksTexture, srcRec, destRec, { 0, 0 }, 0.0f, WHITE);
 }
 
 std::vector<Rectangle> Block::getHitBox() const {
