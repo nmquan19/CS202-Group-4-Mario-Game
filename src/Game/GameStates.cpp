@@ -70,8 +70,7 @@ void GamePlayState::draw(GameContext& context) {
     DrawText("Press Enter", 500, 100, 20, BLACK);
 
     //DrawText("Press Enter", 500, 100, 20, BLACK);
-
-    context.menuManager.drawInformationBoard();
+    
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
     if (context.character) {
         context.character->draw();
@@ -82,11 +81,9 @@ void GamePlayState::draw(GameContext& context) {
     }
     /*PhysicsManager::getInstance().drawDebug();*/
     EndMode2D();
-    if (context.character) {
-        context.hud->draw();
-    }
-    DrawFPS(20, 50);
+    DrawFPS(20, 50); 
     context.menuManager.DrawSetting();
+    context.menuManager.drawInformationBoard();
     EndDrawing();
 }
 

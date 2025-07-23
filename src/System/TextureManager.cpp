@@ -139,17 +139,14 @@ void ObjectPalette::drawPalette() {
         DrawTexturePro(tm.enemyTextures, goombaSource, goombaRect, { 0, 0 }, 0.0f, WHITE);
     }
     DrawRectangleLinesEx(goombaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GOOMBA) ? RED : BLACK);
-    DrawText("GOOMBA", goombaRect.x - 5, goombaRect.y + iconSize + 5, 10, BLACK);
 
-    Rectangle GreenkoopaRect = { startX + spacing, yEnemy, 50, 50 };
-    DrawRectangleRec(GreenkoopaRect, GREEN);
-    DrawRectangleLinesEx(GreenkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GREEN_KOOPA) ? RED : BLACK);
-    DrawText("GreenKOOPA", GreenkoopaRect.x + 5, GreenkoopaRect.y + 55, 10, BLACK);
-
-    Rectangle RedkoopaRect = { startX + 2*spacing, yEnemy, 50, 50 };
-    DrawRectangleRec(RedkoopaRect, GREEN);
-    DrawRectangleLinesEx(RedkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::RED_KOOPA) ? RED : BLACK);
-    DrawText("RedKOOPA", RedkoopaRect.x + 15, RedkoopaRect.y + 55, 10, BLACK);
+    // Green Koopa
+    Rectangle greenKoopaRect = { startX + spacing, yEnemy, iconSize, iconSize };
+    if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
+        Rectangle greenKoopaSource = tm.Enemy_sprite_boxes[45];
+        DrawTexturePro(tm.enemyTextures, greenKoopaSource, greenKoopaRect, { 0,0 }, 0.0f, WHITE);
+    }
+    DrawRectangleLinesEx(greenKoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GREEN_KOOPA) ? RED : BLACK);
 
     // Red Koopa
     Rectangle redKoopaRect = { startX + 2 * spacing, yEnemy, iconSize, iconSize };
