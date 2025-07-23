@@ -40,6 +40,11 @@
     <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
     <ClCompile Include="src\Item\Item.cpp" />
+    <ClCompile Include="src\Item\Coin\Coin.cpp" />
+    <ClCompile Include="src\Item\Mushroom\Mushroom.cpp" />
+    <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
+    <ClCompile Include="src\Item\Star\Star.cpp" />
+    <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -97,6 +102,9 @@
     <ClInclude Include="include\Item\Item.h" />
     <ClInclude Include="include\Item\Coin\Coin.h" />
     <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
+    <ClInclude Include="include\Item\Fire_Flower\Fire_Flower.h" />
+    <ClInclude Include="include\Item\Star\Star.h" />
+    <ClInclude Include="include\Item\One_Up\One_Up.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

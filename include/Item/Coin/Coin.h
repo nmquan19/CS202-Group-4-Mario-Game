@@ -3,14 +3,8 @@
 
 class Coin : public Item {
 public:
-	Coin(Vector2 position) : Item(position) {
-		animation->SetType(ItemType::COIN);
-	}
-
-
-	~Coin() {
-		// Destructor logic if needed
-	}
+	Coin(Vector2 position); 
+	~Coin();
 
 private:
 
