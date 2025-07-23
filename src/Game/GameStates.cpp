@@ -95,6 +95,7 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     }
     context.spawnObject();  
     context.deleteObjects();
+    context.menuManager.updateInformationBoard(deltaTime);
     PhysicsManager::getInstance().update();
     LevelEditor::getInstance().update();
 }
@@ -105,6 +106,7 @@ void GamePlayState::draw(GameContext& context) {
     BeginMode2D(GameContext::getInstance().camera);
     DrawText("Press Enter", 500, 100, 20, BLACK);
 
+    context.menuManager.drawInformationBoard();
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
     if (context.character) {
         context.character->draw();

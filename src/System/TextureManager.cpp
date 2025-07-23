@@ -4,8 +4,13 @@
 #include <raylib.h>
 #include <fstream>
 #include <vector>
+#include <iostream>
 std::vector<Rectangle> TextureManager::Enemy_sprite_boxes;
 Texture2D TextureManager::enemyTextures;
+
+std::vector<Rectangle> TextureManager::Item_sprite_boxes;
+Texture2D TextureManager::itemTextures;
+
 std::vector<Rectangle> TextureManager::DryBowser_sprite_boxes;
 Texture2D TextureManager::DryBowser_texture;
 Texture2D TextureManager::blocksTexture;
@@ -31,6 +36,10 @@ TextureManager& TextureManager::getInstance() {
     return instance;
 }
 
+Texture2D TextureManager::getItemTexture(ItemType type) const {
+    return itemTextures;
+}
+
 Texture2D TextureManager::getCharacterTexture() const {
     return characterTextures;
 }
@@ -53,8 +62,7 @@ void TextureManager::loadTextures() {
     std::ifstream  enemy_in;
     enemy_in.open("assets/enemy/enemy_output.txt");
     int id, x, y, w, h;
-    while (enemy_in >> id >> x >> y >> w >> h)
-    {
+    while (enemy_in >> id >> x >> y >> w >> h){
         Enemy_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
     }
     enemyTextures = Texture2D(LoadTexture("assets/enemy/enemy_spritesheet.png"));
@@ -70,6 +78,20 @@ void TextureManager::loadTextures() {
     DryBowser_texture= Texture2D(LoadTexture("assets/enemy/DryBowser.png"));
     dryBowser_in.close();
     texturesLoaded = true;
+
+	//Item textures
+    DrawText("Loading item textures...", 10, 30, 20, DARKGRAY);
+    std::ifstream item_in;
+    item_in.open("assets/item/item_output.txt");
+    int item_id, item_x, item_y, item_w, item_h;
+    while (item_in >> item_id >> item_x >> item_y >> item_w >> item_h){
+        Item_sprite_boxes.push_back({ (float)item_x,(float)item_y,(float)item_w, (float)item_h });
+        std::cout << "Loaded ID " << item_id << item_x << item_y << item_w << item_h << std::endl;
+    }
+    itemTextures = LoadTexture("assets/item/item_spritesheet.png");
+    item_in.close();
+
+    itemTexturesLoaded = true;
 }
 
 void TextureManager::unloadTextures() {
@@ -82,6 +104,11 @@ void TextureManager::unloadTextures() {
     UnloadTexture(DryBowser_texture);
     UnloadTexture(fontTexture);
     texturesLoaded = false;
+
+	UnloadTexture(itemTextures);
+    itemTexturesLoaded = false;
+    Enemy_sprite_boxes.clear();
+	Item_sprite_boxes.clear();
 }
 
 void ObjectPalette::drawPalette() {
@@ -112,14 +139,17 @@ void ObjectPalette::drawPalette() {
         DrawTexturePro(tm.enemyTextures, goombaSource, goombaRect, { 0, 0 }, 0.0f, WHITE);
     }
     DrawRectangleLinesEx(goombaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GOOMBA) ? RED : BLACK);
+    DrawText("GOOMBA", goombaRect.x - 5, goombaRect.y + iconSize + 5, 10, BLACK);
 
-    // Green Koopa
-    Rectangle greenKoopaRect = { startX + spacing, yEnemy, iconSize, iconSize };
-    if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
-        Rectangle greenKoopaSource = tm.Enemy_sprite_boxes[45];
-        DrawTexturePro(tm.enemyTextures, greenKoopaSource, greenKoopaRect, {0, 0}, 0.0f, WHITE);
-    }
-    DrawRectangleLinesEx(greenKoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GREEN_KOOPA) ? RED : BLACK);
+    Rectangle GreenkoopaRect = { startX + spacing, yEnemy, 50, 50 };
+    DrawRectangleRec(GreenkoopaRect, GREEN);
+    DrawRectangleLinesEx(GreenkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GREEN_KOOPA) ? RED : BLACK);
+    DrawText("GreenKOOPA", GreenkoopaRect.x + 5, GreenkoopaRect.y + 55, 10, BLACK);
+
+    Rectangle RedkoopaRect = { startX + 2*spacing, yEnemy, 50, 50 };
+    DrawRectangleRec(RedkoopaRect, GREEN);
+    DrawRectangleLinesEx(RedkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::RED_KOOPA) ? RED : BLACK);
+    DrawText("RedKOOPA", RedkoopaRect.x + 15, RedkoopaRect.y + 55, 10, BLACK);
 
     // Spring
     Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
