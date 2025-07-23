@@ -40,6 +40,8 @@
     <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
     <ClCompile Include="src\Item\Item.cpp" />
+    <ClCompile Include="src\UI\Button.cpp" />
+    <ClCompile Include="src\UI\SlideBar.cpp" />
     <ClCompile Include="src\Item\Coin\Coin.cpp" />
     <ClCompile Include="src\Item\Mushroom\Mushroom.cpp" />
     <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
@@ -102,6 +104,8 @@
     <ClInclude Include="include\Item\Item.h" />
     <ClInclude Include="include\Item\Coin\Coin.h" />
     <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
+    <ClInclude Include="include\UI\SlideBar.h" />
+    <ClInclude Include="include\UI\Button.h" />
     <ClInclude Include="include\Item\Fire_Flower\Fire_Flower.h" />
     <ClInclude Include="include\Item\Star\Star.h" />
     <ClInclude Include="include\Item\One_Up\One_Up.h" />
@@ -204,6 +208,7 @@
     <Image Include="assets\button\return_selected.png" />
     <Image Include="assets\button\setting.png" />
     <Image Include="assets\button\setting_selected.png" />
+    <Image Include="assets\coin_sprite.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav" />

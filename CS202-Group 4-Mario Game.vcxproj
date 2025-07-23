@@ -73,7 +73,9 @@
     <ClInclude Include="include\System\PhysicsManager.h" />
     <ClInclude Include="include\System\QuadTree.h" />
     <ClInclude Include="include\System\TextureManager.h" />
+    <ClInclude Include="include\UI\Button.h" />
     <ClInclude Include="include\UI\Menu.h" />
+    <ClInclude Include="include\UI\SlideBar.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
     <ClInclude Include="include\UI\UI.h" />
     <ClInclude Include="src\Enemy\Boss\Boss.cpp" />
@@ -120,7 +122,9 @@
     <ClCompile Include="src\System\QuadTree.cpp" />
     <ClCompile Include="src\System\Resources.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
+    <ClCompile Include="src\UI\Button.cpp" />
     <ClCompile Include="src\UI\Menu.cpp" />
+    <ClCompile Include="src\UI\SlideBar.cpp" />
     <ClCompile Include="src\UI\SoundEffect.cpp" />
     <ClCompile Include="src\UI\UI.cpp" />
   </ItemGroup>
@@ -137,6 +141,7 @@
     <Image Include="assets\button\return.png" />
     <Image Include="assets\button\setting_selected.png" />
     <Image Include="assets\button\setting.png" />
+    <Image Include="assets\coin_sprite.png" />
     <Image Include="assets\romulus.png" />
     <Image Include="assets\Super Mario Bros.png" />
   </ItemGroup>
