@@ -14,31 +14,31 @@
 #include "../include/Game/GameStates.h"
 #include "../include/Item/Coin/Coin.h"
 
-//int main() {
-//    InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
-//    InitAudioDevice();
-//    SetTargetFPS(60);
-//
-//    GameContext* context = &GameContext::getInstance(); 
-//    MenuState menuState;
-//    GamePlayState gamePlayState;
-//    EditorState editorState;
-//    GameOverState gameOverState;
-//
-//    context->setGameStates(&menuState, &gamePlayState, &editorState, &gameOverState);
-//
-//    while (!WindowShouldClose()) {
-//        float deltaTime = GetFrameTime();
-//        context->handleInput();
-//        context->update(deltaTime);
-//        context->draw();
-//    }
-//
-//    CloseAudioDevice();
-//    CloseWindow();
-//    return 0;
-//}
+int main() {
+    InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
+    InitAudioDevice();
+    SetTargetFPS(60);
 
+    GameContext* context = &GameContext::getInstance(); 
+    MenuState menuState;
+    GamePlayState gamePlayState;
+    EditorState editorState;
+    GameOverState gameOverState;
+
+    context->setGameStates(&menuState, &gamePlayState, &editorState, &gameOverState);
+
+    while (!WindowShouldClose()) {
+        float deltaTime = GetFrameTime();
+        context->handleInput();
+        context->update(deltaTime);
+        context->draw();
+    }
+
+    CloseAudioDevice();
+    CloseWindow();
+    return 0;
+}
+/*
 int main() {
     InitWindow(600, 400, "Animation");
 
@@ -76,5 +76,5 @@ int main() {
 
     return 0;
 }
-
+*/
 

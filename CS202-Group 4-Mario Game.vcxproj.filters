@@ -40,6 +40,8 @@
     <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
     <ClCompile Include="src\Item\Item.cpp" />
+    <ClCompile Include="src\UI\Button.cpp" />
+    <ClCompile Include="src\UI\SlideBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -97,6 +99,8 @@
     <ClInclude Include="include\Item\Item.h" />
     <ClInclude Include="include\Item\Coin\Coin.h" />
     <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
+    <ClInclude Include="include\UI\SlideBar.h" />
+    <ClInclude Include="include\UI\Button.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">
@@ -196,6 +200,7 @@
     <Image Include="assets\button\return_selected.png" />
     <Image Include="assets\button\setting.png" />
     <Image Include="assets\button\setting_selected.png" />
+    <Image Include="assets\coin_sprite.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav" />
