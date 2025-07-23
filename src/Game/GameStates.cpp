@@ -82,9 +82,6 @@ void GamePlayState::draw(GameContext& context) {
     }
     /*PhysicsManager::getInstance().drawDebug();*/
     EndMode2D();
-    if (context.character) {
-        context.hud->draw();
-    }
     DrawFPS(20, 50);
     context.menuManager.DrawSetting();
     EndDrawing();
