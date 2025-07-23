@@ -52,6 +52,7 @@
     <ClInclude Include="include\Item\Anima.h" />
     <ClInclude Include="include\Item\Coin\Coin.h" />
     <ClInclude Include="include\Item\Item.h" />
+    <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\CollectableObject.h" />
     <ClInclude Include="include\Objects\InteractiveObject.h" />

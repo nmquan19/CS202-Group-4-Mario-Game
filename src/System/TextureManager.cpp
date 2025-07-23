@@ -128,22 +128,6 @@ void ObjectPalette::drawPalette() {
     DrawRectangleRec(RedkoopaRect, GREEN);
     DrawRectangleLinesEx(RedkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::RED_KOOPA) ? RED : BLACK);
     DrawText("RedKOOPA", RedkoopaRect.x + 15, RedkoopaRect.y + 55, 10, BLACK);
-   
-    // Draw Character Section
-    DrawText("CHARACTERS", startX, yCharacter - 20, 12, BLACK);
-    
-    // Mario
-    Rectangle marioRect = { startX, yCharacter, iconSize, iconSize };
-    Texture2D marioTexture = tm.getCharacterTexture();
-    if (marioTexture.id != 0) {
-        // Use a portion of Mario sprite sheet (idle frame)
-        Rectangle marioSource = { 11, 23, 12, 15 }; // Adjust based on your sprite sheet
-        DrawTexturePro(marioTexture, marioSource, marioRect, { 0, 0 }, 0.0f, WHITE);
-    } else {
-        DrawRectangleRec(marioRect, RED);
-    }
-    DrawRectangleLinesEx(marioRect, 2, (isCharacter() && getCharacterType() == CharacterType::MARIO) ? RED : BLACK);
-    DrawText("MARIO", marioRect.x + 5, marioRect.y + iconSize + 5, 10, BLACK);
 
     // Spring
     Rectangle springRect = { startX, yInteractive, iconSize, iconSize };

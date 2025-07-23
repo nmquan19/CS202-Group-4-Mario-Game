@@ -35,7 +35,6 @@ public:
 private:
     TextureManager() = default;
     Texture2D characterTextures;
-    Texture2D itemTextures;
 
     bool texturesLoaded = false;
 	bool itemTexturesLoaded = false;
