@@ -15,6 +15,7 @@ public:
     static std::vector<Rectangle> DryBowser_sprite_boxes;
     static Texture2D blocksTexture;
     static Texture2D enemyTextures;
+    static Texture2D interactiveTextures;
 
     static std::vector<Rectangle> Item_sprite_boxes;
     static Texture2D itemTextures;

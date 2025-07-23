@@ -15,6 +15,7 @@ std::vector<Rectangle> TextureManager::DryBowser_sprite_boxes;
 Texture2D TextureManager::DryBowser_texture;
 Texture2D TextureManager::blocksTexture;
 Texture2D TextureManager::fontTexture;
+Texture2D TextureManager::interactiveTextures;
 std::unordered_map<char, Rectangle> TextureManager::fontSprites = {
     {'0', {90, 3, 6, 7}}, {'1', {97, 3, 4, 7}}, {'2', {102, 3, 6, 7}}, {'3', {109, 3, 6, 7}}, {'4', {116, 3, 6, 7}},
     {'5', {1, 16, 6, 7}}, {'6', {8, 16, 6, 7}}, {'7', {15, 16, 6, 7}}, {'8', {22, 16, 6, 7}}, {'9', {29, 16, 6, 7}}, 
@@ -55,7 +56,7 @@ void TextureManager::loadTextures() {
 
     characterTextures = LoadTexture("assets/character_spritesheet.png");
 
-    itemTextures = LoadTexture("assets/item_sprites.png");
+    interactiveTextures = LoadTexture("assets/interactive_sprites.png");
 
     fontTexture = LoadTexture("assets/font_sprites.png");
     //Enemy textures 
@@ -103,6 +104,7 @@ void TextureManager::unloadTextures() {
     UnloadTexture(blocksTexture);
     UnloadTexture(DryBowser_texture);
     UnloadTexture(fontTexture);
+    UnloadTexture(interactiveTextures);
     texturesLoaded = false;
 
 	UnloadTexture(itemTextures);
@@ -158,11 +160,8 @@ void ObjectPalette::drawPalette() {
 
     // Spring
     Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
-    Texture2D springTexture = tm.getItemTexture();
-    if (springTexture.id != 0) {
-        Rectangle springSource = {1, 467, 16, 16};
-        DrawTexturePro(springTexture, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
-    }
+    Rectangle springSource = {1, 467, 16, 16};
+    DrawTexturePro(TextureManager::interactiveTextures, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
     DrawRectangleLinesEx(springRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::SPRING) ? RED : BLACK);
 }
 
