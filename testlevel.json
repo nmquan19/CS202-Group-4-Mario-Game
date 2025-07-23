@@ -2,186 +2,858 @@
      "gridSize": 64,
      "objects": [
           {
-               "gridX": 1,
-               "gridY": 15,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 1,
-               "gridY": 16,
+               "gridX": 0,
+               "gridY": 21,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
                "gridX": 0,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 23,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 24,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 25,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 26,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 0,
+               "gridY": 27,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 1,
-               "gridY": 16,
-               "sizeX": 0.75,
-               "sizeY": 1,
-               "type": "GREEN_KOOPA"
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 1,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
           },
           {
                "gridX": 2,
-               "gridY": 17,
+               "gridY": 21,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 2,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 3,
-               "gridY": 17,
+               "gridY": 21,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 3,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 4,
-               "gridY": 17,
+               "gridY": 21,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 4,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 5,
-               "gridY": 17,
+               "gridY": 21,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 5,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 6,
-               "gridY": 17,
+               "gridY": 21,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 6,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 7,
-               "gridY": 16,
-               "sizeX": 0.75,
-               "sizeY": 0.75,
-               "type": "GOOMBA"
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 7,
-               "gridY": 17,
+               "gridY": 22,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 8,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
           },
           {
                "gridX": 8,
                "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 8,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 8,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 9,
                "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 9,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 9,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 9,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 10,
                "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
           },
           {
-               "gridX": 11,
-               "gridY": 16,
+               "gridX": 10,
+               "gridY": 21,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 10,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 10,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 11,
                "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 11,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 11,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 12,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 13,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 14,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 15,
                "gridY": 16,
                "sizeX": 0.75,
                "sizeY": 0.75,
                "type": "GOOMBA"
           },
           {
-               "gridX": 15,
+               "gridX": 12,
                "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 12,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 12,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 12,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 13,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 13,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 13,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 13,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 14,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 14,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 15,
+               "gridY": 20,
+               "sizeX": 0.75,
+               "sizeY": 1.0,
+               "type": "GREEN_KOOPA"
+          },
+          {
+               "gridX": 15,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 15,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           },
           {
                "gridX": 16,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 16,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 18,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 19,
+               "gridY": 20,
+               "sizeX": 0.75,
+               "sizeY": 0.75,
+               "type": "GOOMBA"
+          },
+          {
+               "gridX": 19,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 19,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 20,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 20,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 21,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 21,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 22,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 22,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 23,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 24,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 24,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 25,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 26,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 27,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 27,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 28,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 28,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 29,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 29,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 30,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 30,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 31,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 31,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 31,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 32,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "SPRING"
+          },
+          {
+               "gridX": 32,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 32,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 32,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 33,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 33,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 13,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 14,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
                "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
           },
           {
-               "gridX": 16,
+               "gridX": 34,
                "gridY": 16,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
           },
           {
-               "gridX": 16,
+               "gridX": 34,
                "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GROUND"
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 34,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 13,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 14,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 35,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 36,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 36,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 37,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 37,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
           }
      ],
      "version": "1.0"
