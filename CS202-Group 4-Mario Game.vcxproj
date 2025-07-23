@@ -49,6 +49,9 @@
     <ClInclude Include="include\Enemy\TriggerZone.h" />
     <ClInclude Include="include\Game\GameContext.h" />
     <ClInclude Include="include\Game\GameStates.h" />
+    <ClInclude Include="include\Item\Anima.h" />
+    <ClInclude Include="include\Item\Coin\Coin.h" />
+    <ClInclude Include="include\Item\Item.h" />
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\CollectableObject.h" />
     <ClInclude Include="include\Objects\InteractiveObject.h" />
@@ -93,6 +96,7 @@
     <ClCompile Include="src\Enemy\TriggerZone.cpp" />
     <ClCompile Include="src\Game\GameContext.cpp" />
     <ClCompile Include="src\Game\GameStates.cpp" />
+    <ClCompile Include="src\Item\Item.cpp" />
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\CollectableObject.cpp" />

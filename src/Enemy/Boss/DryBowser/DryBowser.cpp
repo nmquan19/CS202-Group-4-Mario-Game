@@ -7,7 +7,7 @@
 #include "../../../../include/Enemy/Boss/DryBowser/DryBowserSimState.h"
 
 #include "../../../../include/Enemy/Boss/Boss.h"
-#include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
+#include "../../../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../../../include/System/InterpolationController.h"
 #include "../../../../include/Enemy/Boss/DryBowser/DryBowserPhase.h"
 #include "../../../../include/Enemy/Boss/DryBowser/DryBowserMoveState.h"
