@@ -1,47 +1,50 @@
-#pragma once
+#pragma once  
 
-#include <vector>
-#include <memory>
-#include "../System/Interface.h"
+#include <vector>  
+#include <memory>  
+#include "../System/Interface.h"  
 #include "../System/Constant.h"
-#include <raylib.h>
-class Block;
-class Character;
-struct CharacterStats;
-class Enemy; 
-class KoopaShell;
-class Object : public ICollidable, public IDrawable {
-public:
-	virtual ~Object() = default;
-	virtual bool isActive() const = 0;
-	virtual void setActive(bool) = 0;
-	virtual bool isCollided() const = 0;
-	virtual void setCollided(bool) = 0;
-	virtual Vector2 getPosition() const = 0;
-	virtual void setPosition(Vector2 newPos) = 0;
-	virtual Vector2 getSize() const = 0;
+#include <raylib.h>  
+// Forward declaration for Item class  
+class Item;  
+class Block;  
+class Character;  
+struct CharacterStats;  
+class Enemy;  
+class KoopaShell;  
 
-	virtual void draw() override = 0;
+class Object : public ICollidable, public IDrawable {  
+public:  
+	virtual ~Object() = default;  
+	virtual bool isActive() const = 0;  
+	virtual void setActive(bool) = 0;  
+	virtual bool isCollided() const = 0;  
+	virtual void setCollided(bool) = 0;  
+	virtual Vector2 getPosition() const = 0;  
+	virtual void setPosition(Vector2 newPos) = 0;  
+	virtual Vector2 getSize() const = 0;  
 
-	virtual std::vector<Rectangle> getHitBox() const override = 0;
-	virtual ObjectCategory getObjectCategory() const override = 0;
-	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;
+	virtual void draw() override = 0;  
+
+	virtual std::vector<Rectangle> getHitBox() const override = 0;  
+	virtual ObjectCategory getObjectCategory() const override = 0;  
+	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;  
 	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0;
-	void onCollision(std::shared_ptr<Object> other) override = 0;
-	int getCollidedPart(const Object& other);
-	virtual ObjectType getObjectType() const = 0;
-	
-protected:
-	Vector2 position;
-	Vector2 size;
-	bool active = true;
-	bool collided = false;
-};
+	virtual void onCollision(std::shared_ptr<Object> other) override = 0;  
+	int getCollidedPart(const Object& other);  
+	virtual ObjectType getObjectType() const = 0;  
+
+protected:  
+	Vector2 position;  
+	Vector2 size;  
+	bool active = true;  
+	bool collided = false;  
+};  
 
 class ObjectFactory {
 public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
-	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 4.5f);
+	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 3.0f);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
 	static std::unique_ptr<Object> createSpring(Vector2 position, Vector2 size = Constants::Spring::STANDARD_SIZE);

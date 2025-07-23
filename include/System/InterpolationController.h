@@ -101,5 +101,3 @@ namespace Easing {
         return linear;
     }
 }
-
-
