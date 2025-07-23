@@ -1,14 +1,15 @@
-﻿#pragma once
+#pragma once
 #include "../System/Interface.h"
 #include "raylib.h"
 #include "../Objects/ObjectFactory.h"
 #include <climits>
 #include <variant>
 #include "../System/InterpolationController.h"
+#include "Anima.h"
 
 class Item : public Object, public IUpdatable {
 public:
-    Item(Vector2 startPos, Texture2D texture, Vector2 size);
+    Item(Vector2 startPos);
     virtual ~Item();
 
     std::vector<Rectangle> getHitBox() const override;
@@ -22,13 +23,14 @@ public:
     bool isActive() const override;
     void setActive(bool flag) override;
 
-	virtual void update(float deltaTime) override;
-	void draw() override;
+    virtual void update(float deltaTime) override;
+    void draw() override;
+    void draw(Texture2D texture);
 
     bool isCollided() const override;
     void setCollided(bool) override;
     Vector2 getSize() const override;
-    virtual ObjectType getObjectType() const override = 0 ;
+    virtual ObjectType getObjectType() const override;
 
 protected:
     Vector2 position;
@@ -36,29 +38,20 @@ protected:
     Vector2 accelleration;
 
     bool active;
-    Texture2D texture;
+    //Texture2D texture;
     Rectangle spritebox;
     Rectangle hitbox;
     float scale;
     float aniTimer, aniSpeed;
     int curFrame;
 
-    ItemType type; // Giả định bạn có enum ItemType
+    const float gravity = 600.0f;
+    const float groundY = 300.0f;
+    Anima* animation;
+    ItemType type;
 };
 
-class CoinItem : public Item {
-public:
-    CoinItem(Vector2 startPos, Texture2D texture, Vector2 size);
 
-    ObjectType getObjectType() const override;
-};
-
-class MushroomItem : public Item {
-public:
-    MushroomItem(Vector2 startPos, Texture2D texture, Vector2 size);
-
-    ObjectType getObjectType() const override;
-};
 
 
 

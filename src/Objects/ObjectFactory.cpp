@@ -1,4 +1,4 @@
-﻿#include "../../include/Objects/ObjectFactory.h"
+#include "../../include/Objects/ObjectFactory.h"
 #include "../../include/Objects/Block.h"
 #include "../../include/Characters/Character.h"
 #include <memory>
