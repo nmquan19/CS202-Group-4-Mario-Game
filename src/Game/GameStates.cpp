@@ -102,9 +102,11 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 
 void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
-    ClearBackground(WHITE);
+    ClearBackground(SKYBLUE);
     BeginMode2D(GameContext::getInstance().camera);
     DrawText("Press Enter", 500, 100, 20, BLACK);
+
+    //DrawText("Press Enter", 500, 100, 20, BLACK);
 
     context.menuManager.drawInformationBoard();
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
