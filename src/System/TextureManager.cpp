@@ -106,7 +106,7 @@ void ObjectPalette::drawPalette() {
         Rectangle springSource = {1, 467, 16, 16};
         DrawTexturePro(springTexture, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
     }
-    DrawText("SPRING", springRect.x + 10, springRect.y + iconSize + 5, 10, BLACK);
+    DrawRectangleLinesEx(springRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::SPRING) ? RED : BLACK);
 }
 
 void ObjectPalette::handleSelection() {

@@ -162,7 +162,7 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             }
         }
         else if constexpr (std::is_same_v<T, InteractiveType>) {
-            std::shared_ptr<Object> newInter = ObjectFactory::createSpring(gridCoord);
+            std::shared_ptr<Object> newInter = ObjectFactory::createSpring(GridSystem::getWorldPosition(gridCoord));
             if (newInter) {
                 gridBlocks[key].push(newInter);
             }
