@@ -430,6 +430,13 @@
           },
           {
                "gridX": 24,
+               "gridY": 20,
+               "sizeX": 0.75,
+               "sizeY": 1.0,
+               "type": "RED_KOOPA"
+          },
+          {
+               "gridX": 24,
                "gridY": 21,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -619,13 +626,6 @@
           },
           {
                "gridX": 34,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 34,
                "gridY": 14,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -683,13 +683,6 @@
           {
                "gridX": 34,
                "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 35,
-               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"

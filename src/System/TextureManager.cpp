@@ -151,6 +151,14 @@ void ObjectPalette::drawPalette() {
     DrawRectangleLinesEx(RedkoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::RED_KOOPA) ? RED : BLACK);
     DrawText("RedKOOPA", RedkoopaRect.x + 15, RedkoopaRect.y + 55, 10, BLACK);
 
+    // Red Koopa
+    Rectangle redKoopaRect = { startX + 2 * spacing, yEnemy, iconSize, iconSize };
+    if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
+        Rectangle redKoopaSource = tm.Enemy_sprite_boxes[53];
+        DrawTexturePro(tm.enemyTextures, redKoopaSource, redKoopaRect, { 0,0 }, 0.0f, WHITE);
+    }
+    DrawRectangleLinesEx(redKoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::RED_KOOPA) ? RED : BLACK);
+
     // Spring
     Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
     Texture2D springTexture = tm.getItemTexture();
