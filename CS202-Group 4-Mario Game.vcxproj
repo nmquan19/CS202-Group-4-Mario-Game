@@ -49,10 +49,6 @@
     <ClInclude Include="include\Enemy\TriggerZone.h" />
     <ClInclude Include="include\Game\GameContext.h" />
     <ClInclude Include="include\Game\GameStates.h" />
-    <ClInclude Include="include\Item\Anima.h" />
-    <ClInclude Include="include\Item\Coin\Coin.h" />
-    <ClInclude Include="include\Item\Item.h" />
-    <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
     <ClInclude Include="include\Game\HUD.h" />
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\CollectableObject.h" />
@@ -71,9 +67,7 @@
     <ClInclude Include="include\System\PhysicsManager.h" />
     <ClInclude Include="include\System\QuadTree.h" />
     <ClInclude Include="include\System\TextureManager.h" />
-    <ClInclude Include="include\UI\Button.h" />
     <ClInclude Include="include\UI\Menu.h" />
-    <ClInclude Include="include\UI\SlideBar.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
     <ClInclude Include="include\UI\UI.h" />
     <ClInclude Include="src\Enemy\Boss\Boss.cpp" />
@@ -100,7 +94,6 @@
     <ClCompile Include="src\Enemy\TriggerZone.cpp" />
     <ClCompile Include="src\Game\GameContext.cpp" />
     <ClCompile Include="src\Game\GameStates.cpp" />
-    <ClCompile Include="src\Item\Item.cpp" />
     <ClCompile Include="src\Game\HUD.cpp" />
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -116,9 +109,7 @@
     <ClCompile Include="src\System\QuadTree.cpp" />
     <ClCompile Include="src\System\Resources.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
-    <ClCompile Include="src\UI\Button.cpp" />
     <ClCompile Include="src\UI\Menu.cpp" />
-    <ClCompile Include="src\UI\SlideBar.cpp" />
     <ClCompile Include="src\UI\SoundEffect.cpp" />
     <ClCompile Include="src\UI\UI.cpp" />
   </ItemGroup>
@@ -135,7 +126,6 @@
     <Image Include="assets\button\return.png" />
     <Image Include="assets\button\setting_selected.png" />
     <Image Include="assets\button\setting.png" />
-    <Image Include="assets\coin_sprite.png" />
     <Image Include="assets\font_sprites.png" />
     <Image Include="assets\Super Mario Bros.png" />
   </ItemGroup>

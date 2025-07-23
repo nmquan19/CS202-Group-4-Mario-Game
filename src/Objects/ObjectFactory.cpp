@@ -1,11 +1,10 @@
 #include "../../include/Objects/ObjectFactory.h"
-#include "../../include/Objects/Block.h"
-#include "../../include/Characters/Character.h"
+#include "../Objects/Block.h"
+#include "../Characters/Character.h"
 #include <memory>
 #include "../../include/Enemy/Enemy.h"
 #include "../../include/Enemy/Goomba/Goomba.h"
 #include "../../include/Enemy/Koopa/Koopa.h"
-#include "../../include/Item/Item.h"
 #include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../include/System/Interface.h"
 #include <raylib.h>
@@ -84,33 +83,6 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         return nullptr; 
     }
 }   
-
-//std::unique_ptr<Object> ObjectFactory::createItem(ItemType type, Vector2 startPos, Vector2 size) {
-//    return createSpecificItem(type, startPos, size);
-//}
-//
-//std::unique_ptr<Item> ObjectFactory::createSpecificItem(ItemType type, Vector2 startPos, Vector2 size) {
-//    switch (type) {
-//    case ItemType::COIN:
-//        return createCoin(startPos, size);
-//    //case ItemType::MUSHROOM:
-//    //    return createMushroom(startPos, size);
-//    default:
-//        return nullptr;
-//    }
-//}
-
-//std::unique_ptr<Item> ObjectFactory::createCoin(Vector2 startPos, Vector2 size) {
-//    Texture2D texture = LoadTexture("assets/item_coin.png"); // 👈 dùng sprite riêng cho coin
-//    return std::make_unique<CoinItem>(startPos, texture, size);
-//}
-//
-//std::unique_ptr<Item> ObjectFactory::createMushroom(Vector2 startPos, Vector2 size) {
-//    Texture2D texture = LoadTexture("assets/item_mushroom.png");
-//    return std::make_unique<MushroomItem>(startPos, texture, size);
-//}
-
-
 std::vector<std::vector<Rectangle>> ObjectFactory::getFrameData(CharacterType type) {
     switch (type) {
         case CharacterType::MARIO: 
@@ -133,13 +105,12 @@ std::unique_ptr<KoopaShell> ObjectFactory::createSpecificKoopaShell(KoopaShellTy
     }
 }
 
-
-
 std::unique_ptr<Object> ObjectFactory::createSpring(Vector2 position, Vector2 size) {
     return std::make_unique<Spring>(position, size);
 }
 
-int Object::getCollidedPart(const Object& other){
+int Object::getCollidedPart(const Object& other)
+{
     std::vector<Rectangle> playerHitBoxes = getHitBox();
     std::vector<Rectangle> otherHitBoxes = other.getHitBox();
     

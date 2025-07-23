@@ -1,18 +1,13 @@
 #include "../../include/UI/UI.h"
 #include <raylib.h>
-UIManager::UIManager() : score({ GetScreenWidth() / 10.0f, GetScreenHeight() / 10.0f }),
-coin({ GetScreenWidth() * 3 / 10.0f, GetScreenHeight() / 10.0f }, "./assets/coin_sprite.png"),
-world({ GetScreenWidth() * 5 / 10.0f, GetScreenHeight() / 10.0f }, "1 - 1"),
-timer({ GetScreenWidth() * 7 / 10.0f, GetScreenHeight() / 10.0f }, 400.0f),
-isGameOver(false) {
+UIManager::UIManager() : isGameOver(false) {
     menuFont = LoadFont("./assets/romulus.png");
-
+    
 }
 
 UIManager::~UIManager() {
-    UnloadFont(menuFont);
+        UnloadFont(menuFont);
 }
-
 
 void UIManager::ShowGameOver() {
     isGameOver = true;
@@ -24,8 +19,8 @@ bool UIManager::IsGameOver() const {
 
 void UIManager::DrawGameOver() {
     if (!isGameOver) return;
+
     DrawTextEx(menuFont, "Game Over", { 300, 200 }, 40, 2, RED);
+    
 }
-
-
 
