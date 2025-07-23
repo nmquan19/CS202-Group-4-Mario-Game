@@ -49,4 +49,6 @@ public:
 	void deleteObjects();
     std::shared_ptr<Object> getSharedPtrFromRaw(Object* rawPtr);
     void clearGame();
+
+    Camera2D camera;
 };

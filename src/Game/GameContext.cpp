@@ -17,6 +17,8 @@
 #include <cmath>
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
 }
 
 GameContext::~GameContext() {
@@ -50,6 +52,8 @@ void GameContext::setState(GameState* newState) {
             PhysicsManager::getInstance().addObject(character);
             // addObject(InteractiveType::SPRING, { 500, 950 }, { 1, 1 });
             // addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
+            camera.offset = character->getPosition();
+            camera.target = {0,0};
         }
     }
 }

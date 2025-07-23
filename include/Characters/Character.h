@@ -76,6 +76,9 @@ public:
 	friend class JumpingState;
 
 private:
+	void handleProjectile(float deltaTime);
+	void handleGroundCheck();
+
 	void handleEnvironmentCollision(std::shared_ptr<Object> other);
 	void handleEnemyCollision(std::shared_ptr<Object> other);
 	void handleInteractiveCollision(std::shared_ptr<Object> other);
@@ -109,7 +112,6 @@ private:
 
 	int hp;
 	float invincibleTimer;
-	float bounceTimer;
 	
 	KoopaShell* projectile;
 	bool holdingProjectile;
