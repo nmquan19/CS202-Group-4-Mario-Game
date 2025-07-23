@@ -49,6 +49,7 @@
     <ClInclude Include="include\Enemy\TriggerZone.h" />
     <ClInclude Include="include\Game\GameContext.h" />
     <ClInclude Include="include\Game\GameStates.h" />
+    <ClInclude Include="include\Game\HUD.h" />
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\CollectableObject.h" />
     <ClInclude Include="include\Objects\InteractiveObject.h" />
@@ -93,6 +94,7 @@
     <ClCompile Include="src\Enemy\TriggerZone.cpp" />
     <ClCompile Include="src\Game\GameContext.cpp" />
     <ClCompile Include="src\Game\GameStates.cpp" />
+    <ClCompile Include="src\Game\HUD.cpp" />
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\CollectableObject.cpp" />
@@ -124,7 +126,7 @@
     <Image Include="assets\button\return.png" />
     <Image Include="assets\button\setting_selected.png" />
     <Image Include="assets\button\setting.png" />
-    <Image Include="assets\romulus.png" />
+    <Image Include="assets\font_sprites.png" />
     <Image Include="assets\Super Mario Bros.png" />
   </ItemGroup>
   <ItemGroup>

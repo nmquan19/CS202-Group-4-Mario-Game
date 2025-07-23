@@ -39,6 +39,7 @@
     <ClCompile Include="src\Objects\Spring.cpp" />
     <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
+    <ClCompile Include="src\Game\HUD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -59,7 +60,6 @@
     <ClInclude Include="include\Enemy\Boss\SimulateState.h" />
     <ClInclude Include="include\Enemy\Boss\WorldState.h" />
     <ClInclude Include="include\Enemy\Enemy.h" />
-    <ClInclude Include="include\Enemy\EnemyFactory.h" />
     <ClInclude Include="include\Enemy\EnemyState.h" />
     <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
     <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
@@ -93,6 +93,7 @@
     <ClInclude Include="include\Objects\InteractiveObject.h" />
     <ClInclude Include="include\Objects\Spring.h" />
     <ClInclude Include="include\Objects\SpringState.h" />
+    <ClInclude Include="include\Game\HUD.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav" />
@@ -115,7 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\button\board.png" />
-    <Image Include="assets\romulus.png" />
+    <Image Include="assets\font_sprites.png" />
     <Image Include="assets\Super Mario Bros.png" />
     <Image Include="assets\button\check.png" />
     <Image Include="assets\button\check_selected.png" />

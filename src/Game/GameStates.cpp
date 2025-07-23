@@ -8,6 +8,7 @@
 #include "../../include/System/Interface.h"
 #include <memory>
 #include "../../include/Characters/Character.h"
+#include <iostream>
 
 void MenuState::handleInput(GameContext& context) {
     context.menuManager.HandleInput();
@@ -105,13 +106,18 @@ void GamePlayState::draw(GameContext& context) {
     DrawText("Press Enter", 500, 100, 20, BLACK);
 
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
-    if (context.character) context.character->draw();
+    if (context.character) {
+        context.character->draw();
+    }
     for (auto obj : context.Objects)
     {
         obj->draw();
     }
     PhysicsManager::getInstance().drawDebug();
     EndMode2D();
+    if (context.character) {
+        context.hud->draw();
+    }
     DrawFPS(20, 50);
     context.menuManager.DrawSetting();
     EndDrawing();

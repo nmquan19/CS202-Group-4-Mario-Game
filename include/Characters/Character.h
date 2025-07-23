@@ -74,6 +74,7 @@ public:
 	friend class IdleState;
 	friend class MovingState;
 	friend class JumpingState;
+	friend class HUD;
 
 private:
 	void handleProjectile(float deltaTime);
