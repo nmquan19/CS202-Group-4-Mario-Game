@@ -14,6 +14,23 @@ Texture2D TextureManager::itemTextures;
 std::vector<Rectangle> TextureManager::DryBowser_sprite_boxes;
 Texture2D TextureManager::DryBowser_texture;
 Texture2D TextureManager::blocksTexture;
+Texture2D TextureManager::fontTexture;
+std::unordered_map<char, Rectangle> TextureManager::fontSprites = {
+    {'0', {90, 3, 6, 7}}, {'1', {97, 3, 4, 7}}, {'2', {102, 3, 6, 7}}, {'3', {109, 3, 6, 7}}, {'4', {116, 3, 6, 7}},
+    {'5', {1, 16, 6, 7}}, {'6', {8, 16, 6, 7}}, {'7', {15, 16, 6, 7}}, {'8', {22, 16, 6, 7}}, {'9', {29, 16, 6, 7}}, 
+    {':', {36, 17, 2, 6}}, {'A', {78, 16, 6, 7}}, {'B', {85, 16, 7, 7}}, {'C', {93, 16, 7, 7}}, {'D', {101, 16, 7, 7}},
+    {'E', {109, 16, 7, 7}}, {'F', {117, 16, 7, 7}}, {'G', {1, 29, 7, 7}}, {'H', {9, 29, 8, 7}}, {'I', {18, 29, 4, 7}},
+    {'J', {23, 29, 6, 7}}, {'K', {30, 29, 8, 7}}, {'L', {39, 29, 6, 7}}, {'M', {46, 29, 10, 7}}, {'N', {57, 29, 9, 7}},
+    {'O', {67, 29, 7, 7}}, {'P', {75, 29, 7, 7}}, {'Q', {83, 29, 7, 9}}, {'R', {91, 29, 8, 7}}, {'S', {100, 29, 6, 7}},
+    {'T', {107, 29, 6, 7}}, {'U', {114, 29, 9, 7}}, {'V', {1, 42, 9, 7}}, {'W', {11, 42, 10, 7}}, {'X', {22, 42, 8, 7}},
+    {'Y', {31, 42, 8, 7}}, {'Z', {40, 42, 6, 7}}, {'a', {83, 44, 7, 5}}, {'b', {91, 42, 7, 7}}, {'c', {99, 44, 5, 5}},
+    {'d', {105, 42, 7, 7}}, {'e', {113, 44, 6, 5}}, {'f', {120, 42, 5, 7}}, {'g', {1, 57, 7, 7}}, {'h', {9, 55, 7, 7}},
+    {'i', {17, 55, 4, 7}}, {'j', {22, 55, 3, 9}}, {'k', {26, 55, 7, 7}}, {'l', {34, 55, 4, 7}}, {'m', {39, 57, 9, 5}},
+    {'n', {49, 57, 8, 5}}, {'o', {58, 57, 6, 5}}, {'p', {65, 57, 7, 7}}, {'q', {73, 57, 7, 7}}, {'r', {81, 57, 6, 5}},
+    {'s', {88, 57, 5, 5}}, {'t', {94, 56, 4, 6}}, {'u', {99, 57, 7, 5}}, {'v', {107, 57, 7, 5}}, {'w', {115, 57, 9, 5}},
+    {'x', {1, 70, 7, 5}}, {'y', {9, 70, 7, 7}}, {'z', {17, 70, 6, 5}}
+};
+
 TextureManager& TextureManager::getInstance() {
     static TextureManager instance;
     return instance;
@@ -39,6 +56,8 @@ void TextureManager::loadTextures() {
     characterTextures = LoadTexture("assets/character_spritesheet.png");
 
     itemTextures = LoadTexture("assets/item_sprites.png");
+
+    fontTexture = LoadTexture("assets/font_sprites.png");
     //Enemy textures 
     std::ifstream  enemy_in;
     enemy_in.open("assets/enemy/enemy_output.txt");
@@ -81,6 +100,9 @@ void TextureManager::unloadTextures() {
     UnloadTexture(characterTextures);
 	UnloadTexture(enemyTextures);
     UnloadTexture(itemTextures);
+    UnloadTexture(blocksTexture);
+    UnloadTexture(DryBowser_texture);
+    UnloadTexture(fontTexture);
     texturesLoaded = false;
 
 	UnloadTexture(itemTextures);

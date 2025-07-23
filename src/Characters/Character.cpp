@@ -61,53 +61,13 @@ void Character::update(float deltaTime) {
 		invincibleTimer -= deltaTime;		
 	}
 
-	if(bounceTimer > 0) {
-		bounceTimer -= deltaTime;
-	}
-
-	if(holdingProjectile && projectile != nullptr) {
-		if(IsKeyPressed(KEY_X)) {
-			projectile->setPosition(Vector2{ this->position.x + (this->isFacingRight() ? this->getWidth() : -20.0f), this->getCenterY() });
-			projectile->onRelease();
-			projectile->changeState(nullptr); 
-			projectile = nullptr; 
-		}
-	}
-
-	if(projectile) {
-		projectile->update(deltaTime);
-	}
+	handleProjectile(deltaTime);
 	
 	applyGravity(deltaTime);
     position.x += velocity.x * deltaTime;
     position.y += velocity.y * deltaTime;
 	
-	if (!onGround) {
-        return;
-    }
-
-    Rectangle groundCheckBox = {
-        position.x + 5,
-        position.y + (spriteRec.height * scale),
-        (spriteRec.width * scale) - 10,
-        3.0f
-    };
-
-    std::vector<std::shared_ptr<Object>> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
-    
-    bool stillOnGround = false;
-    for (auto obj : nearbyObjects) {
-        if (obj.get() != this && obj->getObjectCategory() == ObjectCategory::BLOCK) {
-            if (CheckCollisionRecs(groundCheckBox, obj->getHitBox()[0])) {
-                stillOnGround = true;
-                break;
-            }
-        }
-    }
-    
-    if (!stillOnGround) {
-        setOnGround(false);
-    }
+	handleGroundCheck();
 }
 
 void Character::draw() {
@@ -126,24 +86,7 @@ void Character::draw() {
 
 	DrawTexturePro(spriteSheet, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
 
-	std::string s = "hp: " + std::to_string(hp);
-	DrawText(s.c_str(), 20, 460, 25, BLACK);
-
-	std::string s1 = "velocity.y: " + std::to_string(velocity.y);
-	DrawText(s1.c_str(), 20, 500, 25, BLACK);
-
-	if (currentState == &IdleState::getInstance()) {
-		DrawText("idle", 20, 540, 25, BLACK);
-	}
-	else if (currentState == &MovingState::getInstance()) {
-		DrawText("moving", 20, 540, 25, BLACK);
-	}
-	else {
-		DrawText("jumping", 20, 540, 25, BLACK);
-	}
-
 	if(holdingProjectile && projectile != nullptr) {
-		DrawText("holding projectile", 20, 540, 25, BLACK);
 		projectile->draw();
 	}
 }
@@ -356,6 +299,50 @@ void Character::holdProjectile(KoopaShell& p) {
 	projectile = &p;
 }
 
+void Character::handleProjectile(float deltaTime) {
+	if (holdingProjectile && projectile != nullptr) {
+		if (IsKeyPressed(KEY_X)) {
+			projectile->setPosition(Vector2{ this->position.x + (this->isFacingRight() ? this->getWidth() : -20.0f), this->getCenterY() });
+			projectile->onRelease();
+			projectile->changeState(nullptr);
+			projectile = nullptr;
+		}
+	}
+
+	if (projectile) {
+		projectile->update(deltaTime);
+	}
+}
+
+void Character::handleGroundCheck() {
+	if (!onGround) {
+		return;
+	}
+
+	Rectangle groundCheckBox = {
+		position.x + 5,
+		position.y + (spriteRec.height * scale),
+		(spriteRec.width * scale) - 10,
+		3.0f
+	};
+
+	std::vector<std::shared_ptr<Object>> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
+
+	bool stillOnGround = false;
+	for (auto obj : nearbyObjects) {
+		if (obj.get() != this && obj->getObjectCategory() == ObjectCategory::BLOCK) {
+			if (CheckCollisionRecs(groundCheckBox, obj->getHitBox()[0])) {
+				stillOnGround = true;
+				break;
+			}
+		}
+	}
+
+	if (!stillOnGround) {
+		setOnGround(false);
+	}
+}
+
 void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 	std::vector<Rectangle> playerHitBoxes = getHitBox();
 	std::vector<Rectangle> otherHitBoxes = other->getHitBox();
@@ -370,11 +357,6 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 	float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
 	float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
 
-	const float MIN_OVERLAP = 2.0f;
-
-	if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
-		return;
-	}
 	float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
 
 	if (minOverlap == overlapTop) {
@@ -388,11 +370,11 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 			velocity.y = 0;
 		}
 	}
-	else if (minOverlap == overlapLeft && overlapLeft >= MIN_OVERLAP) {
+	else if (minOverlap == overlapLeft) {
 		position.x = otherHitBox.x - playerHitBox.width;
 		velocity.x = 0;
 	}
-	else if (minOverlap == overlapRight && overlapRight >= MIN_OVERLAP) {
+	else if (minOverlap == overlapRight) {
 		position.x = otherHitBox.x + otherHitBox.width;
 		velocity.x = 0;
 	}
@@ -454,5 +436,20 @@ void Character::handleSpringCollision(std::shared_ptr<Spring> other) {
 
 	if (minOverlap == overlapTop && velocity.y > 0) {
 		velocity.y = Constants::Spring::BOUNCE_VELOCITY;
+		changeState(JumpingState::getInstance());
+	}
+	else if (minOverlap == overlapBottom) {
+		position.y = otherHitbox.y + otherHitbox.height;
+		if (velocity.y < 0) {
+			velocity.y = 0;
+		}
+	}
+	else if (minOverlap == overlapLeft) {
+		position.x = otherHitbox.x - characterHitbox.width;
+		velocity.x = 0;
+	}
+	else if (minOverlap == overlapRight) {
+		position.x = otherHitbox.x + otherHitbox.width;
+		velocity.x = 0;
 	}
 }

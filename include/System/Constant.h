@@ -67,4 +67,8 @@ namespace Constants {
         constexpr Rectangle BRICK = { 12, 111, 128, 86 };
         constexpr Rectangle GROUND = { 786, 111, 128, 86 };
     }
+    namespace HUD {
+        constexpr float SPACING = 2.0f;
+        constexpr float SCALE = 3.0f;
+    }
 }

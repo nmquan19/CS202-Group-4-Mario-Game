@@ -7,24 +7,22 @@ void JumpingState::enter(Character* character){
     character->setAniTime(0);
     character->setAniSpeed(0.2f);
     character->setCurrentStateRow(2);
-
-    character->jump();
 }
 
 void JumpingState::update(Character* character, float deltaTime){
     Vector2 currentVel = character->getVelocity();
-    float airSpeed = character->getSpeed() * 0.7f; // reduce air control
+    float speed = character->getSpeed();
 
     if(IsKeyDown(KEY_A)){
-        character->setVelocity({-airSpeed, currentVel.y});
+        character->setVelocity({-speed, currentVel.y});
         character->setFacingRight(false);
     }
     else if(IsKeyDown(KEY_D)){
-        character->setVelocity({airSpeed, currentVel.y});
+        character->setVelocity({speed, currentVel.y});
         character->setFacingRight(true);
     }
     else{
-        character->setVelocity({currentVel.x * 0.95f, currentVel.y});
+        character->setVelocity({currentVel.x, currentVel.y});
     }
 
     if (IsKeyReleased(KEY_SPACE) && currentVel.y < 0) {

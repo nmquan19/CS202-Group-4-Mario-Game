@@ -11,6 +11,7 @@ void MovingState::enter(Character* character) {
 
 void MovingState::update(Character* character, float deltaTime) {
 	if (IsKeyPressed(KEY_SPACE) && character->isOnGround()) {
+		character->jump();
         character->changeState(JumpingState::getInstance());
         return;
     }
