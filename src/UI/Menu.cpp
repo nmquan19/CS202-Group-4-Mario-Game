@@ -5,17 +5,24 @@ MenuManager::MenuManager() {
 
     logo = LoadTexture("./assets/Super Mario Bros.png");
     select = 0;
-    dialog = false;
+    settingDialog = false;
+    exitDialog = false;
+
     exit = false;
     board = LoadTexture("./assets/button/board.png");
+
     check.load("./assets/button/check.png");
     check_selected.load("./assets/button/check_selected.png");
+
     cross.load("./assets/button/cross.png");
     cross_selected.load("./assets/button/cross_selected.png");
+
     setting.load("./assets/button/setting.png");
     setting_selected.load("./assets/button/setting_selected.png");
+
     returnButton.load("./assets/button/return.png");
     returnButton_selected.load("./assets/button/return_selected.png");
+
     home.load("./assets/button/home.png");
     play.load("./assets/button/play.png");
 
@@ -54,58 +61,71 @@ void MenuManager::DrawMenu() {
     Rectangle recLogo; recLogo.x = 0; recLogo.y = 0; recLogo.width = 886; recLogo.height = 352;
     float scale = 0.75;
     DrawTextureEx(logo, { (width - recLogo.width * scale) / 2, height / 5 }, 0, scale, WHITE); // center
-    if (select == 0 && !dialog) {
+    if (select == 0 && !settingDialog && !exitDialog) {
         DrawTextEx(menuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, YELLOW);
         DrawTextEx(menuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, WHITE);
     }
-    else if (select == 1 && !dialog) {
+    else if (select == 1 && !settingDialog && !exitDialog) {
         DrawTextEx(menuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, YELLOW);
         DrawTextEx(menuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, WHITE);
     }
-    else if (select == 2 && !dialog) {
+    else if (select == 2 && !settingDialog && !exitDialog) {
         DrawTextEx(menuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, YELLOW);
         DrawTextEx(menuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, WHITE);
     }
-    else if (select == 3 && !dialog) {
+    else if (select == 3 && !settingDialog && !exitDialog) {
         DrawTextEx(menuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, WHITE);
         DrawTextEx(menuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, YELLOW);
     }
-    if (dialog) {
+    if (settingDialog) {
+        DrawSetting();
+    }
+    if (exitDialog) {
         DrawExit();
     }
 }
 
 void MenuManager::HandleInput() {
-    if ((IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_U)) && select != 0 && !dialog) {
+    if ((IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_U)) && select != 0 && !settingDialog && !exitDialog) {
         select--;
         audioManager.PlaySoundEffect("click");
 
     }
-    if ((IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_D)) && select != 3 && !dialog) {
+    if ((IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_D)) && select != 3 && !settingDialog && !exitDialog) {
         select++;
         audioManager.PlaySoundEffect("click");
 
     }
+    if (IsKeyPressed(KEY_ENTER) && select == 1) {
+        settingDialog = true;
+    }
     if (IsKeyPressed(KEY_ENTER) && select == 2) {
-        dialog = true;
+        exitDialog = true;
     }
     if (IsKeyPressed(KEY_ENTER) && select == 3) {
         std::cout << "Editor mode\n";
     }
-    if (dialog) {
+    if (settingDialog && !exitDialog) {
+        Vector2 mousePos = GetMousePosition();
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && returnButton.checkCollision(mousePos)) {
+            settingDialog = false;
+        }
+
+    }
+    if (exitDialog && !settingDialog) {
         bool b = HandleExit();
     }
 }
 void MenuManager::DrawExit() {
-
+    DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 1.0f - 0.5f));
     DrawTextureEx(board, boardPosition, 0, scale, WHITE);
     Vector2 textSize = MeasureTextEx(menuFont, "Are you sure want to exit?", 40, 1);
     Vector2 textPosition = { boardPosition.x + (board.width * scale - textSize.x) / 2, boardPosition.y + 100 };
@@ -124,16 +144,18 @@ bool MenuManager::HandleExit() {
         return true;
     }
     else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && cross.checkCollision(mousePos)) {
-        dialog = false;
+        exitDialog = false;
     }
     return false;
 }
 void MenuManager::DrawSetting() {
+
     Vector2 mousePos = GetMousePosition();
-    setting.draw(settingPosition);
+    if (!settingDialog) setting.draw(settingPosition);
     if (setting.checkCollision(mousePos)) setting_selected.draw(settingPosition);
 
-    if (dialog) {
+    if (settingDialog) {
+        DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 1.0f - 0.5f));
         DrawTextureEx(board, boardPosition, 0, scale, WHITE);
         Vector2 textSize = MeasureTextEx(menuFont, "Setting", 40, 1);
         Vector2 textPosition = { boardPosition.x + (board.width * scale - textSize.x) / 2, boardPosition.y + 60 };
@@ -151,11 +173,11 @@ void MenuManager::DrawSetting() {
 }
 void MenuManager::HandleSetting() {
     Vector2 mousePos = GetMousePosition();
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && setting.checkCollision(mousePos)) {
-        dialog = true;
+    if (!settingDialog && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && setting.checkCollision(mousePos)) {
+        settingDialog = true;
     }
-    if (IsKeyPressed(KEY_ENTER)) dialog = false;
+    if (settingDialog && IsKeyPressed(KEY_ENTER)) settingDialog = false;
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && returnButton.checkCollision(mousePos)) {
-        dialog = false;
+        settingDialog = false;
     }
 }
