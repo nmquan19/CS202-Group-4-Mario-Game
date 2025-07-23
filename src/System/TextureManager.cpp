@@ -99,6 +99,14 @@ void ObjectPalette::drawPalette() {
     }
     DrawRectangleLinesEx(greenKoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::GREEN_KOOPA) ? RED : BLACK);
 
+    // Red Koopa
+    Rectangle redKoopaRect = { startX + 2 * spacing, yEnemy, iconSize, iconSize };
+    if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
+        Rectangle redKoopaSource = tm.Enemy_sprite_boxes[53];
+        DrawTexturePro(tm.enemyTextures, redKoopaSource, redKoopaRect, { 0,0 }, 0.0f, WHITE);
+    }
+    DrawRectangleLinesEx(redKoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::RED_KOOPA) ? RED : BLACK);
+
     // Spring
     Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
     Texture2D springTexture = tm.getItemTexture();
@@ -106,7 +114,7 @@ void ObjectPalette::drawPalette() {
         Rectangle springSource = {1, 467, 16, 16};
         DrawTexturePro(springTexture, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
     }
-    DrawText("SPRING", springRect.x + 10, springRect.y + iconSize + 5, 10, BLACK);
+    DrawRectangleLinesEx(springRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::SPRING) ? RED : BLACK);
 }
 
 void ObjectPalette::handleSelection() {
