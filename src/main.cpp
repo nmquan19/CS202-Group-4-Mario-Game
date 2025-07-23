@@ -43,10 +43,6 @@
 //    return 0;
 //}
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 int main() {
     InitWindow(600, 400, "Animation");
 
@@ -84,5 +80,5 @@ int main() {
 
     return 0;
 }
-*/
+
 
