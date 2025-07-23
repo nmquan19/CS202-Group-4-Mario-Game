@@ -12,7 +12,7 @@ enum class ObjectCategory {
 	PROJECTILE,
 	TRIGGER,
 	SHELL,
-	BACKGROUND,
+	BACKGROUND, 
 	INTERACTIVE
 };
 
@@ -49,7 +49,7 @@ enum class CharacterType {
 };
 enum class KoopaShellType {
 	GREEN_KOOPA_SHELL,
-	RED_KOOPA_SHELL
+	RED_KOOPA_SHELL	
 };
 enum class TriggerType {
 	CHECKPOINT,
@@ -65,12 +65,12 @@ enum class InteractiveType {
 };
 
 enum class Direction {
-	UP = 1,
+	UP =1 ,
 	DOWN,
 	LEFT,
 	RIGHT
 };
-class IDrawable {
+class IDrawable{
 public:
 	virtual ~IDrawable() = default;
 	virtual void draw() = 0;
@@ -85,9 +85,8 @@ public:
 	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) = 0;
 	virtual void onCollision(std::shared_ptr<Object> other) = 0;
 };
-
 class IDamageable {
-public:
+	public:
 	virtual ~IDamageable() = default;
 	virtual void takeDamage(int amount) = 0;
 	virtual bool isAlive() const = 0;

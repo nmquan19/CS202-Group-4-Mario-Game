@@ -1,57 +1,34 @@
 #pragma once
-#include "../System/Interface.h"
 #include "raylib.h"
-#include "../Objects/ObjectFactory.h"
-#include <climits>
-#include <variant>
-#include "../System/InterpolationController.h"
-#include "Anima.h"
+#include "../System/Interface.h"
+#include <vector>
+#include "..\..\include\System\PhysicsManager.h"
+#include <cstdlib>
+#include <math.h>
+#include <iostream>
 
-class Item : public Object, public IUpdatable {
+class Item : public ICollidable, public Object {
 public:
-    Item(Vector2 startPos);
+    Item();
     virtual ~Item();
 
     std::vector<Rectangle> getHitBox() const override;
     ObjectCategory getObjectCategory() const override;
-    void onCollision(std::shared_ptr<Object> other) override;
     std::vector<ObjectCategory> getCollisionTargets() const override;
     void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
+    void onCollision(std::shared_ptr<Object> other) override;
 
-    Vector2 getPosition() const override;
-    void setPosition(Vector2 newPosition);
-    bool isActive() const override;
-    void setActive(bool flag) override;
+    bool isActive();
 
-    virtual void update(float deltaTime) override;
-    void draw() override;
-    void draw(Texture2D texture);
-
-    bool isCollided() const override;
-    void setCollided(bool) override;
-    Vector2 getSize() const override;
-    virtual ObjectType getObjectType() const override;
+    int getCurrentFrame();
 
 protected:
-    Vector2 position;
-    Vector2 velocity;
-    Vector2 accelleration;
+    bool isGrounded;
 
-    bool active;
-    //Texture2D texture;
-    Rectangle spritebox;
+    std::vector<std::pair<int, int>> num_sprites;
+
     Rectangle hitbox;
-    float scale;
-    float aniTimer, aniSpeed;
-    int curFrame;
-
-    const float gravity = 600.0f;
-    const float groundY = 300.0f;
-    Anima* animation;
-    ItemType type;
+    Rectangle spriteBox;
+    Texture2D texture;
+    bool IsActive;
 };
-
-
-
-
-

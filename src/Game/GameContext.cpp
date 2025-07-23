@@ -100,8 +100,8 @@ void GameContext::addObject(ObjectType type, Vector2 worldPos, Vector2 size, std
 { 
 	//pass the middle point of the object x and the end point(feet) of the object y
     Vector2 topLeft = {
-        std::floor(worldPos.x - size.x * Constants::TILE_SIZE / 2),
-        std::floor(worldPos.y - size.y * Constants::TILE_SIZE)
+     std::floor(worldPos.x - size.x*Constants::TILE_SIZE / 2),
+     std::floor(worldPos.y - size.y*Constants::TILE_SIZE)
     };
 
     ToSpawnObjects.push_back({ type, topLeft, size, onSpawn});

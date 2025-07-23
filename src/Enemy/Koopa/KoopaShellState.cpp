@@ -3,7 +3,7 @@
 #include "../../../include/Objects/ObjectFactory.h"
 #include "../../../include/Enemy/Koopa/KoopaShell.h"
 #include <raylib.h>
-#include "../../../include/Game/GameContext.h"
+#include "../../include/Game/GameContext.h"
 #include "../../../include/System/Interface.h"
 #include "../../../include/System/TextureManager.h"
 #include "../../../include/System/Constant.h"
