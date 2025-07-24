@@ -16,6 +16,8 @@ Texture2D TextureManager::DryBowser_texture;
 Texture2D TextureManager::blocksTexture;
 Texture2D TextureManager::fontTexture;
 Texture2D TextureManager::interactiveTextures;
+Texture2D TextureManager::background_lv1;
+
 std::unordered_map<char, Rectangle> TextureManager::fontSprites = {
     {'0', {90, 3, 6, 7}}, {'1', {97, 3, 4, 7}}, {'2', {102, 3, 6, 7}}, {'3', {109, 3, 6, 7}}, {'4', {116, 3, 6, 7}},
     {'5', {1, 16, 6, 7}}, {'6', {8, 16, 6, 7}}, {'7', {15, 16, 6, 7}}, {'8', {22, 16, 6, 7}}, {'9', {29, 16, 6, 7}}, 
@@ -59,6 +61,9 @@ void TextureManager::loadTextures() {
     interactiveTextures = LoadTexture("assets/interactive_sprites.png");
 
     fontTexture = LoadTexture("assets/font_sprites.png");
+
+    background_lv1 = LoadTexture("assets/backgrounds/bg_lv1.png");
+
     //Enemy textures 
     std::ifstream  enemy_in;
     enemy_in.open("assets/enemy/enemy_output.txt");

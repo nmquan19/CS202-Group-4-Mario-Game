@@ -21,6 +21,7 @@ public:
     void handleInput(GameContext& context) override;
     void update(GameContext& context, float deltaTime) override;
     void draw(GameContext& context) override;
+    void DrawBackGround(Texture2D&);
 };
 
 class EditorState : public GameState {

@@ -68,7 +68,7 @@ void LevelEditor::draw() {
         }
     }
     if (editMode) {
-        GridSystem::drawGrid(GetScreenWidth(), GetScreenHeight());
+        GridSystem::drawGrid(Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT);
 
         Vector2 sMousePos = GetMousePosition();
         Vector2 wMousePos = GetScreenToWorld2D(sMousePos, GameContext::getInstance().camera);
