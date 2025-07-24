@@ -6,6 +6,7 @@
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/Enemy.h"
+#include "../../include//Item/Item.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -238,6 +239,7 @@ void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candi
 				break;
 			case ObjectCategory::ITEM:
 				// implement 
+
 				break;
 		}
 	}
@@ -456,3 +458,7 @@ void Character::handleSpringCollision(std::shared_ptr<Spring> other) {
 		velocity.x = 0;
 	}
 }
+
+
+
+

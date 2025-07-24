@@ -6,6 +6,11 @@
 #include "../../include/Enemy/Goomba/Goomba.h"
 #include "../../include/Enemy/Koopa/Koopa.h"
 #include "../../include/Item/Item.h"
+#include "../../include/Item/Coin/Coin.h"
+#include "../../include/Item/Mushroom/Mushroom.h"
+#include "../../include/Item/Fire_Flower/Fire_Flower.h"
+#include "../../include/Item/Star/Star.h"
+#include "../../include/Item/One_Up/One_Up.h"
 #include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../include/System/Interface.h"
 #include <raylib.h>
@@ -85,30 +90,31 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
     }
 }   
 
-//std::unique_ptr<Object> ObjectFactory::createItem(ItemType type, Vector2 startPos, Vector2 size) {
-//    return createSpecificItem(type, startPos, size);
-//}
-//
-//std::unique_ptr<Item> ObjectFactory::createSpecificItem(ItemType type, Vector2 startPos, Vector2 size) {
-//    switch (type) {
-//    case ItemType::COIN:
-//        return createCoin(startPos, size);
-//    //case ItemType::MUSHROOM:
-//    //    return createMushroom(startPos, size);
-//    default:
-//        return nullptr;
-//    }
-//}
+std::unique_ptr<Object> ObjectFactory::createItem(ItemType type, Vector2 startPos, Vector2 size) {
+    return createSpecificItem(type, startPos, size);
+}
 
-//std::unique_ptr<Item> ObjectFactory::createCoin(Vector2 startPos, Vector2 size) {
-//    Texture2D texture = LoadTexture("assets/item_coin.png"); // 👈 dùng sprite riêng cho coin
-//    return std::make_unique<CoinItem>(startPos, texture, size);
-//}
-//
-//std::unique_ptr<Item> ObjectFactory::createMushroom(Vector2 startPos, Vector2 size) {
-//    Texture2D texture = LoadTexture("assets/item_mushroom.png");
-//    return std::make_unique<MushroomItem>(startPos, texture, size);
-//}
+std::unique_ptr<Item> ObjectFactory::createSpecificItem(ItemType type, Vector2 startPos, Vector2 size) {
+    switch (type) {
+    case ItemType::COIN:
+		return std::make_unique<Coin>(startPos);
+        break;
+    case ItemType::MUSHROOM:
+        return std::make_unique<Mushroom>(startPos);
+        break;
+	case ItemType::FIRE_FLOWER:
+        return std::make_unique<Fire_Flower>(startPos);
+		break;
+	case ItemType::STAR:
+        return std::make_unique<Star>(startPos);
+		break;
+    case ItemType::ONE_UP:
+	    return std::make_unique<One_Up>(startPos);
+		break;
+    default:
+        return std::make_unique<Coin>(startPos);
+    }
+}
 
 
 std::vector<std::vector<Rectangle>> ObjectFactory::getFrameData(CharacterType type) {

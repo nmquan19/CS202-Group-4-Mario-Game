@@ -54,6 +54,13 @@ void GameContext::setState(GameState* newState) {
              addObject(EnemyType::DRY_BOWSER, {500,950}, {2, 2});
             camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
             camera.target = character->getPosition();
+            // addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
+            addObject(ItemType::COIN, { 800, 700 }, { 0.25, 0.25 });
+			addObject(ItemType::MUSHROOM, { 1000, 700 }, { 0.25, 0.25 });
+			addObject(ItemType::FIRE_FLOWER, { 1200, 700 }, { 0.25, 0.25 });
+			addObject(ItemType::STAR, { 600, 700 }, { 0.25, 0.25 });
+            addObject(ItemType::ONE_UP, { 400, 700 }, { 0.25, 0.25 });
+
         }
     }
 }
@@ -127,6 +134,9 @@ void GameContext::spawnObject() {
             }
             else if constexpr (std::is_same_v<T, InteractiveType>) {
                 object = ObjectFactory::createSpring(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
+            }
+            else if constexpr (std::is_same_v<T, ItemType>) {
+				object = ObjectFactory::createItem(actualType, request.worldpos, request.size);
             }
             }, request.type);
 
