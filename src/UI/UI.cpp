@@ -5,7 +5,7 @@ coin({ GetScreenWidth() * 3 / 10.0f, GetScreenHeight() / 10.0f }, "./assets/coin
 world({ GetScreenWidth() * 5 / 10.0f, GetScreenHeight() / 10.0f }, "1 - 1"),
 timer({ GetScreenWidth() * 7 / 10.0f, GetScreenHeight() / 10.0f }, 400.0f),
 isGameOver(false) {
-    menuFont = LoadFont("./assets/romulus.png");
+    menuFont = LoadFont("./assets/font_sprites.png");
 
 }
 
