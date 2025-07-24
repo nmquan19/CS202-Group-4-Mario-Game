@@ -11,6 +11,8 @@ namespace Constants {
     constexpr float GRAVITY = 980.0f;
     constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
+    constexpr float WORLDBOUNDS_WIDTH = 5000.0f;
+    constexpr float WORLDBOUNDS_HEIGHT = 1800.0f;
 
     namespace GreenKoopa {
 		constexpr Vector2 standardSize = { 0.75, 1};
@@ -69,6 +71,7 @@ namespace Constants {
     namespace Spring {
         constexpr float BOUNCE_VELOCITY = -800.0f;
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };
+        constexpr float BOUNCE_DURATION = 1.4f;
     }
     namespace PaletteResources {
         constexpr Rectangle BRICK = { 12, 111, 128, 86 };

@@ -65,11 +65,10 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 
 void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
-    ClearBackground(SKYBLUE);
+    ClearBackground(WHITE);
     BeginMode2D(GameContext::getInstance().camera);
+    DrawBackGround(TextureManager::getInstance().background_lv1);
     DrawText("Press Enter", 500, 100, 20, BLACK);
-
-    //DrawText("Press Enter", 500, 100, 20, BLACK);
     
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
     if (context.character) {
@@ -85,6 +84,12 @@ void GamePlayState::draw(GameContext& context) {
     context.menuManager.DrawSetting();
     context.menuManager.drawInformationBoard();
     EndDrawing();
+}
+
+void GamePlayState::DrawBackGround(Texture2D& texture) {
+    if (texture.id != 0) {
+        DrawTexturePro(texture, {0, 0, (float)texture.width, (float)texture.height}, {0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT}, {0,0}, 0.0f, WHITE);
+    }
 }
 
 void EditorState::handleInput(GameContext& context) {

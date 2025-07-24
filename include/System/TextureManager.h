@@ -22,6 +22,8 @@ public:
     Texture2D getItemTexture(ItemType type) const;
     static Texture2D fontTexture;
     static std::unordered_map<char, Rectangle> fontSprites;
+
+    static Texture2D background_lv1;
     
     Texture2D getCharacterTexture() const;
     Texture2D getItemTexture() const;

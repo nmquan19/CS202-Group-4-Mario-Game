@@ -15,14 +15,19 @@ public:
 	ObjectType getObjectType() const override;
 	Vector2 getSize() const override;
 
+	void setAniTimer(float val);
+	void setBouncing(bool flag);
+	void setBounceTimer(float val);
+
 	void updateHitBox();
 
 private:
 	bool isBouncing;
-	float bouncingTimer;
+	float bounceTimer;
 	float aniTimer;
 	float aniSpeed;
 	int currentFrame;
+	float bottomY;
 	Rectangle spriteRec;
 	std::vector<Rectangle> frameData;
 };
