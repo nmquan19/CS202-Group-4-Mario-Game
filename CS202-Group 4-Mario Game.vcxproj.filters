@@ -42,6 +42,7 @@
     <ClCompile Include="src\Item\Item.cpp" />
     <ClCompile Include="src\UI\Button.cpp" />
     <ClCompile Include="src\UI\SlideBar.cpp" />
+    <ClCompile Include="src\Game\HUD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -101,6 +102,7 @@
     <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
     <ClInclude Include="include\UI\SlideBar.h" />
     <ClInclude Include="include\UI\Button.h" />
+    <ClInclude Include="include\Game\HUD.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">
@@ -187,7 +189,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\button\board.png" />
-    <Image Include="assets\romulus.png" />
     <Image Include="assets\Super Mario Bros.png" />
     <Image Include="assets\button\check.png" />
     <Image Include="assets\button\check_selected.png" />
@@ -220,5 +221,21 @@
     <Media Include="assets\sound\point.wav" />
     <Media Include="assets\sound\strike.wav" />
     <Media Include="assets\sound\theme1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\button\board.png" />
+    <Image Include="assets\font_sprites.png" />
+    <Image Include="assets\Super Mario Bros.png" />
+    <Image Include="assets\button\check.png" />
+    <Image Include="assets\button\check_selected.png" />
+    <Image Include="assets\button\cross.png" />
+    <Image Include="assets\button\cross_selected.png" />
+    <Image Include="assets\button\home.png" />
+    <Image Include="assets\button\option.png" />
+    <Image Include="assets\button\play.png" />
+    <Image Include="assets\button\return.png" />
+    <Image Include="assets\button\return_selected.png" />
+    <Image Include="assets\button\setting.png" />
+    <Image Include="assets\button\setting_selected.png" />
   </ItemGroup>
 </Project>

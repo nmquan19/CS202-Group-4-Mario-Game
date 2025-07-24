@@ -11,7 +11,6 @@ Spring::Spring(Vector2 position, Vector2 size) : InteractiveObject(position, siz
 	frameData = { {1, 467, 16, 16}, {18, 471, 16, 12}, {35, 476, 16, 7} };
 	currentFrame = 0;
 	spriteRec = frameData[0];
-	texture = TextureManager::getInstance().getItemTexture();
 	hitBox = { position.x, position.y, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE };
 }
 
@@ -48,8 +47,7 @@ void Spring::update(float deltaTime) {
 void Spring::draw() {
 	Rectangle source = spriteRec;
 	Rectangle dest = hitBox;
-	DrawTexturePro(texture, source, dest, { 0, 0 }, 0.0f, WHITE);
-	//DrawRectangle(position.x, position.y, 50, 50, BLACK);
+	DrawTexturePro(TextureManager::interactiveTextures, source, dest, { 0, 0 }, 0.0f, WHITE);
 }
 
 void Spring::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {

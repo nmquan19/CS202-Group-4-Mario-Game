@@ -45,15 +45,15 @@ void GameContext::setState(GameState* newState) {
         currentState = newState;
 
         if (newState == gamePlayState) {
-            PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
+            PhysicsManager::getInstance().setWorldBounds({ 0, 0, 5000, (float)GetScreenWidth()});
             LevelEditor::getInstance().setEditMode(false);
             LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
             PhysicsManager::getInstance().addObject(character);
             // addObject(InteractiveType::SPRING, { 500, 950 }, { 1, 1 });
             // addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
-            camera.offset = character->getPosition();
-            camera.target = {0,0};
+            camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
+            camera.target = character->getPosition();
         }
     }
 }

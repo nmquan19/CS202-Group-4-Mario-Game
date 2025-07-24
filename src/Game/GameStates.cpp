@@ -8,6 +8,9 @@
 #include "../../include/System/Interface.h"
 #include <memory>
 #include "../../include/Characters/Character.h"
+#include <iostream>
+
+void handleCamera();
 
 void MenuState::handleInput(GameContext& context) {
     context.menuManager.HandleInput();
@@ -43,49 +46,10 @@ void GamePlayState::handleInput(GameContext& context) {
 }
 
 void GamePlayState::update(GameContext& context, float deltaTime) {
-    GameContext::getInstance().camera.zoom = expf(logf(GameContext::getInstance().camera.zoom) + ((float)GetMouseWheelMove()*0.1f));
-    if (GameContext::getInstance().camera.zoom > 3.0f) GameContext::getInstance().camera.zoom = 3.0f;
-    else if (GameContext::getInstance().camera.zoom < 1.0f) GameContext::getInstance().camera.zoom = 1.0f; 
-
+    handleCamera();
     if (context.character) {
         std::shared_ptr<Character> character = std::dynamic_pointer_cast<Character>(context.character);
         character->update(deltaTime);
-        // Get character position
-        Vector2 characterPos = character->getPosition();
-        GameContext::getInstance().camera.offset = characterPos;
-        
-        // Define world bounds (adjust these values based on your level size)
-        float worldWidth = 3000.0f;  // Your level width
-        float worldHeight = 2000.0f; // Your level height
-        float leftBound = 0.0f;      // Left boundary
-        float bottomBound = worldHeight; // Bottom boundary (assuming Y increases downward)
-        
-        // Calculate camera bounds based on screen size and zoom
-        float screenWidth = GetScreenWidth();
-        float screenHeight = GetScreenHeight();
-        float halfScreenWidth = screenWidth / (2.0f * GameContext::getInstance().camera.zoom);
-        float halfScreenHeight = screenHeight / (2.0f * GameContext::getInstance().camera.zoom);
-        
-        // Clamp camera target to world bounds
-        Vector2 cameraTarget = characterPos;
-        
-        // Prevent camera from going past left boundary
-        if (cameraTarget.x - halfScreenWidth < leftBound) {
-            cameraTarget.x = 0;
-        }
-        
-        // Prevent camera from going past bottom boundary
-        if (cameraTarget.y + halfScreenHeight > bottomBound) {
-            cameraTarget.y = bottomBound - halfScreenHeight;
-        }
-        
-        // Prevent camera from going past top boundary (optional)
-        if (cameraTarget.y - halfScreenHeight < 0) {
-            cameraTarget.y = halfScreenHeight;
-        }
-        
-        // Apply the clamped target to camera
-        GameContext::getInstance().camera.target = cameraTarget;
     }
     for (auto obj :context.Objects)
     {
@@ -102,20 +66,24 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(SKYBLUE);
+    BeginMode2D(GameContext::getInstance().camera);
+    DrawText("Press Enter", 500, 100, 20, BLACK);
 
     //DrawText("Press Enter", 500, 100, 20, BLACK);
-
-    context.menuManager.drawInformationBoard();
+    
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
-    if (context.character) context.character->draw();
+    if (context.character) {
+        context.character->draw();
+    }
     for (auto obj : context.Objects)
     {
         obj->draw();
     }
-    PhysicsManager::getInstance().drawDebug();
+    /*PhysicsManager::getInstance().drawDebug();*/
     EndMode2D();
-    DrawFPS(20, 50);
+    DrawFPS(20, 50); 
     context.menuManager.DrawSetting();
+    context.menuManager.drawInformationBoard();
     EndDrawing();
 }
 
@@ -137,6 +105,7 @@ void EditorState::handleInput(GameContext& context) {
 }
 
 void EditorState::update(GameContext& context, float deltaTime) {
+    handleCamera();
     LevelEditor::getInstance().update();
 }
 
@@ -164,4 +133,33 @@ void GameOverState::draw(GameContext& context) {
     ClearBackground(WHITE);
     context.uiManager.DrawGameOver();
     EndDrawing();
+}
+
+void handleCamera() {
+    GameContext::getInstance().camera.zoom = expf(logf(GameContext::getInstance().camera.zoom) + ((float)GetMouseWheelMove()*0.1f));
+    if (GameContext::getInstance().camera.zoom > 2.0f) GameContext::getInstance().camera.zoom = 2.0f;
+    else if (GameContext::getInstance().camera.zoom < 1.0f) GameContext::getInstance().camera.zoom = 1.0f; 
+    if (GameContext::getInstance().character) {
+        GameContext::getInstance().camera.target = GameContext::getInstance().character->getPosition();
+
+        Vector2 target = GameContext::getInstance().camera.target;
+
+        Vector2 topLeft = GetWorldToScreen2D({0,0}, GameContext::getInstance().camera);
+        Vector2 bottomRight = GetWorldToScreen2D({(float)GetScreenWidth(), (float)GetScreenHeight()}, GameContext::getInstance().camera);
+
+        float cameraWidth = bottomRight.x - topLeft.x;
+        float cameraHeight = bottomRight.y - topLeft.y;
+
+        // Calculate camera bounds
+        float minCameraX = 0 + cameraWidth * 0.5f;
+        float maxCameraX = 0 + 5000 - cameraWidth * 0.5f;
+        float minCameraY = 0 + cameraHeight * 0.5f;
+        float maxCameraY = 0 + GetScreenHeight() - cameraHeight * 0.5f;
+
+        // Clamp the target
+        target.x = fmaxf(minCameraX, fminf(target.x, maxCameraX));
+        target.y = fmaxf(minCameraY, fminf(target.y, maxCameraY));
+
+        GameContext::getInstance().camera.target = target;
+    }
 }
