@@ -51,6 +51,6 @@ public:
 	void deleteObjects();
     std::shared_ptr<Object> getSharedPtrFromRaw(Object* rawPtr);
     void clearGame();
-
+    std::shared_ptr<Object> getCharacter() { return character; }
     Camera2D camera;
 };

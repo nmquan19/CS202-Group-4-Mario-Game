@@ -94,7 +94,7 @@ public:
 	float hitBoxHeight;
 	Vector2 velocity; 
 	Vector2 accelleration; 
-	float groundLevel = INT_MIN;
+	float groundLevel = INT_MAX;
 };
 
 
