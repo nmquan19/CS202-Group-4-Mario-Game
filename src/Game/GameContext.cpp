@@ -17,6 +17,8 @@
 #include <cmath>
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
 }
 
 GameContext::~GameContext() {
@@ -43,12 +45,15 @@ void GameContext::setState(GameState* newState) {
         currentState = newState;
 
         if (newState == gamePlayState) {
-            PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
+            PhysicsManager::getInstance().setWorldBounds({ 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT});
             LevelEditor::getInstance().setEditMode(false);
             LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
             PhysicsManager::getInstance().addObject(character);
             // addObject(InteractiveType::SPRING, { 500, 950 }, { 1, 1 });
+             addObject(EnemyType::DRY_BOWSER, {500,950}, {2, 2});
+            camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
+            camera.target = character->getPosition();
             // addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
             addObject(ItemType::COIN, { 800, 500 }, { 0.25, 0.25 });
         }

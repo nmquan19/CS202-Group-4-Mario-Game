@@ -11,6 +11,8 @@ namespace Constants {
     constexpr float GRAVITY = 980.0f;
     constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
+    constexpr float WORLDBOUNDS_WIDTH = 5000.0f;
+    constexpr float WORLDBOUNDS_HEIGHT = 1800.0f;
 
     namespace GreenKoopa {
 		constexpr Vector2 standardSize = { 0.75, 1};
@@ -52,19 +54,31 @@ namespace Constants {
         };
     }
     namespace DryBowser{
-        constexpr float WalkTurnDuration = 0.5f;  
+		constexpr float BASIC_ATTACK_COOLDOWN = 0.5f;
+        constexpr float WalkTurnDuration = 0.25f;  
 		constexpr float JUMP_VELOCITY = -600.0f;
         constexpr float WallJumpFriction = 0.95f;
         constexpr float RUN_SPEED = 500.0f; 
 		constexpr float BASIC_ATTACK_DURATION = 2.0f;
-        constexpr float BASIC_ATTACK_RANGE = 100.0f; 
+        constexpr float BASIC_ATTACK_RANGE = 150.0f; 
+		constexpr float SPIN_ATTACK_COOLDOWN = 10.0f;
+        constexpr float SPIN_ATTACK_WINDUP_DURATION = 1.f;
+        constexpr float SPIN_ATTACK_DURATION =0.5f;
+        constexpr float SPIN_ATTACK_WINDDOWN_DURATION = 0.75f;
+		constexpr float SPIN_ATTACK_RANGE = 300.0f;
+        constexpr float TAKE_DAMAGE_DURATION = 0.5f; 
     } 
     namespace Spring {
         constexpr float BOUNCE_VELOCITY = -800.0f;
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };
+        constexpr float BOUNCE_DURATION = 1.4f;
     }
     namespace PaletteResources {
         constexpr Rectangle BRICK = { 12, 111, 128, 86 };
         constexpr Rectangle GROUND = { 786, 111, 128, 86 };
+    }
+    namespace HUD {
+        constexpr float SPACING = 2.0f;
+        constexpr float SCALE = 3.0f;
     }
 }

@@ -15,7 +15,7 @@ InterpolatedAnimationController::InterpolatedAnimationController(
     int start, int end, float durationSeconds,
     std::function<float(float)> easing, bool rev, bool loop)
     : startFrame(start), endFrame(end), duration(durationSeconds), elapsed(0.0f),
-    easingFunction(easing),reverse(rev), isLoop(loop) {
+    easingFunction(easing), reverse(rev), isLoop(loop) {
 }
 
 void InterpolatedAnimationController::reset() {
@@ -39,7 +39,7 @@ void InterpolatedAnimationController::set(int start, int end, float durationSeco
     duration = durationSeconds;
     elapsed = 0.0f;
     easingFunction = easing;
-    reverse = rev; 
+    reverse = rev;
     isLoop = loop;
 }
 
@@ -75,4 +75,3 @@ void InterpolatedAnimationController::setLoop(bool loop) {
 void InterpolatedAnimationController::setReverse(bool rev) {
     reverse = rev;
 }
-

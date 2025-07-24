@@ -5,51 +5,42 @@
 
 Spring::Spring(Vector2 position, Vector2 size) : InteractiveObject(position, size) {
 	isBouncing = false;
-	bouncingTimer = 0.0f;
+	bounceTimer = 0.0f;
 	aniTimer = 0.0f;
 	aniSpeed = 0.2f;
 	frameData = { {1, 467, 16, 16}, {18, 471, 16, 12}, {35, 476, 16, 7} };
 	currentFrame = 0;
 	spriteRec = frameData[0];
-	texture = TextureManager::getInstance().getItemTexture();
 	hitBox = { position.x, position.y, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE };
+	bottomY = position.y + size.y * Constants::TILE_SIZE;
 }
 
 void Spring::update(float deltaTime) {
-	aniTimer += deltaTime;
-	if (aniTimer >= aniSpeed) {
-		if (!isBouncing) {
-			currentFrame = 0;
+	if (isBouncing) {
+		bounceTimer += deltaTime;
+		if (bounceTimer < Constants::Spring::BOUNCE_DURATION) {
+			aniTimer += deltaTime;
+			if (aniTimer >= aniSpeed) {
+				currentFrame = (currentFrame + 1) % frameData.size();
+				aniTimer = 0.0f;
+			}
 		}
 		else {
-			currentFrame += 1;
-			if (currentFrame >= frameData.size()) {
-				currentFrame = 0;
-				isBouncing = false;
-			}
-			switch (currentFrame) {
-			case 0:
-				size.y = 1.0f;
-				break;
-			case 1:
-				size.y = 0.75f;
-				break;
-			case 2:
-				size.y = 0.5f;
-				break;
-			}
+			isBouncing = false;
+			bounceTimer = 0.0f;
+			currentFrame = 0;
 		}
-		aniTimer = 0;
 	}
-	spriteRec = frameData[currentFrame];
-	
+	else {
+		currentFrame = 0;
+	}
+	updateHitBox();
 }
 
 void Spring::draw() {
-	Rectangle source = spriteRec;
+	Rectangle source = spriteRec; 
 	Rectangle dest = hitBox;
-	DrawTexturePro(texture, source, dest, { 0, 0 }, 0.0f, WHITE);
-	//DrawRectangle(position.x, position.y, 50, 50, BLACK);
+	DrawTexturePro(TextureManager::interactiveTextures, source, dest, { 0, 0 }, 0.0f, WHITE);
 }
 
 void Spring::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
@@ -78,5 +69,29 @@ Vector2 Spring::getSize() const {
 }
 
 void Spring::updateHitBox() {
-	
+	switch (currentFrame) {
+	case 0:
+		size.y = 1.0f;
+		break;
+	case 1:
+		size.y = 0.75f;
+		break;
+	case 2:
+		size.y = 0.5f;
+		break;
+	}
+	hitBox = { position.x, bottomY - size.y * Constants::TILE_SIZE, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE};
+	spriteRec = frameData[currentFrame];
+}
+
+void Spring::setAniTimer(float val) {
+	aniTimer = val;
+}
+
+void Spring::setBouncing(bool flag) {
+	isBouncing = flag;
+}
+
+void Spring::setBounceTimer(float val) {
+	bounceTimer = val;
 }

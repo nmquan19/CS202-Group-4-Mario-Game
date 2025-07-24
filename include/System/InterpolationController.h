@@ -13,6 +13,7 @@
 #include <raylib.h>
 #include <string>
 #include <raymath.h>
+#include <iostream>
 class InterpolatedAnimationController {
 private:
     int startFrame;
@@ -26,7 +27,7 @@ private:
 public:
     InterpolatedAnimationController();
     InterpolatedAnimationController(int start, int end, float durationSeconds,
-        std::function<float(float)> easing = [](float t) { return t; }, bool rev =false, bool loop =false);
+        std::function<float(float)> easing = [](float t) { return t; }, bool rev = false, bool loop = false);
 
     void reset();
     void update(float dt);
@@ -71,6 +72,7 @@ public:
 
         float t = static_cast<float>(currentFrame - startFrame) / (endFrame - startFrame);
         float eased = easingFunction(std::clamp(t, 0.0f, 1.0f));
+        std::cout << (fromVelocity + (toVelocity - fromVelocity) * eased).y<<"\n";
         return fromVelocity + (toVelocity - fromVelocity) * eased;
     }
 

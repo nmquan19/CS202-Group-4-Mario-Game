@@ -5,6 +5,7 @@
 #include "Interface.h"
 #include <variant>
 #include <vector>
+#include <unordered_map>
 class TextureManager {
 public:
     static TextureManager& getInstance();
@@ -13,13 +14,16 @@ public:
 	static Texture2D DryBowser_texture;   
     static std::vector<Rectangle> DryBowser_sprite_boxes;
     static Texture2D blocksTexture;
-
     static Texture2D enemyTextures;
+    static Texture2D interactiveTextures;
 
     static std::vector<Rectangle> Item_sprite_boxes;
     static Texture2D itemTextures;
     Texture2D getItemTexture(ItemType type) const;
+    static Texture2D fontTexture;
+    static std::unordered_map<char, Rectangle> fontSprites;
 
+    static Texture2D background_lv1;
     
     Texture2D getCharacterTexture() const;
     Texture2D getItemTexture() const;

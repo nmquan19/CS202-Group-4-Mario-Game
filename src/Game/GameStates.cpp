@@ -8,6 +8,9 @@
 #include "../../include/System/Interface.h"
 #include <memory>
 #include "../../include/Characters/Character.h"
+#include <iostream>
+
+void handleCamera();
 
 void MenuState::handleInput(GameContext& context) {
     context.menuManager.HandleInput();
@@ -37,14 +40,13 @@ void MenuState::draw(GameContext& context) {
 
 void GamePlayState::handleInput(GameContext& context) {
     context.menuManager.HandleSetting();
-
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.gameOverState);
     }
 }
 
 void GamePlayState::update(GameContext& context, float deltaTime) {
-    
+    handleCamera();
     if (context.character) {
         std::shared_ptr<Character> character = std::dynamic_pointer_cast<Character>(context.character);
         character->update(deltaTime);
@@ -63,21 +65,31 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 
 void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
-    ClearBackground(SKYBLUE);
-
-    //DrawText("Press Enter", 500, 100, 20, BLACK);
-
-    context.menuManager.drawInformationBoard();
+    ClearBackground(WHITE);
+    BeginMode2D(GameContext::getInstance().camera);
+    DrawBackGround(TextureManager::getInstance().background_lv1);
+    DrawText("Press Enter", 500, 100, 20, BLACK);
+    
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
-    if (context.character) context.character->draw();
+    if (context.character) {
+        context.character->draw();
+    }
     for (auto obj : context.Objects)
     {
         obj->draw();
     }
     PhysicsManager::getInstance().drawDebug();
-    DrawFPS(20, 50);
+    EndMode2D();
+    DrawFPS(20, 50); 
     context.menuManager.DrawSetting();
+    context.menuManager.drawInformationBoard();
     EndDrawing();
+}
+
+void GamePlayState::DrawBackGround(Texture2D& texture) {
+    if (texture.id != 0) {
+        DrawTexturePro(texture, {0, 0, (float)texture.width, (float)texture.height}, {0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT}, {0,0}, 0.0f, WHITE);
+    }
 }
 
 void EditorState::handleInput(GameContext& context) {
@@ -98,6 +110,7 @@ void EditorState::handleInput(GameContext& context) {
 }
 
 void EditorState::update(GameContext& context, float deltaTime) {
+    handleCamera();
     LevelEditor::getInstance().update();
 }
 
@@ -125,4 +138,33 @@ void GameOverState::draw(GameContext& context) {
     ClearBackground(WHITE);
     context.uiManager.DrawGameOver();
     EndDrawing();
+}
+
+void handleCamera() {
+    GameContext::getInstance().camera.zoom = expf(logf(GameContext::getInstance().camera.zoom) + ((float)GetMouseWheelMove()*0.1f));
+    if (GameContext::getInstance().camera.zoom > 2.0f) GameContext::getInstance().camera.zoom = 2.0f;
+    else if (GameContext::getInstance().camera.zoom < 1.0f) GameContext::getInstance().camera.zoom = 1.0f; 
+    if (GameContext::getInstance().character) {
+        GameContext::getInstance().camera.target = GameContext::getInstance().character->getPosition();
+
+        Vector2 target = GameContext::getInstance().camera.target;
+
+        Vector2 topLeft = GetWorldToScreen2D({0,0}, GameContext::getInstance().camera);
+        Vector2 bottomRight = GetWorldToScreen2D({(float)GetScreenWidth(), (float)GetScreenHeight()}, GameContext::getInstance().camera);
+
+        float cameraWidth = bottomRight.x - topLeft.x;
+        float cameraHeight = bottomRight.y - topLeft.y;
+
+        // Calculate camera bounds
+        float minCameraX = 0 + cameraWidth * 0.5f;
+        float maxCameraX = 0 + 5000 - cameraWidth * 0.5f;
+        float minCameraY = 0 + cameraHeight * 0.5f;
+        float maxCameraY = 0 + GetScreenHeight() - cameraHeight * 0.5f;
+
+        // Clamp the target
+        target.x = fmaxf(minCameraX, fminf(target.x, maxCameraX));
+        target.y = fmaxf(minCameraY, fminf(target.y, maxCameraY));
+
+        GameContext::getInstance().camera.target = target;
+    }
 }

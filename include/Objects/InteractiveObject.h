@@ -30,6 +30,5 @@ public:
     virtual ObjectType getObjectType() const = 0;
 
 protected:
-    Texture2D texture;
     Rectangle hitBox;
 };

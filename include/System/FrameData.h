@@ -11,6 +11,7 @@ class Enemy;
 enum class EventType
 {
     None,
+    IncrementVelocity,
     ChangeVelocity,
     SetEasingVelocity,
     PlaySound
@@ -61,6 +62,7 @@ public:
 
 namespace FrameEventHandlers {
     std::function<void()> createChangeVelocityHandler(const std::string& payload, Enemy* enemy);
+    std::function<void()> createIncrementVelocityHandler(const std::string& payload, Enemy* enemy);
     std::function<void()> createSetEasingVelocityHandler(const std::string& payload, Enemy* enemy);
     std::function<void()> createPlaySoundHandler(const std::string& payload);
     std::function<void()> bind(const FrameEvent& event, Enemy* enemy); // Optional utility

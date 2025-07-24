@@ -47,12 +47,6 @@ void Koopa::onCollision(std::shared_ptr<Object> other) {
 }
 void Koopa::draw() {
 
-
-    if (isActive())
-    {
-        DrawText(TextFormat("Koopa Velocity: %f", velocity.x), 400, 400, 20, RED);
-
-    }
     Rectangle source = spritebox;
     Rectangle dest = hitbox;
     if (knockAnimation && velocity.y > 0) {
