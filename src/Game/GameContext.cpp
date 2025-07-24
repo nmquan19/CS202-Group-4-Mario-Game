@@ -45,7 +45,7 @@ void GameContext::setState(GameState* newState) {
         currentState = newState;
 
         if (newState == gamePlayState) {
-            PhysicsManager::getInstance().setWorldBounds({ 0, 0, 5000, (float)GetScreenWidth()});
+            PhysicsManager::getInstance().setWorldBounds({ 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT});
             LevelEditor::getInstance().setEditMode(false);
             LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });

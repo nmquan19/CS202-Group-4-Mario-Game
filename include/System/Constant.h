@@ -11,6 +11,8 @@ namespace Constants {
     constexpr float GRAVITY = 980.0f;
     constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
+    constexpr float WORLDBOUNDS_WIDTH = 5000.0f;
+    constexpr float WORLDBOUNDS_HEIGHT = 1800.0f;
 
     namespace GreenKoopa {
 		constexpr Vector2 standardSize = { 0.75, 1};
