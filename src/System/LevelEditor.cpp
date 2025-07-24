@@ -43,47 +43,10 @@ void LevelEditor::update() {
         palette.handleSelection();
         handleMouseInput();
     }
-    else if (!clearing) {
-        for (auto& it : gridBlocks) {
-            Object* obj = it.second.top().get();
-            if (!obj) continue;
-
-            Enemy* enemy = dynamic_cast<Enemy*>(obj);
-            bool shouldUpdate = false;
-
-            if (enemy) {
-                shouldUpdate = enemy->isAlive();
-            }
-            else {
-                shouldUpdate = obj->isActive();
-            }
-
-            if (shouldUpdate) {
-                IUpdatable* updatable = dynamic_cast<IUpdatable*>(obj);
-                if (updatable){
-                    updatable->update(GetFrameTime());
-                }
-            }
-        }
-    }
 }
 
 void LevelEditor::draw() {
-    if (editMode) {
-        GridSystem::drawGrid(GetScreenWidth(), GetScreenHeight());
-
-        Vector2 mousePos = GetMousePosition();
-        Vector2 gridCoord = GridSystem::getGridCoord(mousePos);
-        Rectangle highlightRect = GridSystem::getGridRect(gridCoord);
-        DrawRectangleLinesEx(highlightRect, 3, GREEN);
-        palette.drawPalette();
-
-        DrawText("F7: Save Level", 20, 100, 16, DARKBLUE);
-        DrawText("F8: Load Level", 20, 120, 16, DARKBLUE);
-        DrawText("F9: Clear Level", 20, 140, 16, DARKBLUE);
-        DrawText(("Number of grids used: " + std::to_string(gridBlocks.size())).c_str(), 20, 160, 16, DARKBLUE);
-    }
-
+    BeginMode2D(GameContext::getInstance().camera);
     if (!clearing) {
         for (auto& it : gridBlocks) {
             Object* obj = it.second.top().get();
@@ -104,22 +67,87 @@ void LevelEditor::draw() {
             }
         }
     }
-    
+    if (editMode) {
+        GridSystem::drawGrid(GetScreenWidth(), GetScreenHeight());
+
+        Vector2 sMousePos = GetMousePosition();
+        Vector2 wMousePos = GetScreenToWorld2D(sMousePos, GameContext::getInstance().camera);
+        Vector2 gridCoord = GridSystem::getGridCoord(wMousePos);
+        if (!CheckCollisionPointRec(sMousePos, palette.getPaletteRect())) {
+            Rectangle highlightRect = GridSystem::getGridRect(gridCoord);
+            DrawRectangleRec(highlightRect, Fade(GREEN, 0.2f));
+            DrawRectangleLinesEx(highlightRect, 3, GREEN);
+            Vector2 textPos = {highlightRect.x + 5, highlightRect.y + 5};
+            std::string coordText = "(" + std::to_string((int)gridCoord.x) + "," + std::to_string((int)gridCoord.y) + ")";
+            DrawText(coordText.c_str(), textPos.x, textPos.y, 12, BLACK);
+        }
+    }
+    EndMode2D();
+    if (editMode) {
+        palette.drawPalette();
+        DrawText("F7: Save Level", 20, 100, 16, DARKBLUE);
+        DrawText("F8: Load Level", 20, 120, 16, DARKBLUE);
+        DrawText("F9: Clear Level", 20, 140, 16, DARKBLUE);
+        DrawText(("Number of grids used: " + std::to_string(gridBlocks.size())).c_str(), 20, 160, 16, DARKBLUE);
+
+    }
     const char* modeText = editMode ? "EDIT MODE" : "PLAY MODE";
     DrawText(modeText, 20, 70, 20, editMode ? GREEN : BLUE);
 }
 
 void LevelEditor::handleMouseInput() {
-    Vector2 mousePos = GetMousePosition();
-    Vector2 gridCoord = GridSystem::getGridCoord(mousePos);
-
-    bool clickingOnPalette = CheckCollisionPointRec(mousePos, palette.getPaletteRect());
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && !clickingOnPalette) {
-        placeObject(palette.getSelectedType(), gridCoord);
+    Vector2 screenMousePos = GetMousePosition();
+    Vector2 worldMousePos = GetScreenToWorld2D(screenMousePos, GameContext::getInstance().camera);
+    Vector2 gridCoord = GridSystem::getGridCoord(worldMousePos);    
+    
+    // Check screen bounds
+    if (screenMousePos.x < 0 || screenMousePos.y < 0 || 
+        screenMousePos.x >= GetScreenWidth() || screenMousePos.y >= GetScreenHeight()) {
+        return;
     }
-    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-        removeObject(gridCoord);
+    
+    // In bounds
+    Rectangle gridRect = GridSystem::getGridRect(gridCoord);
+    bool mouseInGrid = CheckCollisionPointRec(worldMousePos, gridRect);
+    
+    // Avoid spam
+    static Vector2 lastPlacedGrid = {-1, -1};
+    static Vector2 lastRemovedGrid = {-1, -1};
+    static bool wasLeftPressed = false;
+    static bool wasRightPressed = false;
+    
+    bool clickingOnPalette = CheckCollisionPointRec(screenMousePos, palette.getPaletteRect());
+    bool leftPressed = IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+    bool rightPressed = IsMouseButtonDown(MOUSE_RIGHT_BUTTON);
+    
+    // Only place/remove when mousePos in grid
+    if (leftPressed && !clickingOnPalette && mouseInGrid) {
+        // Only place when grid position change or the first time
+        if (!wasLeftPressed || 
+            (gridCoord.x != lastPlacedGrid.x || gridCoord.y != lastPlacedGrid.y)) {
+            placeObject(palette.getSelectedType(), gridCoord);
+            lastPlacedGrid = gridCoord;
+        }
     }
+    
+    if (rightPressed && mouseInGrid) {
+        if (!wasRightPressed || 
+            (gridCoord.x != lastRemovedGrid.x || gridCoord.y != lastRemovedGrid.y)) {
+            removeObject(gridCoord);
+            lastRemovedGrid = gridCoord;
+        }
+    }
+    
+    // Reset when not pressed
+    if (!leftPressed) {
+        lastPlacedGrid = {-1, -1};
+    }
+    if (!rightPressed) {
+        lastRemovedGrid = {-1, -1};
+    }
+    
+    wasLeftPressed = leftPressed;
+    wasRightPressed = rightPressed;
 }
 
 void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
@@ -144,11 +172,14 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
                 gridBlocks[key].push(newChar);
             }
         }
+        else if constexpr (std::is_same_v<T, InteractiveType>) {
+            std::shared_ptr<Object> newInter = ObjectFactory::createSpring(GridSystem::getWorldPosition(gridCoord));
+            if (newInter) {
+                gridBlocks[key].push(newInter);
+            }
+        }
     }, type);
 }
-
-
-  
 
 void LevelEditor::removeObject(Vector2 gridCoord) {
     auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
@@ -316,10 +347,18 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
     else if (std::holds_alternative<CharacterType>(type)) {
         CharacterType charType = std::get<CharacterType>(type);
         switch (charType) {
-
             case CharacterType::LUIGI: return "LUIGI";
                 break;
             default: return "MARIO";
+                break;
+        }
+    }
+    else if (std::holds_alternative<InteractiveType>(type)) {
+        InteractiveType inter = std::get<InteractiveType>(type);
+        switch (inter) {
+            case InteractiveType::SPRING: return "SPRING";
+                break;
+            default: return "SPRING";
                 break;
         }
     }
@@ -336,7 +375,7 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
 	if (typeStr == "GREEN_KOOPA") return EnemyType::GREEN_KOOPA;
 	if (typeStr == "RED_KOOPA") return EnemyType::RED_KOOPA;
     if (typeStr == "GOOMBA") return EnemyType::GOOMBA;
-
+    if (typeStr == "SPRING") return InteractiveType::SPRING;
     return BlockType::GROUND;
 }
 

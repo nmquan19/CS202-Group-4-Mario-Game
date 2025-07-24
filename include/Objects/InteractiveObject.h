@@ -12,7 +12,7 @@ public:
     virtual void update(float deltaTime) override = 0;
     virtual void draw() override = 0;
 
-    Rectangle getHitBox() const override;
+    std::vector<Rectangle> getHitBox() const override;
     virtual ObjectCategory getObjectCategory() const override;
     virtual std::vector<ObjectCategory> getCollisionTargets() const override;
     virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0;
@@ -30,7 +30,5 @@ public:
     virtual ObjectType getObjectType() const = 0;
 
 protected:
-    Texture2D texture;
     Rectangle hitBox;
-    std::unique_ptr<TriggerZone> triggerZone;
 };

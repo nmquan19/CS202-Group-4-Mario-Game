@@ -31,11 +31,11 @@ std::vector<Rectangle> Enemy::getHitBox() const {
 }
 std::vector<ObjectCategory> Enemy::getCollisionTargets() const 
 {
-	return { ObjectCategory::CHARACTER, ObjectCategory::ENEMY, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE };
+	return { ObjectCategory::ENEMY, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE };
 }
 void Enemy::applyGravity(float deltaTime) {
     if (!onGround) {
-        velocity.y +=  980* deltaTime;
+        velocity.y +=  980 * deltaTime;
     }
 }
 void Enemy::update(float deltaTime)
@@ -183,7 +183,6 @@ Vector2 Enemy::getPosition() const {
     return position;
 }
 
-
 void Enemy::setActive(bool flag) {
     active = flag;
 }
@@ -195,7 +194,6 @@ bool Enemy::isCollided() const {
 void Enemy::setCollided(bool flag) {
     collided = flag;
 }
-
 
 float Enemy::getWidth() const {
     return spritebox.width * scale;

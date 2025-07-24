@@ -4,6 +4,7 @@
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
 #include "../System/PhysicsManager.h"
+#include "../Objects/Spring.h"
 
 class ICharacterState;
 
@@ -73,6 +74,16 @@ public:
 	friend class IdleState;
 	friend class MovingState;
 	friend class JumpingState;
+	friend class HUD;
+
+private:
+	void handleProjectile(float deltaTime);
+	void handleGroundCheck();
+
+	void handleEnvironmentCollision(std::shared_ptr<Object> other);
+	void handleEnemyCollision(std::shared_ptr<Object> other);
+	void handleInteractiveCollision(std::shared_ptr<Object> other);
+	void handleSpringCollision(std::shared_ptr<Spring> other);
 	
 private:
 	ICharacterState* currentState;
@@ -102,12 +113,7 @@ private:
 
 	int hp;
 	float invincibleTimer;
-	float bounceTimer;
 	
 	KoopaShell* projectile;
 	bool holdingProjectile;
-
-	void handleEnvironmentCollision(std::shared_ptr<Object> other);
-	void handleEnemyCollision(std::shared_ptr<Object> other);
-	//void handleItemCollsion(ICollidable* other);
 };

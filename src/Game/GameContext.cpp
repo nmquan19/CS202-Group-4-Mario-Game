@@ -17,6 +17,8 @@
 #include <cmath>
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
 }
 
 GameContext::~GameContext() {
@@ -43,12 +45,15 @@ void GameContext::setState(GameState* newState) {
         currentState = newState;
 
         if (newState == gamePlayState) {
-            PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
+            PhysicsManager::getInstance().setWorldBounds({ 0, 0, 5000, (float)GetScreenWidth()});
             LevelEditor::getInstance().setEditMode(false);
             LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
             PhysicsManager::getInstance().addObject(character);
-            addObject(EnemyType::DRY_BOWSER, {300,700}, {3,3});
+            // addObject(InteractiveType::SPRING, { 500, 950 }, { 1, 1 });
+            // addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
+            camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
+            camera.target = character->getPosition();
         }
     }
 }
@@ -96,8 +101,8 @@ void GameContext::addObject(ObjectType type, Vector2 worldPos, Vector2 size, std
 { 
 	//pass the middle point of the object x and the end point(feet) of the object y
     Vector2 topLeft = {
-     std::floor(worldPos.x - size.x*Constants::TILE_SIZE / 2),
-     std::floor(worldPos.y - size.y*Constants::TILE_SIZE)
+        std::floor(worldPos.x - size.x * Constants::TILE_SIZE / 2),
+        std::floor(worldPos.y - size.y * Constants::TILE_SIZE)
     };
 
     ToSpawnObjects.push_back({ type, topLeft, size, onSpawn});
@@ -119,6 +124,9 @@ void GameContext::spawnObject() {
             }
             else if constexpr (std::is_same_v<T, KoopaShellType>) {
                 object = ObjectFactory::createKoopaShell(actualType, request.worldpos, request.size);
+            }
+            else if constexpr (std::is_same_v<T, InteractiveType>) {
+                object = ObjectFactory::createSpring(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
             }
             }, request.type);
 

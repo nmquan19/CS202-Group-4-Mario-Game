@@ -8,6 +8,7 @@
 #include "../Characters/Character.h"
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
+#include "HUD.h"
 #include <functional>
 #include <raylib.h>
 class GameState;
@@ -24,6 +25,7 @@ public:
     AudioManager audioManager;
     UIManager uiManager;
     MenuManager menuManager;
+    std::unique_ptr<HUD> hud;
     std::shared_ptr<Object> character;
     std::vector<std::shared_ptr<Object>> Objects;
     std::vector<std::shared_ptr<Object>> ToDeleteObjects;
@@ -49,4 +51,6 @@ public:
 	void deleteObjects();
     std::shared_ptr<Object> getSharedPtrFromRaw(Object* rawPtr);
     void clearGame();
+
+    Camera2D camera;
 };
