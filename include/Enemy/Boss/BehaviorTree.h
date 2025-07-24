@@ -152,6 +152,7 @@ public:
 };
 
 class WalkToTargetNode : public ActionNode {
+   
 public : 
 	WalkToTargetNode() :ActionNode() {}
 	NodeStatus tick(Enemy* boss, float dt) override; 
@@ -161,9 +162,56 @@ public:
     AttackNode() :ActionNode() {}
     NodeStatus tick(Enemy* boss, float dt) override;
 };
-
+class CanUseMeleeAttack1Node : public ActionNode {
+public:
+    CanUseMeleeAttack1Node() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
 class IdleNode : public ActionNode {
 public:
     IdleNode() :ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+class WalkTurnNode : public ActionNode {
+private: 
+    bool started = false; 
+public:
+    WalkTurnNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+    void reset() override;
+};
+class IsTargetInRangeNode : public ActionNode {
+public:
+    IsTargetInRangeNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+class NeedTurnNode : public ActionNode
+{
+public: 
+	NeedTurnNode() : ActionNode() {}
+	NodeStatus tick(Enemy* boss, float dt) override;
+};
+class CanUseSpinNode :public ActionNode {
+public:
+    CanUseSpinNode() : ActionNode() {}
+	NodeStatus tick(Enemy* boss, float dt) override;
+}; 
+class SpinAttackNode : public ActionNode {
+private:
+	bool started = false;
+public:
+    SpinAttackNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+    void reset() override; 
+}; 
+class SpinAttackWindupNode : public ActionNode {
+public:
+    SpinAttackWindupNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+
+class SpinAttackWinddownNode : public ActionNode {
+public:
+    SpinAttackWinddownNode() : ActionNode() {}
     NodeStatus tick(Enemy* boss, float dt) override;
 };

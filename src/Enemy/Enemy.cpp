@@ -176,7 +176,9 @@ float Enemy::getSpeed() {
 void Enemy::setPosition(Vector2 newPosition) {
     position = newPosition;
 }
-
+Vector2 Enemy::getDirection() const {
+    return direction;
+}
 Vector2 Enemy::getPosition() const {
     return position;
 }

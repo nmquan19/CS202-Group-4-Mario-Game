@@ -1,17 +1,72 @@
 {
     "children": [
         {
-            "type": "WalkToTarget"
-        },
-        {
-            "type": "Attack"
-        },
-        {
-            "child": {
-                "type": "Idle"
+          "children":
+          [
+            {
+              "type":"CanUseSpin"
             },
-            "type": "RunOnce"
+            {
+              "type":"SpinAttackWindup"
+            },
+            {
+                "times":5, 
+                "child":
+                {
+                  "type":"SpinAttack"
+                }, 
+              "type":"Repeat"
+            },
+            {
+              "type":"SpinAttackWinddown"
+            }
+          ],
+          "type":"Sequence"
+        },
+        {
+            "children":
+            [
+               {
+                 "type": "NeedTurn" 
+               }, 
+   
+                {
+                  "type": "WalkTurn"
+
+                },
+                {
+                  "type": "Idle"
+                }
+               
+            ],
+            "type": "Sequence"
+        },
+        {
+           "children":
+            [
+               {
+                 "type": "IsTargetInRange" 
+               }, 
+               { 
+                "children":[
+                  {
+                    "type":"CanUseMeleeAttack1"
+                  }, 
+                  {
+                    "type": "Attack"
+                  }
+                ], 
+                "type": "Sequence"
+               },
+               {
+                "type":"Idle"
+               }
+            ],
+            "type": "Sequence"
+        },
+        {
+          "type": "WalkToTarget"
         }
     ],
-    "type": "Sequence"
+    "type": "Selector"
 }

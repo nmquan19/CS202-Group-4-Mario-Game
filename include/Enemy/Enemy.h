@@ -38,7 +38,7 @@ public :
 	void setCollided(bool flag) override;
 	void setSpeed(float newSpeed);
 	float getSpeed();
-
+	Vector2 getDirection()const; 
 	float getWidth() const;
 	float getHeight() const;
 	float getBottom() const;
@@ -56,6 +56,7 @@ public :
 	std::vector<std::pair<int, int>> getSpriteData();
 	virtual void setAnimation(const std::string& ani_type) {};
 	void flipDirection(); 
+	void setDirection(Vector2 newDirection) { direction = newDirection; }
 	InterpolatedAnimationController& getAnimController() { return animController; }
 	FrameInterpolatedVelocityController& getVelocityController() { return velocityController; }
 public: 
@@ -65,6 +66,8 @@ public:
 	virtual bool isAttacking() { return false; }	
 	virtual void patrol() {}; 
 	virtual void idle() {};
+	virtual bool isTurning() const { return false; }
+	virtual void walkTurn(){}
 	virtual void avoidDanger() {};
 	virtual bool isNearTarget() const { return false; }
  protected:
@@ -79,17 +82,19 @@ public:
 	EnemyState* currentState;
 	float speed; 
 	float scale;  
+	std::vector<Rectangle> hitboxes;
 	Rectangle hitbox; 
 	bool isFacingRight;
 	Vector2 position;
 	bool active;
+	Vector2 direction; 
 	Texture2D texture; 
 	Rectangle spritebox;  
 	float hitBoxWidth;
 	float hitBoxHeight;
 	Vector2 velocity; 
 	Vector2 accelleration; 
-	float groundLevel = INT_MAX;
+	float groundLevel = INT_MIN;
 };
 
 

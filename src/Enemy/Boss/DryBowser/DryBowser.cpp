@@ -36,12 +36,40 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
     setAnimation("BasicAttack");
     currentPhase = std::make_unique<DryBowserPhase1BT>();
     currentPhase->enter(this);
+    Rectangle headBox = {
+       position.x + hitbox.width * 0.55f,
+       position.y + hitbox.height * 0.2f,
+       hitbox.width * 0.3f,
+       hitbox.height * 0.6f
+    };
+	direction = { 1, 0 }; // Default direction to the right
+    hitboxes.push_back(headBox);
+    hitboxes.push_back(hitbox);
 }
-
+#include <iostream>
 void DryBowser::update(float dt) {
-    Enemy::update(dt); 
+    applyGravity(dt);
+    //Enemy::update(dt); 
+    if (position.x < 0)
+    {
+        position.x = 0;
+        if (isInSpinAttack())
+        {
+			direction = { -direction.x, direction.y }; 
+			velocity = { -velocity.x, velocity.y }; // Reverse velocity
+        }
+    }
+    if (position.x > 1920 - hitbox.width)
+    {
+        position.x = 1920 - hitbox.width;
+        if (isInSpinAttack())
+        {
+            direction = { -direction.x, direction.y }; 
+			velocity = { -velocity.x, velocity.y }; // Reverse velocity
+        }
+        
+    }
     updateWorldState();
-	hitbox.x = position.x;
     if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
         Vector2 mousePos = GetMousePosition();
         targetPosition = { mousePos.x, mousePos.y };
@@ -49,21 +77,55 @@ void DryBowser::update(float dt) {
     else if (IsKeyPressed(KEY_SPACE)) {
         targetPosition = { 800, 100 }; 
 	}
-    applyGravity(dt);  
+    hitbox.x = position.x;
     hitbox.y = position.y; 
+	position += velocity * dt;
 	animController.update(dt);  
     curFrame = animController.getCurrentFrame();
+    if (getBottom() <= groundLevel) {
+		DrawText(TextFormat("Drybowser Position: x = %f, y = %f, Ground Level z = %f", position.x, position.y, groundLevel), 200, 400, 20, BLACK);
+        //position.y = groundLevel - (spritebox.height * scale);
+        onGround = true;
+        if (velocity.y > 0) {
+            velocity.y = 0;
+        }
+    }
+    else {
+        onGround = false;
+    }
     if (velocityController.isActiveAtFrame(curFrame))
     {
 		Vector2 mulplier = velocityController.getVelocityAtFrame(curFrame);
-        velocity = { velocity.x * mulplier.x,velocity.y * mulplier.y };
+        velocity = { direction.x * mulplier.x,direction.y * mulplier.y };
+
     }
+	DrawText(TextFormat("Drybowser Velocity: x = %f, y = %f", velocity.x, velocity.y), 200, 250, 20, BLACK);
     spritebox = TextureManager::DryBowser_sprite_boxes[curFrame] ; 
     const FrameData* data = FrameDatabase::getInstance().getFrameData(this->getType(), curAniName, curFrame);
     if (data)
     {
+        /*if (!data->hitboxes.empty())
+        {
+            hitboxes.clear(); 
+            for (auto& box : data->hitboxes) {
+                Rectangle hitbox_n;
+                hitbox_n.y = position.y + box.y;
+                hitbox_n.width = box.width;
+                hitbox_n.height = box.height;
+                if (isFacingRight) {
+                    hitbox_n.x = position.x + box.x;
+                }
+                else {
+                    hitbox_n.x = position.x - box.x - box.width;
+                }
+
+                hitboxes.push_back(hitbox);
+            }
+
+        }*/
         for(auto& event : data->events) {
             if (event.eventType != EventType::None) {
+				DrawText(TextFormat("Event Triggered:%d, %s",data->frameIndex, event.payload.c_str()), 200, 300, 20, RED);
                 auto func = FrameEventHandlers::bind(event, this);
                 if (func)
                 {
@@ -72,14 +134,21 @@ void DryBowser::update(float dt) {
             }
 		}       
     }
+    updateCooldowns(dt);
     if (currentPhase) currentPhase->update(this, dt);
 }
 
 void DryBowser::draw() {
 
-    Enemy::draw(); 
-	DrawText(TextFormat("NearTarget: %s", isNearTarget() ? "Yes" : "No"), 300, 300, 20, RED);
 	DrawRectangle(targetPosition.x, targetPosition.y, 50,50, RED);
+    Rectangle source = spritebox;
+    Rectangle dest = hitbox;
+    if (!isFacingRight)
+    {
+        source.width *= -1;
+    }
+    Vector2 origin = { 0, 0 };
+    DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
 }
 
 void DryBowser::handleCharacterCollision(std::shared_ptr<Object> other) {
@@ -87,14 +156,71 @@ void DryBowser::handleCharacterCollision(std::shared_ptr<Object> other) {
 
 void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 
+    std::vector<Rectangle> bowserBoxes = getHitBox();
+    std::vector<Rectangle> otherBoxes = other->getHitBox();
+    if (bowserBoxes.empty() || otherBoxes.empty()) return;
+    Rectangle otherBox = otherBoxes[0];
 
+    Rectangle bowserHead = bowserBoxes[1];
+    const float snapOffset = 0.5f; 
+    if(CheckCollisionRecs(bowserHead, otherBoxes[0])) {
+        velocity.y = 0;
+        position.y = otherBox.y + otherBox.height + snapOffset;
+        return;
+	}
+    Rectangle bowserBox = bowserBoxes[0]; 
+    if (!CheckCollisionRecs(bowserBox, otherBox)) return;
+    Vector2 prevPos = position - velocity*0.167;
+    Rectangle prevBox = {
+        prevPos.x,
+        prevPos.y,
+        bowserBox.width,
+        bowserBox.height
+    };
+
+    bool wasAbove = (prevBox.y + prevBox.height) <= otherBox.y;
+    bool wasLeft = (prevBox.x + prevBox.width) <= otherBox.x;
+    bool wasRight = prevBox.x >= (otherBox.x + otherBox.width);
+    if (wasAbove && velocity.y >= 0) {
+        position.y = otherBox.y - bowserBox.height - snapOffset;
+        velocity.y = 0;
+		groundLevel = otherBox.y - snapOffset; 
+        onGround = true;
+    }
+    else if (wasLeft && velocity.x >= 0) {
+        position.x = otherBox.x - bowserBox.width - snapOffset;
+        if (isInSpinAttack())
+        {
+            direction = { -direction.x, direction.y };
+            velocity = { -velocity.x, velocity.y }; // Reverse velocity
+        }
+        //velocity.x *= -1;
+    }
+    else if (wasRight && velocity.x <= 0) {
+        position.x = otherBox.x + otherBox.width + snapOffset;
+        if (isInSpinAttack())
+        {
+            direction = { -direction.x, direction.y };
+            velocity = { -velocity.x, velocity.y }; // Reverse velocity
+        }
+        //velocity.x *= -1;
+    }
 }
 
 void DryBowser::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
 
-    for (auto obj : candidates) {
-
-        
+    for (auto candidate : candidates) {
+        switch (candidate->getObjectCategory()) {
+        case ObjectCategory::BLOCK:
+            handleEnvironmentCollision(candidate);
+            break;
+        case ObjectCategory::PROJECTILE:
+            // implement
+            break;
+        case ObjectCategory::CHARACTER:
+            //handleCharacterCollision(candidate);
+            break;
+        }
     }
 }
 
@@ -177,11 +303,27 @@ void DryBowser::setAnimation(const std::string& aniName) {
         animController.set(18, 25, 0.25f, Easing::linear, false, true);
     }
     else if (aniName == "MeleeAttack1") {
-        animController.set(73, 86, Constants::DryBowser::BASIC_ATTACK_DURATION, Easing::easeOut,false,false);
+        animController.set(71, 83, Constants::DryBowser::BASIC_ATTACK_DURATION, Easing::easeOut,false,false);
     }
     else if (aniName == "Run")
     {
-        animController.set(32, 40, 2.f, Easing::linear, false, true);
+        animController.set(32, 41, 2.f, Easing::linear, false, true);
+    }
+    else if (aniName == "WalkTurn")
+    {
+        animController.set(29, 26, Constants::DryBowser::WalkTurnDuration, Easing::linear, true, false); 
+    }
+    else if (aniName == "SpinAttack")
+    {
+        animController.set(389, 396, Constants::DryBowser::SPIN_ATTACK_DURATION, Easing::easeInOut, false, false);
+    }
+    else if (aniName == "SpinAttackWindup")
+    {
+        animController.set(385, 388, Constants::DryBowser::SPIN_ATTACK_WINDUP_DURATION, Easing::linear, false, false);
+    }
+    else if (aniName == "SpinAttackWinddown")
+    {
+        animController.set(397, 399, Constants::DryBowser::SPIN_ATTACK_WINDDOWN_DURATION, Easing::linear, false, false);
     }
     curAniName = aniName;
 }
@@ -189,11 +331,14 @@ void DryBowser::setAnimation(const std::string& aniName) {
 
 void DryBowser::walkToTarget() {
 
-    
     if (currentPhase)
     {
-        if(currentPhase->getCurMove() !="Run")
-           currentPhase->changeMoveState(this, std::make_shared<DryBowserRunningState>());
+        direction = Vector2Normalize(Vector2{
+     targetPosition.x - position.x,1});
+        if (currentPhase->getCurMove() != "Run")
+        {
+            currentPhase->changeMoveState(this, std::make_shared<DryBowserRunningState>());
+        }
     }
 }
 void DryBowser::attack() {
@@ -205,12 +350,15 @@ void DryBowser::attack() {
 }
 bool DryBowser::isAttacking()
 {
-	DrawText(TextFormat("Ended: %s", animController.isFinished() ? "Yes" : "No"), 200, 300, 20, RED);
-    return  currentPhase->getCurMove() == "MeleeAttack1" && !animController.isFinished();
+    return  currentPhase->getCurMove() == "MeleeAttack1" && !currentPhase->isMoveFinished();
 }
 bool DryBowser::isNearTarget() const
 {
-	return abs(targetPosition.x - position.x) < 100 && abs(targetPosition.y - position.y)< 100;
+    Vector2 Nposition = { position.x + (isFacingRight? 1:-1)*hitbox.width, position.y + hitbox.height }; 
+	float distance = Vector2Distance(Nposition, targetPosition);
+        DrawText(TextFormat("Distance to Target: %f",Nposition.x - targetPosition.x), 100, 100, 20, RED);
+
+	return distance  < Constants::DryBowser::BASIC_ATTACK_RANGE;
 }
 void DryBowser::idle() {
     if (currentPhase)
@@ -218,4 +366,61 @@ void DryBowser::idle() {
         if (currentPhase->getCurMove() != "Idle")
             currentPhase->changeMoveState(this, std::make_shared<DryBowserStandingState>());
     }
+}
+bool DryBowser::isTurning() const
+{
+   
+    return (currentPhase->getCurMove() == "WalkTurn" && !currentPhase->isMoveFinished());
+}
+void DryBowser::walkTurn()
+{
+    if (currentPhase)
+    {
+        if (!isTurning())
+            currentPhase->changeMoveState(this, std::make_shared<DryBowserWalkTurnState>());
+    }
+}
+bool DryBowser::isTargetInRange(BowserAttackType type) const
+{
+    if (type == BowserAttackType::BasicAttack) {
+        return isNearTarget();
+    }
+    else if (type == BowserAttackType::SpinAttack) {
+        return abs(targetPosition.x - position.x) <= Constants::DryBowser::SPIN_ATTACK_RANGE; 
+    }
+    else if (type == BowserAttackType::FireBreath) {
+        return false;
+    }
+    else if (type == BowserAttackType::JumpAttack) {
+        // Implement jump attack range check
+        return false;
+    }
+    return false;
+}
+bool DryBowser::canUseSpin() const
+{
+	DrawText(TextFormat("Spin Attack Cooldown: %s", isMoveOnCooldown("SpinAttack") ? "On Cooldown" : "Ready"), 100, 150, 20, RED);
+	DrawText(TextFormat("On Ground: %s", onGround ? "Yes" : "No"), 100, 200, 20, RED);
+    return onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack); 
+}
+
+bool DryBowser::isInSpinAttack(){
+    return currentPhase->getCurMove() == "SpinAttack" && !currentPhase->isMoveFinished();
+}
+void DryBowser::spinAttack() {
+    if (currentPhase)
+    {
+		if (currentPhase->getCurMove() != "SpinAttack" || (currentPhase->getCurMove() == "SpinAttack" && currentPhase->isMoveFinished()))
+        {
+            currentPhase->changeMoveState(this, std::make_shared<DryBowserSpinAttackState>());
+        }
+    }
+}
+void DryBowser::spinAttackWindup()
+{
+	setAnimation("SpinAttackWindup");
+}
+void DryBowser::spinAttackWinddown()
+{
+	setAnimation("SpinAttackWinddown");
 }

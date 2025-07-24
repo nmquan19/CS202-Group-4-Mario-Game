@@ -41,15 +41,27 @@ std::tuple<Vector2, Vector2, int, int, std::string> parseVelocityPayload(const s
 
 namespace FrameEventHandlers {
 
+   
     std::function<void()> createChangeVelocityHandler(const std::string& payload, Enemy* enemy) {
         std::istringstream ss(payload);
         float vx = 0.0f, vy = 0.0f;
         char comma;
         ss >> vx >> comma >> vy;
-
-        Vector2 newVelocity = { vx, vy };
+		Vector2 direction = enemy->getDirection();  
+        Vector2 newVelocity = {vx*direction.x, vy*direction.y };
         return [enemy, newVelocity]() {
             enemy->setVelocity(newVelocity);
+            };
+    }
+    std::function<void()> createIncrementVelocityHandler(const std::string& payload, Enemy* enemy) {
+        std::istringstream ss(payload);
+        float vx = 0.0f, vy = 0.0f;
+        char comma;
+        ss >> vx >> comma >> vy;
+        Vector2 direction = enemy->getDirection();
+        Vector2 newVelocity = { vx * direction.x, vy * direction.y };
+        return [enemy, newVelocity]() {
+            enemy->setVelocity(enemy->getVelocity()+newVelocity);
             };
     }
     std::function<void()> createSetEasingVelocityHandler(const std::string& payload, Enemy* enemy) {
@@ -72,6 +84,8 @@ namespace FrameEventHandlers {
 
     std::function<void()> bind(const FrameEvent& event, Enemy* enemy) {
         switch (event.eventType) {
+        case EventType::IncrementVelocity:
+			return createIncrementVelocityHandler(event.payload, enemy);
         case EventType::ChangeVelocity:
             return createChangeVelocityHandler(event.payload, enemy);
         case EventType::SetEasingVelocity:
@@ -93,7 +107,10 @@ void FrameEvent::load(const nlohmann::json& j) {
             eventType = EventType::SetEasingVelocity;
         } else if (eventTypeStr == "PlaySound") {
             eventType = EventType::PlaySound;
-        } else {
+        } else if(eventTypeStr == "IncrementVelocity") {
+            eventType = EventType::IncrementVelocity;
+		}
+        else {
             eventType = EventType::None;
         }
     } else {
@@ -106,7 +123,8 @@ nlohmann::json FrameEvent::to_json() const {
     j["eventType"] =
         (eventType == EventType::ChangeVelocity) ? "ChangeVelocity" :
         (eventType == EventType::SetEasingVelocity) ? "SetEasingVelocity" :
-        (eventType == EventType::PlaySound) ? "PlaySound" : "None";
+        (eventType == EventType::PlaySound) ? "PlaySound" : 
+        (eventType == EventType::IncrementVelocity)?"IncrementVelocity" : "None";
     j["eventPayload"] = payload;
     return j;
 }

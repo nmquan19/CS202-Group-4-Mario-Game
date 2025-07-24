@@ -1,12 +1,13 @@
 #include "../../include/UI/UI.h"
 #include <raylib.h>
+#include "Enemy/Enemy.h"
 UIManager::UIManager() : isGameOver(false) {
     menuFont = LoadFont("./assets/romulus.png");
     
 }
 
 UIManager::~UIManager() {
-        UnloadFont(menuFont);
+    UnloadFont(menuFont);
 }
 
 void UIManager::ShowGameOver() {

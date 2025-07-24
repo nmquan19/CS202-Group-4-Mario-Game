@@ -3,12 +3,12 @@
 #include "../../../../include/Enemy/Boss/BT_Factory.h"
 #include <fstream>
 #include <iostream>
+#include <string>
 DryBowserPhase1BT::DryBowserPhase1BT() {
        
-
-      root = BTFactory::getInstance().createTree(EnemyType::DRY_BOWSER);
+	root = BTFactory::getInstance().createTree(EnemyType::DRY_BOWSER);
 		//nlohmann::json jsonData = BTFactory::getInstance().to_json(root);
-      /*  std::ofstream file;
+      /*  std::ofstream file;   
 		file.open("assets/enemy/BT/DryBowserPhase1BT.json");
         if (file.is_open()) {
             
@@ -39,11 +39,14 @@ void DryBowserPhase1BT::changeMoveState(Boss* boss, std::shared_ptr<BossMoveStat
 }
 void DryBowserPhase1BT::update(Boss* boss, float dt){
         if (root)root->tick(boss, dt);
+        currentState->update(boss,dt);
 }
 std::string DryBowserPhase1BT::getCurMove() const {
         return currentState ? currentState->getName() : "None";
 }
-
+bool DryBowserPhase1BT::isMoveFinished() const {
+        return currentState ? currentState->isFinished() : true;
+}
 void DryBowserPhase2GOAP ::enter(Boss* boss) {
     
 }
@@ -61,4 +64,7 @@ void DryBowserPhase2GOAP::changeMoveState(Boss* boss, std::shared_ptr<BossMoveSt
 }
 std::string DryBowserPhase2GOAP::getCurMove() const {
         return currentState ? currentState->getName() : "None";
+}
+bool DryBowserPhase2GOAP::isMoveFinished() const {
+        return currentState ? currentState->isFinished() : true;
 }

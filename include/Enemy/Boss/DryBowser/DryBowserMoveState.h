@@ -47,11 +47,7 @@ class DryBowserWalkTurnState : public BossMoveState
         void update(Boss* boss, float dt) override;
         void exit(Boss* boss) override;
         bool isFinished() const override;
-        std::vector<std::string> getAllowedTransitions() const;
-        bool canBeInterrupted();
-        bool canTransitionTo(const std::string& nextStateName);
         std::string getName() const;
-        std::shared_ptr<BossMoveState> getForcedTransition(Boss* boss);
 };
 class DryBowserJumpingState : public BossMoveState {
    private: 
@@ -69,10 +65,24 @@ class DryBowserJumpingState : public BossMoveState {
 };
 class DryBowserMeleeAttack1State : public BossMoveState {
 private:
-    float attackDuration = 0.5f; 
+    float attackDuration = Constants::DryBowser::BASIC_ATTACK_DURATION; 
 	float timer = 0.0f; 
 	float attackRange = Constants::DryBowser::BASIC_ATTACK_RANGE;
   public:
+    void enter(Boss* boss) override;
+    void update(Boss* boss, float dt) override;
+    void exit(Boss* boss) override;
+    bool isFinished() const override;
+    //bool canBeInterrupted();
+    std::string getName() const override;
+};
+
+class DryBowserSpinAttackState : public BossMoveState {
+private:
+   
+    float timer = 0.0f;
+    float attackRange = Constants::DryBowser::SPIN_ATTACK_RANGE;
+public:
     void enter(Boss* boss) override;
     void update(Boss* boss, float dt) override;
     void exit(Boss* boss) override;

@@ -26,7 +26,7 @@ private:
 public:
     InterpolatedAnimationController();
     InterpolatedAnimationController(int start, int end, float durationSeconds,
-        std::function<float(float)> easing = [](float t) { return t; }, bool rev =false, bool loop =false);
+        std::function<float(float)> easing = [](float t) { return t; }, bool rev = false, bool loop = false);
 
     void reset();
     void update(float dt);
@@ -101,5 +101,3 @@ namespace Easing {
         return linear;
     }
 }
-
-
