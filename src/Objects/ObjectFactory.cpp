@@ -7,6 +7,10 @@
 #include "../../include/Enemy/Koopa/Koopa.h"
 #include "../../include/Item/Item.h"
 #include "../../include/Item/Coin/Coin.h"
+#include "../../include/Item/Mushroom/Mushroom.h"
+#include "../../include/Item/Fire_Flower/Fire_Flower.h"
+#include "../../include/Item/Star/Star.h"
+#include "../../include/Item/One_Up/One_Up.h"
 #include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../include/System/Interface.h"
 #include <raylib.h>
@@ -96,7 +100,17 @@ std::unique_ptr<Item> ObjectFactory::createSpecificItem(ItemType type, Vector2 s
 		return std::make_unique<Coin>(startPos);
         break;
     case ItemType::MUSHROOM:
-        /*return createMushroom(startPos);*/
+        return std::make_unique<Mushroom>(startPos);
+        break;
+	case ItemType::FIRE_FLOWER:
+        return std::make_unique<Fire_Flower>(startPos);
+		break;
+	case ItemType::STAR:
+        return std::make_unique<Star>(startPos);
+		break;
+    case ItemType::ONE_UP:
+	    return std::make_unique<One_Up>(startPos);
+		break;
     default:
         return std::make_unique<Coin>(startPos);
     }
