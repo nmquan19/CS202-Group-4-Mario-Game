@@ -50,6 +50,7 @@ void GameContext::setState(GameState* newState) {
             PhysicsManager::getInstance().addObject(character);
             // addObject(InteractiveType::SPRING, { 500, 950 }, { 1, 1 });
             // addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
+            addObject(ItemType::COIN, { 800, 500 }, { 0.25, 0.25 });
         }
     }
 }
@@ -123,6 +124,9 @@ void GameContext::spawnObject() {
             }
             else if constexpr (std::is_same_v<T, InteractiveType>) {
                 object = ObjectFactory::createSpring(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
+            }
+            else if constexpr (std::is_same_v<T, ItemType>) {
+				object = ObjectFactory::createItem(actualType, request.worldpos, request.size);
             }
             }, request.type);
 

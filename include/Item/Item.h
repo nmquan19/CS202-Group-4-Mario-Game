@@ -9,6 +9,7 @@
 
 class Item : public Object, public IUpdatable {
 public:
+    Item();
     Item(Vector2 startPos);
     virtual ~Item();
 
