@@ -218,7 +218,7 @@ ObjectCategory Character::getObjectCategory() const {
 }
 
 std::vector<ObjectCategory> Character::getCollisionTargets() const {
-	return { ObjectCategory::BLOCK, ObjectCategory::ITEM, ObjectCategory::ENEMY, ObjectCategory::INTERACTIVE };
+	return { ObjectCategory::BLOCK, ObjectCategory::ITEM, ObjectCategory::ENEMY, ObjectCategory::INTERACTIVE, ObjectCategory::SHELL };
 }
 
 void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
@@ -232,7 +232,8 @@ void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candi
 				break;
 			case ObjectCategory::INTERACTIVE:
 				handleInteractiveCollision(candidate);
-			case ObjectCategory::PROJECTILE:
+				break;
+			case ObjectCategory::SHELL:
 				// implement
 				break;
 			case ObjectCategory::ITEM:
@@ -323,7 +324,7 @@ void Character::handleGroundCheck() {
 		position.x + 5,
 		position.y + (spriteRec.height * scale),
 		(spriteRec.width * scale) - 10,
-		3.0f
+		1.0f
 	};
 
 	std::vector<std::shared_ptr<Object>> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
@@ -359,7 +360,15 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 
 	float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
 
-	if (minOverlap == overlapTop) {
+	if (minOverlap == overlapLeft) {
+		position.x = otherHitBox.x - playerHitBox.width;
+		velocity.x = 0;
+	}
+	else if (minOverlap == overlapRight) {
+		position.x = otherHitBox.x + otherHitBox.width;
+		velocity.x = 0;
+	}
+	else if (minOverlap == overlapTop) {
 		position.y = otherHitBox.y - playerHitBox.height;
 		velocity.y = 0;
 		setOnGround(true);
@@ -369,14 +378,6 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
 		if (velocity.y < 0) {
 			velocity.y = 0;
 		}
-	}
-	else if (minOverlap == overlapLeft) {
-		position.x = otherHitBox.x - playerHitBox.width;
-		velocity.x = 0;
-	}
-	else if (minOverlap == overlapRight) {
-		position.x = otherHitBox.x + otherHitBox.width;
-		velocity.x = 0;
 	}
 }
 
@@ -396,7 +397,6 @@ void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
 	float minOverlap = std::min({ overlapLeft, overlapRight, overlapTop, overlapBottom });
 
 	if (minOverlap == overlapTop && velocity.y > 0) {
-		DrawText("deal damage", 50, 200, 30, BLACK);
 		invincibleTimer = 0.2f;
 		velocity.y = Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY;
 		setOnGround(false);
@@ -437,6 +437,9 @@ void Character::handleSpringCollision(std::shared_ptr<Spring> other) {
 	if (minOverlap == overlapTop && velocity.y > 0) {
 		velocity.y = Constants::Spring::BOUNCE_VELOCITY;
 		changeState(JumpingState::getInstance());
+		other->setBouncing(true);
+		other->setAniTimer(0.0f);
+		other->setBounceTimer(0.0f);
 	}
 	else if (minOverlap == overlapBottom) {
 		position.y = otherHitbox.y + otherHitbox.height;
