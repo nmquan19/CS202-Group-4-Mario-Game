@@ -36,11 +36,13 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
     setAnimation("BasicAttack");
     currentPhase = std::make_unique<DryBowserPhase1BT>();
     currentPhase->enter(this);
+  
+    float headPos_x = isFacingRight ? position.x + hitbox.width * 0.6f : position.x + hitbox.width * 0.2f;
     Rectangle headBox = {
-       position.x + hitbox.width * 0.55f,
-       position.y + hitbox.height * 0.2f,
+       headPos_x,
+       position.y - hitbox.height * 0.2f,
        hitbox.width * 0.3f,
-       hitbox.height * 0.6f
+       hitbox.height * 0.4f
     };
 	direction = { 1, 0 }; // Default direction to the right
     hitboxes.push_back(headBox);
@@ -93,6 +95,7 @@ void DryBowser::update(float dt) {
     else {
         onGround = false;
     }
+    groundLevel = INT_MIN;
     if (velocityController.isActiveAtFrame(curFrame))
     {
 		Vector2 mulplier = velocityController.getVelocityAtFrame(curFrame);
@@ -148,10 +151,28 @@ void DryBowser::draw() {
         source.width *= -1;
     }
     Vector2 origin = { 0, 0 };
+	DrawText(TextFormat("DryBowser HP: %d", HP), 200, 300, 40, BLACK);
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
 }
 
 void DryBowser::handleCharacterCollision(std::shared_ptr<Object> other) {
+    
+    std::vector<Rectangle> bowserBoxes = getHitBox();
+    std::vector<Rectangle> otherBoxes = other->getHitBox();
+    if (bowserBoxes.empty() || otherBoxes.empty()) return;
+    Rectangle otherBox = otherBoxes[0];
+
+    Rectangle bowserHead = bowserBoxes[1];
+    
+    if (CheckCollisionRecs(bowserHead, otherBoxes[0]) && (getCurAnimation() != "TakeDamage") || (getCurAnimation() != "TakeDamage" && currentPhase->isMoveFinished())) {
+        takeDamage(25);
+        currentPhase->changeMoveState(this, std::make_shared<DryBowserTakeDamageState>());    
+        return;
+    }
+    Rectangle bowserBox = bowserBoxes[0];
+    if (!CheckCollisionRecs(bowserBox, otherBox)) return;
+    
+
 }
 
 void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
@@ -184,7 +205,7 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     if (wasAbove && velocity.y >= 0) {
         position.y = otherBox.y - bowserBox.height - snapOffset;
         velocity.y = 0;
-		groundLevel = otherBox.y - snapOffset; 
+		groundLevel = otherBox.y; 
         onGround = true;
     }
     else if (wasLeft && velocity.x >= 0) {
@@ -194,7 +215,6 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
             direction = { -direction.x, direction.y };
             velocity = { -velocity.x, velocity.y }; // Reverse velocity
         }
-        //velocity.x *= -1;
     }
     else if (wasRight && velocity.x <= 0) {
         position.x = otherBox.x + otherBox.width + snapOffset;
@@ -203,7 +223,6 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
             direction = { -direction.x, direction.y };
             velocity = { -velocity.x, velocity.y }; // Reverse velocity
         }
-        //velocity.x *= -1;
     }
 }
 
@@ -218,7 +237,7 @@ void DryBowser::checkCollision(const std::vector<std::shared_ptr<Object>>& candi
             // implement
             break;
         case ObjectCategory::CHARACTER:
-            //handleCharacterCollision(candidate);
+            handleCharacterCollision(candidate);
             break;
         }
     }
@@ -232,13 +251,20 @@ std::vector<Rectangle> DryBowser::getHitBox() const {
     std::vector<Rectangle> hitboxes;
     
     hitboxes.push_back(hitbox);
-    
+   
+
+	float headPos_x =  isFacingRight ? position.x + hitbox.width * 0.6f : position.x + hitbox.width * 0.2f;
     Rectangle headBox = {
-        position.x + hitbox.width * 0.55f,
-        position.y + hitbox.height * 0.2f,
-        hitbox.width * 0.3f,
-        hitbox.height * 0.6f
+       headPos_x,
+       position.y - hitbox.height * 0.2f,
+       hitbox.width * 0.3f,
+       hitbox.height * 0.4f
     };
+    if (isInSpinAttack())
+    {
+        headBox = {};
+    }
+    
     hitboxes.push_back(headBox);
 
     return hitboxes;
@@ -248,12 +274,12 @@ void DryBowser::takeDamage(int amount) {
     HP -= amount;
     simState.bossHP = HP;
     //currentPhase->changeMoveState(this, std::make_shared<DryBowserTakeDamageState>());
-    if (HP <= 50 && dynamic_cast<DryBowserPhase1BT*>(currentPhase.get())) {
+    /*if (HP <= 50 && dynamic_cast<DryBowserPhase1BT*>(currentPhase.get())) {
         changePhase(std::make_unique<DryBowserPhase2GOAP>());
     }
     if (HP <= 0) {
         die();
-    }
+    }*/
 }
 
 void DryBowser::die() {
@@ -325,6 +351,10 @@ void DryBowser::setAnimation(const std::string& aniName) {
     {
         animController.set(397, 399, Constants::DryBowser::SPIN_ATTACK_WINDDOWN_DURATION, Easing::linear, false, false);
     }
+    else if (aniName == "TakeDamage")
+    {
+		animController.set(575, 580, Constants::DryBowser::TAKE_DAMAGE_DURATION, Easing::linear, false, false);
+    }
     curAniName = aniName;
 }
 
@@ -333,8 +363,7 @@ void DryBowser::walkToTarget() {
 
     if (currentPhase)
     {
-        direction = Vector2Normalize(Vector2{
-     targetPosition.x - position.x,1});
+		direction = { (targetPosition.x - position.x)>0? 1.f : -1, 1 };
         if (currentPhase->getCurMove() != "Run")
         {
             currentPhase->changeMoveState(this, std::make_shared<DryBowserRunningState>());
@@ -404,7 +433,7 @@ bool DryBowser::canUseSpin() const
     return onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack); 
 }
 
-bool DryBowser::isInSpinAttack(){
+bool DryBowser::isInSpinAttack() const{
     return currentPhase->getCurMove() == "SpinAttack" && !currentPhase->isMoveFinished();
 }
 void DryBowser::spinAttack() {

@@ -40,6 +40,7 @@
     <ClInclude Include="include\Enemy\EnemyState.h" />
     <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
     <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
+    <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaShell.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaShellState..h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h" />

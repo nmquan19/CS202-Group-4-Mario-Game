@@ -36,7 +36,7 @@ std::shared_ptr<BehaviorTreeNode> BTFactory::buildTree(const json& nodeData) {
     }
     else if (type == "Inverter") {
         auto node = std::make_shared<InverterNode>();
-        node->setChild(buildTree(nodeData.at("child")));
+        node->setChild(buildTree(nodeData.at("child")));    
         return node;
     }
     else if (type == "RunOnce") {
@@ -84,6 +84,10 @@ std::shared_ptr<BehaviorTreeNode> BTFactory::buildTree(const json& nodeData) {
     else if (type == "SpinAttackWinddown")
     {
         return std::make_shared<SpinAttackWinddownNode>();
+    }
+    else if (type == "IsTakingDamage")
+    {
+        return std::make_shared<IsTakingDamageNode>();
     }
     
     throw std::runtime_error("Unknown node type: " + type);
@@ -181,6 +185,9 @@ nlohmann::json BTFactory::to_json(const std::shared_ptr<BehaviorTreeNode>& node)
     }
     else if (std::dynamic_pointer_cast<SpinAttackWinddownNode>(node)) {
         j["type"] = "SpinAttackWinddown";
+    }
+    else if (std::dynamic_pointer_cast<IsTakingDamageNode>(node)) {
+        j["type"] = "IsTakingDamage";
     }
     else {
         throw std::runtime_error("Unknown node type during serialization");

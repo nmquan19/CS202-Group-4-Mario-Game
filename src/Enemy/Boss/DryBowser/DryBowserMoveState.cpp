@@ -146,6 +146,30 @@ std::string DryBowserMeleeAttack1State::getName() const {
 
 
 
+void DryBowserTakeDamageState::enter(Boss* boss) {
+
+	boss->setVelocity({ 0, 0 });
+    boss->setAnimation("TakeDamage");
+    timer = 0.0f;
+}
+
+void DryBowserTakeDamageState::update(Boss* boss, float dt) {
+    timer += dt;
+}
+
+void DryBowserTakeDamageState::exit(Boss* boss) {
+}
+
+bool DryBowserTakeDamageState::isFinished() const {
+    return timer >= takeDamageDuration;
+}
+
+std::string DryBowserTakeDamageState::getName() const {
+    return "TakeDamage";
+}
+
+
+
 void DryBowserSpinAttackState::enter(Boss* boss) {
 
     boss->setAnimation("SpinAttack");

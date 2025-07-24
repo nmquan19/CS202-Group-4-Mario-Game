@@ -51,7 +51,7 @@ void GameContext::setState(GameState* newState) {
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
             PhysicsManager::getInstance().addObject(character);
             // addObject(InteractiveType::SPRING, { 500, 950 }, { 1, 1 });
-            // addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
+             addObject(EnemyType::DRY_BOWSER, {500,950}, {2, 2});
             camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
             camera.target = character->getPosition();
         }

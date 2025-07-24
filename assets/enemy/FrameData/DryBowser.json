@@ -38,8 +38,28 @@
       "frame": 72,
       "events": [
         {
-          "eventType": "SetEasingVelocity",
-          "eventPayload": "0,0,500,0,72,73,linear"
+          "eventType": "IncrementVelocity",
+          "eventPayload": "350,0"
+        }
+      ],
+      "hitboxes": []
+    },
+    {
+      "frame": 73,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+      "hitboxes": []
+    },
+     {
+      "frame": 80,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "200,0"
         }
       ],
       "hitboxes": []
@@ -47,22 +67,7 @@
     {
       "frame": 81,
       "events": [
-        {
-          "eventType": "SetEasingVelocity",
-          "eventPayload": "0,0,500,0,81,83,linear"
-        },
-        {
-            "eventType":"PlaySound",
-            "eventPayload": "attack.wav"
-        }
-        
-      ],
-      "hitboxes": []
-    },
-    {
-      "frame": 83,
-      "events": [
-        {
+         {
           "eventType": "ChangeVelocity",
           "eventPayload": "0,0"
         }
@@ -111,7 +116,7 @@
       "events": [
         {
           "eventType": "IncrementVelocity",
-          "eventPayload": "50,0"
+          "eventPayload": "30,0"
         }
       ],
 
@@ -122,7 +127,7 @@
       "events": [
         {
           "eventType": "IncrementVelocity",
-          "eventPayload": "50,0"
+          "eventPayload": "30,0"
         }
       ],
 
@@ -134,14 +139,35 @@
       "frame": 397,
       "events": [
         {
-          "eventType": "SetEasingVelocity",
-          "eventPayload": "0,0,300,0,107,399,easeOut"
+          "eventType": "ChangeVelocity",
+          "eventPayload": "250,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+     {
+      "frame": 398,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "150,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+     {
+      "frame": 398,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
         }
       ],
 
       "hitboxes": []
     }
-
   ],
   "SpinAttackWinddup": [
     {

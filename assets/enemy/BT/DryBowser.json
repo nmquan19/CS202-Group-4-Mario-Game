@@ -1,5 +1,15 @@
 {
-    "children": [
+  "children":
+  [
+       {
+            "child": 
+            {
+              "type" : "IsTakingDamage"
+            },
+           "type" : "Inverter"
+       },
+       {
+        "children": [
         {
           "children":
           [
@@ -69,4 +79,7 @@
         }
     ],
     "type": "Selector"
+    }
+  ],
+  "type":"Sequence"
 }

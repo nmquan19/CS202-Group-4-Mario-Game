@@ -24,6 +24,7 @@ private:
     WorldState currentWorld;
     DryBowserSimState simState;
     std::unique_ptr<BossPhaseState> currentPhase;
+    float invulnerable_timer = 0.0f; 
 public:
     DryBowser(Vector2 spawnPosition, Vector2 size = {2,2});
 
@@ -65,7 +66,7 @@ public:
     bool canUseSpin() const; 
     bool isTargetInRange(BowserAttackType type) const;
     void spinAttack(); 
-    bool isInSpinAttack(); 
+    bool isInSpinAttack() const; 
 	void spinAttackWindup();
     void spinAttackWinddown(); 
 private:

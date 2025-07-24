@@ -24,7 +24,6 @@ NodeStatus SequenceNode::tick(Enemy* boss, float dt) {
         NodeStatus status = children[current]->tick(boss, dt);
         if (status == NodeStatus::Running)
         {
-            DrawText("Running", 200, 400, 20, RED);
             return NodeStatus::Running;
         }
         if (status == NodeStatus::Failure) {
@@ -92,7 +91,7 @@ NodeStatus InverterNode::tick(Enemy* boss, float dt)
         case NodeStatus::Success : 
          return NodeStatus::Failure; 
         case NodeStatus::Failure : 
-         return NodeStatus::Running; 
+         return NodeStatus::Success; 
     }
     return NodeStatus::Running; 
 }
@@ -211,23 +210,18 @@ NodeStatus WalkToTargetNode::tick(Enemy* boss, float dt) {
 }
 NodeStatus AttackNode::tick(Enemy* boss, float dt) {
     if (!boss) return NodeStatus::Failure;
-    DrawText("Attacking", 200, 200, 20, RED);
     boss->attack();
     if( boss->isAttacking()) {
-		DrawText("RUNNING ", 230, 200, 20, RED);
         return NodeStatus::Running;
 	}
-    DrawText("Success ", 230, 200, 20, RED);
     return NodeStatus::Success;
 }
 NodeStatus IdleNode::tick(Enemy* boss, float dt) {
-    DrawText("Idling", 200, 200, 20, RED);
     boss->idle();
     return NodeStatus::Success;
 }
 NodeStatus WalkTurnNode::tick(Enemy* boss, float dt) {
     if (!boss) return NodeStatus::Failure;
-    DrawText("WalkTurning", 200, 200, 20, RED);
     if (!started)
     {
         boss->walkTurn();
@@ -325,4 +319,13 @@ NodeStatus SpinAttackWinddownNode::tick(Enemy* boss, float dt) {
         return NodeStatus::Success;
     }
     return NodeStatus::Running;
+}
+
+NodeStatus IsTakingDamageNode::tick(Enemy* boss, float dt) {
+    if (!boss) return NodeStatus::Failure;
+    DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+    if(dryBowser&& dryBowser->getCurAnimation()=="TakeDamage" && !dryBowser->getAnimController().isFinished()) {
+        return NodeStatus::Success;
+	}
+    return NodeStatus::Failure;
 }

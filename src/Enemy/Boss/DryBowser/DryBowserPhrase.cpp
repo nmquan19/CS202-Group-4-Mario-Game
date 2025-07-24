@@ -1,12 +1,14 @@
 #include "../../../../include/Enemy/Boss/BehaviorTree.h"
 #include "../../../../include/Enemy/Boss/DryBowser/DryBowserPhase.h"
 #include "../../../../include/Enemy/Boss/BT_Factory.h"
+#include "../../../../include/Enemy/Boss/DryBowser/DryBowserMoveState.h"
 #include <fstream>
 #include <iostream>
 #include <string>
 DryBowserPhase1BT::DryBowserPhase1BT() {
        
 	root = BTFactory::getInstance().createTree(EnemyType::DRY_BOWSER);
+	currentState = std::make_shared<DryBowserStandingState>();  
 		//nlohmann::json jsonData = BTFactory::getInstance().to_json(root);
       /*  std::ofstream file;   
 		file.open("assets/enemy/BT/DryBowserPhase1BT.json");
@@ -39,7 +41,7 @@ void DryBowserPhase1BT::changeMoveState(Boss* boss, std::shared_ptr<BossMoveStat
 }
 void DryBowserPhase1BT::update(Boss* boss, float dt){
         if (root)root->tick(boss, dt);
-        currentState->update(boss,dt);
+        if(currentState)currentState->update(boss,dt);
 }
 std::string DryBowserPhase1BT::getCurMove() const {
         return currentState ? currentState->getName() : "None";

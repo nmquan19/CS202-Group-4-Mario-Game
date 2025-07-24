@@ -90,18 +90,15 @@ public:
     //bool canBeInterrupted();
     std::string getName() const override;
 };
-//class DryBowserTakeDamageState : public BossMoveState {
-//private:
-//    float takeDamageDuration = 0.1f;
-//    float timer = 0.0f;
-//public:
-//    void enter(Boss* boss) override;
-//    void update(Boss* boss, float dt) override;
-//    void exit(Boss* boss) override;
-//    bool isFinished() const override;
-//    std::vector<std::string> getAllowedTransitions() const;
-//    bool canBeInterrupted();
-//    bool canTransitionTo(const std::string& nextStateName);
-//    std::string getName() const;
-//    std::shared_ptr<BossMoveState> getForcedTransition(Boss* boss);
-//};
+class DryBowserTakeDamageState : public BossMoveState {
+private:
+    float takeDamageDuration = Constants::DryBowser::TAKE_DAMAGE_DURATION;
+    float timer = 0.0f;
+public:
+    void enter(Boss* boss) override;
+    void update(Boss* boss, float dt) override;
+    void exit(Boss* boss) override;
+    bool isFinished() const override;
+    //bool canBeInterrupted();
+    std::string getName() const;
+};

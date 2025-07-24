@@ -64,6 +64,7 @@ namespace Constants {
         constexpr float SPIN_ATTACK_DURATION =0.5f;
         constexpr float SPIN_ATTACK_WINDDOWN_DURATION = 0.75f;
 		constexpr float SPIN_ATTACK_RANGE = 300.0f;
+        constexpr float TAKE_DAMAGE_DURATION = 0.5f; 
     } 
     namespace Spring {
         constexpr float BOUNCE_VELOCITY = -800.0f;

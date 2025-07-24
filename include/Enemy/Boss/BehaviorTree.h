@@ -215,3 +215,8 @@ public:
     SpinAttackWinddownNode() : ActionNode() {}
     NodeStatus tick(Enemy* boss, float dt) override;
 };
+class IsTakingDamageNode : public ActionNode {
+public:
+    IsTakingDamageNode() : ActionNode() {}
+	NodeStatus tick(Enemy* boss, float dt) override;    
+};
