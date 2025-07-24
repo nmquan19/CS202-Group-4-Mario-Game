@@ -99,6 +99,9 @@ void KoopaShellMovingState::checkCollision(KoopaShell* shell, const std::vector<
             case ObjectCategory::PROJECTILE:
                 shell->queueState(&KoopaShellKnockedState::getInstance());
                 break;
+            case ObjectCategory::INTERACTIVE:
+                shell->handleEnvironmentCollision(obj);
+                break;
             }
         }
     }
@@ -107,7 +110,7 @@ ObjectCategory KoopaShellMovingState::getObjectCategory() const {
     return ObjectCategory::PROJECTILE;
 }
 std::vector<ObjectCategory> KoopaShellMovingState::getCollisionTargets() const {
-    return { ObjectCategory::CHARACTER, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE};
+    return { ObjectCategory::CHARACTER, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE, ObjectCategory::INTERACTIVE };
 }
 
 
