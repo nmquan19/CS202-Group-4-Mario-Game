@@ -17,7 +17,7 @@ Item::Item(Vector2 startPos)
 {
 
     this->spritebox = { 0, 0, 32, 32 };
-    this->size = { 0.5, 0.5 };
+    this->size = { 1, 1};
     this->hitbox = { position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
 }
 

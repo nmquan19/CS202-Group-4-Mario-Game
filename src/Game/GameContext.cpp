@@ -50,17 +50,8 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
             PhysicsManager::getInstance().addObject(character);
-            // addObject(InteractiveType::SPRING, { 500, 950 }, { 1, 1 });
-             addObject(EnemyType::DRY_BOWSER, {500,950}, {2, 2});
             camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
             camera.target = character->getPosition();
-            // addObject(EnemyType::DRY_BOWSER, {300,300}, {1.5, 1.5});
-            addObject(ItemType::COIN, { 800, 700 }, { 0.25, 0.25 });
-			addObject(ItemType::MUSHROOM, { 1000, 700 }, { 0.25, 0.25 });
-			addObject(ItemType::FIRE_FLOWER, { 1200, 700 }, { 0.25, 0.25 });
-			addObject(ItemType::STAR, { 600, 700 }, { 0.25, 0.25 });
-            addObject(ItemType::ONE_UP, { 400, 700 }, { 0.25, 0.25 });
-
         }
     }
 }
@@ -127,7 +118,8 @@ void GameContext::spawnObject() {
                 object = ObjectFactory::createBlock(actualType, GridSystem::getGridCoord(request.worldpos));
             }
             else if constexpr (std::is_same_v<T, EnemyType>) {
-                object = ObjectFactory::createEnemy(actualType, request.worldpos, request.size);
+                if (actualType == EnemyType::DRY_BOWSER) object = ObjectFactory::createEnemy(actualType, request.worldpos, {2, 2});
+                else object = ObjectFactory::createEnemy(actualType, request.worldpos, request.size);
             }
             else if constexpr (std::is_same_v<T, KoopaShellType>) {
                 object = ObjectFactory::createKoopaShell(actualType, request.worldpos, request.size);

@@ -34,7 +34,8 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
         {"CanAttack", true},
         {"IsNearWall", false}
     };
-    setAnimation("BasicAttack");
+    spritebox = TextureManager::DryBowser_sprite_boxes[2];
+    //setAnimation("BasicAttack");
     currentPhase = std::make_unique<DryBowserPhase1BT>();
     currentPhase->enter(this);
   
@@ -178,7 +179,7 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     Rectangle otherBox = otherBoxes[0];
 
     Rectangle bowserHead = bowserBoxes[1];
-    const float snapOffset = 5.f; 
+    const float snapOffset = 2.5f; 
     if(CheckCollisionRecs(bowserHead, otherBoxes[0])) {
         velocity.y = 0;
         position.y = otherBox.y + otherBox.height + snapOffset;
