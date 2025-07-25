@@ -220,3 +220,9 @@ public:
     IsTakingDamageNode() : ActionNode() {}
 	NodeStatus tick(Enemy* boss, float dt) override;    
 };
+
+class IsInIntroNode : public ActionNode {
+public:
+    IsInIntroNode() : ActionNode() {}
+	NodeStatus tick(Enemy* boss, float dt) override;
+};

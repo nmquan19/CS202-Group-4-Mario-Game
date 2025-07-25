@@ -102,3 +102,16 @@ public:
     //bool canBeInterrupted();
     std::string getName() const;
 };
+
+class DryBowserIntroState : public BossMoveState {
+private:
+    float takeDamageDuration = Constants::DryBowser::INTRO_DURATION;
+    float timer = 0.0f;
+public:
+    void enter(Boss* boss) override;
+    void update(Boss* boss, float dt) override;
+    void exit(Boss* boss) override;
+    bool isFinished() const override;
+    //bool canBeInterrupted();
+    std::string getName() const;
+};

@@ -89,7 +89,10 @@ std::shared_ptr<BehaviorTreeNode> BTFactory::buildTree(const json& nodeData) {
     {
         return std::make_shared<IsTakingDamageNode>();
     }
-    
+    else if (type == "Intro")
+    {
+		return std::make_shared<IsInIntroNode>();
+    }
     throw std::runtime_error("Unknown node type: " + type);
 }
 std::string GetEnemyName(EnemyType type) {
@@ -188,6 +191,9 @@ nlohmann::json BTFactory::to_json(const std::shared_ptr<BehaviorTreeNode>& node)
     }
     else if (std::dynamic_pointer_cast<IsTakingDamageNode>(node)) {
         j["type"] = "IsTakingDamage";
+    }
+    else if (std::dynamic_pointer_cast<IsInIntroNode>(node)) {
+        j["type"] = "Intro";
     }
     else {
         throw std::runtime_error("Unknown node type during serialization");

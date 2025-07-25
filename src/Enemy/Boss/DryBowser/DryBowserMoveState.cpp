@@ -191,3 +191,30 @@ bool DryBowserSpinAttackState::isFinished() const {
 std::string DryBowserSpinAttackState::getName() const {
     return "SpinAttack";
 }
+
+
+
+
+
+
+void DryBowserIntroState::enter(Boss* boss) {
+
+    boss->setAnimation("Intro");
+    timer = 0.0f;
+}
+
+void DryBowserIntroState::update(Boss* boss, float dt) {
+    timer += dt;
+}
+
+void DryBowserIntroState::exit(Boss* boss) {
+
+}
+
+bool DryBowserIntroState::isFinished() const {
+    return timer >= Constants::DryBowser::INTRO_DURATION;
+}
+
+std::string DryBowserIntroState::getName() const {
+    return "Intro";
+}

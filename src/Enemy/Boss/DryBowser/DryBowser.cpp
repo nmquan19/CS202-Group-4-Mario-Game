@@ -33,7 +33,7 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
         {"CanAttack", true},
         {"IsNearWall", false}
     };
-    setAnimation("BasicAttack");
+    //setAnimation("BasicAttack");
     currentPhase = std::make_unique<DryBowserPhase1BT>();
     currentPhase->enter(this);
   
@@ -354,6 +354,10 @@ void DryBowser::setAnimation(const std::string& aniName) {
     else if (aniName == "TakeDamage")
     {
 		animController.set(575, 580, Constants::DryBowser::TAKE_DAMAGE_DURATION, Easing::linear, false, false);
+    }
+    else if (aniName == "Intro")
+    {
+		animController.set(643, 656, Constants::DryBowser::INTRO_DURATION, Easing::linear, false, false);
     }
     curAniName = aniName;
 }
