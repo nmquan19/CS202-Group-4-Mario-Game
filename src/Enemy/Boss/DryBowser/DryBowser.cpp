@@ -21,6 +21,7 @@
 #include "../../../../include/System/Interface.h"
 #include "../../../../include/System/Constant.h"
 #include "../../../../include/System/FrameData.h"
+#include "../../../../include/Game/GameContext.h"
 DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,size,TextureManager::DryBowser_texture){
     HP = 100;
     alive = true;
@@ -33,6 +34,7 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
         {"CanAttack", true},
         {"IsNearWall", false}
     };
+    spritebox = TextureManager::DryBowser_sprite_boxes[2];
     //setAnimation("BasicAttack");
     currentPhase = std::make_unique<DryBowserPhase1BT>();
     currentPhase->enter(this);
@@ -72,13 +74,7 @@ void DryBowser::update(float dt) {
         
     }
     updateWorldState();
-    if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-        Vector2 mousePos = GetMousePosition();
-        targetPosition = { mousePos.x, mousePos.y };
-    }
-    else if (IsKeyPressed(KEY_SPACE)) {
-        targetPosition = { 800, 100 }; 
-	}
+    setTarget(GameContext::getInstance().getCharacter()->getPosition());
     hitbox.x = position.x;
     hitbox.y = position.y; 
 	position += velocity * dt;
@@ -143,7 +139,7 @@ void DryBowser::update(float dt) {
 
 void DryBowser::draw() {
 
-	DrawRectangle(targetPosition.x, targetPosition.y, 50,50, RED);
+	//DrawRectangle(targetPosition.x, targetPosition.y, 50,50, RED);
     Rectangle source = spritebox;
     Rectangle dest = hitbox;
     if (!isFacingRight)
@@ -183,7 +179,7 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     Rectangle otherBox = otherBoxes[0];
 
     Rectangle bowserHead = bowserBoxes[1];
-    const float snapOffset = 0.5f; 
+    const float snapOffset = 2.5f; 
     if(CheckCollisionRecs(bowserHead, otherBoxes[0])) {
         velocity.y = 0;
         position.y = otherBox.y + otherBox.height + snapOffset;
@@ -456,4 +452,9 @@ void DryBowser::spinAttackWindup()
 void DryBowser::spinAttackWinddown()
 {
 	setAnimation("SpinAttackWinddown");
+}
+
+void DryBowser::setTarget(Vector2 targetPos)
+{
+    this->targetPosition = targetPos; 
 }

@@ -52,6 +52,7 @@ public:
     ObjectType getObjectType() const override;
     EnemyType getType() const override;
 	void setAnimation(const std::string& animationName) override;
+    void setTarget(Vector2 targetPos);
    
     //
     

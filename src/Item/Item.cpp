@@ -2,8 +2,13 @@
 #include "../../include/System/PhysicsManager.h"
 #include "../../include/System/Grid.h"
 #include "../../include/System/TextureManager.h"
+#include "../../include/Game/GameContext.h"
 #include <raymath.h>
 #include <memory> // Include this header for std::enable_shared_from_this
+
+Item::Item() {
+	
+}
 
 Item::Item(Vector2 startPos)
     : position(startPos), active(true), scale(1.0f),
@@ -12,6 +17,7 @@ Item::Item(Vector2 startPos)
 {
 
     this->spritebox = { 0, 0, 32, 32 };
+    this->size = { 1, 1};
     this->hitbox = { position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
 }
 
@@ -21,12 +27,12 @@ Item::~Item() {
 }
 
 void Item::update(float deltaTime) {
-    velocity.y += gravity * deltaTime;
+    /*velocity.y += gravity * deltaTime;
     position.y += velocity.y * deltaTime;
     if (position.y >= groundY) {
         position.y = groundY;
         velocity.y = 0;
-    }
+    }*/
 	//std::cout << deltaTime << " " << velocity.y << " " << position.y << std::endl;
     animation->Update();
 }
@@ -36,11 +42,12 @@ void Item::draw() {
     DrawTexturePro(
         TextureManager::getInstance().getItemTexture(),
         animation->GetFrame(),
-        { position.x, position.y, 32 * scale, 32 * scale },
+        hitbox,
         { 0, 0 },
         0,
         WHITE
     );
+    DrawText(TextFormat("hitbot: %f %f", hitbox.width, hitbox.height), 50, 50, 50, BLACK);
 }
 
 void Item::draw(Texture2D texture) {
@@ -75,15 +82,10 @@ void Item::onCollision(std::shared_ptr<Object> other) {
 
 void Item::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
     for (std::shared_ptr<Object> obj : candidates) {
-        if (!obj->isActive()) continue;
-
-        for (ObjectCategory targetCat : getCollisionTargets()) {
-            for (const Rectangle& candidateHitBox : obj->getHitBox()) {
-                if (obj->getObjectCategory() == targetCat && CheckCollisionRecs(hitbox, candidateHitBox)) {
-                    onCollision(obj);
-                    break; // Exit the loop once a collision is detected
-                }
-            }
+        switch (obj->getObjectCategory()) {
+        case ObjectCategory::CHARACTER:
+            setActive(false);
+            GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
         }
     }
 }
