@@ -40,12 +40,15 @@ namespace Constants {
 	}
     namespace Character {
         constexpr float BOUNCE_AFTER_STRIKE_VELOCITY = -300.0f;
+        constexpr float INVINCIBLE_TIME = 1.0f;
+        constexpr float REVIVE_TIME = 4.0f;
         constexpr CharacterStats MARIO_STATS = {220.0f, 550.0f};
         constexpr CharacterStats LUIGI_STATS = {175.0f, 730.0f};
         const std::vector<std::vector<Rectangle>> MARIO_FRAME_DATA = {
             {{11, 23, 12, 15}}, // idle state
             {{118, 23, 12, 15}, {149, 22, 15, 16}}, // moving state
-            {{293, 22, 16, 16}, {326, 22, 16, 16}} // jumping state
+            {{293, 22, 16, 16}, {326, 22, 16, 16}}, // jumping state
+            {{11, 23, 12, 15}, {49, 26, 11, 12}} // stunned state
         };
         const std::vector<std::vector<Rectangle>> LUIGI_FRAME_DATA = {
             {{11, 893, 12, 15}}, // idle state
