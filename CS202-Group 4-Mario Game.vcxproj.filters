@@ -42,6 +42,11 @@
     <ClCompile Include="src\Item\Item.cpp" />
     <ClCompile Include="src\UI\Button.cpp" />
     <ClCompile Include="src\UI\SlideBar.cpp" />
+    <ClCompile Include="src\Item\Coin\Coin.cpp" />
+    <ClCompile Include="src\Item\Mushroom\Mushroom.cpp" />
+    <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
+    <ClCompile Include="src\Item\Star\Star.cpp" />
+    <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
     <ClCompile Include="src\Game\HUD.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +107,9 @@
     <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
     <ClInclude Include="include\UI\SlideBar.h" />
     <ClInclude Include="include\UI\Button.h" />
+    <ClInclude Include="include\Item\Fire_Flower\Fire_Flower.h" />
+    <ClInclude Include="include\Item\Star\Star.h" />
+    <ClInclude Include="include\Item\One_Up\One_Up.h" />
     <ClInclude Include="include\Game\HUD.h" />
   </ItemGroup>
   <ItemGroup>

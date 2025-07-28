@@ -1,4 +1,4 @@
-//#include <raylib.h>
+#include <raylib.h>
 #include <memory>
 #include <string>
 #include "../include/UI/SoundEffect.h"
@@ -13,6 +13,10 @@
 #include "../include/Game/GameContext.h"
 #include "../include/Game/GameStates.h"
 #include "../include/Item/Coin/Coin.h"
+#include "../include/Item/Mushroom/Mushroom.h"
+#include "../include/Item/Fire_Flower/Fire_Flower.h"
+#include "../include/Item/Star/Star.h"
+#include "../include/Item/One_Up/One_Up.h"
 
 int main() {
     InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
@@ -38,43 +42,43 @@ int main() {
     CloseWindow();
     return 0;
 }
-/*
-int main() {
-    InitWindow(600, 400, "Animation");
 
-    Texture2D texture = LoadTexture("assets/item/item_spritesheet.png");
+//int main() {
+//    InitWindow(600, 400, "Item Animation");
+//
+//    Texture2D texture = LoadTexture("assets/item/item_spritesheet.png");
+//
+//	
+//    Coin coin({ 300, 100 });
+//    Mushroom mushroom({ 200, 100 });
+//    Fire_Flower fire_flower({ 100, 100 });
+//    Star star({ 400, 100 });
+//    One_Up one_up({ 500, 100 });
+//
+//    while (!WindowShouldClose()) {
+//        float deltaTime = GetFrameTime();
+//        coin.update(deltaTime);
+//        mushroom.update(deltaTime);
+//        fire_flower.update(deltaTime);
+//        star.update(deltaTime);
+//        one_up.update(deltaTime);
+//
+//        BeginDrawing();
+//        ClearBackground(SKYBLUE);
+//
+//        coin.draw(texture);
+//        mushroom.draw(texture);
+//        fire_flower.draw(texture);
+//        star.draw(texture);
+//        one_up.draw(texture);
+//
+//        EndDrawing();
+//    }
+//
+//    UnloadTexture(texture);
+//    CloseWindow();
+//
+//    return 0;
+//}
 
-	
-    Coin coin({ 300, 100 });
-    //Mushroom mushroom({ 200, 100 });
-    //Fire_Flower fire_flower({ 100, 100 });
-    //Star star({ 400, 100 });
-    //One_Up one_up({ 500, 100 });
-
-    while (!WindowShouldClose()) {
-        float deltaTime = GetFrameTime();
-        coin.update(deltaTime);
-        //mushroom.Update(deltaTime);
-        //fire_flower.Update(deltaTime);
-        //star.Update(deltaTime);
-        //one_up.Update(deltaTime);
-
-        BeginDrawing();
-        ClearBackground(SKYBLUE);
-
-        coin.draw(texture);
-        //mushroom.Draw(texture);
-        //fire_flower.Draw(texture);
-        //star.Draw(texture);
-        //one_up.Draw(texture);
-
-        EndDrawing();
-    }
-
-    UnloadTexture(texture);
-    CloseWindow();
-
-    return 0;
-}
-*/
 

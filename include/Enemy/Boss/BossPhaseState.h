@@ -12,4 +12,5 @@ public:
     virtual void exit(Boss* boss) = 0;
     virtual void changeMoveState(Boss* boss, std::shared_ptr<BossMoveState> moveState) = 0; 
     virtual std::string getCurMove() const = 0; 
+    virtual bool isMoveFinished() const = 0;
 };

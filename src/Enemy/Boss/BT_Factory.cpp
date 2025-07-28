@@ -36,7 +36,7 @@ std::shared_ptr<BehaviorTreeNode> BTFactory::buildTree(const json& nodeData) {
     }
     else if (type == "Inverter") {
         auto node = std::make_shared<InverterNode>();
-        node->setChild(buildTree(nodeData.at("child")));
+        node->setChild(buildTree(nodeData.at("child")));    
         return node;
     }
     else if (type == "RunOnce") {
@@ -53,7 +53,43 @@ std::shared_ptr<BehaviorTreeNode> BTFactory::buildTree(const json& nodeData) {
     else if (type == "Idle") {
         return std::make_shared<IdleNode>();
     }
-
+    else if (type == "WalkTurn")
+    {
+        return std::make_shared<WalkTurnNode>();
+    }
+    else if (type == "NeedTurn")
+    {
+        return std::make_shared<NeedTurnNode>();
+    }
+    else if (type == "IsTargetInRange")
+    {
+        return std::make_shared<IsTargetInRangeNode>();
+    }
+    else if (type == "CanUseSpin")
+    {
+        return std::make_shared<CanUseSpinNode>();
+    }
+    else if(type=="SpinAttack")
+    {
+        return std::make_shared<SpinAttackNode>();
+	}
+    else if(type == "CanUseMeleeAttack1")
+    {
+        return std::make_shared<CanUseMeleeAttack1Node>();
+	}
+    else if (type == "SpinAttackWindup")
+    {
+        return std::make_shared<SpinAttackWindupNode>();
+    }
+    else if (type == "SpinAttackWinddown")
+    {
+        return std::make_shared<SpinAttackWinddownNode>();
+    }
+    else if (type == "IsTakingDamage")
+    {
+        return std::make_shared<IsTakingDamageNode>();
+    }
+    
     throw std::runtime_error("Unknown node type: " + type);
 }
 std::string GetEnemyName(EnemyType type) {
@@ -125,6 +161,33 @@ nlohmann::json BTFactory::to_json(const std::shared_ptr<BehaviorTreeNode>& node)
     }
     else if (std::dynamic_pointer_cast<IdleNode>(node)) {
         j["type"] = "Idle";
+    }
+    else if (std::dynamic_pointer_cast<WalkTurnNode>(node)) {
+        j["type"] = "WalkTurn";
+    }
+    else if (std::dynamic_pointer_cast<IsTargetInRangeNode>(node)) {
+        j["type"] = "IsTargetInRange";
+    }
+    else if (std::dynamic_pointer_cast<NeedTurnNode>(node)) {
+        j["type"] = "NeedTurn";
+    }
+    else if (std::dynamic_pointer_cast<CanUseSpinNode>(node)) {
+        j["type"] = "CanUseSpin";
+    }
+    else if (std::dynamic_pointer_cast<SpinAttackNode>(node)) {
+        j["type"] = "SpinAttack";
+    }
+    else if( std::dynamic_pointer_cast<CanUseMeleeAttack1Node>(node)) {
+        j["type"] = "CanUseMeleeAttack1";
+	}
+    else if (std::dynamic_pointer_cast<SpinAttackWindupNode>(node)) {
+        j["type"] = "SpinAttackWindup";
+    }
+    else if (std::dynamic_pointer_cast<SpinAttackWinddownNode>(node)) {
+        j["type"] = "SpinAttackWinddown";
+    }
+    else if (std::dynamic_pointer_cast<IsTakingDamageNode>(node)) {
+        j["type"] = "IsTakingDamage";
     }
     else {
         throw std::runtime_error("Unknown node type during serialization");

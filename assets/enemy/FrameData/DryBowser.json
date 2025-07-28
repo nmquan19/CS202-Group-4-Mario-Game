@@ -33,36 +33,41 @@
       "hitboxes": []
     }
   ],
-  "BasicAttack": [
+  "MeleeAttack1": [
     {
-      "frame": 76,
+      "frame": 72,
       "events": [
         {
-          "eventType": "SetEasingVelocity",
-          "eventPayload": "100,0,0,0,76,77,linear"
+          "eventType": "IncrementVelocity",
+          "eventPayload": "350,0"
         }
       ],
       "hitboxes": []
     },
     {
-      "frame": 82,
+      "frame": 73,
       "events": [
         {
           "eventType": "ChangeVelocity",
-          "eventPayload": "100,0"
-        },
-        {
-            "eventType":"PlaySound",
-            "eventPayload": "attack.wav"
+          "eventPayload": "0,0"
         }
-        
+      ],
+      "hitboxes": []
+    },
+     {
+      "frame": 80,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "200,0"
+        }
       ],
       "hitboxes": []
     },
     {
-      "frame": 83,
+      "frame": 81,
       "events": [
-        {
+         {
           "eventType": "ChangeVelocity",
           "eventPayload": "0,0"
         }
@@ -77,13 +82,13 @@
       "events": [
         {
           "eventType": "ChangeVelocity",
-          "eventPayload": "300,0"
+          "eventPayload": "150,0"
         }
       ],
       "hitboxes": []
     },
     {
-      "frame": 40,
+      "frame": 41,
       "events": [
         {
           "eventType": "ChangeVelocity",
@@ -92,5 +97,101 @@
       ],
       "hitboxes": []
     }
+  ],
+  "WalkTurn":[
+    {
+       "frame": 26,
+      "events": [
+        {
+          "eventType": "None",
+          "eventPayload": ""
+        }
+      ],
+      "hitboxes": []
+    }
+  ],
+    "SpinAttack": [
+    {
+      "frame": 389,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "30,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+      {
+      "frame": 390,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "30,0"
+        }
+      ],
+
+      "hitboxes": []
+    }
+  ],
+   "SpinAttackWinddown": [
+    {
+      "frame": 397,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "250,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+     {
+      "frame": 398,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "150,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+     {
+      "frame": 398,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+
+      "hitboxes": []
+    }
+  ],
+  "SpinAttackWinddup": [
+    {
+      "frame": 385,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+    {
+      "frame": 388,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+
+      "hitboxes": []
+    }
+
   ]
 }

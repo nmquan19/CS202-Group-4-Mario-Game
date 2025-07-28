@@ -70,6 +70,7 @@ private:
     float yBlock = paletteRect.y + 50;
     float yEnemy = yBlock + 150;
     float yInteractive = yEnemy + 150;
-    float spacing = 120;
+    float yItem = yInteractive + 150;
+    float spacing = 120;    
     float iconSize = 100;
 };

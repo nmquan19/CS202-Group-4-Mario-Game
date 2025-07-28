@@ -19,6 +19,7 @@ public:
     void changeMoveState(Boss* boss, std::shared_ptr<BossMoveState> moveState);
     void update(Boss* boss, float dt) override;
     std::string getCurMove() const;
+    bool isMoveFinished() const override;
 };
 class DryBowserPhase2GOAP : public BossPhaseState {
     GOAPPlanner planner;
@@ -31,4 +32,6 @@ public:
     void update(Boss* boss, float dt) override;
     void changeMoveState(Boss* boss, std::shared_ptr<BossMoveState> moveState);
     std::string getCurMove() const;
+    bool isMoveFinished() const override;
+
 };

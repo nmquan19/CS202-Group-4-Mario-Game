@@ -85,6 +85,7 @@ private:
 	void handleInteractiveCollision(std::shared_ptr<Object> other);
 	void handleSpringCollision(std::shared_ptr<Spring> other);
 	
+	
 private:
 	ICharacterState* currentState;
 	CharacterType characterType;

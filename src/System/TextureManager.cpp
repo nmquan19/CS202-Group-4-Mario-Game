@@ -163,11 +163,31 @@ void ObjectPalette::drawPalette() {
     }
     DrawRectangleLinesEx(redKoopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::RED_KOOPA) ? RED : BLACK);
 
+    // DryBowser
+    Rectangle dryBRect = { startX + 3 * spacing, yEnemy, iconSize, iconSize };
+    if (tm.DryBowser_texture.id != 0 && !tm.DryBowser_sprite_boxes.empty()) {
+        Rectangle dryBSource = tm.DryBowser_sprite_boxes[2];
+        DrawTexturePro(tm.DryBowser_texture, dryBSource, dryBRect, { 0,0 }, 0.0f, WHITE);
+    }
+    DrawRectangleLinesEx(dryBRect, 2, (isEnemy() && getEnemyType() == EnemyType::DRY_BOWSER) ? RED : BLACK);
+
     // Spring
     Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
     Rectangle springSource = {1, 467, 16, 16};
     DrawTexturePro(TextureManager::interactiveTextures, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
     DrawRectangleLinesEx(springRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::SPRING) ? RED : BLACK);
+
+    // Coin
+    Rectangle coinRect = { startX, yItem, iconSize, iconSize };
+    Rectangle coinSource = { 0, 0, 100, 100 };
+    DrawTexturePro(tm.getItemTexture(), coinSource, coinRect, { 0, 0 }, 0.0f, WHITE);
+    DrawRectangleLinesEx(coinRect, 2, (isItem() && getItemType() == ItemType::COIN) ? RED : BLACK);
+
+    // Fire_flower
+    Rectangle ffRect = { startX + spacing, yItem, iconSize, iconSize };
+    Rectangle ffSource = { 0, 200, 100, 100 };
+    DrawTexturePro(tm.getItemTexture(), ffSource, ffRect, { 0, 0 }, 0.0f, WHITE);
+    DrawRectangleLinesEx(ffRect, 2, (isItem() && getItemType() == ItemType::FIRE_FLOWER) ? RED : BLACK);
 }
 
 void ObjectPalette::handleSelection() {
@@ -184,8 +204,12 @@ void ObjectPalette::handleSelection() {
     Rectangle goombaRect = { startX, yEnemy, iconSize, iconSize };
     Rectangle gkoopaRect = { startX + spacing, yEnemy, iconSize, iconSize };
     Rectangle rkoopaRect = { startX + 2*spacing, yEnemy, iconSize, iconSize };
+    Rectangle dryBRect = { startX + 3*spacing, yEnemy, iconSize, iconSize };
 
     Rectangle springRect = { startX, yInteractive, iconSize, iconSize };
+
+    Rectangle coinRect = { startX, yItem, iconSize, iconSize };
+    Rectangle ffRect = { startX + spacing, yItem, iconSize, iconSize };
 
     if (CheckCollisionPointRec(mousePos, groundRect)) {
         selected = BlockType::GROUND;
@@ -202,7 +226,17 @@ void ObjectPalette::handleSelection() {
     else if (CheckCollisionPointRec(mousePos, rkoopaRect)) {
         selected = EnemyType::RED_KOOPA;
     }
+    else if (CheckCollisionPointRec(mousePos, dryBRect)) {
+        selected = EnemyType::DRY_BOWSER;
+    }
     else if (CheckCollisionPointRec(mousePos, springRect)) {
         selected = InteractiveType::SPRING;
     }
+    else if (CheckCollisionPointRec(mousePos, coinRect)) {
+        selected = ItemType::COIN;
+    }
+    else if (CheckCollisionPointRec(mousePos, ffRect)) {
+        selected = ItemType::FIRE_FLOWER;
+    }
+   
 }
