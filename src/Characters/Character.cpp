@@ -2,6 +2,8 @@
 #include "..\..\include\Characters\IdleState.h"
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
+#include "../../include/Characters/StunnedState.h"
+#include "../../include/Characters/KnockedState.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
@@ -14,8 +16,8 @@
 #include <variant>
 #include <memory>
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale)
-	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(5), projectile(nullptr), holdingProjectile(false),
-	invincibleTimer(0),
+	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(1), projectile(nullptr), holdingProjectile(false),
+	invincibleTimer(0), reviveTimer(0), 
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
 	this->position = startPosition;
@@ -70,6 +72,10 @@ void Character::update(float deltaTime) {
 
 	if(invincibleTimer > 0) {
 		invincibleTimer -= deltaTime;		
+	}
+
+	if (reviveTimer > 0) {
+		reviveTimer -= deltaTime;
 	}
 
 	handleProjectile(deltaTime);
@@ -223,6 +229,9 @@ void Character::setFacingRight(bool flag) {
 void Character::updateHitBox(){
 	hitBoxWidth = spriteRec.width * scale;
 	hitBoxHeight = spriteRec.height * scale;
+	if (currentState == &StunnedState::getInstance()) {
+		position.y = lastBottomY - hitBoxHeight;
+	}
 }
 
 std::vector<Rectangle> Character::getHitBox() const {
@@ -310,7 +319,7 @@ void Character::takeDamage(int amount) {
 		return;
 	}
 	hp -= amount;
-	invincibleTimer = 1.0f;
+	changeState(StunnedState::getInstance());
 }
 
 bool Character::isAlive() const {
@@ -370,6 +379,7 @@ void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction di
 			physicsBody->SetLinearVelocity(b2Vec2(physicsBody->GetLinearVelocity().x, 
 				-Box2DWorldManager::raylibToB2(Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY)));
 		}
+
 		setOnGround(false);
 		if (auto enemy = dynamic_cast<Enemy*>(other.get())) {
 			enemy->takeDamage(1);

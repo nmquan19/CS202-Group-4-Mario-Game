@@ -72,7 +72,8 @@ public:
 	friend class IdleState;
 	friend class MovingState;
 	friend class JumpingState;
-	friend class HUD;
+	friend class StunnedState;
+	friend class KnockedState;
 
 	void addGroundContact();
 	void removeGroundContact();
@@ -107,12 +108,14 @@ private:
 	float aniTimer;
 	float aniSpeed;
 
+	float lastBottomY;
 	float hitBoxWidth;
 	float hitBoxHeight;
 	bool active = true;
 
 	int hp;
 	float invincibleTimer;
+	float reviveTimer;
 	
 	KoopaShell* projectile;
 	bool holdingProjectile;
