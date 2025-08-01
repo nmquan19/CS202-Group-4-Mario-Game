@@ -5,7 +5,7 @@ class Character;
 
 class JumpingState : public ICharacterState {
 public:
-    void enter(Character* character) override;
+    void enter(Character* character) override;  
     void update(Character* character, float deltaTime) override;
     void exit(Character* character) override;
     static JumpingState& getInstance();

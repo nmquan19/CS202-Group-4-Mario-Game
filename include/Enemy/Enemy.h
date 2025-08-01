@@ -8,6 +8,7 @@
 #include <climits>
 #include "../System/InterpolationController.h"
 #include <memory>
+#include <box2d/box2d.h>
 class EnemyState; 
 
 class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable {
@@ -20,9 +21,8 @@ public:
 
 	std::vector<Rectangle> getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
-	virtual void onCollision(std::shared_ptr<Object> other) override;
+	virtual void onCollision(std::shared_ptr<Object> other, Direction dir) override = 0;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
-	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0 ;
 
 	bool isActive() const override;
 	void changeState(EnemyState* other);
@@ -52,7 +52,7 @@ public :
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;
-	virtual void handleEnvironmentCollision(std::shared_ptr<Object> other);
+	virtual void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir);
 	std::vector<std::pair<int, int>> getSpriteData();
 	virtual void setAnimation(const std::string& ani_type) {};
 	void flipDirection(); 
@@ -95,6 +95,8 @@ public:
 	Vector2 velocity; 
 	Vector2 accelleration; 
 	float groundLevel = INT_MAX;
+	b2Body* physicsBody; // Box2D physics body
+	bool collided;
 };
 
 

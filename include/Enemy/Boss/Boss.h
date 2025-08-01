@@ -20,13 +20,12 @@ class Boss : public Enemy {
 		virtual void takeDamage(int amount) = 0;
 		virtual void draw() = 0;
 		virtual void handleCharacterCollision(std::shared_ptr<Object> other) = 0;
-		virtual void handleEnvironmentCollision(std::shared_ptr<Object> other) = 0;
-		virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) = 0;
+		virtual void handleEnvironmentCollision(std::shared_ptr<Object> othe, Direction dir) = 0;
 		virtual void die() = 0;
 		virtual bool isAlive() const = 0;
 		virtual ObjectType getObjectType() const override =0;
 		virtual EnemyType getType() const override = 0;
-		virtual void onCollision(std::shared_ptr<Object> other) = 0;
+		virtual void onCollision(std::shared_ptr<Object> other, Direction dir) = 0;
 		virtual void changePhase(std::unique_ptr<BossPhaseState> newPhase) = 0;
 		virtual const WorldState& getWorldState() const = 0;
 		virtual std::unique_ptr<BaseSimState> getCurrentSimState() const = 0;

@@ -3,6 +3,7 @@
 #include <vector>
 #include <variant>
 #include <memory>
+
 class Object;
 enum class ObjectCategory {
 	CHARACTER,
@@ -68,7 +69,8 @@ enum class Direction {
 	UP = 1,
 	DOWN,
 	LEFT,
-	RIGHT
+	RIGHT,
+	NONE
 };
 class IDrawable {
 public:
@@ -82,8 +84,7 @@ public:
 	virtual std::vector<Rectangle> getHitBox() const = 0;
 	virtual ObjectCategory getObjectCategory() const = 0;
 	virtual std::vector<ObjectCategory> getCollisionTargets() const = 0;
-	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) = 0;
-	virtual void onCollision(std::shared_ptr<Object> other) = 0;
+	virtual void onCollision(std::shared_ptr<Object> other, Direction direction = Direction::NONE) = 0;
 };
 
 class IDamageable {

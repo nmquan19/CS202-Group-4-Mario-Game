@@ -22,6 +22,7 @@
 #include "../../../../include/System/Constant.h"
 #include "../../../../include/System/FrameData.h"
 #include "../../../../include/Game/GameContext.h"
+#include "../../../../include/System/Box2DWorldManager.h"
 DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,size,TextureManager::DryBowser_texture){
     HP = 100;
     alive = true;
@@ -52,86 +53,80 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
 }
 #include <iostream>
 void DryBowser::update(float dt) {
-    applyGravity(dt);
-    //Enemy::update(dt); 
-    if (position.x < 0)
-    {
-        position.x = 0;
-        if (isInSpinAttack())
-        {
-			direction = { -direction.x, direction.y }; 
-			velocity = { -velocity.x, velocity.y }; // Reverse velocity
-        }
-    }
-    if (position.x > 1920 - hitbox.width)
-    {
-        position.x = 1920 - hitbox.width;
-        if (isInSpinAttack())
-        {
-            direction = { -direction.x, direction.y }; 
-			velocity = { -velocity.x, velocity.y }; // Reverse velocity
-        }
+    // First, sync with Box2D physics body if available
+    if (physicsBody) {
+        // Get position and velocity from Box2D
+        b2Vec2 b2Pos = physicsBody->GetPosition();
+        Vector2 bodyPos = Box2DWorldManager::b2ToRaylib(b2Pos);
+        position.x = bodyPos.x - hitbox.width * 0.5f;
+        position.y = bodyPos.y - hitbox.height * 0.5f;
         
+        b2Vec2 b2Vel = physicsBody->GetLinearVelocity();
+        velocity = Box2DWorldManager::b2ToRaylib(b2Vel);
     }
+    
+    // Handle screen boundaries
+    if (position.x < 0) {
+        position.x = 0;
+        if (isInSpinAttack()) {
+            direction = { -direction.x, direction.y };
+            if (physicsBody) {
+                physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2({-velocity.x, velocity.y}));
+            }
+        }
+    }
+    if (position.x > 1920 - hitbox.width) {
+        position.x = 1920 - hitbox.width;
+        if (isInSpinAttack()) {
+            direction = { -direction.x, direction.y };
+            if (physicsBody) {
+                physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2({-velocity.x, velocity.y}));
+            }
+        }
+    }
+    
     updateWorldState();
     setTarget(GameContext::getInstance().getCharacter()->getPosition());
     hitbox.x = position.x;
-    hitbox.y = position.y; 
-	position += velocity * dt;
-	animController.update(dt);  
+    hitbox.y = position.y;
+    
+    animController.update(dt);
     curFrame = animController.getCurrentFrame();
-    if (getBottom() <= groundLevel) {
-		DrawText(TextFormat("Drybowser Position: x = %f, y = %f, Ground Level z = %f", position.x, position.y, groundLevel), 200, 400, 20, BLACK);
-        //position.y = groundLevel - (spritebox.height * scale);
+    
+    // Ground collision detection (for non-Box2D fallback)
+    if (!physicsBody && getBottom() <= groundLevel) {
+        DrawText(TextFormat("Drybowser Position: x = %f, y = %f, Ground Level z = %f", position.x, position.y, groundLevel), 200, 400, 20, BLACK);
         onGround = true;
         if (velocity.y > 0) {
             velocity.y = 0;
         }
-    }
-    else {
-        onGround = false;
-    }
+    } 
     groundLevel = INT_MIN;
-    if (velocityController.isActiveAtFrame(curFrame))
-    {
-		Vector2 mulplier = velocityController.getVelocityAtFrame(curFrame);
-        velocity = { direction.x * mulplier.x,direction.y * mulplier.y };
-
+    
+    // Apply frame-based velocity
+    if (velocityController.isActiveAtFrame(curFrame)) {
+        Vector2 multiplier = velocityController.getVelocityAtFrame(curFrame);
+        Vector2 newVelocity = { direction.x * multiplier.x, direction.y * multiplier.y };
+        
+        if (physicsBody) {
+            physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(newVelocity));
+        }
     }
-	DrawText(TextFormat("Drybowser Velocity: x = %f, y = %f", velocity.x, velocity.y), 200, 250, 20, BLACK);
-    spritebox = TextureManager::DryBowser_sprite_boxes[curFrame] ; 
+    
+    DrawText(TextFormat("Drybowser Velocity: x = %f, y = %f", velocity.x, velocity.y), 200, 250, 20, BLACK);
+    spritebox = TextureManager::DryBowser_sprite_boxes[curFrame];
+    
     const FrameData* data = FrameDatabase::getInstance().getFrameData(this->getType(), curAniName, curFrame);
-    if (data)
-    {
-        /*if (!data->hitboxes.empty())
-        {
-            hitboxes.clear(); 
-            for (auto& box : data->hitboxes) {
-                Rectangle hitbox_n;
-                hitbox_n.y = position.y + box.y;
-                hitbox_n.width = box.width;
-                hitbox_n.height = box.height;
-                if (isFacingRight) {
-                    hitbox_n.x = position.x + box.x;
-                }
-                else {
-                    hitbox_n.x = position.x - box.x - box.width;
-                }
-
-                hitboxes.push_back(hitbox);
-            }
-
-        }*/
+    if (data) {
         for(auto& event : data->events) {
             if (event.eventType != EventType::None) {
-				DrawText(TextFormat("Event Triggered:%d, %s",data->frameIndex, event.payload.c_str()), 200, 300, 20, RED);
+                DrawText(TextFormat("Event Triggered:%d, %s", data->frameIndex, event.payload.c_str()), 200, 300, 20, RED);
                 auto func = FrameEventHandlers::bind(event, this);
-                if (func)
-                {
+                if (func) {
                     func();
                 }
             }
-		}       
+        }
     }
     updateCooldowns(dt);
     if (currentPhase) currentPhase->update(this, dt);
@@ -171,76 +166,49 @@ void DryBowser::handleCharacterCollision(std::shared_ptr<Object> other) {
 
 }
 
-void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-
-    std::vector<Rectangle> bowserBoxes = getHitBox();
-    std::vector<Rectangle> otherBoxes = other->getHitBox();
-    if (bowserBoxes.empty() || otherBoxes.empty()) return;
-    Rectangle otherBox = otherBoxes[0];
-
-    Rectangle bowserHead = bowserBoxes[1];
-    const float snapOffset = 2.5f; 
-    if(CheckCollisionRecs(bowserHead, otherBoxes[0])) {
-        velocity.y = 0;
-        position.y = otherBox.y + otherBox.height + snapOffset;
-        return;
-	}
-    Rectangle bowserBox = bowserBoxes[0]; 
-    if (!CheckCollisionRecs(bowserBox, otherBox)) return;
-    Vector2 prevPos = position - velocity*0.167;
-    Rectangle prevBox = {
-        prevPos.x,
-        prevPos.y,
-        bowserBox.width,
-        bowserBox.height
-    };
-
-    bool wasAbove = (prevBox.y + prevBox.height) <= otherBox.y;
-    bool wasLeft = (prevBox.x + prevBox.width) <= otherBox.x;
-    bool wasRight = prevBox.x >= (otherBox.x + otherBox.width);
-    if (wasAbove && velocity.y >= 0) {
-        position.y = otherBox.y - bowserBox.height - snapOffset;
-        velocity.y = 0;
-		groundLevel = otherBox.y; 
+void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) {
+    // With Box2D, we should NOT manually adjust positions during collision callbacks
+    // Box2D handles the physical collision response automatically
+    // We only handle game logic here
+    
+    switch (dir) {
+    case Direction::DOWN:
+        // Ground collision - Box2D will stop the falling automatically
         onGround = true;
-    }
-    else if (wasLeft && velocity.x >= 0) {
-        position.x = otherBox.x - bowserBox.width - snapOffset;
-        if (isInSpinAttack())
-        {
-            direction = { -direction.x, direction.y };
-            velocity = { -velocity.x, velocity.y }; // Reverse velocity
+        if (other && !other->getHitBox().empty()) {
+            groundLevel = other->getHitBox()[0].y;
         }
-    }
-    else if (wasRight && velocity.x <= 0) {
-        position.x = otherBox.x + otherBox.width + snapOffset;
-        if (isInSpinAttack())
-        {
+        // Don't manually set position or velocity - Box2D handles this
+        break;
+        
+    case Direction::LEFT:
+    case Direction::RIGHT:
+        // Wall collision
+        if (isInSpinAttack()) {
             direction = { -direction.x, direction.y };
-            velocity = { -velocity.x, velocity.y }; // Reverse velocity
+            // Don't call setVelocity during collision - it causes the crash
+            // The velocity change will be applied in the next update cycle
         }
+        break;
+        
+    case Direction::UP:
+        // Ceiling collision - Box2D handles stopping upward movement
+        break;
     }
 }
 
-void DryBowser::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
-
-    for (auto candidate : candidates) {
-        switch (candidate->getObjectCategory()) {
+void DryBowser::onCollision(std::shared_ptr<Object> other, Direction dir) {
+    switch (other->getObjectCategory()) {
         case ObjectCategory::BLOCK:
-            handleEnvironmentCollision(candidate);
+            handleEnvironmentCollision(other, dir);
             break;
         case ObjectCategory::PROJECTILE:
             // implement
             break;
         case ObjectCategory::CHARACTER:
-            handleCharacterCollision(candidate);
+            handleCharacterCollision(other);
             break;
         }
-    }
-}
-
-void DryBowser::onCollision(std::shared_ptr<Object> other) {
-
 }
 
 std::vector<Rectangle> DryBowser::getHitBox() const {

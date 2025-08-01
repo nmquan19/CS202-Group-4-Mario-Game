@@ -71,7 +71,6 @@ void PhysicsManager::update() {
 				}
 			}
 		}
-		object->checkCollision(filterdCandidates);
 	}
 }
 

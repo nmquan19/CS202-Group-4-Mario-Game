@@ -7,6 +7,7 @@
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/Enemy.h"
 #include "../../include//Item/Item.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -31,10 +32,18 @@ Character::Character(Vector2 startPosition, const CharacterStats& stats, const s
     currentState = &IdleState::getInstance();
     currentState->enter(this);
 
+	// Create Box2D body with proper hitbox size
+	physicsBody = Box2DWorldManager::getInstance().createCharacterBody(position, {spriteRec.width * scale, spriteRec.height * scale});
+	if (physicsBody) {
+		physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+	}
 }
 
 Character::~Character() {
-	
+	if (physicsBody) {
+		Box2DWorldManager::getInstance().destroyBody(physicsBody);
+		physicsBody = nullptr;
+	}
 }
 
 void Character::changeState(ICharacterState& newState) {
@@ -50,6 +59,7 @@ void Character::update(float deltaTime) {
 		currentState->update(this, deltaTime);
 	}
 
+	// Update animation
 	aniTimer += deltaTime;
 	if(aniTimer >= aniSpeed){
 		currentFrame = (currentFrame + 1) % stateFrameData[currentStateRow].size();
@@ -63,12 +73,17 @@ void Character::update(float deltaTime) {
 	}
 
 	handleProjectile(deltaTime);
-	
-	applyGravity(deltaTime);
-    position.x += velocity.x * deltaTime;
-    position.y += velocity.y * deltaTime;
-	
-	handleGroundCheck();
+
+	// Sync with Box2D physics body
+	if (physicsBody) {
+		// Apply the current velocity to the physics body
+		physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(velocity));
+		// Update position from physics body
+		auto newPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
+		position = {newPos.x - hitBoxWidth/2.0f, newPos.y - hitBoxHeight/2.0f};
+		// Update velocity from physics body
+		velocity = Box2DWorldManager::b2ToRaylib(physicsBody->GetLinearVelocity());
+	}
 }
 
 void Character::draw() {
@@ -137,23 +152,44 @@ bool Character::isOnGround() const{
 }
 
 void Character::jump(){
-	if(onGround){
-		velocity.y = -jumpForce;
+	if(canJump()){
+		b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+		physicsBody->SetLinearVelocity(b2Vec2(currentVel.x, -Box2DWorldManager::raylibToB2(jumpForce)));
+		setOnGround(false);
+		groundContactCount = 0; // Reset ground contacts when jumping
+	}
+}
+
+void Character::addGroundContact() {
+	groundContactCount++;
+	if (groundContactCount > 0) {
+		setOnGround(true);
+	}
+}
+
+void Character::removeGroundContact() {
+	groundContactCount--;
+	if (groundContactCount <= 0) {
+		groundContactCount = 0;
 		setOnGround(false);
 	}
 }
 
-void Character::applyGravity(float deltaTime){
-	if(!onGround){
-		velocity.y += gravity * deltaTime;
-	}
+bool Character::canJump() const {
+	return (groundContactCount > 0) && physicsBody;
 }
 
 void Character::setVelocity(Vector2 newVelocity){
 	velocity = newVelocity;
+	if (physicsBody) {
+		physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(newVelocity));
+	}
 }
 
 Vector2 Character::getVelocity(){
+	if (physicsBody) {
+		velocity = Box2DWorldManager::b2ToRaylib(physicsBody->GetLinearVelocity());
+	}
 	return velocity;
 }
 
@@ -167,6 +203,9 @@ float Character::getSpeed(){
 
 void Character::setPosition(Vector2 newPosition){
 	position = newPosition;
+	if (physicsBody) {
+		physicsBody->SetTransform(Box2DWorldManager::raylibToB2(newPosition), physicsBody->GetAngle());
+	}
 }
 
 Vector2 Character::getPosition() const {
@@ -222,32 +261,24 @@ std::vector<ObjectCategory> Character::getCollisionTargets() const {
 	return { ObjectCategory::BLOCK, ObjectCategory::ITEM, ObjectCategory::ENEMY, ObjectCategory::INTERACTIVE, ObjectCategory::SHELL };
 }
 
-void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
-	for (auto candidate : candidates) {
-		switch(candidate->getObjectCategory()) {
-			case ObjectCategory::ENEMY:
-				handleEnemyCollision(candidate);
-				break;
-			case ObjectCategory::BLOCK:
-				handleEnvironmentCollision(candidate);
-				break;
-			case ObjectCategory::INTERACTIVE:
-				handleInteractiveCollision(candidate);
-				break;
-			case ObjectCategory::SHELL:
-				// implement
-				break;
-			case ObjectCategory::ITEM:
-				// implement 
-
-				break;
-		}
+void Character::onCollision(std::shared_ptr<Object> other, Direction direction) {
+	switch (other->getObjectCategory()) {
+	case ObjectCategory::ENEMY:
+		handleEnemyCollision(other, direction);
+		break;
+	case ObjectCategory::BLOCK:
+		handleEnvironmentCollision(other, direction);
+		break;
+	case ObjectCategory::INTERACTIVE:
+		handleInteractiveCollision(other, direction);
+		break;
+	case ObjectCategory::SHELL:
+		// implement
+		break;
+	case ObjectCategory::ITEM:
+		// implement 
+		break;
 	}
-}
-
-
-void Character::onCollision(std::shared_ptr<Object> other) {
-
 }
 
 float Character::getBottom() const {
@@ -317,145 +348,55 @@ void Character::handleProjectile(float deltaTime) {
 	}
 }
 
-void Character::handleGroundCheck() {
-	if (!onGround) {
-		return;
+void Character::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction) {
+	if (direction == Direction::DOWN) {
+		addGroundContact();
 	}
-
-	Rectangle groundCheckBox = {
-		position.x + 5,
-		position.y + (spriteRec.height * scale),
-		(spriteRec.width * scale) - 10,
-		1.0f
-	};
-
-	std::vector<std::shared_ptr<Object>> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
-
-	bool stillOnGround = false;
-	for (auto obj : nearbyObjects) {
-		if (obj.get() != this && obj->getObjectCategory() == ObjectCategory::BLOCK) {
-			if (CheckCollisionRecs(groundCheckBox, obj->getHitBox()[0])) {
-				stillOnGround = true;
-				break;
+	else if (direction == Direction::UP) {
+		if (physicsBody) {
+			b2Vec2 vel = physicsBody->GetLinearVelocity();
+			if (vel.y < 0) { // Moving upward
+				physicsBody->SetLinearVelocity(b2Vec2(vel.x, 0));
 			}
 		}
 	}
-
-	if (!stillOnGround) {
-		setOnGround(false);
-	}
 }
 
-void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-	std::vector<Rectangle> playerHitBoxes = getHitBox();
-	std::vector<Rectangle> otherHitBoxes = other->getHitBox();
-
-	if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
-
-	Rectangle playerHitBox = playerHitBoxes[0];
-	Rectangle otherHitBox = otherHitBoxes[0];
-
-	float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-	float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-	float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-	float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-
-	float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
-
-	if (minOverlap == overlapLeft) {
-		position.x = otherHitBox.x - playerHitBox.width;
-		velocity.x = 0;
-	}
-	else if (minOverlap == overlapRight) {
-		position.x = otherHitBox.x + otherHitBox.width;
-		velocity.x = 0;
-	}
-	else if (minOverlap == overlapTop) {
-		position.y = otherHitBox.y - playerHitBox.height;
-		velocity.y = 0;
-		setOnGround(true);
-	}
-	else if (minOverlap == overlapBottom) {
-		position.y = otherHitBox.y + otherHitBox.height;
-		if (velocity.y < 0) {
-			velocity.y = 0;
-		}
-	}
-}
-
-void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
-	std::vector<Rectangle> characterHitboxes = getHitBox();
-	std::vector<Rectangle> otherHitboxes = other->getHitBox();
-
-	if (characterHitboxes.empty() || otherHitboxes.empty()) return;
-
-	Rectangle characterHitbox = characterHitboxes[0];
-	Rectangle otherHitbox = otherHitboxes[0];
-
-	float overlapLeft = (characterHitbox.x + characterHitbox.width) - otherHitbox.x;
-	float overlapRight = (otherHitbox.x + otherHitbox.width) - characterHitbox.x;
-	float overlapTop = (characterHitbox.y + characterHitbox.height) - otherHitbox.y;
-	float overlapBottom = (otherHitbox.y + otherHitbox.height) - characterHitbox.y;
-	float minOverlap = std::min({ overlapLeft, overlapRight, overlapTop, overlapBottom });
-
-	if (minOverlap == overlapTop && velocity.y > 0) {
+void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction direction) {
+	if (direction == Direction::DOWN && velocity.y > 0) {
+		// Bouncing off enemy from above
 		invincibleTimer = 0.2f;
-		velocity.y = Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY;
+		if (physicsBody) {
+			physicsBody->SetLinearVelocity(b2Vec2(physicsBody->GetLinearVelocity().x, 
+				-Box2DWorldManager::raylibToB2(Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY)));
+		}
 		setOnGround(false);
-		auto enemy = dynamic_cast<Enemy*>(other.get());
-		enemy->takeDamage(1);
+		if (auto enemy = dynamic_cast<Enemy*>(other.get())) {
+			enemy->takeDamage(1);
+		}
 	}
 	else {
 		takeDamage(1);
-		DrawText("got hit", 50, 200, 30, BLACK);
 	}
 }
 
-void Character::handleInteractiveCollision(std::shared_ptr<Object> other) {
+void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction) {
     ObjectType objectType = other->getObjectType();
     if (auto* interactiveType = std::get_if<InteractiveType>(&objectType)) {
         switch (*interactiveType) {
 		case InteractiveType::SPRING:	
-			handleSpringCollision(std::dynamic_pointer_cast<Spring>(other));
+			handleSpringCollision(std::dynamic_pointer_cast<Spring>(other), direction);
         }
     }
 }
 
-void Character::handleSpringCollision(std::shared_ptr<Spring> other) {
-	std::vector<Rectangle> characterHitboxes = getHitBox();
-	std::vector<Rectangle> otherHitboxes = other->getHitBox();
-
-	if (characterHitboxes.empty() || otherHitboxes.empty()) return;
-
-	Rectangle characterHitbox = characterHitboxes[0];
-	Rectangle otherHitbox = otherHitboxes[0];
-
-	float overlapLeft = (characterHitbox.x + characterHitbox.width) - otherHitbox.x;
-	float overlapRight = (otherHitbox.x + otherHitbox.width) - characterHitbox.x;
-	float overlapTop = (characterHitbox.y + characterHitbox.height) - otherHitbox.y;
-	float overlapBottom = (otherHitbox.y + otherHitbox.height) - characterHitbox.y;
-	float minOverlap = std::min({ overlapLeft, overlapRight, overlapTop, overlapBottom });
-
-	if (minOverlap == overlapTop && velocity.y > 0) {
+void Character::handleSpringCollision(std::shared_ptr<Spring> other, Direction direction) {
+	if (direction == Direction::DOWN && velocity.y > 0) {
 		velocity.y = Constants::Spring::BOUNCE_VELOCITY;
 		changeState(JumpingState::getInstance());
 		other->setBouncing(true);
 		other->setAniTimer(0.0f);
 		other->setBounceTimer(0.0f);
-	}
-	else if (minOverlap == overlapBottom) {
-		position.y = otherHitbox.y + otherHitbox.height;
-		if (velocity.y < 0) {
-			velocity.y = 0;
-		}
-	}
-	else if (minOverlap == overlapLeft) {
-		position.x = otherHitbox.x - characterHitbox.width;
-		velocity.x = 0;
-	}
-	else if (minOverlap == overlapRight) {
-		position.x = otherHitbox.x + otherHitbox.width;
-		velocity.x = 0;
 	}
 }
 
