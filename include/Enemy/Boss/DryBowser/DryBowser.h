@@ -25,6 +25,8 @@ private:
     DryBowserSimState simState;
     std::unique_ptr<BossPhaseState> currentPhase;
     float invulnerable_timer = 0.0f; 
+    bool isWallSticking = false;  
+  
 public:
     DryBowser(Vector2 spawnPosition, Vector2 size = {2,2});
 
@@ -43,7 +45,7 @@ public:
     void takeDamage(int amount) override;
     void die() override;
     bool isAlive() const override;
-
+	void setWallSticking(bool flag) { isWallSticking = flag; } 
     // Planning / AI interface
     void changePhase(std::unique_ptr<BossPhaseState> newPhase) override;
     const WorldState& getWorldState() const override;
@@ -53,7 +55,7 @@ public:
     EnemyType getType() const override;
 	void setAnimation(const std::string& animationName) override;
     void setTarget(Vector2 targetPos);
-   
+	void changeMoveState(std::shared_ptr<BossMoveState> moveState); 
     //
     
 	///Behavior Tree implementation
@@ -70,6 +72,13 @@ public:
     bool isInSpinAttack() const; 
 	void spinAttackWindup();
     void spinAttackWinddown(); 
+    void aerialAttack(); 
+    void wallJump(); 
+	int isNearWall() const;
+    bool isBelowWall() const;  
+    bool checkWallContact();
+	void jumpFromWall() override;    
+	bool getIsWallSticking() const { return isWallSticking; }
 private:
     void updateWorldState();
 };

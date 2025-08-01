@@ -41,7 +41,6 @@ void Enemy::applyGravity(float deltaTime) {
 void Enemy::update(float deltaTime)
 {
     aniTimer += deltaTime;
-    DrawText(TextFormat("curFrame: x =%f", curFrame), 700, 700, 12, BLACK);
     if (aniTimer >= aniSpeed) {
         curFrame += 1;
         aniTimer = 0;
@@ -233,7 +232,9 @@ std::vector<std::pair<int, int>> Enemy::getSpriteData() {
             return {};
    }
 }
-
+bool Enemy::isPlayerAtHigherGround() const {
+    return position.y > targetPosition.y + targetHitboxes.height;
+}
 Vector2 Enemy::getSize() const {
     switch(getType()) {
         case EnemyType::GOOMBA:

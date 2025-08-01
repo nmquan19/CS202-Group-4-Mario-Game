@@ -52,7 +52,7 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
 }
 #include <iostream>
 void DryBowser::update(float dt) {
-    applyGravity(dt);
+    if(!isWallSticking)applyGravity(dt);
     //Enemy::update(dt); 
     if (position.x < 0)
     {
@@ -82,13 +82,12 @@ void DryBowser::update(float dt) {
     curFrame = animController.getCurrentFrame();
     if (getBottom() <= groundLevel) {
 		DrawText(TextFormat("Drybowser Position: x = %f, y = %f, Ground Level z = %f", position.x, position.y, groundLevel), 200, 400, 20, BLACK);
-        //position.y = groundLevel - (spritebox.height * scale);
         onGround = true;
         if (velocity.y > 0) {
             velocity.y = 0;
         }
     }
-    else {
+    else if(velocity.y >0) {
         onGround = false;
     }
     groundLevel = INT_MIN;
@@ -201,10 +200,10 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
     if (wasAbove && velocity.y >= 0) {
         position.y = otherBox.y - bowserBox.height - snapOffset;
         velocity.y = 0;
-		groundLevel = otherBox.y; 
+		groundLevel = otherBox.y - snapOffset; 
         onGround = true;
     }
-    else if (wasLeft && velocity.x >= 0) {
+    else if (wasLeft && velocity.x >= 0 && !isWallSticking) {
         position.x = otherBox.x - bowserBox.width - snapOffset;
         if (isInSpinAttack())
         {
@@ -212,7 +211,7 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other) {
             velocity = { -velocity.x, velocity.y }; // Reverse velocity
         }
     }
-    else if (wasRight && velocity.x <= 0) {
+    else if (wasRight && velocity.x <= 0&& !isWallSticking) {
         position.x = otherBox.x + otherBox.width + snapOffset;
         if (isInSpinAttack())
         {
@@ -329,13 +328,13 @@ void DryBowser::setAnimation(const std::string& aniName) {
     }
     else if (aniName == "Run")
     {
-        animController.set(32, 41, 2.f, Easing::linear, false, true);
+        animController.set(31, 41, 2.f, Easing::linear, false, true);
     }
     else if (aniName == "WalkTurn")
     {
         animController.set(29, 26, Constants::DryBowser::WalkTurnDuration, Easing::linear, true, false); 
     }
-    else if (aniName == "SpinAttack")
+    else if (aniName == "SpinAttack")   
     {
         animController.set(389, 396, Constants::DryBowser::SPIN_ATTACK_DURATION, Easing::easeInOut, false, false);
     }
@@ -355,6 +354,27 @@ void DryBowser::setAnimation(const std::string& aniName) {
     {
 		animController.set(643, 656, Constants::DryBowser::INTRO_DURATION, Easing::linear, false, false);
     }
+    else if (aniName == "Jump")
+    {
+        animController.set(48, 52, fabs((5.0f / 3.0f)*Constants::DryBowser::JUMP_VELOCITY/Constants::GRAVITY), Easing::linear, false, false);
+    }
+    else if (aniName == "AerialAttack")
+    {
+        animController.set(93, 106, Constants::DryBowser::AERIAL_ATTACK_DURATION, Easing::easeDip, false, false);
+    }
+    else if (aniName == "WallSticking")
+    {
+        animController.set(67, 67, 0.0f, Easing::linear, false, true);
+    }
+    else if (aniName == "WallJump")
+    {
+        animController.set(67, 69, Constants::DryBowser::WALL_JUMP_DURATION, Easing::linear, false, false);
+	}
+    else
+    {
+        std::cerr << "Unknown animation name: " << aniName << std::endl;
+        return;
+    } 
     curAniName = aniName;
 }
 
@@ -457,4 +477,155 @@ void DryBowser::spinAttackWinddown()
 void DryBowser::setTarget(Vector2 targetPos)
 {
     this->targetPosition = targetPos; 
+}
+void DryBowser::changeMoveState(std::shared_ptr<BossMoveState> moveState) {
+    if (currentPhase) {
+        currentPhase->changeMoveState(this, moveState);
+    }
+}
+void DryBowser::aerialAttack()
+{
+    this->setAnimation("AerialAttack");
+}
+int DryBowser::isNearWall() const {
+    const float gravity = 980.0f;
+    const float vy = Constants::DryBowser::JUMP_VELOCITY;
+    const float vx = Constants::DryBowser::RUN_SPEED;
+    const float dt = 0.05f; 
+
+    Rectangle hitBox = getHitBox()[0];
+    Vector2 start = { hitBox.x + hitBox.width / 2, hitBox.y + hitBox.height };
+
+    auto checkDirection = [&](float direction) -> bool {
+        float t_air = (2.0f * vy) / gravity;
+        for (float t = 0.0f; t <= t_air; t += dt) {
+            float x = start.x + direction * vx * t;
+            float y = start.y - (vy * t - 0.5f * gravity * t * t);
+
+            Rectangle probe = { x - 4, y - 4, 8, 8 }; 
+
+            auto objs = PhysicsManager::getInstance().getObjectsInArea(probe);
+            for (const auto& obj : objs) {
+                if (obj->getObjectCategory() == ObjectCategory::BLOCK) {
+                    return false;
+                }
+            }
+        }
+        return true; 
+        };
+
+    float maxJumpHeight = (vy * vy) / (2.0f * gravity);
+    float t_air = (2.0f * vy) / gravity;
+    float horizontalReach = vx * t_air;
+
+    Rectangle leftProbe = {
+        hitBox.x - horizontalReach,
+        hitBox.y - maxJumpHeight,
+        horizontalReach,
+        maxJumpHeight
+    };
+
+    Rectangle rightProbe = {
+        hitBox.x + hitBox.width,
+        hitBox.y - maxJumpHeight,
+        horizontalReach,
+        maxJumpHeight
+    };
+
+    auto objsLeft = PhysicsManager::getInstance().getObjectsInArea(leftProbe);
+    auto objsRight = PhysicsManager::getInstance().getObjectsInArea(rightProbe);
+
+    auto isWall = [](const std::shared_ptr<Object>& obj) {
+        return obj->getObjectCategory() == ObjectCategory::BLOCK;
+        };
+
+    if (std::any_of(objsLeft.begin(), objsLeft.end(), isWall)) {
+        if (checkDirection(-1.0f)) return -1; // can reach left wall
+    }
+
+    if (std::any_of(objsRight.begin(), objsRight.end(), isWall)) {
+        if (checkDirection(1.0f)) return 1; // can reach right wall
+    }
+
+    return 0; 
+}
+
+bool DryBowser::isBelowWall() const {
+    const float gravity = 980.0f;
+    const float initialJumpVelocity = Constants::DryBowser::JUMP_VELOCITY;
+    const float horizontalTolerance = 30.0f; 
+
+    Rectangle hitBox = getHitBox()[0];
+    Vector2 start = {
+        hitBox.x + hitBox.width / 2,
+        hitBox.y + hitBox.height
+    };
+
+    float maxJumpHeight = (initialJumpVelocity * initialJumpVelocity) / (2.0f * gravity);
+    float airTime = (2.0f * initialJumpVelocity) / gravity;
+
+    const float dt = 0.05f;
+
+    for (float t = 0.0f; t <= airTime; t += dt) {
+        float y = start.y - (initialJumpVelocity * t - 0.5f * gravity * t * t);
+        float x = start.x; 
+
+        Rectangle probe = {
+            x - horizontalTolerance / 2.0f,
+            y - 4.0f,
+            horizontalTolerance,
+            8.0f
+        };
+
+        auto objs = PhysicsManager::getInstance().getObjectsInArea(probe);
+        for (const auto& obj : objs) {
+            if (obj->getObjectCategory() == ObjectCategory::BLOCK) {
+                return true;
+            }
+        }
+    }
+
+    return false;   
+}
+bool DryBowser::checkWallContact() {
+	bool hasTouchedWall = false; 
+    Rectangle hitBox = getHitBox()[0];
+    const float wallContactWidth = 2.0f;
+
+    Rectangle leftProbe = {
+        hitBox.x - wallContactWidth,
+        hitBox.y,
+        wallContactWidth,
+        hitBox.height
+    };
+
+    Rectangle rightProbe = {
+        hitBox.x + hitBox.width,
+        hitBox.y,
+        wallContactWidth,
+        hitBox.height
+    };
+
+    auto objsLeft = PhysicsManager::getInstance().getObjectsInArea(leftProbe);
+    auto objsRight = PhysicsManager::getInstance().getObjectsInArea(rightProbe);
+
+    auto isWall = [](const std::shared_ptr<Object>& obj) {
+        return obj->getObjectCategory() == ObjectCategory::BLOCK;
+        };
+
+    bool touchingLeftWall = std::any_of(objsLeft.begin(), objsLeft.end(), isWall);
+    bool touchingRightWall = std::any_of(objsRight.begin(), objsRight.end(), isWall);
+
+    hasTouchedWall = touchingLeftWall || touchingRightWall;
+    return hasTouchedWall; 
+}
+
+void DryBowser::wallJump() {
+    if (!isOnGround()|| canWallJump() == 0) return; 
+	this->currentPhase->changeMoveState(this, std::make_shared<DryBowserWallJumpMoveState>());   
+}
+void DryBowser::jumpFromWall() {
+
+	this->setAnimation("WallJump");
+	this->setWallSticking(false);
 }

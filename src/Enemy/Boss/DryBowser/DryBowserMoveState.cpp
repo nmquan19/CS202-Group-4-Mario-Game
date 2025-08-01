@@ -2,7 +2,7 @@
 #include <string>
 #include "../../../../include/Enemy/Boss/Boss.h"
 #include "../../../../include/System/Constant.h"
-
+#include "../../../../include/Enemy/Boss/DryBowser/DryBowser.h" 
 // ----------------------------
 // BowserStandingState
 // ----------------------------
@@ -46,22 +46,31 @@ std::string DryBowserRunningState::getName() const {
 // BowserWallJumpMoveState
 // ----------------------------
 void DryBowserWallJumpMoveState::enter(Boss* boss) {
-    boss->setAnimation("WallJump");
+    boss->setAnimation("Jump");
     timer = 0.0f;
 }
 
 void DryBowserWallJumpMoveState::update(Boss* boss, float dt) {
     timer += dt;
-    auto v = boss->getVelocity();
-    v.y  *= 1+friction;
-    boss->setVelocity(v);
+	DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss); 
+    if(boss->getAnimController().getCurrentFrame()== 2) 
+    {
+		boss->setVelocity({ boss->canWallJump()*Constants::DryBowser::RUN_SPEED, boss->getVelocity().y});
+    }
+    if(boss->checkWallContact())
+    {
+		dryBowser->setWallSticking(true); 
+		dryBowser->setAnimation("WallSticking");
+    }
 }
 
 void DryBowserWallJumpMoveState::exit(Boss* boss) {
+    DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+    dryBowser->setWallSticking(false);
 }
 
 bool DryBowserWallJumpMoveState::isFinished() const {
-    return timer >= 0.6f;
+    return timer >= Constants::DryBowser::JUMP_VELOCITY / Constants::GRAVITY;
 }
 
 std::string DryBowserWallJumpMoveState::getName() const {

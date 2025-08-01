@@ -68,6 +68,137 @@ void SelectorNode::reset() {
 }
 // ActionNode Implementation
 
+//ReactiveFallBackNode Implementation
+ReactiveFallBackNode::ReactiveFallBackNode(std::initializer_list<std::shared_ptr<BehaviorTreeNode>> nodes)
+    : children(nodes) {
+}
+
+NodeStatus  ReactiveFallBackNode::tick(Enemy* boss, float dt) {
+    for (int i = 0; i < children.size(); i++)
+    {
+		NodeStatus status = children[i]->tick(boss, dt);
+        switch(status)
+        {
+            case NodeStatus::Running:
+                return NodeStatus::Running; 
+                break; 
+            case NodeStatus::Success:
+                return NodeStatus::Success;
+            case NodeStatus::Failure:
+                continue; 
+            default:
+                break;
+		}   
+    }
+    reset();
+    return NodeStatus::Failure;
+}
+void ReactiveFallBackNode::addChild(std::shared_ptr<BehaviorTreeNode> child) {
+    children.push_back(child);
+}
+void ReactiveFallBackNode::reset() {
+    for (auto& child : children) {
+        child->reset();
+    }
+}
+// UtilitySelector Implementation
+#pragma once
+#include <unordered_map>
+#include <string>
+#include <functional>
+#include <stdexcept>
+
+
+namespace UtilityScorers {
+
+    using ScorerFunc = std::function<float(BaseSimState&)>;
+
+    static std::unordered_map<std::string, ScorerFunc> registry;
+
+    void registerScorer(const std::string& name, ScorerFunc func) {
+        registry[name] = std::move(func);
+    }
+
+    ScorerFunc get(const std::string& name) {
+        auto it = registry.find(name);
+        if (it == registry.end()) {
+            throw std::runtime_error("Scorer not found: " + name);
+        }
+        return it->second;
+    }
+
+    void registerDefaults() {
+        registerScorer("scoreSpinAttack", [](BaseSimState& state) -> float {
+            auto* dryBowser = dynamic_cast<DryBowserSimState*>(&state);
+            if (!dryBowser) return 0.0f;
+            return (dryBowser->IsPlayerInSpinAttackRange && dryBowser->currentMove == "none") ? 0.8f : 0.0f;
+            });
+
+        registerScorer("scoreBasicMeleeAttack", [](BaseSimState& state) -> float {
+            auto* dryBowser = dynamic_cast<DryBowserSimState*>(&state);
+            if (!dryBowser || !dryBowser->isPlayerInMeleeRange) return 0.0f;
+
+            float distance = Vector2Distance(dryBowser->bossPos, dryBowser->playerPos);
+
+            const float minRange = 0.0f;
+            const float maxRange = dryBowser->moveRange;
+
+            float t = std::clamp((maxRange - distance) / maxRange, 0.0f, 1.0f);
+
+            float eased = t * t * (3 - 2 * t); // Smoothstep easing
+
+            return eased;
+            });
+
+        registerScorer("scoreJump", [](BaseSimState& state) -> float {
+            auto* dryBowser = dynamic_cast<DryBowserSimState*>(&state);
+            if (!dryBowser) return 0.0f;
+
+            // Score higher when grounded and player is far
+            if (!dryBowser->isOnGround) return 0.0f;
+
+            float distance = Vector2Distance(dryBowser->bossPos, dryBowser->playerPos);
+            float maxDistance = 600.0f; // max interest distance
+            float t = std::clamp(distance / maxDistance, 0.0f, 1.0f);
+            float eased = t * t * (3 - 2 * t); // smoothstep
+
+            return eased * 0.8f;
+            });
+        registerScorer("scoreWallJump", [](BaseSimState& state) -> float {
+            auto* dryBowser = dynamic_cast<DryBowserSimState*>(&state);
+            if (!dryBowser) return 0.0f;
+                
+            return (!dryBowser->isInAir && dryBowser->isNearWall && dryBowser->isPlayerAtHigherGround) ? 0.9f : 0.0f;
+            });
+        registerScorer("scoreIdle", [](BaseSimState& state) -> float {
+            return 0.05f;
+            });
+    }
+}
+
+
+NodeStatus UtilitySelector::tick(Enemy* e, float dt) {
+    if (children.empty()) return NodeStatus::Failure;
+	Boss* boss = dynamic_cast<Boss*>(e); 
+    std::unique_ptr<BaseSimState> simState = boss->getCurrentSimState();
+    if (!simState) return NodeStatus::Failure;
+    int bestIndex = -1;
+    float bestScore = -1.0f;
+    for (size_t i = 0; i < children.size(); ++i) {
+        float score = scorers[i](*simState);
+        if (score > bestScore) {
+            bestScore = score;
+            bestIndex = static_cast<int>(i);
+        }
+    }
+
+    if (bestIndex >= 0) {
+        return children[bestIndex]->tick(boss, dt);
+    }
+
+    return NodeStatus::Failure;
+}
+
 
 
 // DecoratorNode Implementation
@@ -221,6 +352,8 @@ NodeStatus IdleNode::tick(Enemy* boss, float dt) {
     return NodeStatus::Success;
 }
 NodeStatus WalkTurnNode::tick(Enemy* boss, float dt) {
+    DrawText("IsWalkTurnNode", 100, 100, 20, RED);
+
     if (!boss) return NodeStatus::Failure;
     if (!started)
     {
@@ -269,6 +402,8 @@ NodeStatus CanUseSpinNode::tick(Enemy* boss, float dt) {
     return NodeStatus::Failure;
 }
 NodeStatus SpinAttackNode::tick(Enemy* boss, float dt) {
+    DrawText("IsSpinAttackNode", 100, 100, 20, RED);
+
     DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
     if (!dryBowser) return NodeStatus::Failure;
     if (!started)
@@ -322,6 +457,7 @@ NodeStatus SpinAttackWinddownNode::tick(Enemy* boss, float dt) {
 }
 
 NodeStatus IsTakingDamageNode::tick(Enemy* boss, float dt) {
+    DrawText("IsTakingDamageNode", 200, 200, 20, RED);
     if (!boss) return NodeStatus::Failure;
     DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
     if(dryBowser&& dryBowser->getCurAnimation()=="TakeDamage" && !dryBowser->getAnimController().isFinished()) {
@@ -332,8 +468,95 @@ NodeStatus IsTakingDamageNode::tick(Enemy* boss, float dt) {
 
 NodeStatus IsInIntroNode::tick(Enemy* boss, float dt) {
     DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+	DrawText("IsInIntroNode",200, 200, 20, RED);
     if (!dryBowser) return NodeStatus::Failure;
     if (dryBowser->getCurAnimation() == "Intro"&& !dryBowser->getAnimController().isFinished()) {
+        return NodeStatus::Running;
+    }
+	return NodeStatus::Success;
+}
+
+
+
+NodeStatus IsInAirNode::tick(Enemy* boss, float dt) {
+
+    if (!boss->isOnGround()) {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Failure;
+}
+
+NodeStatus IsFallingNode::tick(Enemy* boss, float dt) {
+
+    if (!boss->isOnGround()&& boss->getVelocity().y> 0) {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Failure;
+}
+
+NodeStatus IsPlayerHigherNode::tick(Enemy* boss, float dt) {
+    if (!boss) return NodeStatus::Failure;
+    if (boss->isPlayerAtHigherGround()) {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Failure;
+}
+NodeStatus CanWallJumpNode::tick(Enemy* boss, float dt) {
+    if (boss->canWallJump()) {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Failure;
+}
+NodeStatus WallJumpNode::tick(Enemy* boss, float dt) {
+    if (!boss) return NodeStatus::Failure;
+   
+    if (!boss) return NodeStatus::Failure;
+   
+    if (!boss->isInWallJump())
+    {
+        boss->wallJump(); 
+        return NodeStatus::Running; 
+    }
+    if (boss->getAnimController().isFinished()){
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Running;
+}
+
+NodeStatus JumpNode::tick(Enemy* boss, float dt) {
+    if (!boss) return NodeStatus::Failure;
+
+    if (!boss) return NodeStatus::Failure;
+    if (!boss->isJumping())
+    {
+        boss->jump();
+        return NodeStatus::Running;
+    }
+    if (boss->getAnimController().isFinished()) {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Running;
+}
+
+NodeStatus AerialAttackNode::tick(Enemy* boss, float dt) {
+    DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+    if (!boss) return NodeStatus::Failure;
+    if (dryBowser->getCurAnimation() != "AerialAttack")
+    {
+        dryBowser->aerialAttack();
+        return NodeStatus::Running;
+    }
+    if (dryBowser->getAnimController().isFinished()) {
+        return NodeStatus::Failure;
+    }
+    return NodeStatus::Success;
+}
+
+NodeStatus IsInWallJumpNode::tick(Enemy* boss, float dt) {
+    DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+    if (!boss) return NodeStatus::Failure;
+    if (dryBowser->getIsWallSticking())
+    {
         return NodeStatus::Success;
     }
     return NodeStatus::Failure;

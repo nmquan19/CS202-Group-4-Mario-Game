@@ -9,8 +9,10 @@ isGameOver(false) {
 
 }
 
+
+
 UIManager::~UIManager() {
-    UnloadFont(menuFont);
+    //UnloadFont(menuFont);
 }
 
 

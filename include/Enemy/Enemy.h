@@ -59,8 +59,16 @@ public :
 	void setDirection(Vector2 newDirection) { direction = newDirection; }
 	InterpolatedAnimationController& getAnimController() { return animController; }
 	FrameInterpolatedVelocityController& getVelocityController() { return velocityController; }
+	bool isOnGround() const { return onGround; }
 public: 
+	virtual bool checkWallContact()  { return false; } ;
 	Vector2 getTargetPos() const { return targetPosition;  }
+	virtual void jump(){}
+	virtual int isNearWall() const { return false; } 
+	virtual bool canWallJump() const { return false; }
+	virtual void wallJump() {}; 
+	virtual void jumpFromWall() {}; 
+	virtual bool isPlayerAtHigherGround() const;
 	virtual void walkToTarget() {}; 
 	virtual void attack() {}; 
 	virtual bool isAttacking() { return false; }	
@@ -70,11 +78,15 @@ public:
 	virtual void walkTurn(){}
 	virtual void avoidDanger() {};
 	virtual bool isNearTarget() const { return false; }
+	virtual bool isInWallJump() const { return false; }
+	virtual bool isJumping() const { return false;  }
+	virtual bool isBelowWall() const { return false; } 
  protected:
 	InterpolatedAnimationController animController;
 	FrameInterpolatedVelocityController velocityController;
 	std::string curAniName;
 	Vector2 targetPosition; 
+	Rectangle targetHitboxes;
 	bool isalive; 
 	float aniTimer, aniSpeed; 
     int HP ;

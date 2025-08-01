@@ -18,6 +18,7 @@
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
     camera.rotation = 0.0f;
+	camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f }; 
     camera.zoom = 1.0f;
 }
 

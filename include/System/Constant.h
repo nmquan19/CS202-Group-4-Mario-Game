@@ -11,8 +11,8 @@ namespace Constants {
     constexpr float GRAVITY = 980.0f;
     constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
-    constexpr float WORLDBOUNDS_WIDTH = 5000.0f;
-    constexpr float WORLDBOUNDS_HEIGHT = 1800.0f;
+    constexpr float WORLDBOUNDS_WIDTH = 50000.0f;
+    constexpr float WORLDBOUNDS_HEIGHT = 50000.0f;
 
     namespace GreenKoopa {
 		constexpr Vector2 standardSize = { 0.75, 1};
@@ -54,20 +54,23 @@ namespace Constants {
         };
     }
     namespace DryBowser{
-		constexpr float BASIC_ATTACK_COOLDOWN = 0.5f;
+		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;
         constexpr float WalkTurnDuration = 0.25f;  
 		constexpr float JUMP_VELOCITY = -600.0f;
         constexpr float WallJumpFriction = 0.95f;
         constexpr float RUN_SPEED = 500.0f; 
 		constexpr float BASIC_ATTACK_DURATION = 2.0f;
         constexpr float BASIC_ATTACK_RANGE = 150.0f; 
-		constexpr float SPIN_ATTACK_COOLDOWN = 10.0f;
+		constexpr float SPIN_ATTACK_COOLDOWN = 15.0f;
         constexpr float SPIN_ATTACK_WINDUP_DURATION = 1.f;
         constexpr float SPIN_ATTACK_DURATION =0.5f;
         constexpr float SPIN_ATTACK_WINDDOWN_DURATION = 0.75f;
 		constexpr float SPIN_ATTACK_RANGE = 300.0f;
         constexpr float TAKE_DAMAGE_DURATION = 0.5f; 
-		constexpr float INTRO_DURATION = 5.0f;  
+		constexpr float INTRO_DURATION = 3.0f;  
+        constexpr float DEAD_DURATION = 3.0f;  
+        constexpr float WALL_JUMP_DURATION = 0.25f;
+		constexpr float AERIAL_ATTACK_DURATION = 1.0f;
     } 
     namespace Spring {
         constexpr float BOUNCE_VELOCITY = -800.0f;

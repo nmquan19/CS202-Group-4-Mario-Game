@@ -17,7 +17,6 @@ AudioManager::AudioManager() {
     LoadSoundEffect("notice2", "./assets/sound/notice2.wav");
     LoadSoundEffect("point", "./assets/sound/point.wav");
     LoadSoundEffect("strike", "./assets/sound/strike.wav");
-
     LoadBackgroundMusic("theme1", "./assets/sound/theme1.wav");
 }
 AudioManager& AudioManager::getInstance() {

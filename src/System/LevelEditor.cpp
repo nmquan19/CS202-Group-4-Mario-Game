@@ -38,7 +38,9 @@ LevelEditor::~LevelEditor() {
     }
     gridBlocks.clear();
 }
+
 void LevelEditor::update() {
+
     if (editMode) {
         palette.handleSelection();
         handleMouseInput();
@@ -69,7 +71,6 @@ void LevelEditor::draw() {
     }
     if (editMode) {
         GridSystem::drawGrid(Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT);
-
         Vector2 sMousePos = GetMousePosition();
         Vector2 wMousePos = GetScreenToWorld2D(sMousePos, GameContext::getInstance().camera);
         Vector2 gridCoord = GridSystem::getGridCoord(wMousePos);
