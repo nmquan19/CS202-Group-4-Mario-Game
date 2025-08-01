@@ -49,6 +49,7 @@ public:
 	void deleteObjects();
     std::shared_ptr<Object> getSharedPtrFromRaw(Object* rawPtr);
     void clearGame();
+    void createTestBlocks(); // Add test blocks for Box2D testing
     std::shared_ptr<Object> getCharacter() { return character; }
     Camera2D camera;
 };

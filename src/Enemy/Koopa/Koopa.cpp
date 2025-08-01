@@ -39,10 +39,21 @@ Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::e
     PhysicsManager::getInstance().addObject(ledgeDetector);
 }
 
-void Koopa::onCollision(std::shared_ptr<Object> other) {
-
-    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        this->changeState(&KoopaStompedState::GetInstance());
+void Koopa::onCollision(std::shared_ptr<Object> other, Direction dir) {
+    switch (other->getObjectCategory()) {
+    case ObjectCategory::BLOCK:
+        handleEnvironmentCollision(other, dir);
+        break;
+    case ObjectCategory::PROJECTILE:
+        this->changeState(&KoopaKnockState::GetInstance());
+        break;
+    case ObjectCategory::CHARACTER:
+        if (dir == Direction::UP) { // Character jumped on Koopa from above
+            this->changeState(&KoopaStompedState::GetInstance());
+        } else {
+            // Side collision - character should take damage
+        }
+        break;
     }
 }
 void Koopa::draw() {
@@ -65,73 +76,36 @@ void Koopa::draw() {
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
 }
 
-void Koopa::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
-{
-    for (auto candidate : candidates) {
-        switch (candidate->getObjectCategory()) {
-        case ObjectCategory::BLOCK:
-            handleEnvironmentCollision(candidate);
-            break;
-        case ObjectCategory::PROJECTILE:
-            // implement
-            this->changeState(&KoopaKnockState::GetInstance());
-            break;
+void Koopa::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) {
+    Enemy::handleEnvironmentCollision(other, dir); // Call base class implementation
+    
+    switch (dir) {
+    case Direction::DOWN:
+        // Already handled in base class
+        break;
+    case Direction::UP:
+        // Hit ceiling
+        break;
+    case Direction::LEFT:
+        if (physicsBody) {
+            b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+            physicsBody->SetLinearVelocity(b2Vec2(-currentVel.x, currentVel.y));
+        } else {
+            velocity.x *= -1.0f;
         }
-    }
-}
-
-void Koopa::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-      std::vector<Rectangle> koopaBoxes = getHitBox();
-    std::vector<Rectangle> otherBoxes = other->getHitBox();
-    
-    if (koopaBoxes.empty() || otherBoxes.empty()) return;
-    
-    Rectangle koopaBox = koopaBoxes[0];
-    Rectangle otherBox = otherBoxes[0];
-    if (!CheckCollisionRecs(koopaBox, otherBox)) return;
-
-    // Calculate previous position
-    Vector2 prevPos = position - velocity;
-
-    Rectangle prevBox = {
-        prevPos.x,
-        prevPos.y,
-        koopaBox.width,
-        koopaBox.height
-    };
-
-    bool wasAbove = (prevBox.y + prevBox.height) <= otherBox.y;
-    bool wasBelow = prevBox.y >= (otherBox.y + otherBox.height);
-    bool wasLeft = (prevBox.x + prevBox.width) <= otherBox.x;
-    bool wasRight = prevBox.x >= (otherBox.x + otherBox.width);
-
-    const float snapOffset = 0.01f;  // Prevent sinking into edges
-
-    if (wasAbove && velocity.y >= 0) {
-        // Landed on top
-        position.y = otherBox.y - koopaBox.height - snapOffset;
-        velocity.y = 0;
-        onGround = true;
-    }
-    else if (wasBelow && velocity.y <= 0) {
-        // Hit from below
-        position.y = otherBox.y + otherBox.height + snapOffset;
-        velocity.y = 0;
-    }
-    else if (wasLeft && velocity.x >= 0) {
-        // Hit from left
-        position.x = otherBox.x - koopaBox.width - snapOffset;
-        velocity.x *= -1;
         isFacingRight = false;
-    }
-    else if (wasRight && velocity.x <= 0) {
-        // Hit from right
-        position.x = otherBox.x + otherBox.width + snapOffset;
-        velocity.x *= -1;
+        break;
+    case Direction::RIGHT:
+        if (physicsBody) {
+            b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+            physicsBody->SetLinearVelocity(b2Vec2(-currentVel.x, currentVel.y));
+        } else {
+            velocity.x *= -1.0f;
+        }
         isFacingRight = true;
+        break;
     }
 }
-
 
 void Koopa::die()   
 {
@@ -149,7 +123,12 @@ void Koopa::update(float deltaTime) {
     if (!ledgeDetector->isNearLedge())
     {
         isFacingRight ^= 1;
-        velocity.x *= -1;
+        if (physicsBody) {
+            b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+            physicsBody->SetLinearVelocity(b2Vec2(-currentVel.x, currentVel.y));
+        } else {
+            velocity.x *= -1;
+        }
     }
     ledgeDetector->update(this, deltaTime);
 
@@ -162,21 +141,26 @@ void Koopa::update(float deltaTime) {
         currentState->update(this, deltaTime);
         currentState->checkCondition(this);
     }
-    hitbox.x = position.x;
-    hitbox.y = position.y;
-    if (position.x < 0)
-    {
-        position.x = 0;
-        velocity.x *= -1;
-        isFacingRight = true; 
+    
+    // Update hitbox position (already handled in Enemy::update for Box2D)
+    if (!physicsBody) {
+        // Fallback for manual physics bounds checking
+        hitbox.x = position.x;
+        hitbox.y = position.y;
+        if (position.x < 0)
+        {
+            position.x = 0;
+            velocity.x *= -1;
+            isFacingRight = true; 
+        }
+        if (position.x > 1920 - hitbox.width)
+        {
+            position.x = 1920 - hitbox.width;
+            velocity.x *= -1;
+            isFacingRight = false;
+        }
     }
-    if (position.x > 1920 - hitbox.width)
-    {
-        position.x = 1920 - hitbox.width;
-        velocity.x *= -1;
-        isFacingRight = false;
-    }
-
+    // Note: Bounds checking now handled by Box2D world boundaries or wall blocks
 }
 
 GreenKoopa::GreenKoopa(Vector2 startPos, Vector2 size) : Koopa(startPos, size) {

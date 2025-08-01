@@ -5,6 +5,7 @@
 #include "../System/Interface.h"  
 #include "../System/Constant.h"
 #include <raylib.h>  
+#include "box2d/box2d.h"
 // Forward declaration for Item class  
 class Item;  
 class Block;  
@@ -15,7 +16,7 @@ class KoopaShell;
 
 class Object : public ICollidable, public IDrawable {  
 public:  
-	virtual ~Object() = default;  
+	virtual ~Object();  
 	virtual bool isActive() const = 0;  
 	virtual void setActive(bool) = 0;  
 	virtual bool isCollided() const = 0;  
@@ -29,8 +30,7 @@ public:
 	virtual std::vector<Rectangle> getHitBox() const override = 0;  
 	virtual ObjectCategory getObjectCategory() const override = 0;  
 	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;  
-	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0;
-	virtual void onCollision(std::shared_ptr<Object> other) override = 0;  
+	virtual void onCollision(std::shared_ptr<Object> other, Direction direction) override = 0;  
 	int getCollidedPart(const Object& other);  
 	virtual ObjectType getObjectType() const = 0;  
 
@@ -39,6 +39,7 @@ protected:
 	Vector2 size;  
 	bool active = true;  
 	bool collided = false;  
+	b2Body* physicsBody;
 };  
 
 class ObjectFactory {

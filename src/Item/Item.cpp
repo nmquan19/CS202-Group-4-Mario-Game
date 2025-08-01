@@ -73,20 +73,10 @@ std::vector<ObjectCategory> Item::getCollisionTargets() const {
     return { ObjectCategory::CHARACTER };
 }
 
-void Item::onCollision(std::shared_ptr<Object> other) {
-    // Ví dụ: Khi va chạm với nhân vật thì biến mất
+void Item::onCollision(std::shared_ptr<Object> other, Direction direction) {
     if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        active = false;
-    }
-}
-
-void Item::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
-    for (std::shared_ptr<Object> obj : candidates) {
-        switch (obj->getObjectCategory()) {
-        case ObjectCategory::CHARACTER:
-            setActive(false);
-            GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
-        }
+        setActive(false);
+        GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
     }
 }
 

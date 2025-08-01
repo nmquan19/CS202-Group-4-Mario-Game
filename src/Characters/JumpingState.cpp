@@ -12,26 +12,31 @@ void JumpingState::enter(Character* character){
 void JumpingState::update(Character* character, float deltaTime){
     Vector2 currentVel = character->getVelocity();
     float speed = character->getSpeed();
+    float airControlFactor = 0.8f; // Slightly reduced air control for realism
 
+    // Handle horizontal movement during jump
     if(IsKeyDown(KEY_A)){
-        character->setVelocity({-speed, currentVel.y});
+        character->setVelocity({-speed * airControlFactor, currentVel.y});
         character->setFacingRight(false);
     }
     else if(IsKeyDown(KEY_D)){
-        character->setVelocity({speed, currentVel.y});
+        character->setVelocity({speed * airControlFactor, currentVel.y});
         character->setFacingRight(true);
     }
     else{
-        character->setVelocity({currentVel.x, currentVel.y});
+        // Apply air resistance for smoother feel
+        character->setVelocity({currentVel.x * 0.98f, currentVel.y});
     }
 
+    // Variable jump height - cut jump short if space is released
     if (IsKeyReleased(KEY_SPACE) && currentVel.y < 0) {
         Vector2 vel = character->getVelocity();
         vel.y *= 0.5f; // Cut jump short
         character->setVelocity(vel);
     }
     
-    if (character->isOnGround() && currentVel.y >= 0) {
+    // Check if landed using the new ground detection system
+    if (character->canJump() && currentVel.y >= -0.1f) { // Small tolerance for landing detection
         if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) {
             character->changeState(MovingState::getInstance());
         } else {
