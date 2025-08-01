@@ -74,7 +74,7 @@ void KoopaShell::setVelocity(Vector2 newVelocity) {
 Vector2 KoopaShell::getVelocity() {
     return velocity;
 }
-void KoopaShell::onCollision(std::shared_ptr<Object> other) {
+void KoopaShell::onCollision(std::shared_ptr<Object> other, Direction dir) {
     
 }
 
@@ -97,12 +97,6 @@ void KoopaShell::changeState(KoopaShellState* newState) {
     if (currentState) currentState->exit(this);
     currentState = newState;
    if(currentState) currentState->enter(this);
-}
-
-void KoopaShell::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
-{
-	if (currentState == nullptr) return;
-	currentState->checkCollision(this, candidates);
 }
 
 void KoopaShell ::applyGravity(float deltaTime) {

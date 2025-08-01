@@ -25,11 +25,23 @@ Goomba::Goomba(Vector2 startPos, Vector2 size) : Enemy(startPos,TextureManager::
     changeState(&GoombaWanderingState::GetInstance());
 }
 
-void Goomba::onCollision(std::shared_ptr<Object> other) {
-   
-	if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-         DrawText("HITTED",200,200,20,RED);
-         this->changeState(&GoombaStompedState::GetInstance());
+void Goomba::onCollision(std::shared_ptr<Object> other, Direction dir) {
+    switch (other->getObjectCategory()) {
+    case ObjectCategory::BLOCK:
+        handleEnvironmentCollision(other, dir);
+        break;
+    case ObjectCategory::PROJECTILE:
+        this->changeState(&GoombaKnockState::GetInstance());
+        break;
+    case ObjectCategory::CHARACTER:
+        if (dir == Direction::UP) { // Character jumped on Goomba from above
+            DrawText("STOMPED", 200, 200, 20, RED);
+            this->changeState(&GoombaStompedState::GetInstance());
+        } else {
+            DrawText("CHARACTER COLLISION", 200, 200, 20, RED);
+            // Side collision - character should take damage
+        }
+        break;
     }
 }
 void Goomba::draw() {
@@ -47,65 +59,26 @@ void Goomba::draw() {
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
 }
 
-void Goomba::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
-{   
-    for (auto candidate : candidates) {
-        switch (candidate->getObjectCategory()) {
-        case ObjectCategory::BLOCK:
-            handleEnvironmentCollision(candidate);
-            break;
-        case ObjectCategory::PROJECTILE:
-			this->changeState(&GoombaKnockState::GetInstance());
-            break;
-        }
-    }
-}
-
-void Goomba::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    std::vector<Rectangle> playerHitBoxes = getHitBox();
-    std::vector<Rectangle> otherHitBoxes = other->getHitBox();
+void Goomba::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) {
+    Enemy::handleEnvironmentCollision(other, dir); // Call base class implementation
     
-    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
-    
-    Rectangle playerHitBox = playerHitBoxes[0];
-    Rectangle otherHitBox = otherHitBoxes[0];
-
-    if (!CheckCollisionRecs(playerHitBox, otherHitBox)) {
-        return;
-    }
-
-    // Calculate overlap amounts for each direction
-    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-
-    const float MIN_OVERLAP = 2.0f;
-
-    if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
-        return;
-    }
-
-    float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
-
-    if (minOverlap == overlapTop) {
-        position.y = otherHitBox.y - playerHitBox.height;
-        velocity.y = 0;
-        onGround = true;
-    }
-    else if (minOverlap == overlapBottom) {
-        position.y = otherHitBox.y + otherHitBox.height;
-        if (velocity.y < 0) {
-            velocity.y = 0;
+    switch (dir) {
+    case Direction::DOWN:
+        // Already handled in base class
+        break;
+    case Direction::LEFT:
+    case Direction::RIGHT:
+        // Goomba bounces off walls - reverse direction
+        if (physicsBody) {
+            b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+            physicsBody->SetLinearVelocity(b2Vec2(-currentVel.x, currentVel.y));
+        } else {
+            velocity.x *= -1.0f;
         }
-    }
-    else if (minOverlap == overlapLeft && overlapLeft >= MIN_OVERLAP) {
-        position.x = otherHitBox.x - playerHitBox.width;
-        velocity.x *= -1;
-    }
-    else if (minOverlap == overlapRight && overlapRight >= MIN_OVERLAP) {
-        position.x = otherHitBox.x + otherHitBox.width;
-        velocity.x *= -1;
+        break;
+    case Direction::UP:
+        // Hit ceiling
+        break;
     }
 }
 
@@ -133,19 +106,23 @@ void Goomba::update(float deltaTime) {
         currentState->checkCondition(this);
     }
     
-    hitbox.x = position.x;
-    hitbox.y = position.y;
-    if (position.x < 0)
-    {
-        position.x = 0;
-        velocity.x *= -1;
+    // Update hitbox position (already handled in Enemy::update for Box2D)
+    if (!physicsBody) {
+        // Fallback for manual physics bounds checking
+        hitbox.x = position.x;
+        hitbox.y = position.y;
+        if (position.x < 0)
+        {
+            position.x = 0;
+            velocity.x *= -1;
+        }
+        if (position.x > 1920 - hitbox.width)
+        {
+            position.x = 1920 - hitbox.width;
+            velocity.x *= -1;
+        }
     }
-    if (position.x > 1920 - hitbox.width)
-    {
-        position.x = 1920 - hitbox.width;
-        velocity.x *= -1;
-    }
-
+    // Note: Bounds checking now handled by Box2D world boundaries or wall blocks
 }
 EnemyType Goomba::getType() const {
     return EnemyType::GOOMBA;

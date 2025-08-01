@@ -23,7 +23,9 @@
     <ClInclude Include="include\Characters\ICharacterState.h" />
     <ClInclude Include="include\Characters\IdleState.h" />
     <ClInclude Include="include\Characters\JumpingState.h" />
+    <ClInclude Include="include\Characters\KnockedState.h" />
     <ClInclude Include="include\Characters\MovingState.h" />
+    <ClInclude Include="include\Characters\StunnedState.h" />
     <ClInclude Include="include\Enemy\Boss\BehaviorTree.h" />
     <ClInclude Include="include\Enemy\Boss\Boss.h" />
     <ClInclude Include="include\Enemy\Boss\BossAction.h" />
@@ -50,7 +52,6 @@
     <ClInclude Include="include\Enemy\TriggerZone.h" />
     <ClInclude Include="include\Game\GameContext.h" />
     <ClInclude Include="include\Game\GameStates.h" />
-    <ClInclude Include="include\Game\HUD.h" />
     <ClInclude Include="include\Item\Anima.h" />
     <ClInclude Include="include\Item\Coin\Coin.h" />
     <ClInclude Include="include\Item\Fire_Flower\Fire_Flower.h" />
@@ -85,10 +86,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Enemy\Boss\BT_Factory.h" />
+    <ClCompile Include="include\System\Box2DWorldManager.h" />
     <ClCompile Include="src\Characters\Character.cpp" />
     <ClCompile Include="src\Characters\IdleState.cpp" />
     <ClCompile Include="src\Characters\JumpingState.cpp" />
+    <ClCompile Include="src\Characters\KnockedState.cpp" />
     <ClCompile Include="src\Characters\MovingState.cpp" />
+    <ClCompile Include="src\Characters\StunnedState.cpp" />
     <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
     <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
@@ -107,7 +111,6 @@
     <ClCompile Include="src\Game\GameStates.cpp" />
     <ClCompile Include="src\Item\Coin\Coin.cpp" />
     <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
-    <ClCompile Include="src\Game\HUD.cpp" />
     <ClCompile Include="src\Item\Item.cpp" />
     <ClCompile Include="src\Item\Mushroom\Mushroom.cpp" />
     <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
@@ -120,6 +123,7 @@
     <ClCompile Include="src\Objects\Spring.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
     <ClCompile Include="src\System\CameraSystem.cpp" />
+    <ClCompile Include="src\System\Box2DWorldManager.cpp" />
     <ClCompile Include="src\System\FrameData.cpp" />
     <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />

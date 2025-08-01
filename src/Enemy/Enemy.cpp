@@ -7,23 +7,36 @@
 #include "../../include/Enemy/EnemyState.h"
 #include <algorithm>
 #include "../../include/System/Grid.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include <utility>
 
-Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f) {
+Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f), collided(false) {
     isalive = true;
     hitbox = { position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE};
     currentState = nullptr; 
+    physicsBody = Box2DWorldManager::getInstance().createEnemyBody(position, { hitbox.width, hitbox.height });
+    if (physicsBody) {
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+    }
 }
-Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f) {
+Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f), collided(false) {
     this->size = size; 
 	isalive = true;
     this->spritebox = { 0, 0, 32, 32}; 
     hitbox = {position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE };
     currentState = nullptr;
+    physicsBody = Box2DWorldManager::getInstance().createEnemyBody(position, { hitbox.width, hitbox.height });
+    if (physicsBody) {
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+    }
 }
 Enemy::~Enemy() {
+    if (physicsBody) {
+        Box2DWorldManager::getInstance().destroyBody(physicsBody);
+        physicsBody = nullptr;
+    }
 }
 
 std::vector<Rectangle> Enemy::getHitBox() const {
@@ -34,8 +47,10 @@ std::vector<ObjectCategory> Enemy::getCollisionTargets() const
 	return { ObjectCategory::CHARACTER, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE};
 }
 void Enemy::applyGravity(float deltaTime) {
-    if (!onGround) {
-        velocity.y +=  980 * deltaTime;
+    // Box2D handles gravity automatically, but we can apply additional forces if needed
+    if (!onGround && physicsBody) {
+        // Box2D already applies gravity, but we can add custom gravity if needed
+        // For now, let Box2D handle it with its built-in gravity
     }
 }
 void Enemy::update(float deltaTime)
@@ -45,16 +60,38 @@ void Enemy::update(float deltaTime)
         curFrame += 1;
         aniTimer = 0;
     }
-    position += velocity* deltaTime;
-    if (getBottom() >= groundLevel) {
-        position.y = groundLevel - (spritebox.height * scale);
-        onGround = true;  
-        if (velocity.y > 0) {
-            velocity.y = 0;
+    
+    // Sync position and velocity with Box2D physics body
+    if (physicsBody) {
+        // Get position from Box2D
+        b2Vec2 b2Pos = physicsBody->GetPosition();
+        Vector2 bodyPos = Box2DWorldManager::b2ToRaylib(b2Pos);
+        position.x = bodyPos.x - hitbox.width * 0.5f;
+        position.y = bodyPos.y - hitbox.height * 0.5f;
+        
+        // Get velocity from Box2D
+        b2Vec2 b2Vel = physicsBody->GetLinearVelocity();
+        velocity = Box2DWorldManager::b2ToRaylib(b2Vel);
+        
+        // Update hitbox position
+        hitbox.x = position.x;
+        hitbox.y = position.y;
+        
+        // Check if on ground based on velocity and position
+        onGround = (abs(velocity.y) < 0.1f && getBottom() >= groundLevel - 5.0f);
+    } else {
+        // Fallback to manual physics if no Box2D body
+        position += velocity * deltaTime;
+        if (getBottom() >= groundLevel) {
+            position.y = groundLevel - (spritebox.height * scale);
+            onGround = true;  
+            if (velocity.y > 0) {
+                velocity.y = 0;
+            }
         }
-    }
-    else {
-        onGround = false; 
+        else {
+            onGround = false; 
+        }
     }
 }
 
@@ -80,77 +117,39 @@ void Enemy::flipDirection()
 bool Enemy::isAlive() const {
     return isalive;
 }
-void Enemy::onCollision(std::shared_ptr<Object> other) {
-	if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-            // velocity = {0,0} ;  
-            // accelleration = {0,0};
+void Enemy::onCollision(std::shared_ptr<Object> other, Direction dir) {
+    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
+        // Character collision handled by derived classes via handleCharacterCollision
+        // No direct velocity modification here since Box2D handles the physics
     }
     if (other->getObjectCategory() == ObjectCategory::ENEMY) {
-        // Push enemy away from Mario slightly to prevent sticking
-        std::vector<Rectangle> otherHitBoxes = other->getHitBox();
-        if (!otherHitBoxes.empty()) {
-            Rectangle otherHitBox = otherHitBoxes[0];
-            Vector2 pushDirection = {
-                position.x - otherHitBox.x,
-                position.y - otherHitBox.y
-            };
-
-            // Normalize and apply small push
-            float length = pushDirection.x * pushDirection.x + pushDirection.y * pushDirection.y;
-            if (length > 0) {
-                pushDirection.x /= length;
-                pushDirection.y /= length;
-                position.x += pushDirection.x * 500.0f; // Small push away
-                position.y += pushDirection.y * 500.0f;
-            }
-        }
+        // Enemy-to-enemy collision - Box2D handles the physical response
+        // We can add game logic effects here if needed
+    }
+    if (other->getObjectCategory() == ObjectCategory::BLOCK) {
+        handleEnvironmentCollision(other, dir);
+    }
+    if (other->getObjectCategory() == ObjectCategory::PROJECTILE) {
+        // Handle projectile collision - implementation depends on derived class
     }
 }
-void Enemy::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    std::vector<Rectangle> playerHitBoxes = getHitBox();
-    std::vector<Rectangle> otherHitBoxes = other->getHitBox();
+void Enemy::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) {
+    // With Box2D, physical collision response is handled automatically
+    // We only need to handle game logic responses here
     
-    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
-    
-    Rectangle playerHitBox = playerHitBoxes[0];
-    Rectangle otherHitBox = otherHitBoxes[0];
-
-    if (!CheckCollisionRecs(playerHitBox, otherHitBox)) {
-        return;
-    }
-
-    // Calculate overlap amounts for each direction
-    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-
-    const float MIN_OVERLAP = 2.0f;
-
-    if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
-        return;
-    }
-
-    float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
-
-    if (minOverlap == overlapTop) {
-        position.y = otherHitBox.y - playerHitBox.height;
-        velocity.y = 0;
-        onGround = true; 
-    }
-    else if (minOverlap == overlapBottom) {
-        position.y = otherHitBox.y + otherHitBox.height;
-        if (velocity.y < 0) {
-            velocity.y = 0;
-        }
-    }
-    else if (minOverlap == overlapLeft && overlapLeft >= MIN_OVERLAP) {
-        position.x = otherHitBox.x - playerHitBox.width;
-        velocity.x *=-1;
-    }
-    else if (minOverlap == overlapRight && overlapRight >= MIN_OVERLAP) {
-        position.x = otherHitBox.x + otherHitBox.width;
-        velocity.x *= -1;
+    switch (dir) {
+    case Direction::DOWN:
+        onGround = true;
+        groundLevel = other->getPosition().y; // Store ground level for reference
+        break;
+    case Direction::UP:
+        // Hit ceiling - Box2D handles the physical response
+        break;
+    case Direction::LEFT:
+    case Direction::RIGHT:
+        // Hit wall - for some enemies this might trigger direction change
+        // This depends on the specific enemy type, so it's handled in derived classes
+        break;
     }
 }
 bool Enemy::isActive() const {
@@ -158,6 +157,9 @@ bool Enemy::isActive() const {
 }
 void Enemy::setVelocity(Vector2 newVelocity) {
     velocity = newVelocity;
+    if (physicsBody) {
+        physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(newVelocity));
+    }
 }
 
 Vector2 Enemy::getVelocity() {
@@ -174,6 +176,9 @@ float Enemy::getSpeed() {
 
 void Enemy::setPosition(Vector2 newPosition) {
     position = newPosition;
+    if (physicsBody) {
+        physicsBody->SetTransform(Box2DWorldManager::raylibToB2(newPosition), physicsBody->GetAngle());
+    }
 }
 Vector2 Enemy::getDirection() const {
     return direction;

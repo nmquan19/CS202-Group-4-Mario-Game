@@ -28,7 +28,6 @@ public:
 	bool isOnGround() const;
   	void setOnGround(bool flag);
 	void jump();
-	void applyGravity(float deltaTime);
 
 	void setVelocity(Vector2 newVelocity);
 	Vector2 getVelocity();
@@ -46,8 +45,7 @@ public:
 	std::vector<Rectangle> getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
-	void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
-	void onCollision(std::shared_ptr<Object> other) override;
+	void onCollision(std::shared_ptr<Object> other, Direction direction) override;
 	bool isActive() const override;
 	void setActive(bool) override;
 	bool isCollided() const override;
@@ -74,18 +72,20 @@ public:
 	friend class IdleState;
 	friend class MovingState;
 	friend class JumpingState;
-	friend class HUD;
+	friend class StunnedState;
+	friend class KnockedState;
 
+	void addGroundContact();
+	void removeGroundContact();
+	bool canJump() const;
 private:
 	void handleProjectile(float deltaTime);
-	void handleGroundCheck();
 
-	void handleEnvironmentCollision(std::shared_ptr<Object> other);
-	void handleEnemyCollision(std::shared_ptr<Object> other);
-	void handleInteractiveCollision(std::shared_ptr<Object> other);
-	void handleSpringCollision(std::shared_ptr<Spring> other);
-	
-	
+	void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction);
+	void handleEnemyCollision(std::shared_ptr<Object> other, Direction direction);
+	void handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction);
+	void handleSpringCollision(std::shared_ptr<Spring> other, Direction direction);
+
 private:
 	ICharacterState* currentState;
 	CharacterType characterType;
@@ -108,13 +108,17 @@ private:
 	float aniTimer;
 	float aniSpeed;
 
+	float lastBottomY;
 	float hitBoxWidth;
 	float hitBoxHeight;
 	bool active = true;
 
 	int hp;
 	float invincibleTimer;
+	float reviveTimer;
 	
 	KoopaShell* projectile;
 	bool holdingProjectile;
+
+	int groundContactCount = 0;
 };

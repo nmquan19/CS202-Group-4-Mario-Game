@@ -4,6 +4,7 @@
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
 #include "../../include/System/PhysicsManager.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/System/LevelEditor.h"
 #include "../../include/Game/GameStates.h"
@@ -26,6 +27,7 @@ GameContext::~GameContext() {
     if (previousState) {
         LevelEditor::getInstance().cleanup();
         PhysicsManager::getInstance().cleanup();
+        Box2DWorldManager::getInstance().cleanup();
     }
     TextureManager::getInstance().unloadTextures();
 }
@@ -38,6 +40,7 @@ void GameContext::setState(GameState* newState) {
         if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState || currentState != editorState)) {
             LevelEditor::getInstance().cleanup();
             PhysicsManager::getInstance().cleanup();
+            Box2DWorldManager::getInstance().cleanup();
             clearGame(); // Delete remaining objects in GameContext
             character.reset();
         }
@@ -46,13 +49,20 @@ void GameContext::setState(GameState* newState) {
         currentState = newState;
 
         if (newState == gamePlayState) {
+            Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
             PhysicsManager::getInstance().setWorldBounds({ 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT});
             LevelEditor::getInstance().setEditMode(false);
-            LevelEditor::getInstance().loadLevel("testlevel.json");
-            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
-            PhysicsManager::getInstance().addObject(character);
-            camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
-            camera.target = character->getPosition();
+            
+            // Create test blocks for Box2D physics testing
+            createTestBlocks();
+            
+            // LevelEditor::getInstance().loadLevel("testlevel.json");
+            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 400 });
+            if (character) {
+                PhysicsManager::getInstance().addObject(character);
+                camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
+                camera.target = character->getPosition();
+            }
         }
     }
 }
@@ -178,4 +188,34 @@ void GameContext::clearGame() {
         mark_for_deletion_Object(obj);
     }
     Objects.clear();
+}
+
+void GameContext::createTestBlocks() {
+    // Create a ground platform for testing using world coordinates
+    // Bottom ground blocks (y = 15 grid units = 15 * TILE_SIZE pixels, spanning from x = 5 to x = 25)
+    for (int x = 5; x <= 25; x++) {
+        Vector2 worldPos = GridSystem::getWorldPosition({static_cast<float>(x), 15.0f});
+        addObject(BlockType::GROUND, worldPos, {1, 1});
+    }
+    
+    // Create some brick blocks for variety
+    for (int x = 8; x <= 12; x++) {
+        Vector2 worldPos = GridSystem::getWorldPosition({static_cast<float>(x), 14.0f});
+        addObject(BlockType::BRICK, worldPos, {1, 1});
+    }
+    
+    // Create a platform in the air for jump testing
+    // for (int x = 18; x <= 22; x++) {
+    //     Vector2 worldPos = GridSystem::getWorldPosition({static_cast<float>(x), 12.0f});
+    //     addObject(BlockType::GROUND, worldPos, {1, 1});
+    // }
+    
+    // Add some single blocks for platforming
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({10.0f, 11.0f}), {1, 1});
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
+    // addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({15.0f, 10.0f}), {1, 1});
+    addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1, 1});
+    
+    // Spawn all the blocks
+    spawnObject();
 }

@@ -19,7 +19,14 @@
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Objects/Spring.h"
+#include "../../include/System/Box2DWorldManager.h"
 
+Object::~Object() {
+    if (physicsBody) {
+        Box2DWorldManager::getInstance().destroyBody(physicsBody);
+        physicsBody = nullptr;
+    }
+}
 
 std::unique_ptr<Object> ObjectFactory::createBlock(BlockType type, Vector2 gridPos) {
     return createSpecificBlock(type, gridPos);

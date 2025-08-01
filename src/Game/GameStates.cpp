@@ -4,6 +4,7 @@
 #include "../../include/Game/GameStates.h"
 #include "../../include/System/LevelEditor.h"
 #include "../../include/System/PhysicsManager.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include <raylib.h>
 #include "../../include/System/Interface.h"
 #include <memory>
@@ -45,6 +46,10 @@ void GamePlayState::handleInput(GameContext& context) {
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.gameOverState);
     }
+    
+    if (IsKeyPressed(KEY_F10)) {
+        Box2DWorldManager::getInstance().setDebugDraw(!Box2DWorldManager::getInstance().isDebugDrawEnabled());
+    }
     if (IsKeyPressed(KEY_ONE)) {
         Camera2D cam = {};
         cam.target = { 2000.0f, 2000.0f };
@@ -76,8 +81,9 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     context.spawnObject();  
     context.deleteObjects();
     context.menuManager.updateInformationBoard(deltaTime);
-    PhysicsManager::getInstance().update();
-    LevelEditor::getInstance().update();
+    //PhysicsManager::getInstance().update();
+    //LevelEditor::getInstance().update();
+    Box2DWorldManager::getInstance().step(deltaTime);
 }
 
 void GamePlayState::draw(GameContext& context) {
@@ -95,9 +101,18 @@ void GamePlayState::draw(GameContext& context) {
     {
         obj->draw();
     }
-    //PhysicsManager::getInstance().drawDebug();
+    PhysicsManager::getInstance().drawDebug();
+    Box2DWorldManager::getInstance().drawDebugBodies();
     EndMode2D();
     DrawFPS(20, 50); 
+    
+    // Show debug mode status
+    if (Box2DWorldManager::getInstance().isDebugDrawEnabled()) {
+        DrawText("Box2D Debug Mode: ON (Key F10 to toggle)", 520, 80, 20, GREEN);
+    } else {
+        DrawText("Box2D Debug Mode: OFF (Key F10 to toggle)", 520, 80, 20, RED);
+    }
+    
     context.menuManager.DrawSetting();
     context.menuManager.drawInformationBoard();
     EndDrawing();

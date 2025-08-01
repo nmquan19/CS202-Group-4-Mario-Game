@@ -36,9 +36,8 @@ public:
 
     // Collision & physics
     void handleCharacterCollision(std::shared_ptr<Object> other) override;
-    void handleEnvironmentCollision(std::shared_ptr<Object> other) override;
-    void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
-    void onCollision(std::shared_ptr<Object> other) override;
+    void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) override;
+    void onCollision(std::shared_ptr<Object> other, Direction direction) override;
     std::vector<Rectangle> getHitBox() const override; // Override to provide multiple hitboxes
 	std::string getCurAnimation() const { return curAniName; } 
     // Logic

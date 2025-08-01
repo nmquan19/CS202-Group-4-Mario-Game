@@ -43,11 +43,7 @@ void Spring::draw() {
 	DrawTexturePro(TextureManager::interactiveTextures, source, dest, { 0, 0 }, 0.0f, WHITE);
 }
 
-void Spring::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
-	
-}
-
-void Spring::onCollision(std::shared_ptr<Object> other) {
+void Spring::onCollision(std::shared_ptr<Object> other, Direction direction) {
 	switch (other->getObjectCategory()) {
 	case ObjectCategory::CHARACTER:
 		isBouncing = true;
