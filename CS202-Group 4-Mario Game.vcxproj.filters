@@ -48,6 +48,8 @@
     <ClCompile Include="src\Item\Star\Star.cpp" />
     <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
     <ClCompile Include="src\Game\HUD.cpp" />
+    <ClCompile Include="include\System\Box2DWorldManager.h" />
+    <ClCompile Include="src\System\Box2DWorldManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -111,6 +113,7 @@
     <ClInclude Include="include\Item\Star\Star.h" />
     <ClInclude Include="include\Item\One_Up\One_Up.h" />
     <ClInclude Include="include\Game\HUD.h" />
+    <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

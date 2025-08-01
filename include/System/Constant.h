@@ -13,6 +13,7 @@ namespace Constants {
     constexpr float KOOPA_SPEED = 200.0f;
     constexpr float WORLDBOUNDS_WIDTH = 5000.0f;
     constexpr float WORLDBOUNDS_HEIGHT = 1800.0f;
+    constexpr float COYOTE_TIME_DURATION = 150.0f;
 
     namespace GreenKoopa {
 		constexpr Vector2 standardSize = { 0.75, 1};

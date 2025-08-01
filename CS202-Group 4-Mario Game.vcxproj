@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Enemy\Boss\BT_Factory.h" />
+    <ClCompile Include="include\System\Box2DWorldManager.h" />
     <ClCompile Include="src\Characters\Character.cpp" />
     <ClCompile Include="src\Characters\IdleState.cpp" />
     <ClCompile Include="src\Characters\JumpingState.cpp" />
@@ -120,6 +121,7 @@
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
     <ClCompile Include="src\Objects\Spring.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
+    <ClCompile Include="src\System\Box2DWorldManager.cpp" />
     <ClCompile Include="src\System\FrameData.cpp" />
     <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />

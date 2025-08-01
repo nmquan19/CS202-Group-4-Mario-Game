@@ -45,26 +45,19 @@ std::vector<ObjectCategory> TriggerZone::getCollisionTargets() const {
     return { ObjectCategory::CHARACTER};
 }
 
-void TriggerZone::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
-    if (!owner->isCollectable()) return;
-    for (auto obj : candidates) {
-        if (!obj->isActive()) continue;
-        setCollided(true);
-        if (IsKeyDown(KEY_E))
-        {
-            onCollision(obj);
+void TriggerZone::onCollision(std::shared_ptr<Object> other, Direction direction) {
+    if (!owner->isCollectable() || !other->isActive()) return;
+    setCollided(true);
+    if (IsKeyDown(KEY_E))
+    {
+        if (!owner || !other) return;
+        if (other->getObjectCategory() != ObjectCategory::CHARACTER) return;
+        Character* player = dynamic_cast<Character*>(other.get());
+        if (player) {
+            owner->onCollect(player);
+            owner->setActive(false);
+            this->setActive(false); // disable trigger after use
         }
-    }
-}
-
-void TriggerZone::onCollision(std::shared_ptr<Object> other) {
-    if (!owner || !other) return;
-    if (other->getObjectCategory() != ObjectCategory::CHARACTER) return;
-    Character* player = dynamic_cast<Character*>(other.get());
-    if (player) {
-        owner->onCollect(player);
-        owner->setActive(false);
-        this->setActive(false); // disable trigger after use
     }
 }
 

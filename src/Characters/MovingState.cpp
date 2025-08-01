@@ -10,7 +10,7 @@ void MovingState::enter(Character* character) {
 }
 
 void MovingState::update(Character* character, float deltaTime) {
-	if (IsKeyPressed(KEY_SPACE) && character->isOnGround()) {
+	if (IsKeyPressed(KEY_SPACE) && character->canJump()) {
 		character->jump();
         character->changeState(JumpingState::getInstance());
         return;
@@ -30,9 +30,19 @@ void MovingState::update(Character* character, float deltaTime) {
 		character->setFacingRight(true);
 		moving = true;
 	}
+	
 	if (!moving) {
+		// // Apply ground friction when stopping
+		// if (character->isOnGround()) {
+		// 	character->setVelocity({currentVel.x * 0.8f, currentVel.y}); // Ground friction
+		// 	if (abs(currentVel.x) < 0.1f) { // If almost stopped
+		// 		character->setVelocity({0, currentVel.y});
+		// 		character->changeState(IdleState::getInstance());
+		// 	}
+		// } else {
+		// 	character->changeState(IdleState::getInstance());
+		// }
 		character->changeState(IdleState::getInstance());
-		return;
 	}
 }
 

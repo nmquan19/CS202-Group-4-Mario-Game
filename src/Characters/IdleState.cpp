@@ -8,12 +8,13 @@ void IdleState::enter(Character* character) {
 	character->setAniSpeed(0.3f);
 	character->setCurrentStateRow(0);
 
+	// Stop horizontal movement, keep vertical velocity for Box2D physics
 	Vector2 currentVel = character->getVelocity();
 	character->setVelocity({0, currentVel.y});
 }
 
 void IdleState::update(Character* character, float deltaTime) {
-	if (IsKeyPressed(KEY_SPACE) && character->isOnGround()) {
+	if (IsKeyPressed(KEY_SPACE) && character->canJump()) {
 		character->jump();
         character->changeState(JumpingState::getInstance());
         return;
