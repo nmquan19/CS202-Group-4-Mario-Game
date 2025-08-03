@@ -32,7 +32,19 @@ public:
 	std::vector<std::shared_ptr<BehaviorTreeNode>> getChildren() const { return children; }
     void reset() override;  
 };
+class ReactiveSequenceNode : public BehaviorTreeNode {
+private:
+    std::vector<std::shared_ptr<BehaviorTreeNode>> children;
+    size_t current = 0;
 
+public:
+    ReactiveSequenceNode() = default;
+    ReactiveSequenceNode(std::initializer_list<std::shared_ptr<BehaviorTreeNode>> nodes);
+    NodeStatus tick(Enemy* enemy, float dt) override;
+    void addChild(std::shared_ptr<BehaviorTreeNode> child);
+    std::vector<std::shared_ptr<BehaviorTreeNode>> getChildren() const { return children; }
+    void reset() override;
+};
 class SelectorNode : public BehaviorTreeNode {
 private:
     std::vector<std::shared_ptr<BehaviorTreeNode>> children;
@@ -308,5 +320,16 @@ public:
 class IsInWallJumpNode : public ActionNode {
 public:
     IsInWallJumpNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+class CanReachPlayerHeightNode : public ActionNode
+{
+    CanReachPlayerHeightNode(): ActionNode(){}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+class CanUseAerialAttackNode : public ActionNode
+{
+public:
+    CanUseAerialAttackNode() : ActionNode() {}
     NodeStatus tick(Enemy* boss, float dt) override;
 };

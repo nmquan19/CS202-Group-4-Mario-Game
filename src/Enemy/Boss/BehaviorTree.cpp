@@ -36,6 +36,28 @@ NodeStatus SequenceNode::tick(Enemy* boss, float dt) {
     reset();
     return NodeStatus::Success;
 }
+//ReactiveSequenceNode Implementation 
+ReactiveSequenceNode::ReactiveSequenceNode(std::initializer_list<std::shared_ptr<BehaviorTreeNode>> nodes)
+: children(nodes) {
+}
+void ReactiveSequenceNode::reset() {
+    current = 0;
+    for (auto& child : children) {
+        child->reset();
+    }
+}
+void ReactiveSequenceNode::addChild(std::shared_ptr<BehaviorTreeNode> child) {
+    children.push_back(child);
+}
+NodeStatus ReactiveSequenceNode::tick(Enemy* boss, float dt) {
+    for (auto& child : children) {
+        NodeStatus status = child->tick(boss, dt);
+        if (status != NodeStatus::Success) {
+            return status; 
+        }
+    }
+    return NodeStatus::Success;
+}
 
 // SelectorNode Implementation
 SelectorNode::SelectorNode(std::initializer_list<std::shared_ptr<BehaviorTreeNode>> nodes)
@@ -457,7 +479,6 @@ NodeStatus SpinAttackWinddownNode::tick(Enemy* boss, float dt) {
 }
 
 NodeStatus IsTakingDamageNode::tick(Enemy* boss, float dt) {
-    DrawText("IsTakingDamageNode", 200, 200, 20, RED);
     if (!boss) return NodeStatus::Failure;
     DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
     if(dryBowser&& dryBowser->getCurAnimation()=="TakeDamage" && !dryBowser->getAnimController().isFinished()) {
@@ -468,7 +489,6 @@ NodeStatus IsTakingDamageNode::tick(Enemy* boss, float dt) {
 
 NodeStatus IsInIntroNode::tick(Enemy* boss, float dt) {
     DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
-	DrawText("IsInIntroNode",200, 200, 20, RED);
     if (!dryBowser) return NodeStatus::Failure;
     if (dryBowser->getCurAnimation() == "Intro"&& !dryBowser->getAnimController().isFinished()) {
         return NodeStatus::Running;
@@ -526,30 +546,48 @@ NodeStatus WallJumpNode::tick(Enemy* boss, float dt) {
 NodeStatus JumpNode::tick(Enemy* boss, float dt) {
     if (!boss) return NodeStatus::Failure;
 
-    if (!boss) return NodeStatus::Failure;
-    if (!boss->isJumping())
-    {
-        boss->jump();
+    DryBowser* drybowser = dynamic_cast<DryBowser*>(boss);
+    if (drybowser) {
+        bool canReach = drybowser->canReachPlayerHeight();
+        float distance = std::abs(drybowser->getPosition().x - drybowser->getTargetPos().x);
+        bool inRange = distance <= Constants::DryBowser::AERIAL_ATTACK_RANGE;
+        bool isOnCoolDown = drybowser->isMoveOnCooldown("AerialAttack");
+        if (!canReach || !inRange || isOnCoolDown) {
+            DrawText(TextFormat("JumpNode Fail: canReach=%d, inRange=%d", canReach, inRange), 400, 200, 20, BLUE);
+            return NodeStatus::Failure;
+        }
+    }
+
+    if (boss->isJumping()) {
+        if (drybowser && drybowser->isOnGround()) {
+            return NodeStatus::Running; 
+        }
+        if (boss->getAnimController().isFinished()) {
+            return NodeStatus::Success;
+        }
         return NodeStatus::Running;
     }
-    if (boss->getAnimController().isFinished()) {
-        return NodeStatus::Success;
-    }
+    boss->jump();
     return NodeStatus::Running;
 }
+
 
 NodeStatus AerialAttackNode::tick(Enemy* boss, float dt) {
     DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
     if (!boss) return NodeStatus::Failure;
-    if (dryBowser->getCurAnimation() != "AerialAttack")
+
+    if (dryBowser->getCurAnimation() != "AerialAttack") 
     {
+        dryBowser->setGravity(0.0f);
         dryBowser->aerialAttack();
         return NodeStatus::Running;
     }
     if (dryBowser->getAnimController().isFinished()) {
-        return NodeStatus::Failure;
+        dryBowser->setGravity(1.0f);
+        return NodeStatus::Success;
+
     }
-    return NodeStatus::Success;
+    return NodeStatus::Running;
 }
 
 NodeStatus IsInWallJumpNode::tick(Enemy* boss, float dt) {
@@ -557,6 +595,24 @@ NodeStatus IsInWallJumpNode::tick(Enemy* boss, float dt) {
     if (!boss) return NodeStatus::Failure;
     if (dryBowser->getIsWallSticking())
     {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Failure;
+}
+
+NodeStatus CanReachPlayerHeightNode::tick(Enemy* boss, float dt)
+{
+    DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+    if (dryBowser->getIsWallSticking())
+    {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Failure;
+}
+NodeStatus CanUseAerialAttackNode::tick(Enemy* boss, float dt) {
+    DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+    if (!dryBowser) return NodeStatus::Failure;
+    if (dryBowser->canUseAerialAttack()) {
         return NodeStatus::Success;
     }
     return NodeStatus::Failure;

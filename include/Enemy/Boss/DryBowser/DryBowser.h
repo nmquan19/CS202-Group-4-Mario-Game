@@ -56,7 +56,6 @@ public:
     void setTarget(Vector2 targetPos);
 	void changeMoveState(std::shared_ptr<BossMoveState> moveState); 
     //
-    
 	///Behavior Tree implementation
     void walkToTarget();
     void attack() override;
@@ -73,11 +72,18 @@ public:
     void spinAttackWinddown(); 
     void aerialAttack(); 
     void wallJump(); 
+    void jump() override;
 	int isNearWall() const;
     bool isBelowWall() const;  
     bool checkWallContact();
 	void jumpFromWall() override;    
 	bool getIsWallSticking() const { return isWallSticking; }
+    bool isJumping() const override;
+    void setGravity(float scale);
+    bool canReachPlayerHeight();
+    bool canUseAerialAttack() const;
 private:
+
+    int lastTriggerFrame; 
     void updateWorldState();
 };

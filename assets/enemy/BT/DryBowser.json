@@ -36,25 +36,33 @@
                           ]
                         },
                         {
-                          "type": "AerialAttack"
+                          "children": [
+                            {
+                              "type": "CanUseAerialAttack"
+                            },
+                            {
+                              "type": "AerialAttack"
+                            }
+                          ],
+                          "type": "Sequence"
                         }
                       ]
                     }
                   ]
                 },
                 {
+                  "type": "ReactiveSequence",
                   "children": [
                     {
-                      "type": "Sequence",
-                      "children": [
-                        {
-                          "type": "IsPlayerHigher"
-                        },
-                        {
-                          "type": "Jump"
-                        }
-                      ]
+                      "type": "IsPlayerHigher"
                     },
+                    {
+                      "type": "Jump"
+                    }
+                  ]
+                },
+                {
+                  "children": [
                     {
                       "type": "CanUseSpin"
                     },

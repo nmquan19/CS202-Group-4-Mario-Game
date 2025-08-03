@@ -81,8 +81,8 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     context.spawnObject();  
     context.deleteObjects();
     context.menuManager.updateInformationBoard(deltaTime);
-    //PhysicsManager::getInstance().update();
-    //LevelEditor::getInstance().update();
+  /*  PhysicsManager::getInstance().update();
+    LevelEditor::getInstance().update();*/
     Box2DWorldManager::getInstance().step(deltaTime);
 }
 
@@ -90,7 +90,7 @@ void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
     BeginMode2D(GameCameraSystem::getInstance().getCamera());
-    DrawBackGround(TextureManager::getInstance().background_lv1);
+    //DrawBackGround(TextureManager::getInstance().background_lv1);
     DrawText("Press Enter", 500, 100, 20, BLACK);
     
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!

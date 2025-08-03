@@ -54,6 +54,7 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
 #include <iostream>
 void DryBowser::update(float dt) {
     // First, sync with Box2D physics body if available
+    canReachPlayerHeight();
     if (physicsBody) {
         // Get position and velocity from Box2D
         b2Vec2 b2Pos = physicsBody->GetPosition();
@@ -87,21 +88,25 @@ void DryBowser::update(float dt) {
     
     updateWorldState();
     setTarget(GameContext::getInstance().getCharacter()->getPosition());
+    targetHitboxes = GameContext::getInstance().getCharacter()->getHitBox()[0];
     hitbox.x = position.x;
     hitbox.y = position.y;
     
     animController.update(dt);
     curFrame = animController.getCurrentFrame();
-    
+    if ((this->currentPhase->getCurMove() == "Jump"&& velocity.y <0) || this->currentPhase->getCurMove() == "Fall"|| this->currentPhase->getCurMove()=="AerialAttack")
+    {
+        this->onGround = false; 
+    }
     // Ground collision detection (for non-Box2D fallback)
-    if (!physicsBody && getBottom() <= groundLevel) {
+    /*if (!physicsBody && getBottom() <= groundLevel) {
         DrawText(TextFormat("Drybowser Position: x = %f, y = %f, Ground Level z = %f", position.x, position.y, groundLevel), 200, 400, 20, BLACK);
         onGround = true;
         if (velocity.y > 0) {
             velocity.y = 0;
         }
-    } 
-    groundLevel = INT_MIN;
+    } */
+    //groundLevel = INT_MIN;
     
     // Apply frame-based velocity
     if (velocityController.isActiveAtFrame(curFrame)) {
@@ -117,7 +122,7 @@ void DryBowser::update(float dt) {
     spritebox = TextureManager::DryBowser_sprite_boxes[curFrame];
     
     const FrameData* data = FrameDatabase::getInstance().getFrameData(this->getType(), curAniName, curFrame);
-    if (data) {
+    if (data&&lastTriggerFrame != curFrame) {
         for(auto& event : data->events) {
             if (event.eventType != EventType::None) {
                 DrawText(TextFormat("Event Triggered:%d, %s", data->frameIndex, event.payload.c_str()), 200, 300, 20, RED);
@@ -126,15 +131,26 @@ void DryBowser::update(float dt) {
                     func();
                 }
             }
+            lastTriggerFrame = curFrame; 
         }
     }
     updateCooldowns(dt);
     if (currentPhase) currentPhase->update(this, dt);
+
 }
 
 void DryBowser::draw() {
 
 	//DrawRectangle(targetPosition.x, targetPosition.y, 50,50, RED);
+    DrawCircleLines(hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2, Constants::DryBowser::AERIAL_ATTACK_RANGE, BLUE);
+    float selfBottomY = position.y + hitbox.height;
+    float targetBottomY = targetPosition.y+targetHitboxes.height+5.0f;
+
+    DrawLine(0, selfBottomY, 1000, selfBottomY, RED);
+    DrawText("DryBowser Bottom", 10, selfBottomY - 15, 20, RED);
+
+    DrawLine(0, targetBottomY, 1000, targetBottomY, GREEN);
+    DrawText("Target Bottom + 10", 10, targetBottomY - 15, 20, GREEN);
     Rectangle source = spritebox;
     Rectangle dest = hitbox;
     if (!isFacingRight)
@@ -325,11 +341,11 @@ void DryBowser::setAnimation(const std::string& aniName) {
     }
     else if (aniName == "Jump")
     {
-        animController.set(48, 52, fabs((5.0f / 3.0f)*Constants::DryBowser::JUMP_VELOCITY/Constants::GRAVITY), Easing::linear, false, false);
+        animController.set(50, 54, fabs((5.0f / 3.0f)*Constants::DryBowser::JUMP_VELOCITY/Constants::GRAVITY), Easing::linear, false, false);
     }
     else if (aniName == "AerialAttack")
     {
-        animController.set(93, 106, Constants::DryBowser::AERIAL_ATTACK_DURATION, Easing::easeDip, false, false);
+        animController.set(94, 107, Constants::DryBowser::AERIAL_ATTACK_DURATION, Easing::easeDip, false, false);
     }
     else if (aniName == "WallSticking")
     {
@@ -339,6 +355,10 @@ void DryBowser::setAnimation(const std::string& aniName) {
     {
         animController.set(67, 69, Constants::DryBowser::WALL_JUMP_DURATION, Easing::linear, false, false);
 	}
+    else if (aniName == "Fall")
+    {
+        animController.set(55, 57, 0.5f, Easing::linear, false, false);
+    }
     else
     {
         std::cerr << "Unknown animation name: " << aniName << std::endl;
@@ -404,21 +424,20 @@ bool DryBowser::isTargetInRange(BowserAttackType type) const
         return isNearTarget();
     }
     else if (type == BowserAttackType::SpinAttack) {
-        return abs(targetPosition.x - position.x) <= Constants::DryBowser::SPIN_ATTACK_RANGE; 
+        return (abs(targetPosition.x - position.x) <= Constants::DryBowser::SPIN_ATTACK_RANGE) && !isPlayerAtHigherGround(); 
     }
     else if (type == BowserAttackType::FireBreath) {
         return false;
     }
     else if (type == BowserAttackType::JumpAttack) {
-        // Implement jump attack range check
+        return (abs(targetPosition.x - position.x) <= Constants::DryBowser::AERIAL_ATTACK_RANGE) && !isPlayerAtHigherGround();
         return false;
     }
     return false;
 }
 bool DryBowser::canUseSpin() const
 {
-	DrawText(TextFormat("Spin Attack Cooldown: %s", isMoveOnCooldown("SpinAttack") ? "On Cooldown" : "Ready"), 100, 150, 20, RED);
-	DrawText(TextFormat("On Ground: %s", onGround ? "Yes" : "No"), 100, 200, 20, RED);
+    std::cout << (onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack)) << "\n";
     return onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack); 
 }
 
@@ -454,8 +473,15 @@ void DryBowser::changeMoveState(std::shared_ptr<BossMoveState> moveState) {
 }
 void DryBowser::aerialAttack()
 {
+    this->setCooldown("AerialAttack", Constants::DryBowser::AERIAL_ATTACK_COOLDOWN);
     this->setAnimation("AerialAttack");
+ 
 }
+bool DryBowser::canUseAerialAttack() const
+{
+   return !onGround && isMoveOnCooldown("AerialAttack") == false && currentPhase->getCurMove() != "AerialAttack";
+}
+
 int DryBowser::isNearWall() const {
     const float gravity = 980.0f;
     const float vy = Constants::DryBowser::JUMP_VELOCITY;
@@ -597,4 +623,26 @@ void DryBowser::jumpFromWall() {
 
 	this->setAnimation("WallJump");
 	this->setWallSticking(false);
+}
+void DryBowser::jump()
+{
+    this->currentPhase->changeMoveState(this, std::make_shared<DryBowserJumpingState>());
+}
+bool DryBowser::isJumping() const
+{
+    return (this->currentPhase->getCurMove()=="Jump");
+}
+void DryBowser::setGravity(float scale) {
+    this->physicsBody->SetGravityScale(scale);
+}
+bool DryBowser::canReachPlayerHeight()
+{
+    float bowserY = this->getPosition().y; // DryBowser's current Y position
+    float playerY = GameContext::getInstance().getCharacter()->getPosition().y; 
+    float g = 980.f;
+    float v = Constants::DryBowser::JUMP_VELOCITY;
+    float maxJumpHeight = (v * v) / (2 * g);    
+    DrawText(TextFormat("CanReach %d", (bowserY - maxJumpHeight) <= playerY), 300, 200, 20, RED);
+    DrawLine(0, bowserY - maxJumpHeight, 1000, bowserY - maxJumpHeight, BLUE);
+   return (bowserY - maxJumpHeight) <= playerY;
 }

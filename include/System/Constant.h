@@ -60,7 +60,7 @@ namespace Constants {
     namespace DryBowser{
 		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;
         constexpr float WalkTurnDuration = 0.25f;  
-		constexpr float JUMP_VELOCITY = -600.0f;
+		constexpr float JUMP_VELOCITY = -700.0f;
         constexpr float WallJumpFriction = 0.95f;
         constexpr float RUN_SPEED = 500.0f; 
 		constexpr float BASIC_ATTACK_DURATION = 2.0f;
@@ -74,7 +74,9 @@ namespace Constants {
 		constexpr float INTRO_DURATION = 3.0f;  
         constexpr float DEAD_DURATION = 3.0f;  
         constexpr float WALL_JUMP_DURATION = 0.25f;
-		constexpr float AERIAL_ATTACK_DURATION = 1.0f;
+		constexpr float AERIAL_ATTACK_DURATION = 1.5f;
+        constexpr float AERIAL_ATTACK_RANGE = 500;
+        constexpr float AERIAL_ATTACK_COOLDOWN = 10.0f; 
     } 
     namespace Spring {
         constexpr float BOUNCE_VELOCITY = -800.0f;

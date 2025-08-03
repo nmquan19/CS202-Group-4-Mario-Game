@@ -237,8 +237,14 @@ std::vector<std::pair<int, int>> Enemy::getSpriteData() {
             return {};
    }
 }
+
+
 bool Enemy::isPlayerAtHigherGround() const {
-    return position.y > targetPosition.y + targetHitboxes.height;
+  
+    float selfBottomY = position.y + hitbox.height;
+    float targetBottomY = targetPosition.y + targetHitboxes.height +5.0f;
+
+    return selfBottomY > targetBottomY;
 }
 Vector2 Enemy::getSize() const {
     switch(getType()) {

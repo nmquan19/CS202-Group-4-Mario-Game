@@ -109,20 +109,46 @@ std::string DryBowserWalkTurnState::getName() const
 // BowserJumpingState
 // ----------------------------
 void DryBowserJumpingState::enter(Boss* boss) {
+    
     boss->setAnimation("Jump");
 }
 
 void DryBowserJumpingState::update(Boss* boss, float dt) {
+    DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+    if (dryBowser->getVelocity().y > 0)
+    {
+        dryBowser->changeMoveState(std::make_shared<DryBowserFallState>());
+    }
 }
 
 void DryBowserJumpingState::exit(Boss* boss) {
-    // none
-    boss->flipDirection();
-    boss->setVelocity({ -boss->getVelocity().x, boss->getVelocity().y });
+
 }
 
 bool DryBowserJumpingState::isFinished() const {
-    return false; 
+    return true; 
+}
+
+std::string DryBowserJumpingState::getName() const
+{
+    return "Jump";
+}
+void DryBowserFallState::enter(Boss* boss) {
+    boss->setAnimation("Fall");
+}
+
+void DryBowserFallState::update(Boss* boss, float dt) {
+}
+
+void DryBowserFallState::exit(Boss* boss) {
+
+}
+std::string DryBowserFallState::getName() const
+{
+    return "Fall";
+}
+bool DryBowserFallState::isFinished() const {
+    return true;
 }
 
 // ----------------------------

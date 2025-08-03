@@ -51,17 +51,22 @@ class DryBowserWalkTurnState : public BossMoveState
 };
 class DryBowserJumpingState : public BossMoveState {
    private: 
-	float jumpVeclocity = Constants::DryBowser::JUMP_VELOCITY;   
   public:
     void enter(Boss* boss) override;
     void update(Boss* boss, float dt) override;
     void exit(Boss* boss) override;
     bool isFinished() const override;
-    std::vector<std::string> getAllowedTransitions() const;
-    bool canBeInterrupted();
-    bool canTransitionTo(const std::string& nextStateName);
     std::string getName() const;
-    std::shared_ptr<BossMoveState> getForcedTransition(Boss* boss);
+};
+class DryBowserFallState : public BossMoveState{
+private:
+   
+public:
+    void enter(Boss* boss) override;
+    void update(Boss* boss, float dt) override;
+    void exit(Boss* boss) override;
+    bool isFinished() const override;
+    std::string getName() const;
 };
 class DryBowserMeleeAttack1State : public BossMoveState {
 private:

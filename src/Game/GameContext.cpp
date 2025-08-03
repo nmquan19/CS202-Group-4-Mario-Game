@@ -214,7 +214,7 @@ void GameContext::createTestBlocks() {
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({10.0f, 11.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
     // addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({15.0f, 10.0f}), {1, 1});
-    addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1, 1});
+    addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1,1});
     
     // Spawn all the blocks
     spawnObject();
