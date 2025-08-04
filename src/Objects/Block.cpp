@@ -11,11 +11,17 @@ Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos)
     position = { gridPos.x * GridSystem::GRID_SIZE, gridPos.y * GridSystem::GRID_SIZE };
     size = s;
     hitbox = {position.x, position.y, size.x*GridSystem::GRID_SIZE, size.y*GridSystem::GRID_SIZE};
-    
-    // Create Box2D body for the block
+
     physicsBody = Box2DWorldManager::getInstance().createBlockBody(position, { hitbox.width, hitbox.height });
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+            b2Filter filter = fixture->GetFilterData();
+            filter.maskBits = static_cast<uint16>(ObjectCategory::BLOCK);
+            filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::ENEMY) |
+                                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::SHELL);
+            fixture->SetFilterData(filter);
+        }
     }
 }
 
@@ -53,7 +59,6 @@ ObjectCategory Block::getObjectCategory() const {
 }
 
 std::vector<ObjectCategory> Block::getCollisionTargets() const {
-    // Blocks can collide with characters, enemies, and projectiles
     return {ObjectCategory::CHARACTER, ObjectCategory::ENEMY, ObjectCategory::PROJECTILE, ObjectCategory::SHELL};
 }
 

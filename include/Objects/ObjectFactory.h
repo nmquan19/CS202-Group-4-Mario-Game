@@ -6,7 +6,7 @@
 #include "../System/Constant.h"
 #include <raylib.h>  
 #include "box2d/box2d.h"
-// Forward declaration for Item class  
+
 class Item;  
 class Block;  
 class Character;  

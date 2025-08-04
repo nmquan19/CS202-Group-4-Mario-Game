@@ -38,7 +38,7 @@ void GameContext::setState(GameState* newState) {
     if (currentState != newState) {
         if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState || currentState != editorState)) {
             LevelEditor::getInstance().cleanup();
-            PhysicsManager::getInstance().cleanup();
+            //PhysicsManager::getInstance().cleanup();
             Box2DWorldManager::getInstance().cleanup();
             clearGame(); // Delete remaining objects in GameContext
             character.reset();
@@ -49,7 +49,7 @@ void GameContext::setState(GameState* newState) {
 
         if (newState == gamePlayState) {
             Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
-            PhysicsManager::getInstance().setWorldBounds({ 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT});
+            //PhysicsManager::getInstance().setWorldBounds({ 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT});
             LevelEditor::getInstance().setEditMode(false);
             
             // Create test blocks for Box2D physics testing
@@ -58,7 +58,7 @@ void GameContext::setState(GameState* newState) {
             // LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 400 });
             if (character) {
-                PhysicsManager::getInstance().addObject(character);
+                //PhysicsManager::getInstance().addObject(character);
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
                 camera.target = character->getPosition();
             }

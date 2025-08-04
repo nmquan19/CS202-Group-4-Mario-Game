@@ -2,6 +2,7 @@
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
 #include "..\..\include\Characters\Character.h"
+#include "../../include/System/Box2DWorldManager.h"
 
 void JumpingState::enter(Character* character){
     character->setAniTime(0);
@@ -10,33 +11,29 @@ void JumpingState::enter(Character* character){
 }
 
 void JumpingState::update(Character* character, float deltaTime){
-    Vector2 currentVel = character->getVelocity();
+    b2Vec2 currentVel = character->physicsBody->GetLinearVelocity();
     float speed = character->getSpeed();
-    float airControlFactor = 0.8f; // Slightly reduced air control for realism
+    float airControlFactor = 0.8f;
 
-    // Handle horizontal movement during jump
-    if(IsKeyDown(KEY_A)){
-        character->setVelocity({-speed * airControlFactor, currentVel.y});
+    if (IsKeyDown(KEY_A)) {
+        character->physicsBody->SetLinearVelocity(b2Vec2(-speed * airControlFactor, currentVel.y));
         character->setFacingRight(false);
     }
-    else if(IsKeyDown(KEY_D)){
-        character->setVelocity({speed * airControlFactor, currentVel.y});
+    else if (IsKeyDown(KEY_D)) {
+        character->physicsBody->SetLinearVelocity(b2Vec2(speed * airControlFactor, currentVel.y));
         character->setFacingRight(true);
     }
-    else{
-        // Apply air resistance for smoother feel
-        character->setVelocity({currentVel.x * 0.98f, currentVel.y});
+    else {
+        character->physicsBody->SetLinearVelocity(b2Vec2(currentVel.x * 0.95f, currentVel.y));
     }
 
-    // Variable jump height - cut jump short if space is released
     if (IsKeyReleased(KEY_SPACE) && currentVel.y < 0) {
-        Vector2 vel = character->getVelocity();
-        vel.y *= 0.5f; // Cut jump short
-        character->setVelocity(vel);
+        b2Vec2 newVel = character->physicsBody->GetLinearVelocity();
+        newVel.y *= 0.5f;
+        character->physicsBody->SetLinearVelocity(newVel);
     }
-    
-    // Check if landed using the new ground detection system
-    if (character->canJump() && currentVel.y >= -0.1f) { // Small tolerance for landing detection
+
+    if (character->isOnGround()) {
         if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) {
             character->changeState(MovingState::getInstance());
         } else {

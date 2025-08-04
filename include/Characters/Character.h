@@ -26,7 +26,6 @@ public:
 	void setAniSpeed(float newSpeed);
 
 	bool isOnGround() const;
-  	void setOnGround(bool flag);
 	void jump();
 
 	void setVelocity(Vector2 newVelocity);
@@ -77,7 +76,7 @@ public:
 
 	void addGroundContact();
 	void removeGroundContact();
-	bool canJump() const;
+
 private:
 	void handleProjectile(float deltaTime);
 
@@ -93,10 +92,8 @@ private:
 	float scale;
 	Vector2 velocity;
 
-	bool onGround = true;
 	float speed;
-	float jumpForce;
-	float gravity;
+	float jumpVel;
 
 	bool facingRight;
 
