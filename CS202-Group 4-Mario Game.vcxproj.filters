@@ -27,8 +27,6 @@
     <ClCompile Include="src\System\FrameData.cpp" />
     <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />
-    <ClCompile Include="src\System\PhysicsManager.cpp" />
-    <ClCompile Include="src\System\QuadTree.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
     <ClCompile Include="src\UI\Menu.cpp" />
     <ClCompile Include="src\UI\SoundEffect.cpp" />
@@ -94,8 +92,6 @@
     <ClInclude Include="include\System\Interface.h" />
     <ClInclude Include="include\System\json.hpp" />
     <ClInclude Include="include\System\LevelEditor.h" />
-    <ClInclude Include="include\System\PhysicsManager.h" />
-    <ClInclude Include="include\System\QuadTree.h" />
     <ClInclude Include="include\System\TextureManager.h" />
     <ClInclude Include="include\UI\Menu.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
@@ -204,20 +200,27 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\button\board.png" />
+    <Image Include="assets\button\board1.png" />
     <Image Include="assets\Super Mario Bros.png" />
+    <Image Include="assets\coin_sprite.png" />
+    <Image Include="assets\button\back.png" />
+    <Image Include="assets\button\back_selected.png" />
     <Image Include="assets\button\check.png" />
     <Image Include="assets\button\check_selected.png" />
     <Image Include="assets\button\cross.png" />
     <Image Include="assets\button\cross_selected.png" />
     <Image Include="assets\button\home.png" />
+    <Image Include="assets\button\home_selected.png" />
     <Image Include="assets\button\option.png" />
-    <Image Include="assets\button\play.png" />
-    <Image Include="assets\button\return.png" />
-    <Image Include="assets\button\return_selected.png" />
-    <Image Include="assets\button\setting.png" />
-    <Image Include="assets\button\setting_selected.png" />
-    <Image Include="assets\coin_sprite.png" />
+    <Image Include="assets\button\option_selected.png" />
+    <Image Include="assets\button\small_board.png" />
+    <Image Include="assets\button\small_board_selected.png" />
+    <Image Include="assets\button\thin_board.png" />
+    <Image Include="assets\button\thin_board_selected.png" />
+    <Image Include="assets\Luigi.png" />
+    <Image Include="assets\Mario.png" />
+    <Image Include="assets\Toad.png" />
+    <Image Include="assets\Toadette.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav" />

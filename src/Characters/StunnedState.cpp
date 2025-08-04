@@ -10,11 +10,8 @@
 void StunnedState::enter(Character* character) {
 	character->aniSpeed = 0.1f;
 	character->aniTimer = 0.0f;
-	character->setVelocity(Vector2{ 0, 0 });
-	character->invincibleTimer = Constants::Character::INVINCIBLE_TIME;
-	character->lastBottomY = character->getBottom();
 	character->setCurrentStateRow(3);
-	character->setActive(false);
+	character->invincibleTimer = Constants::Character::INVINCIBLE_TIME;
 }
 
 void StunnedState::update(Character* character, float deltaTime) {

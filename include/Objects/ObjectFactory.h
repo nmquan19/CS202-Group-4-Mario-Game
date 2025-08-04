@@ -6,7 +6,7 @@
 #include "../System/Constant.h"
 #include <raylib.h>  
 #include "box2d/box2d.h"
-// Forward declaration for Item class  
+
 class Item;  
 class Block;  
 class Character;  
@@ -33,6 +33,10 @@ public:
 	virtual void onCollision(std::shared_ptr<Object> other, Direction direction) override = 0;  
 	int getCollidedPart(const Object& other);  
 	virtual ObjectType getObjectType() const = 0;  
+
+	b2Body* getPhysicsBody() const {
+		return physicsBody;
+	}
 
 protected:  
 	Vector2 position;  

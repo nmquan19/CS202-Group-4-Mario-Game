@@ -1,10 +1,12 @@
 #pragma once// Constants.h
+#include "Interface.h"
 #include <raylib.h>
 #include <vector>
+#include <box2d/box2d.h>
 
 struct CharacterStats {
     float baseSpeed;
-    float jumpForce;
+    float jumpVel;
 };
 
 namespace Constants {
@@ -40,16 +42,17 @@ namespace Constants {
         constexpr float REVIVE_DURATION = 1.5f;
 	}
     namespace Character {
-        constexpr float BOUNCE_AFTER_STRIKE_VELOCITY = -300.0f;
+        constexpr float BOUNCE_AFTER_STRIKE_VELOCITY = 7.0f;
         constexpr float INVINCIBLE_TIME = 1.0f;
-        constexpr float REVIVE_TIME = 4.0f;
-        constexpr CharacterStats MARIO_STATS = {220.0f, 550.0f};
-        constexpr CharacterStats LUIGI_STATS = {175.0f, 730.0f};
+        constexpr float REVIVE_TIME = 2.0f;
+        constexpr CharacterStats MARIO_STATS = {3.5f, 11.0f};
+        constexpr CharacterStats LUIGI_STATS = {2.5f, 15.0f};
         const std::vector<std::vector<Rectangle>> MARIO_FRAME_DATA = {
             {{11, 23, 12, 15}}, // idle state
             {{118, 23, 12, 15}, {149, 22, 15, 16}}, // moving state
             {{293, 22, 16, 16}, {326, 22, 16, 16}}, // jumping state
-            {{11, 23, 12, 15}, {49, 26, 11, 12}} // stunned state
+            {{11, 23, 12, 15}, {49, 26, 11, 12}}, // stunned state
+            {{713, 22, 16, 16}} // knocked state
         };
         const std::vector<std::vector<Rectangle>> LUIGI_FRAME_DATA = {
             {{11, 893, 12, 15}}, // idle state

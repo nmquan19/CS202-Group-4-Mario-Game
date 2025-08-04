@@ -2,6 +2,7 @@
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
 #include "..\..\include\Characters\Character.h"
+#include "../../include/System/Box2DWorldManager.h"
 
 void MovingState::enter(Character* character) {
 	character->setAniTime(0);
@@ -10,38 +11,29 @@ void MovingState::enter(Character* character) {
 }
 
 void MovingState::update(Character* character, float deltaTime) {
-	if (IsKeyPressed(KEY_SPACE) && character->canJump()) {
+	if (IsKeyPressed(KEY_SPACE) && character->isOnGround()) {
 		character->jump();
         character->changeState(JumpingState::getInstance());
         return;
     }
 
 	bool moving = false;
-	Vector2 currentVel = character->getVelocity();
+	b2Vec2 currentVel = character->physicsBody->GetLinearVelocity();
 	float speed = character->getSpeed();
 	
 	if (IsKeyDown(KEY_A)) {
-		character->setVelocity({-speed, currentVel.y});
+		character->physicsBody->SetLinearVelocity(b2Vec2(-speed, currentVel.y));
 		character->setFacingRight(false);
 		moving = true;
 	}
+	
 	if (IsKeyDown(KEY_D)) {
-		character->setVelocity({speed, currentVel.y});
+		character->physicsBody->SetLinearVelocity(b2Vec2(speed, currentVel.y));
 		character->setFacingRight(true);
 		moving = true;
 	}
 	
 	if (!moving) {
-		// // Apply ground friction when stopping
-		// if (character->isOnGround()) {
-		// 	character->setVelocity({currentVel.x * 0.8f, currentVel.y}); // Ground friction
-		// 	if (abs(currentVel.x) < 0.1f) { // If almost stopped
-		// 		character->setVelocity({0, currentVel.y});
-		// 		character->changeState(IdleState::getInstance());
-		// 	}
-		// } else {
-		// 	character->changeState(IdleState::getInstance());
-		// }
 		character->changeState(IdleState::getInstance());
 	}
 }

@@ -24,7 +24,6 @@ public:
 
 	void destroyBody(b2Body* body);
 	
-	// Debug drawing
 	void drawDebugBodies();
 	void drawBody(b2Body* body);
 	void setDebugDraw(bool enabled) { debugDrawEnabled = enabled; }
@@ -36,14 +35,17 @@ public:
 	static float raylibToB2(const float value);
 
 private:
+	b2Body* createRectangleBody(Vector2 pos, Vector2 hitboxSize);
+	b2Body* createCapsuleBody(Vector2 pos, Vector2 hitboxSize);
+	void attachSensors(b2Body* body, Vector2 hitboxSize);
+
+private:
 	Box2DWorldManager() = default;
 	~Box2DWorldManager() = default;
 	static Box2DWorldManager* instance;
 
 	std::unique_ptr<b2World> world;
 	bool debugDrawEnabled = false;  // Debug drawing toggle
-
-	b2Body* createBody(Vector2 pos, Vector2 hitboxSize);
 	
 	// Debug drawing helper methods
 	Color getFixtureColor(b2Fixture* fixture, b2Body* body, int sensorId);

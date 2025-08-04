@@ -4,14 +4,20 @@
 #include <string>
 #include <unordered_map>
 #include <iostream>
+using namespace std;
 class AudioManager {
 private:
     std::unordered_map<std::string, Sound> sounds;
     std::unordered_map<std::string, Music> backgroundMusics;
     std::unordered_map<std::string, bool> isMusicPlaying;
+
+    AudioManager();
+
+    AudioManager(const AudioManager&) = delete;
+    AudioManager& operator=(const AudioManager&) = delete;
+
 public:
     static AudioManager& getInstance();
-    AudioManager();
     ~AudioManager();
 
     void LoadSoundEffect(const std::string& key, const std::string& filePath);
@@ -25,6 +31,5 @@ public:
     void SetBackgroundMusicVolume(float volumePercent);
 
     bool isPlaying();
-
     void StopAllBackgroundMusic();
 };

@@ -1,14 +1,12 @@
 #include "../../include/Game/GameContext.h"
 #include "../../include/Game/GameStates.h"
-#include <cstdlib>
-#include "../../include/Game/GameStates.h"
 #include "../../include/System/LevelEditor.h"
-#include "../../include/System/PhysicsManager.h"
 #include "../../include/System/Box2DWorldManager.h"
-#include <raylib.h>
-#include "../../include/System/Interface.h"
-#include <memory>
 #include "../../include/Characters/Character.h"
+#include "../../include/System/Interface.h"
+#include <raylib.h>
+#include <memory>
+#include <cstdlib>
 #include <iostream>
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/Constant.h"
@@ -22,22 +20,44 @@ void MenuState::handleInput(GameContext& context) {
         exit(0);
     }
 
-    if (IsKeyPressed(KEY_ENTER) && context.menuManager.select == 0) {
-        context.setState(context.gamePlayState);
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
+        && context.menuManager.playBoard.checkCollision(GetMousePosition())) {
+        context.setState(context.characterSelectingState);
     }
 
-    if (IsKeyPressed(KEY_ENTER) && context.menuManager.select == 3) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
+        && context.menuManager.editingBoard.checkCollision(GetMousePosition())) {
         context.setState(context.editorState);
     }
 }
 
 void MenuState::update(GameContext& context, float deltaTime) {
-    // Empty for now
+    context.menuManager.UpdateMenu(deltaTime);
+    context.menuManager.UpdateExit(deltaTime);
 }
 
 void MenuState::draw(GameContext& context) {
     BeginDrawing();
     context.menuManager.DrawMenu();
+    EndDrawing();
+}
+
+void CharacterSelectingState::handleInput(GameContext& context) {
+    context.menuManager.HandleSelecting();
+    if (IsKeyPressed(KEY_ENTER)) context.setState(context.gamePlayState);
+}
+
+void CharacterSelectingState::update(GameContext& context, float deltaTime) {
+    context.menuManager.UpdateSelecting(deltaTime);
+}
+
+void CharacterSelectingState::draw(GameContext& context) {
+    BeginDrawing();
+    ClearBackground(SKYBLUE);
+    //int screenWidth = UIManager::getInstance().screenWidth;
+    //int screenHeight = UIManager::getInstance().screenHeight;
+    //DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 1.0f - 0.5f));
+    context.menuManager.DrawSelecting();
     EndDrawing();
 }
 
@@ -78,11 +98,12 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 		IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
         if(updatableObj)updatableObj->update(deltaTime); 
     }
+    context.menuManager.UpdateSetting(deltaTime);
     context.spawnObject();  
     context.deleteObjects();
-    context.menuManager.updateInformationBoard(deltaTime);
-  /*  PhysicsManager::getInstance().update();
-    LevelEditor::getInstance().update();*/
+    UIManager::getInstance().updateInformationBoard(deltaTime);
+    //PhysicsManager::getInstance().update();
+    //LevelEditor::getInstance().update();
     Box2DWorldManager::getInstance().step(deltaTime);
 }
 
@@ -94,19 +115,18 @@ void GamePlayState::draw(GameContext& context) {
     DrawText("Press Enter", 500, 100, 20, BLACK);
     
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
+    for (auto obj : context.Objects) {
+        obj->draw();
+    }
+
     if (context.character) {
         context.character->draw();
     }
-    for (auto obj : context.Objects)
-    {
-        obj->draw();
-    }
-    PhysicsManager::getInstance().drawDebug();
+
     Box2DWorldManager::getInstance().drawDebugBodies();
     EndMode2D();
     DrawFPS(20, 50); 
-    
-    // Show debug mode status
+
     if (Box2DWorldManager::getInstance().isDebugDrawEnabled()) {
         DrawText("Box2D Debug Mode: ON (Key F10 to toggle)", 520, 80, 20, GREEN);
     } else {
@@ -114,7 +134,7 @@ void GamePlayState::draw(GameContext& context) {
     }
     
     context.menuManager.DrawSetting();
-    context.menuManager.drawInformationBoard();
+    UIManager::getInstance().drawInformationBoard();
     EndDrawing();
 }
 
@@ -172,7 +192,7 @@ void GameOverState::update(GameContext& context, float deltaTime) {
 void GameOverState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
-    context.uiManager.DrawGameOver();
+    UIManager::getInstance().DrawGameOver();
     EndDrawing();
 }
 

@@ -13,7 +13,7 @@
 
 #define BORDER_BROWN CLITERAL(Color){189, 163, 62, 255}
 
-class SlideBar : public UIManager {
+class SlideBar {
 private:
     float percent;
     float thickness;

@@ -16,29 +16,34 @@
 #include <variant>
 #include <memory>
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale)
-	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(1), projectile(nullptr), holdingProjectile(false),
+	: characterType(type), scale(scale), hp(1), projectile(nullptr), holdingProjectile(false),
 	invincibleTimer(0), reviveTimer(0), 
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
-	this->position = startPosition;
-	this->speed = stats.baseSpeed;
-	this->jumpForce = stats.jumpForce;
-	this->gravity = Constants::GRAVITY;
 	this->stateFrameData = stateFrameData;
 	this->spriteSheet = TextureManager::getInstance().getCharacterTexture();
+	this->speed = stats.baseSpeed;
+	this->jumpVel = stats.jumpVel;
 
-    if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
-        setCurrentStateRow(0);
-    }
+	if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
+		setCurrentStateRow(0);
+	}
+
+	physicsBody = Box2DWorldManager::getInstance().createCharacterBody(startPosition, { spriteRec.width * scale, spriteRec.height * scale });
+	if (physicsBody) {
+		physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+		for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+			b2Filter filter = fixture->GetFilterData();
+			filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);
+			filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::ENEMY) |
+				static_cast<uint16>(ObjectCategory::INTERACTIVE) | static_cast<uint16>(ObjectCategory::ITEM) |
+				static_cast<uint16>(ObjectCategory::SHELL);
+			fixture->SetFilterData(filter);
+		}
+	}
 
     currentState = &IdleState::getInstance();
     currentState->enter(this);
-
-	// Create Box2D body with proper hitbox size
-	physicsBody = Box2DWorldManager::getInstance().createCharacterBody(position, {spriteRec.width * scale, spriteRec.height * scale});
-	if (physicsBody) {
-		physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
-	}
 }
 
 Character::~Character() {
@@ -61,7 +66,6 @@ void Character::update(float deltaTime) {
 		currentState->update(this, deltaTime);
 	}
 
-	// Update animation
 	aniTimer += deltaTime;
 	if(aniTimer >= aniSpeed){
 		currentFrame = (currentFrame + 1) % stateFrameData[currentStateRow].size();
@@ -80,15 +84,9 @@ void Character::update(float deltaTime) {
 
 	handleProjectile(deltaTime);
 
-	// Sync with Box2D physics body
 	if (physicsBody) {
-		// Apply the current velocity to the physics body
-		physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(velocity));
-		// Update position from physics body
 		auto newPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
 		position = {newPos.x - hitBoxWidth/2.0f, newPos.y - hitBoxHeight/2.0f};
-		// Update velocity from physics body
-		velocity = Box2DWorldManager::b2ToRaylib(physicsBody->GetLinearVelocity());
 	}
 }
 
@@ -149,40 +147,24 @@ void Character::setAniSpeed(float newSpeed){
 	aniSpeed = newSpeed;
 }
 
-void Character::setOnGround(bool flag){
-	onGround = flag;
-}
-
 bool Character::isOnGround() const{
-	return onGround;
+	return groundContactCount > 0;
 }
 
 void Character::jump(){
-	if(canJump()){
-		b2Vec2 currentVel = physicsBody->GetLinearVelocity();
-		physicsBody->SetLinearVelocity(b2Vec2(currentVel.x, -Box2DWorldManager::raylibToB2(jumpForce)));
-		setOnGround(false);
-		groundContactCount = 0; // Reset ground contacts when jumping
+	if (isOnGround()) {
+		float mass = this->physicsBody->GetMass();
+		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, -mass * jumpVel), true);
+		groundContactCount = 0;
 	}
 }
 
 void Character::addGroundContact() {
 	groundContactCount++;
-	if (groundContactCount > 0) {
-		setOnGround(true);
-	}
 }
 
 void Character::removeGroundContact() {
 	groundContactCount--;
-	if (groundContactCount <= 0) {
-		groundContactCount = 0;
-		setOnGround(false);
-	}
-}
-
-bool Character::canJump() const {
-	return (groundContactCount > 0) && physicsBody;
 }
 
 void Character::setVelocity(Vector2 newVelocity){
@@ -361,26 +343,14 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other, Direct
 	if (direction == Direction::DOWN) {
 		addGroundContact();
 	}
-	else if (direction == Direction::UP) {
-		if (physicsBody) {
-			b2Vec2 vel = physicsBody->GetLinearVelocity();
-			if (vel.y < 0) { // Moving upward
-				physicsBody->SetLinearVelocity(b2Vec2(vel.x, 0));
-			}
-		}
-	}
 }
 
 void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction direction) {
-	if (direction == Direction::DOWN && velocity.y > 0) {
-		// Bouncing off enemy from above
+	if (direction == Direction::DOWN && physicsBody->GetLinearVelocity().y > 0) {
+		float mass = physicsBody->GetMass();
+		physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, -mass * Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY), true);
+		changeState(JumpingState::getInstance());
 		invincibleTimer = 0.2f;
-		if (physicsBody) {
-			physicsBody->SetLinearVelocity(b2Vec2(physicsBody->GetLinearVelocity().x, 
-				-Box2DWorldManager::raylibToB2(Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY)));
-		}
-
-		setOnGround(false);
 		if (auto enemy = dynamic_cast<Enemy*>(other.get())) {
 			enemy->takeDamage(1);
 		}
