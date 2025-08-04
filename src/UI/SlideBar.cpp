@@ -3,7 +3,7 @@
 SlideBar::SlideBar() {
     scale = 0.1f;
     percent = 50.0f;
-    thickness = 640.0f / 23.0f * scale;
+    thickness = UIManager::getInstance().screenWidth / 23.0f * scale;
     position = { 0,0 };
     border = { 0,0,0,0 };
     dragging = false;
@@ -51,7 +51,7 @@ void SlideBar::DrawSlideBar(Vector2 pos) {
 
     Rectangle value = { innerVec.x, innerVec.y, inner.width * percent / 100.0f, inner.height };
     DrawRectangleRec(value, CYBER_YELLOW);
-    DrawTextEx(menuFont, TextFormat("%.0f%%", percent), { border.x + border.width + 10, border.y + border.height / 2 - 10 }, 20, 4, BORDER_BROWN);
+    DrawTextEx(UIManager::getInstance().menuFont, TextFormat("%.0f%%", percent), { border.x + border.width + 10, border.y + border.height / 2 - 10 }, 20, 4, BORDER_BROWN);
 
     HandleSlideBar();
 }
