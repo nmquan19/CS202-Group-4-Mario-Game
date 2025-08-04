@@ -81,7 +81,7 @@ public:
 	virtual bool isInWallJump() const { return false; }
 	virtual bool isJumping() const { return false;  }
 	virtual bool isBelowWall() const { return false; } 
- protected:
+protected:
 	InterpolatedAnimationController animController;
 	FrameInterpolatedVelocityController velocityController;
 	std::string curAniName;

@@ -301,7 +301,6 @@ void DryBowser::updateWorldState() {
     currentWorld["PlayerInRange"] = dx <= simState.moveRange;
 }
 void DryBowser::setAnimation(const std::string& aniName) {
-    curFrame = 0;
     if (aniName == "Idle") {
         animController.set(2, 5, 0.5f,Easing::linear, false, true);
     }
