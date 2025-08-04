@@ -10,22 +10,25 @@
 #include "../../../include/Enemy/Koopa/KoopaShell.h"    
 #include "../../../include/Enemy/Koopa/KoopaShellState.h"
 #include "../../../include/System/Constant.h"
+#include "../../../include/System/Box2dWorldManager.h"
+
 void KoopaWanderingState::checkCondition(Enemy* enemy)
 {
 
 }
-void KoopaWanderingState::enter(Enemy* enemy)
-{
-    Koopa* koopa = dynamic_cast<Koopa*>(enemy);
-    if (koopa) {
-        switch (koopa->getType()) 
-        {
-           case EnemyType::GREEN_KOOPA:
 
-                koopa->velocity.x = (koopa->isFacingRight?1: -1)*Constants::GreenKoopa::WANDERING_SPEED;
+void KoopaWanderingState::enter(Enemy* enemy){
+    Koopa* koopa = dynamic_cast<Koopa*>(enemy);
+    float velDirection = (koopa->isFacingRight ? 1 : -1);
+    b2Vec2 currentVel = koopa->physicsBody->GetLinearVelocity();
+
+    if (koopa) {
+        switch (koopa->getType()) {
+           case EnemyType::GREEN_KOOPA:
+                koopa->physicsBody->SetLinearVelocity(b2Vec2(velDirection * Box2DWorldManager::raylibToB2(Constants::GreenKoopa::WANDERING_SPEED), currentVel.y));
                 break;
             case EnemyType::RED_KOOPA:
-                koopa->velocity.x = Constants::RedKoopa::WANDERING_SPEED;
+                koopa->physicsBody->SetLinearVelocity(b2Vec2(velDirection * Box2DWorldManager::raylibToB2(Constants::RedKoopa::WANDERING_SPEED), currentVel.y));
 				break;
            default:
                 break;
@@ -58,25 +61,25 @@ KoopaWanderingState& KoopaWanderingState::GetInstance()
     static KoopaWanderingState instance;
     return instance;
 }
+
 void KoopaStompedState::enter(Enemy* enemy)
 {
     Koopa* koopa = dynamic_cast<Koopa*>(enemy);
-    koopa->changeState(nullptr);
+    exit(enemy);
 }
 
-void KoopaStompedState::checkCondition(Enemy* enemy)
-{
+void KoopaStompedState::checkCondition(Enemy* enemy) {
+
 }
 
-void KoopaStompedState::exit(Enemy* enemy)
-{
+void KoopaStompedState::exit(Enemy* enemy) {
     Koopa* koopa = dynamic_cast<Koopa*>(enemy);
     if (koopa) {
         koopa->active = false;
         koopa->isalive = false;
 		KoopaShellType type = KoopaShellType::GREEN_KOOPA_SHELL;
-        switch (koopa->getType())
-        {
+
+        switch (koopa->getType()) {
 		case EnemyType::GREEN_KOOPA:
             type = KoopaShellType::GREEN_KOOPA_SHELL;
 			break;
@@ -86,22 +89,30 @@ void KoopaStompedState::exit(Enemy* enemy)
         default:
             break;
         }
-        Vector2 spawnPosition = {koopa->getPosition().x + (koopa->size.x * Constants::TILE_SIZE)/2, koopa->getPosition().y +koopa->size.y*Constants::TILE_SIZE};
-        GameContext::getInstance().addObject(type, spawnPosition, { 0.75,0.75 });
+
+        b2Vec2 koopaPosition = koopa->physicsBody->GetPosition();
+        b2Vec2 offSet = Box2DWorldManager::raylibToB2(Constants::KoopaShell::standardSize / 2);
+        b2Vec2 spawnPosition = b2Vec2(koopaPosition.x - offSet.x, koopaPosition.y - offSet.y);
+
+        GameContext::getInstance().addObject(type, Box2DWorldManager::b2ToRaylib(spawnPosition), { 0.75,0.75 });
+
         std::shared_ptr<Object> sharedKoopa = GameContext::getInstance().getSharedPtrFromRaw(koopa);
-            if (sharedKoopa) {
-                GameContext::getInstance().mark_for_deletion_Object(sharedKoopa);
+        if (sharedKoopa) {
+            GameContext::getInstance().mark_for_deletion_Object(sharedKoopa);
         }
     }
 }
 
-void KoopaStompedState::update(Enemy* enemy, float deltaTime)
-{}
+void KoopaStompedState::update(Enemy* enemy, float deltaTime) {
+
+}
+
 KoopaStompedState& KoopaStompedState::GetInstance()
 {
     static KoopaStompedState instance;
     return instance;
 }
+
 void KoopaKnockState::enter(Enemy* enemy)
 {
     Koopa* koopa = dynamic_cast<Koopa*>(enemy);

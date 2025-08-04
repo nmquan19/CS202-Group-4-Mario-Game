@@ -30,25 +30,85 @@ void Box2DWorldManager::step(float deltaTime) {
 	}
 }
 
-b2Body* Box2DWorldManager::createBody(Vector2 pos, Vector2 hitboxSize) {
+b2Body* Box2DWorldManager::createRectangleBody(Vector2 pos, Vector2 hitboxSize) {
+	b2Vec2 b2_size = raylibToB2(hitboxSize);
+	b2Vec2 b2_pos = raylibToB2(pos);
+	b2_pos.x += b2_size.x / 2;
+	b2_pos.y += b2_size.y / 2;
+
 	b2BodyDef bodyDef;
-	bodyDef.position = raylibToB2({pos.x + hitboxSize.x * 0.5f, pos.y + hitboxSize.y * 0.5f});
+	bodyDef.type = b2_staticBody;
+	bodyDef.position = b2_pos;
 	bodyDef.fixedRotation = true;
+	bodyDef.allowSleep = true;
+	bodyDef.awake = true;
 
 	b2Body* body = world->CreateBody(&bodyDef);
-	body->GetLinearVelocity();
 
-	// Main body
 	b2PolygonShape mainShape;
-	mainShape.SetAsBox(raylibToB2(hitboxSize.x * 0.5f), raylibToB2(hitboxSize.y * 0.5f));
-	b2FixtureDef mainFixture;
-	mainFixture.shape = &mainShape;
-	mainFixture.density = 1.0f;
-	mainFixture.friction = 0.0f;
-	mainFixture.restitution = 0.0f;
+	mainShape.SetAsBox(b2_size.x / 2, b2_size.y / 2);
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &mainShape;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.0f;
+	fixtureDef.restitution = 0.0f;
 
-	body->CreateFixture(&mainFixture);
+	body->CreateFixture(&fixtureDef);
 
+	attachSensors(body, hitboxSize);
+
+	return body;
+}
+
+b2Body* Box2DWorldManager::createCapsuleBody(Vector2 pos, Vector2 hitboxSize) {
+	b2Vec2 b2_size = raylibToB2(hitboxSize);
+	b2Vec2 b2_pos = raylibToB2(pos);
+	b2_pos.x += b2_size.x / 2;
+	b2_pos.y += b2_size.y / 2;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = b2_pos;
+	bodyDef.fixedRotation = true;
+	bodyDef.allowSleep = true;
+	bodyDef.awake = true;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+
+	float radius = b2_size.x / 2;
+	float rectHeight = b2_size.y - b2_size.x;
+
+	b2CircleShape topShape;
+	topShape.m_radius = radius;
+	topShape.m_p = b2Vec2(0, -rectHeight * 0.5f);
+	b2FixtureDef topFixture;
+	topFixture.shape = &topShape;
+	topFixture.density = 0.5f;
+	body->CreateFixture(&topFixture);
+
+	b2CircleShape bottomShape;
+	bottomShape.m_radius = radius;
+	bottomShape.m_p = b2Vec2(0, rectHeight * 0.5f);
+	b2FixtureDef bottomFixture;
+	bottomFixture.shape = &bottomShape;
+	bottomFixture.density = 0.5f;
+	body->CreateFixture(&bottomFixture);
+
+	if (rectHeight > 0) {
+		b2PolygonShape rectShape;
+		rectShape.SetAsBox(radius, rectHeight * 0.5f);
+		b2FixtureDef rectFixture;
+		rectFixture.shape = &rectShape;
+		rectFixture.density = 0.5f;
+		body->CreateFixture(&rectFixture);
+	}
+
+	attachSensors(body, hitboxSize);
+
+	return body;
+}
+
+void Box2DWorldManager::attachSensors(b2Body* body, Vector2 hitboxSize) {
 	// Sensor
 	float sensorThickness = 2.0f;
 	float sensorWidth = hitboxSize.x * 0.6f;
@@ -95,9 +155,7 @@ b2Body* Box2DWorldManager::createBody(Vector2 pos, Vector2 hitboxSize) {
 	rightFixture.shape = &rightSensor;
 	rightFixture.isSensor = true;
 	rightFixture.userData.pointer = 4; //right sensor id
-
 	body->CreateFixture(&rightFixture);
-	return body;
 }
 
 void Box2DWorldManager::destroyBody(b2Body* body) {
@@ -108,22 +166,22 @@ void Box2DWorldManager::destroyBody(b2Body* body) {
 
 b2Body* Box2DWorldManager::createCharacterBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
-	b2Body* body = createBody(pos, hitboxSize);
-	body->SetType(b2_dynamicBody);
+
+	b2Body* body = createCapsuleBody(pos, hitboxSize);
 	return body;
 }
 
 b2Body* Box2DWorldManager::createBlockBody(Vector2 pos, Vector2 hitbboxSize) {
 	if (!world) return nullptr;
-	b2Body* body = createBody(pos, hitbboxSize);
-	body->SetType(b2_staticBody);
+
+	b2Body* body = createRectangleBody(pos, hitbboxSize);
 	return body;
 }
 
 b2Body* Box2DWorldManager::createEnemyBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
-	b2Body* body = createBody(pos, hitboxSize);
-	body->SetType(b2_dynamicBody);
+
+	b2Body* body = createCapsuleBody(pos, hitboxSize);
 	return body;
 }
 

@@ -1,14 +1,12 @@
 #include "../../include/Game/GameContext.h"
 #include "../../include/Game/GameStates.h"
-#include <cstdlib>
-#include "../../include/Game/GameStates.h"
 #include "../../include/System/LevelEditor.h"
-#include "../../include/System/PhysicsManager.h"
 #include "../../include/System/Box2DWorldManager.h"
-#include <raylib.h>
-#include "../../include/System/Interface.h"
-#include <memory>
 #include "../../include/Characters/Character.h"
+#include "../../include/System/Interface.h"
+#include <raylib.h>
+#include <memory>
+#include <cstdlib>
 #include <iostream>
 
 void handleCamera();
@@ -100,20 +98,18 @@ void GamePlayState::draw(GameContext& context) {
     DrawText("Press Enter", 500, 100, 20, BLACK);
     
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
+    for (auto obj : context.Objects) {
+        obj->draw();
+    }
+
     if (context.character) {
         context.character->draw();
     }
-    for (auto obj : context.Objects)
-    {
-        obj->draw();
-    }
- 
-    PhysicsManager::getInstance().drawDebug();
+
     Box2DWorldManager::getInstance().drawDebugBodies();
     EndMode2D();
     DrawFPS(20, 50); 
-    
-    // Show debug mode status
+
     if (Box2DWorldManager::getInstance().isDebugDrawEnabled()) {
         DrawText("Box2D Debug Mode: ON (Key F10 to toggle)", 520, 80, 20, GREEN);
     } else {

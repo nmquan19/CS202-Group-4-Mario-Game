@@ -3,18 +3,19 @@
 #include <vector>
 #include <variant>
 #include <memory>
+#include <box2d/box2d.h>
 
 class Object;
-enum class ObjectCategory {
-	CHARACTER,
-	BLOCK,
-	ENEMY,
-	ITEM,
-	PROJECTILE,
-	TRIGGER,
-	SHELL,
-	BACKGROUND,
-	INTERACTIVE
+enum class ObjectCategory : uint16 {
+	CHARACTER = 0x0001,
+	BLOCK = 0x0002,
+	ENEMY = 0x0004,
+	ITEM = 0x0008,
+	PROJECTILE = 0x0010,
+	TRIGGER = 0x0020,
+	SHELL = 0x0040,
+	INTERACTIVE = 0x0080,
+	BACKGROUND = 0x0100
 };
 
 enum class BlockType {
@@ -41,7 +42,6 @@ enum class ItemType {
 	FIRE_FLOWER,
 	STAR,
 	ONE_UP
-
 };
 
 enum class CharacterType {

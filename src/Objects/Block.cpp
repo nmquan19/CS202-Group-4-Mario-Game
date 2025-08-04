@@ -11,16 +11,21 @@ Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos)
     position = { gridPos.x * GridSystem::GRID_SIZE, gridPos.y * GridSystem::GRID_SIZE };
     size = s;
     hitbox = {position.x, position.y, size.x*GridSystem::GRID_SIZE, size.y*GridSystem::GRID_SIZE};
-    
-    // Create Box2D body for the block
+
     physicsBody = Box2DWorldManager::getInstance().createBlockBody(position, { hitbox.width, hitbox.height });
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+            b2Filter filter = fixture->GetFilterData();
+            filter.maskBits = static_cast<uint16>(ObjectCategory::BLOCK);
+            filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::ENEMY) |
+                                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::SHELL);
+            fixture->SetFilterData(filter);
+        }
     }
 }
 
 Block::~Block() {
-    // Clean up Box2D body
     if (physicsBody) {
         Box2DWorldManager::getInstance().destroyBody(physicsBody);
         physicsBody = nullptr;
@@ -53,21 +58,11 @@ ObjectCategory Block::getObjectCategory() const {
 }
 
 std::vector<ObjectCategory> Block::getCollisionTargets() const {
-    // Blocks can collide with characters, enemies, and projectiles
     return {ObjectCategory::CHARACTER, ObjectCategory::ENEMY, ObjectCategory::PROJECTILE, ObjectCategory::SHELL};
 }
 
 void Block::onCollision(std::shared_ptr<Object> other, Direction direction) {
-    // Basic collision handling for blocks
-    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        // Character is colliding with this block
-        // For ground blocks, this helps with ground detection
-        if (direction == Direction::UP) {
-            // Character is on top of this block
-            // This will be handled by the character's collision system
-        }
-    }
-    // Additional collision logic can be added here for different block types
+    
 }
     
 bool Block::isActive() const {
@@ -95,7 +90,6 @@ void Block::setPosition(Vector2 newPos) {
     hitbox.x = position.x;
     hitbox.y = position.y;
     
-    // Update Box2D body position if it exists
     if (physicsBody) {
         physicsBody->SetTransform(Box2DWorldManager::raylibToB2(newPos), physicsBody->GetAngle());
     }
