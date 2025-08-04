@@ -26,7 +26,6 @@ Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos)
 }
 
 Block::~Block() {
-    // Clean up Box2D body
     if (physicsBody) {
         Box2DWorldManager::getInstance().destroyBody(physicsBody);
         physicsBody = nullptr;
@@ -63,16 +62,7 @@ std::vector<ObjectCategory> Block::getCollisionTargets() const {
 }
 
 void Block::onCollision(std::shared_ptr<Object> other, Direction direction) {
-    // Basic collision handling for blocks
-    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        // Character is colliding with this block
-        // For ground blocks, this helps with ground detection
-        if (direction == Direction::UP) {
-            // Character is on top of this block
-            // This will be handled by the character's collision system
-        }
-    }
-    // Additional collision logic can be added here for different block types
+    
 }
     
 bool Block::isActive() const {
@@ -100,7 +90,6 @@ void Block::setPosition(Vector2 newPos) {
     hitbox.x = position.x;
     hitbox.y = position.y;
     
-    // Update Box2D body position if it exists
     if (physicsBody) {
         physicsBody->SetTransform(Box2DWorldManager::raylibToB2(newPos), physicsBody->GetAngle());
     }

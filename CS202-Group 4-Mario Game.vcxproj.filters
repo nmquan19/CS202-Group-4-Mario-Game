@@ -27,8 +27,6 @@
     <ClCompile Include="src\System\FrameData.cpp" />
     <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />
-    <ClCompile Include="src\System\PhysicsManager.cpp" />
-    <ClCompile Include="src\System\QuadTree.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
     <ClCompile Include="src\UI\Menu.cpp" />
     <ClCompile Include="src\UI\SoundEffect.cpp" />
@@ -47,9 +45,10 @@
     <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
     <ClCompile Include="src\Item\Star\Star.cpp" />
     <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
-    <ClCompile Include="src\Game\HUD.cpp" />
     <ClCompile Include="include\System\Box2DWorldManager.h" />
     <ClCompile Include="src\System\Box2DWorldManager.cpp" />
+    <ClCompile Include="src\Characters\KnockedState.cpp" />
+    <ClCompile Include="src\Characters\StunnedState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -92,8 +91,6 @@
     <ClInclude Include="include\System\Interface.h" />
     <ClInclude Include="include\System\json.hpp" />
     <ClInclude Include="include\System\LevelEditor.h" />
-    <ClInclude Include="include\System\PhysicsManager.h" />
-    <ClInclude Include="include\System\QuadTree.h" />
     <ClInclude Include="include\System\TextureManager.h" />
     <ClInclude Include="include\UI\Menu.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
@@ -112,8 +109,9 @@
     <ClInclude Include="include\Item\Fire_Flower\Fire_Flower.h" />
     <ClInclude Include="include\Item\Star\Star.h" />
     <ClInclude Include="include\Item\One_Up\One_Up.h" />
-    <ClInclude Include="include\Game\HUD.h" />
     <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
+    <ClInclude Include="include\Characters\KnockedState.h" />
+    <ClInclude Include="include\Characters\StunnedState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

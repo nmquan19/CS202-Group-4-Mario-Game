@@ -38,6 +38,7 @@ LevelEditor::~LevelEditor() {
     }
     gridBlocks.clear();
 }
+
 void LevelEditor::update() {
     if (editMode) {
         palette.handleSelection();

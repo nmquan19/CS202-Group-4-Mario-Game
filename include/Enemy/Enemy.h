@@ -15,7 +15,7 @@ class Enemy : public Object, public IUpdatable, public IMovable, public IDamagea
 public:
 	Enemy(Vector2 startPos, Texture2D texture, Vector2 size);
 	Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration, Texture2D texture);
-	~Enemy();
+	virtual ~Enemy();
 	virtual void update(float deltaTime) override;
 	virtual void draw();
 
@@ -27,8 +27,8 @@ public:
 	bool isActive() const override;
 	void changeState(EnemyState* other);
 	int curFrame; 	
+
 public :  
-	void applyGravity(float deltaTime);
 	void setActive(bool flag) override ;
 	void setPosition(Vector2 newPosition) ;
 	Vector2 getPosition() const override ;
@@ -52,13 +52,14 @@ public :
 	virtual void takeDamage(int damage) override =0;
 	bool isAlive() const override;
 	virtual void die() override = 0;
-	virtual void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir);
+	virtual void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) = 0;
 	std::vector<std::pair<int, int>> getSpriteData();
 	virtual void setAnimation(const std::string& ani_type) {};
 	void flipDirection(); 
 	void setDirection(Vector2 newDirection) { direction = newDirection; }
 	InterpolatedAnimationController& getAnimController() { return animController; }
 	FrameInterpolatedVelocityController& getVelocityController() { return velocityController; }
+
 public: 
 	Vector2 getTargetPos() const { return targetPosition;  }
 	virtual void walkToTarget() {}; 
@@ -70,6 +71,7 @@ public:
 	virtual void walkTurn(){}
 	virtual void avoidDanger() {};
 	virtual bool isNearTarget() const { return false; }
+
  protected:
 	InterpolatedAnimationController animController;
 	FrameInterpolatedVelocityController velocityController;
@@ -95,7 +97,6 @@ public:
 	Vector2 velocity; 
 	Vector2 accelleration; 
 	float groundLevel = INT_MAX;
-	b2Body* physicsBody; // Box2D physics body
 	bool collided;
 };
 

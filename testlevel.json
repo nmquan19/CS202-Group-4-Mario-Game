@@ -290,13 +290,6 @@
           },
           {
                "gridX": 12,
-               "gridY": 16,
-               "sizeX": 0.75,
-               "sizeY": 0.75,
-               "type": "GOOMBA"
-          },
-          {
-               "gridX": 12,
                "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -364,13 +357,6 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
-          },
-          {
-               "gridX": 15,
-               "gridY": 12,
-               "sizeX": 0.75,
-               "sizeY": 0.75,
-               "type": "GOOMBA"
           },
           {
                "gridX": 15,
@@ -399,13 +385,6 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
-          },
-          {
-               "gridX": 16,
-               "gridY": 12,
-               "sizeX": 0.75,
-               "sizeY": 0.75,
-               "type": "GOOMBA"
           },
           {
                "gridX": 16,

@@ -34,6 +34,10 @@ public:
 	int getCollidedPart(const Object& other);  
 	virtual ObjectType getObjectType() const = 0;  
 
+	b2Body* getPhysicsBody() const {
+		return physicsBody;
+	}
+
 protected:  
 	Vector2 position;  
 	Vector2 size;  
