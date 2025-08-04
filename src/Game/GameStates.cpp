@@ -18,22 +18,44 @@ void MenuState::handleInput(GameContext& context) {
         exit(0);
     }
 
-    if (IsKeyPressed(KEY_ENTER) && context.menuManager.select == 0) {
-        context.setState(context.gamePlayState);
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
+        && context.menuManager.playBoard.checkCollision(GetMousePosition())) {
+        context.setState(context.characterSelectingState);
     }
 
-    if (IsKeyPressed(KEY_ENTER) && context.menuManager.select == 3) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
+        && context.menuManager.editingBoard.checkCollision(GetMousePosition())) {
         context.setState(context.editorState);
     }
 }
 
 void MenuState::update(GameContext& context, float deltaTime) {
-    
+    context.menuManager.UpdateMenu(deltaTime);
+    context.menuManager.UpdateExit(deltaTime);
 }
 
 void MenuState::draw(GameContext& context) {
     BeginDrawing();
     context.menuManager.DrawMenu();
+    EndDrawing();
+}
+
+void CharacterSelectingState::handleInput(GameContext& context) {
+    context.menuManager.HandleSelecting();
+    if (IsKeyPressed(KEY_ENTER)) context.setState(context.gamePlayState);
+}
+
+void CharacterSelectingState::update(GameContext& context, float deltaTime) {
+    context.menuManager.UpdateSelecting(deltaTime);
+}
+
+void CharacterSelectingState::draw(GameContext& context) {
+    BeginDrawing();
+    ClearBackground(SKYBLUE);
+    //int screenWidth = UIManager::getInstance().screenWidth;
+    //int screenHeight = UIManager::getInstance().screenHeight;
+    //DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 1.0f - 0.5f));
+    context.menuManager.DrawSelecting();
     EndDrawing();
 }
 
@@ -59,9 +81,12 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 		IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
         if(updatableObj)updatableObj->update(deltaTime); 
     }
+    context.menuManager.UpdateSetting(deltaTime);
     context.spawnObject();  
     context.deleteObjects();
-    context.menuManager.updateInformationBoard(deltaTime);
+    UIManager::getInstance().updateInformationBoard(deltaTime);
+    //PhysicsManager::getInstance().update();
+    //LevelEditor::getInstance().update();
     Box2DWorldManager::getInstance().step(deltaTime);
 }
 
@@ -92,7 +117,7 @@ void GamePlayState::draw(GameContext& context) {
     }
     
     context.menuManager.DrawSetting();
-    context.menuManager.drawInformationBoard();
+    UIManager::getInstance().drawInformationBoard();
     EndDrawing();
 }
 
@@ -146,7 +171,7 @@ void GameOverState::update(GameContext& context, float deltaTime) {
 void GameOverState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
-    context.uiManager.DrawGameOver();
+    UIManager::getInstance().DrawGameOver();
     EndDrawing();
 }
 

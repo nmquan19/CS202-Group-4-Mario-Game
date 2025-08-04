@@ -72,16 +72,16 @@ void GameContext::handleInput() {
 
 void GameContext::update(float deltaTime) {
     if (currentState == gamePlayState) {
-        audioManager.SetSoundEffectVolume(menuManager.slideBarSound.getValue());
-        audioManager.SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue());
-        if (!audioManager.isPlaying()) {
-            audioManager.PlayBackgroundMusic("theme1");
+        AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue());
+        AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue());
+        if (!AudioManager::getInstance().isPlaying()) {
+            AudioManager::getInstance().PlayBackgroundMusic("theme1");
         }
-        audioManager.UpdateBackgroundMusic("theme1");
+        AudioManager::getInstance().UpdateBackgroundMusic("theme1");
     }
     else {
-        if (audioManager.isPlaying()) {
-            audioManager.StopBackgroundMusic("theme1");
+        if (AudioManager::getInstance().isPlaying()) {
+            AudioManager::getInstance().StopBackgroundMusic("theme1");
         }
     }
 
@@ -96,8 +96,9 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* game, GameState* editor, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* character, GameState* game, GameState* editor, GameState* gameOver) {
     menuState = menu;
+    characterSelectingState = character;
     gamePlayState = game;
     editorState = editor;
     gameOverState = gameOver;
