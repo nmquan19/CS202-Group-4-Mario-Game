@@ -37,7 +37,7 @@ b2Body* Box2DWorldManager::createRectangleBody(Vector2 pos, Vector2 hitboxSize) 
 	b2_pos.y += b2_size.y / 2;
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_staticBody;
+	bodyDef.type = b2_kinematicBody;
 	bodyDef.position = b2_pos;
 	bodyDef.fixedRotation = true;
 	bodyDef.allowSleep = true;
@@ -250,12 +250,12 @@ void Box2DWorldManager::BeginContact(b2Contact* contact) {
 
 		if (abs(normal.y) > abs(normal.x)) {
 			if (normal.y > 0) {
-				directAtoB = Direction::UP;
-				directBtoA = Direction::DOWN;
-			}
-			else {
 				directAtoB = Direction::DOWN;
 				directBtoA = Direction::UP;
+			}
+			else {
+				directAtoB = Direction::UP;
+				directBtoA = Direction::DOWN;
 			}
 		} 
 		else {

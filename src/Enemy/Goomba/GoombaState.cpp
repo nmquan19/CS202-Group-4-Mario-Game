@@ -17,8 +17,11 @@ void GoombaWanderingState::enter(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
 
-    b2Vec2 currentVel = goomba->physicsBody->GetLinearVelocity();
-    goomba->physicsBody->SetLinearVelocity(b2Vec2(-Box2DWorldManager::raylibToB2(Constants::Goomba::WANDERING_SPEED), currentVel.y));
+    b2Vec2 currentVel;
+    if (goomba->physicsBody) {
+        goomba->physicsBody->GetLinearVelocity();
+        goomba->physicsBody->SetLinearVelocity(b2Vec2(-Box2DWorldManager::raylibToB2(Constants::Goomba::WANDERING_SPEED), currentVel.y));
+    }
     goomba->curFrame = 0;
 
     goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->getSpriteData()[0].first];

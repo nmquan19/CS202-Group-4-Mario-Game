@@ -209,10 +209,9 @@ void GameContext::createTestBlocks() {
     // Add some single blocks for platforming
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({10.0f, 11.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 14.0f}), {1, 1});
     //addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 10.0f, 10.0f }), { 1, 1 });
-    addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
     //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1, 1});
     
-    // Spawn all the blocks
     spawnObject();
 }
