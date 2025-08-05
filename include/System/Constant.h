@@ -40,6 +40,7 @@ namespace Constants {
         constexpr float MOVING_SPEED = 500.0f;
         constexpr float IDLE_DURATION = 4.5f;
         constexpr float REVIVE_DURATION = 1.5f;
+        constexpr float MOVING_DURATION = 7.5f;
 	}
     namespace Character {
         constexpr float BOUNCE_AFTER_STRIKE_VELOCITY = 7.0f;

@@ -21,7 +21,8 @@ Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos)
             b2Filter filter = fixture->GetFilterData();
             filter.maskBits = static_cast<uint16>(ObjectCategory::BLOCK);
             filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::ENEMY) |
-                                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::SHELL);
+                                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::SHELL) |
+                                static_cast<uint16>(ObjectCategory::BLOCK);
             fixture->SetFilterData(filter);
         }
     }
