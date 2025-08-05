@@ -85,8 +85,6 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     context.spawnObject();  
     context.deleteObjects();
     UIManager::getInstance().updateInformationBoard(deltaTime);
-    //PhysicsManager::getInstance().update();
-    //LevelEditor::getInstance().update();
     Box2DWorldManager::getInstance().step(deltaTime);
 }
 
@@ -147,6 +145,7 @@ void EditorState::handleInput(GameContext& context) {
 void EditorState::update(GameContext& context, float deltaTime) {
     handleCamera();
     LevelEditor::getInstance().update();
+    Box2DWorldManager::getInstance().step(deltaTime);
 }
 
 void EditorState::draw(GameContext& context) {

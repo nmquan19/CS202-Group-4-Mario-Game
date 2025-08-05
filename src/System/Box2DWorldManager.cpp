@@ -175,6 +175,7 @@ b2Body* Box2DWorldManager::createBlockBody(Vector2 pos, Vector2 hitbboxSize) {
 	if (!world) return nullptr;
 
 	b2Body* body = createRectangleBody(pos, hitbboxSize);
+	body->SetType(b2_kinematicBody);
 	return body;
 }
 
@@ -182,6 +183,12 @@ b2Body* Box2DWorldManager::createEnemyBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
 
 	b2Body* body = createCapsuleBody(pos, hitboxSize);
+	return body;
+}
+b2Body* Box2DWorldManager::createItemBody(Vector2 pos, Vector2 hitboxSize) {
+	if (!world) return nullptr;
+
+	b2Body* body = createRectangleBody(pos, hitboxSize);
 	return body;
 }
 
@@ -250,12 +257,12 @@ void Box2DWorldManager::BeginContact(b2Contact* contact) {
 
 		if (abs(normal.y) > abs(normal.x)) {
 			if (normal.y > 0) {
-				directAtoB = Direction::UP;
-				directBtoA = Direction::DOWN;
-			}
-			else {
 				directAtoB = Direction::DOWN;
 				directBtoA = Direction::UP;
+			}
+			else {
+				directAtoB = Direction::UP;
+				directBtoA = Direction::DOWN;
 			}
 		} 
 		else {

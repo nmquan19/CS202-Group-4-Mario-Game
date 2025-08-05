@@ -6,9 +6,11 @@
 #include "../../include/System/Interface.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include <raylib.h>
+#include <iostream>
 
-Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos), blockType(type) {
+Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos), blockType(type), isMoving(false) {
     position = { gridPos.x * GridSystem::GRID_SIZE, gridPos.y * GridSystem::GRID_SIZE };
+    originalPos = position;
     size = s;
     hitbox = {position.x, position.y, size.x*GridSystem::GRID_SIZE, size.y*GridSystem::GRID_SIZE};
 
@@ -62,7 +64,31 @@ std::vector<ObjectCategory> Block::getCollisionTargets() const {
 }
 
 void Block::onCollision(std::shared_ptr<Object> other, Direction direction) {
-    
+    if (direction == Direction::DOWN && !isMoving && !isSolid()) {
+        physicsBody->SetLinearVelocity(b2Vec2{ 0.0f, -2.0f });
+        isMoving = true;
+        resetTimer = 0.0f;
+    }
+}
+
+void Block::update(float deltaTime) {
+    if (physicsBody) {
+        auto newPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
+        position = { newPos.x - hitbox.width / 2.0f, newPos.y - hitbox.height / 2.0f };
+
+        if (isMoving) {
+            resetTimer += deltaTime;
+            if (resetTimer > RESET_TIME) {
+                physicsBody->SetLinearVelocity(b2Vec2({ 0.0f, 0.0f }));
+                Vector2 centrePos = { originalPos.x + hitbox.width / 2.0f, originalPos.y + hitbox.height / 2.0f };
+                physicsBody->SetTransform(Box2DWorldManager::raylibToB2(centrePos), 0.0f);
+            }
+            if (resetTimer > 3 * RESET_TIME) {
+                isMoving = false;
+                resetTimer = 0.0f;
+            }
+        }
+    }
 }
     
 bool Block::isActive() const {
@@ -112,9 +138,9 @@ Vector2 Block::getSize() const {
 }
 
 GroundBlock::GroundBlock(Vector2 gridPos) : Block(gridPos, BlockType::GROUND, {1, 1}) {
-    solid = true;
+    solid = false;
 }
 
 BrickBlock::BrickBlock(Vector2 gridPos) : Block(gridPos, BlockType::BRICK, {1, 1}) {
-    solid = true;
+    solid = false;
 }

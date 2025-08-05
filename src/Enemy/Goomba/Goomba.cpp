@@ -57,11 +57,15 @@ void Goomba::draw() {
 }
 
 void Goomba::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) {
+    b2Vec2 currentVel;
     switch (dir) {
     case Direction::LEFT:
         isFacingRight = true;
+        currentVel = physicsBody->GetLinearVelocity();
+        physicsBody->SetLinearVelocity(b2Vec2(-currentVel.x, currentVel.y));
+        break;
     case Direction::RIGHT:
-        b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+        currentVel = physicsBody->GetLinearVelocity();
         physicsBody->SetLinearVelocity(b2Vec2(-currentVel.x, currentVel.y));
         isFacingRight = false;
         break;
