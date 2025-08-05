@@ -64,7 +64,7 @@ std::vector<ObjectCategory> Block::getCollisionTargets() const {
 }
 
 void Block::onCollision(std::shared_ptr<Object> other, Direction direction) {
-    if (direction == Direction::DOWN && !isMoving) {
+    if (direction == Direction::DOWN && !isMoving && !isSolid()) {
         physicsBody->SetLinearVelocity(b2Vec2{ 0.0f, -2.0f });
         isMoving = true;
         resetTimer = 0.0f;
@@ -138,9 +138,9 @@ Vector2 Block::getSize() const {
 }
 
 GroundBlock::GroundBlock(Vector2 gridPos) : Block(gridPos, BlockType::GROUND, {1, 1}) {
-    solid = true;
+    solid = false;
 }
 
 BrickBlock::BrickBlock(Vector2 gridPos) : Block(gridPos, BlockType::BRICK, {1, 1}) {
-    solid = true;
+    solid = false;
 }

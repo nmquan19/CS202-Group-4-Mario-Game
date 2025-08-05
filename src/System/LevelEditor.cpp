@@ -48,7 +48,7 @@ void LevelEditor::update() {
 
 void LevelEditor::draw() {
     BeginMode2D(GameContext::getInstance().camera);
-    if (!clearing) {
+    if (!clearing) {    
         for (auto& it : gridBlocks) {
             Object* obj = it.second.top().get();
             if (!obj) continue;
@@ -283,7 +283,7 @@ void LevelEditor::loadLevel(const std::string& filename) {
                     float gridY = objData["gridY"];
                     std::string typeStr = objData["type"];
                     ObjectType objType = stringToObjectType(typeStr);
-                    placeObject(objType, {gridX, gridY});
+                    if (GameContext::getInstance().currentState == GameContext::getInstance().editorState) placeObject(objType, { gridX, gridY });
                     float sizeX = objData["sizeX"];
                     float sizeY = objData["sizeY"];
                     if (GameContext::getInstance().currentState && GameContext::getInstance().currentState == GameContext::getInstance().gamePlayState) {

@@ -37,7 +37,7 @@ b2Body* Box2DWorldManager::createRectangleBody(Vector2 pos, Vector2 hitboxSize) 
 	b2_pos.y += b2_size.y / 2;
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_kinematicBody;
+	bodyDef.type = b2_staticBody;
 	bodyDef.position = b2_pos;
 	bodyDef.fixedRotation = true;
 	bodyDef.allowSleep = true;
@@ -175,6 +175,7 @@ b2Body* Box2DWorldManager::createBlockBody(Vector2 pos, Vector2 hitbboxSize) {
 	if (!world) return nullptr;
 
 	b2Body* body = createRectangleBody(pos, hitbboxSize);
+	body->SetType(b2_kinematicBody);
 	return body;
 }
 
@@ -182,6 +183,12 @@ b2Body* Box2DWorldManager::createEnemyBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
 
 	b2Body* body = createCapsuleBody(pos, hitboxSize);
+	return body;
+}
+b2Body* Box2DWorldManager::createItemBody(Vector2 pos, Vector2 hitboxSize) {
+	if (!world) return nullptr;
+
+	b2Body* body = createRectangleBody(pos, hitboxSize);
 	return body;
 }
 

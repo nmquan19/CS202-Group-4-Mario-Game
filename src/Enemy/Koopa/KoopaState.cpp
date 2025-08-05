@@ -20,10 +20,9 @@ void KoopaWanderingState::checkCondition(Enemy* enemy)
 void KoopaWanderingState::enter(Enemy* enemy){
     Koopa* koopa = dynamic_cast<Koopa*>(enemy);
     float velDirection = (koopa->isFacingRight ? 1 : -1);
-    b2Vec2 currentVel;
-    if (koopa->physicsBody) koopa->physicsBody->GetLinearVelocity();
 
     if (koopa && koopa->physicsBody) {
+        b2Vec2 currentVel = koopa->physicsBody->GetLinearVelocity();
         switch (koopa->getType()) {
            case EnemyType::GREEN_KOOPA:
                 koopa->physicsBody->SetLinearVelocity(b2Vec2(velDirection * Box2DWorldManager::raylibToB2(Constants::GreenKoopa::WANDERING_SPEED), currentVel.y));
