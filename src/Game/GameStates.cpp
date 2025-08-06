@@ -103,6 +103,7 @@ void GamePlayState::draw(GameContext& context) {
     if (context.character) {
         context.character->draw();
     }
+    GameContext::getInstance().testParticle->draw();
 
     Box2DWorldManager::getInstance().drawDebugBodies();
     EndMode2D();

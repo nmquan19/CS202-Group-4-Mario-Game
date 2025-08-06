@@ -20,6 +20,7 @@ GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
+    testParticle = new ParticleSystem({ 500, 500 }, { 100, 100 }, { 0, 100 }, 5.0f, 0.1f, 0.0f, "assets/item_coin.png");
 }
 
 GameContext::~GameContext() {
@@ -28,6 +29,7 @@ GameContext::~GameContext() {
         Box2DWorldManager::getInstance().cleanup();
     }
     TextureManager::getInstance().unloadTextures();
+    delete testParticle;
 }
 
 GameContext& GameContext::getInstance() {
@@ -78,6 +80,7 @@ void GameContext::update(float deltaTime) {
             AudioManager::getInstance().PlayBackgroundMusic("theme1");
         }
         AudioManager::getInstance().UpdateBackgroundMusic("theme1");
+        testParticle->update(deltaTime);
     }
     else {
         if (AudioManager::getInstance().isPlaying()) {

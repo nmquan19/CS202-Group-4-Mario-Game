@@ -65,7 +65,6 @@
     <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Objects\Spring.h" />
     <ClInclude Include="include\Objects\SpringState.h" />
-    <ClInclude Include="include\Scenes\Scene.h" />
     <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\FrameData.h" />
     <ClInclude Include="include\System\Grid.h" />
@@ -73,6 +72,7 @@
     <ClInclude Include="include\System\InterpolationController.h" />
     <ClInclude Include="include\System\json.hpp" />
     <ClInclude Include="include\System\LevelEditor.h" />
+    <ClInclude Include="include\System\ParticleSystem.h" />
     <ClInclude Include="include\System\TextureManager.h" />
     <ClInclude Include="include\UI\Button.h" />
     <ClInclude Include="include\UI\Menu.h" />
@@ -123,6 +123,7 @@
     <ClCompile Include="src\System\FrameData.cpp" />
     <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />
+    <ClCompile Include="src\System\ParticleSystem.cpp" />
     <ClCompile Include="src\System\Resources.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
     <ClCompile Include="src\UI\Button.cpp" />

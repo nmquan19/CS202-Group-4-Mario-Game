@@ -49,6 +49,7 @@
     <ClCompile Include="src\System\Box2DWorldManager.cpp" />
     <ClCompile Include="src\Characters\KnockedState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
+    <ClCompile Include="src\System\ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -84,7 +85,6 @@
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\CollectableObject.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
-    <ClInclude Include="include\Scenes\Scene.h" />
     <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\FrameData.h" />
     <ClInclude Include="include\System\Grid.h" />
@@ -112,6 +112,7 @@
     <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
     <ClInclude Include="include\Characters\KnockedState.h" />
     <ClInclude Include="include\Characters\StunnedState.h" />
+    <ClInclude Include="include\System\ParticleSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">
@@ -124,12 +125,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Scenes\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\System\QuadTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\System\PhysicsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\UI\Menu.cpp">
@@ -239,7 +234,6 @@
     <Media Include="assets\sound\theme1.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\button\board.png" />
     <Image Include="assets\font_sprites.png" />
     <Image Include="assets\Super Mario Bros.png" />
     <Image Include="assets\button\check.png" />
@@ -248,10 +242,5 @@
     <Image Include="assets\button\cross_selected.png" />
     <Image Include="assets\button\home.png" />
     <Image Include="assets\button\option.png" />
-    <Image Include="assets\button\play.png" />
-    <Image Include="assets\button\return.png" />
-    <Image Include="assets\button\return_selected.png" />
-    <Image Include="assets\button\setting.png" />
-    <Image Include="assets\button\setting_selected.png" />
   </ItemGroup>
 </Project>
