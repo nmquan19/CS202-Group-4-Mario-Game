@@ -45,15 +45,14 @@
     <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
     <ClCompile Include="src\Item\Star\Star.cpp" />
     <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
-    <ClCompile Include="src\System\CameraSystem.cpp" />
     <ClCompile Include="include\System\Box2DWorldManager.h" />
     <ClCompile Include="src\System\Box2DWorldManager.cpp" />
     <ClCompile Include="src\Characters\KnockedState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
-    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
-    <ClCompile Include="src\System\PhysicsManager.cpp" />
-    <ClCompile Include="src\System\QuadTree.cpp" />
+    <ClCompile Include="src\System\ParticleSystem.cpp" />
+    <ClCompile Include="src\System\CameraSystem.cpp" />
     <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -89,7 +88,6 @@
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\CollectableObject.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
-    <ClInclude Include="include\Scenes\Scene.h" />
     <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\FrameData.h" />
     <ClInclude Include="include\System\Grid.h" />
@@ -115,11 +113,11 @@
     <ClInclude Include="include\Item\Star\Star.h" />
     <ClInclude Include="include\Item\One_Up\One_Up.h" />
     <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
-    <ClInclude Include="include\System\CameraSystem.h" />
-    <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
     <ClInclude Include="include\Characters\KnockedState.h" />
     <ClInclude Include="include\Characters\StunnedState.h" />
+    <ClInclude Include="include\System\ParticleSystem.h" />
     <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
+    <ClInclude Include="include\System\CameraSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

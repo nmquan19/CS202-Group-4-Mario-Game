@@ -8,6 +8,7 @@
 #include "../Characters/Character.h"
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
+#include "../System/ParticleSystem.h"
 #include <functional>
 #include <raylib.h>
 class GameState;
@@ -53,4 +54,6 @@ public:
     void createTestBlocks(); // Add test blocks for Box2D testing
     std::shared_ptr<Object> getCharacter() { return character; }
     Camera2D camera;
+
+    ParticleSystem* testParticle;
 };
