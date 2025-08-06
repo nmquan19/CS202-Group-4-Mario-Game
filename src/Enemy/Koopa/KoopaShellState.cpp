@@ -102,13 +102,6 @@ void KoopaShellMovingState::onCollision(KoopaShell* shell, std::shared_ptr<Objec
         shell->physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
         break;
     }
-
-    switch (other->getObjectCategory()) {
-    case ObjectCategory::CHARACTER:
-        shell->physicsBody->SetLinearVelocity(b2Vec2(0, currentVel.y));
-        shell->changeState(&KoopaShellIdleState::getInstance());
-        break;
-    }
 }
 
 ObjectCategory KoopaShellMovingState::getObjectCategory() const {

@@ -264,6 +264,14 @@ void Character::onCollision(std::shared_ptr<Object> other, Direction direction) 
 	case ObjectCategory::INTERACTIVE:
 		handleInteractiveCollision(other, direction);
 		break;
+	case ObjectCategory::PROJECTILE:
+		if (direction != Direction::UP) {
+			takeDamage(1);
+		}
+		else {
+			invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_STRIKE;
+		}
+		break;
 	case ObjectCategory::ITEM:
 		// implement 
 		break;

@@ -204,17 +204,11 @@ void GameContext::createTestBlocks() {
         addObject(BlockType::BRICK, worldPos, {1, 1});
     }
     
-    // Create a platform in the air for jump testing
-    // for (int x = 18; x <= 22; x++) {
-    //     Vector2 worldPos = GridSystem::getWorldPosition({static_cast<float>(x), 12.0f});
-    //     addObject(BlockType::GROUND, worldPos, {1, 1});
-    // }
-    
     // Add some single blocks for platforming
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({10.0f, 11.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 14.0f}), {1, 1});
-    addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 1, 1 });
+    addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 0.75f, 0.75f });
     addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), {1, 1});
     addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
     //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1,1});
