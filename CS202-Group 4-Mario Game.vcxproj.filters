@@ -50,6 +50,9 @@
     <ClCompile Include="src\Characters\KnockedState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
     <ClCompile Include="src\System\ParticleSystem.cpp" />
+    <ClCompile Include="src\System\CameraSystem.cpp" />
+    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -113,6 +116,8 @@
     <ClInclude Include="include\Characters\KnockedState.h" />
     <ClInclude Include="include\Characters\StunnedState.h" />
     <ClInclude Include="include\System\ParticleSystem.h" />
+    <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
+    <ClInclude Include="include\System\CameraSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

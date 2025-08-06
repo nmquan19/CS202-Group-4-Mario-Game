@@ -5,7 +5,6 @@
 #include "../../../../include/System/TextureManager.h"
 #include <raylib.h>
 #include "../../../../include/Enemy/Boss/DryBowser/DryBowserSimState.h"
-
 #include "../../../../include/Enemy/Boss/Boss.h"
 #include "../../../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../../../include/System/InterpolationController.h"
@@ -23,7 +22,6 @@
 #include "../../../../include/System/FrameData.h"
 #include "../../../../include/Game/GameContext.h"
 #include "../../../../include/System/Box2DWorldManager.h"
-#include "../../../../include/System/PhysicsManager.h"
 #include "../../../../include/Enemy/EnemyAI/EnemyNavigator.h"
 DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,size,TextureManager::DryBowser_texture){
     HP = 100;
@@ -509,135 +507,135 @@ bool DryBowser::canUseAerialAttack() const
 }
 
 int DryBowser::isNearWall() const {
-    const float gravity = 980.0f;
-    const float vy = Constants::DryBowser::JUMP_VELOCITY;
-    const float vx = Constants::DryBowser::RUN_SPEED;
-    const float dt = 0.05f; 
+    //const float gravity = 980.0f;
+    //const float vy = Constants::DryBowser::JUMP_VELOCITY;
+    //const float vx = Constants::DryBowser::RUN_SPEED;
+    //const float dt = 0.05f; 
 
-    Rectangle hitBox = getHitBox()[0];
-    Vector2 start = { hitBox.x + hitBox.width / 2, hitBox.y + hitBox.height };
+    //Rectangle hitBox = getHitBox()[0];
+    //Vector2 start = { hitBox.x + hitBox.width / 2, hitBox.y + hitBox.height };
 
-    auto checkDirection = [&](float direction) -> bool {
-        float t_air = (2.0f * vy) / gravity;
-        for (float t = 0.0f; t <= t_air; t += dt) {
-            float x = start.x + direction * vx * t;
-            float y = start.y - (vy * t - 0.5f * gravity * t * t);
+    //auto checkDirection = [&](float direction) -> bool {
+    //    float t_air = (2.0f * vy) / gravity;
+    //    for (float t = 0.0f; t <= t_air; t += dt) {
+    //        float x = start.x + direction * vx * t;
+    //        float y = start.y - (vy * t - 0.5f * gravity * t * t);
 
-            Rectangle probe = { x - 4, y - 4, 8, 8 }; 
+    //        Rectangle probe = { x - 4, y - 4, 8, 8 }; 
 
-            auto objs = PhysicsManager::getInstance().getObjectsInArea(probe);
-            for (const auto& obj : objs) {
-                if (obj->getObjectCategory() == ObjectCategory::BLOCK) {
-                    return false;
-                }
-            }
-        }
-        return true; 
-        };
+    //        //uto objs = PhysicsManager::getInstance().getObjectsInArea(probe);
+    //        for (const auto& obj : objs) {
+    //            if (obj->getObjectCategory() == ObjectCategory::BLOCK) {
+    //                return false;
+    //            }
+    //        }
+    //    }
+    //    return true; 
+    //    };
 
-    float maxJumpHeight = (vy * vy) / (2.0f * gravity);
-    float t_air = (2.0f * vy) / gravity;
-    float horizontalReach = vx * t_air;
+    //float maxJumpHeight = (vy * vy) / (2.0f * gravity);
+    //float t_air = (2.0f * vy) / gravity;
+    //float horizontalReach = vx * t_air;
 
-    Rectangle leftProbe = {
-        hitBox.x - horizontalReach,
-        hitBox.y - maxJumpHeight,
-        horizontalReach,
-        maxJumpHeight
-    };
+    //Rectangle leftProbe = {
+    //    hitBox.x - horizontalReach,
+    //    hitBox.y - maxJumpHeight,
+    //    horizontalReach,
+    //    maxJumpHeight
+    //};
 
-    Rectangle rightProbe = {
-        hitBox.x + hitBox.width,
-        hitBox.y - maxJumpHeight,
-        horizontalReach,
-        maxJumpHeight
-    };
+    //Rectangle rightProbe = {
+    //    hitBox.x + hitBox.width,
+    //    hitBox.y - maxJumpHeight,
+    //    horizontalReach,
+    //    maxJumpHeight
+    //};
 
-    auto objsLeft = PhysicsManager::getInstance().getObjectsInArea(leftProbe);
-    auto objsRight = PhysicsManager::getInstance().getObjectsInArea(rightProbe);
+    ////auto objsLeft = PhysicsManager::getInstance().getObjectsInArea(leftProbe);
+    ////auto objsRight = PhysicsManager::getInstance().getObjectsInArea(rightProbe);
 
-    auto isWall = [](const std::shared_ptr<Object>& obj) {
-        return obj->getObjectCategory() == ObjectCategory::BLOCK;
-        };
+    //auto isWall = [](const std::shared_ptr<Object>& obj) {
+    //    return obj->getObjectCategory() == ObjectCategory::BLOCK;
+    //    };
 
-    if (std::any_of(objsLeft.begin(), objsLeft.end(), isWall)) {
-        if (checkDirection(-1.0f)) return -1; // can reach left wall
-    }
+    //if (std::any_of(objsLeft.begin(), objsLeft.end(), isWall)) {
+    //    if (checkDirection(-1.0f)) return -1; // can reach left wall
+    //}
 
-    if (std::any_of(objsRight.begin(), objsRight.end(), isWall)) {
-        if (checkDirection(1.0f)) return 1; // can reach right wall
-    }
+    //if (std::any_of(objsRight.begin(), objsRight.end(), isWall)) {
+    //    if (checkDirection(1.0f)) return 1; // can reach right wall
+    //}
 
     return 0; 
 }
 
 bool DryBowser::isBelowWall() const {
-    const float gravity = 980.0f;
-    const float initialJumpVelocity = Constants::DryBowser::JUMP_VELOCITY;
-    const float horizontalTolerance = 30.0f; 
+    //const float gravity = 980.0f;
+    //const float initialJumpVelocity = Constants::DryBowser::JUMP_VELOCITY;
+    //const float horizontalTolerance = 30.0f; 
 
-    Rectangle hitBox = getHitBox()[0];
-    Vector2 start = {
-        hitBox.x + hitBox.width / 2,
-        hitBox.y + hitBox.height
-    };
+    //Rectangle hitBox = getHitBox()[0];
+    //Vector2 start = {
+    //    hitBox.x + hitBox.width / 2,
+    //    hitBox.y + hitBox.height
+    //};
 
-    float maxJumpHeight = (initialJumpVelocity * initialJumpVelocity) / (2.0f * gravity);
-    float airTime = (2.0f * initialJumpVelocity) / gravity;
+    //float maxJumpHeight = (initialJumpVelocity * initialJumpVelocity) / (2.0f * gravity);
+    //float airTime = (2.0f * initialJumpVelocity) / gravity;
 
-    const float dt = 0.05f;
+    //const float dt = 0.05f;
 
-    for (float t = 0.0f; t <= airTime; t += dt) {
-        float y = start.y - (initialJumpVelocity * t - 0.5f * gravity * t * t);
-        float x = start.x; 
+    //for (float t = 0.0f; t <= airTime; t += dt) {
+    //    float y = start.y - (initialJumpVelocity * t - 0.5f * gravity * t * t);
+    //    float x = start.x; 
 
-        Rectangle probe = {
-            x - horizontalTolerance / 2.0f,
-            y - 4.0f,
-            horizontalTolerance,
-            8.0f
-        };
+    //    Rectangle probe = {
+    //        x - horizontalTolerance / 2.0f,
+    //        y - 4.0f,
+    //        horizontalTolerance,
+    //        8.0f
+    //    };
 
-        auto objs = PhysicsManager::getInstance().getObjectsInArea(probe);
-        for (const auto& obj : objs) {
-            if (obj->getObjectCategory() == ObjectCategory::BLOCK) {
-                return true;
-            }
-        }
-    }
+    //    auto objs = PhysicsManager::getInstance().getObjectsInArea(probe);
+    //    for (const auto& obj : objs) {
+    //        if (obj->getObjectCategory() == ObjectCategory::BLOCK) {
+    //            return true;
+    //        }
+    //    }
+    //}
 
     return false;   
 }
 bool DryBowser::checkWallContact() {
 	bool hasTouchedWall = false; 
-    Rectangle hitBox = getHitBox()[0];
-    const float wallContactWidth = 2.0f;
+    //Rectangle hitBox = getHitBox()[0];
+    //const float wallContactWidth = 2.0f;
 
-    Rectangle leftProbe = {
-        hitBox.x - wallContactWidth,
-        hitBox.y,
-        wallContactWidth,
-        hitBox.height
-    };
+    //Rectangle leftProbe = {
+    //    hitBox.x - wallContactWidth,
+    //    hitBox.y,
+    //    wallContactWidth,
+    //    hitBox.height
+    //};
 
-    Rectangle rightProbe = {
-        hitBox.x + hitBox.width,
-        hitBox.y,
-        wallContactWidth,
-        hitBox.height
-    };
+    //Rectangle rightProbe = {
+    //    hitBox.x + hitBox.width,
+    //    hitBox.y,
+    //    wallContactWidth,
+    //    hitBox.height
+    //};
 
-    auto objsLeft = PhysicsManager::getInstance().getObjectsInArea(leftProbe);
-    auto objsRight = PhysicsManager::getInstance().getObjectsInArea(rightProbe);
+    //auto objsLeft = PhysicsManager::getInstance().getObjectsInArea(leftProbe);
+    //auto objsRight = PhysicsManager::getInstance().getObjectsInArea(rightProbe);
 
-    auto isWall = [](const std::shared_ptr<Object>& obj) {
-        return obj->getObjectCategory() == ObjectCategory::BLOCK;
-        };
+    //auto isWall = [](const std::shared_ptr<Object>& obj) {
+    //    return obj->getObjectCategory() == ObjectCategory::BLOCK;
+    //    };
 
-    bool touchingLeftWall = std::any_of(objsLeft.begin(), objsLeft.end(), isWall);
-    bool touchingRightWall = std::any_of(objsRight.begin(), objsRight.end(), isWall);
+    //bool touchingLeftWall = std::any_of(objsLeft.begin(), objsLeft.end(), isWall);
+    //bool touchingRightWall = std::any_of(objsRight.begin(), objsRight.end(), isWall);
 
-    hasTouchedWall = touchingLeftWall || touchingRightWall;
+    //hasTouchedWall = touchingLeftWall || touchingRightWall;
     return hasTouchedWall; 
 }
 
