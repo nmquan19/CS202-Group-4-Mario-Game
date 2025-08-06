@@ -39,6 +39,7 @@
     <ClInclude Include="include\Enemy\Boss\SimulateState.h" />
     <ClInclude Include="include\Enemy\Boss\WorldState.h" />
     <ClInclude Include="include\Enemy\Enemy.h" />
+    <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
     <ClInclude Include="include\Enemy\EnemyState.h" />
     <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
     <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
@@ -92,11 +93,13 @@
     <ClCompile Include="src\Characters\MovingState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
     <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
     <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
     <ClCompile Include="src\Enemy\Enemy.cpp" />
+    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
     <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
     <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
     <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
@@ -125,6 +128,8 @@
     <ClCompile Include="src\System\FrameData.cpp" />
     <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />
+    <ClCompile Include="src\System\PhysicsManager.cpp" />
+    <ClCompile Include="src\System\QuadTree.cpp" />
     <ClCompile Include="src\System\Resources.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
     <ClCompile Include="src\UI\Button.cpp" />

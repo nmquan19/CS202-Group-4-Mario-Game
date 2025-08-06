@@ -53,9 +53,9 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().setEditMode(false);
             
             // Create test blocks for Box2D physics testing
-            createTestBlocks();
+            //createTestBlocks();
             
-            //LevelEditor::getInstance().loadLevel("testlevel.json");
+            LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 400 });
             if (character) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};

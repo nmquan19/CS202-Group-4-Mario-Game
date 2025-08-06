@@ -63,9 +63,9 @@ namespace Constants {
     namespace DryBowser{
 		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;
         constexpr float WalkTurnDuration = 0.25f;  
-		constexpr float JUMP_VELOCITY = -700.0f;
+		constexpr float JUMP_VELOCITY = -800.0f;
         constexpr float WallJumpFriction = 0.95f;
-        constexpr float RUN_SPEED = 500.0f; 
+        constexpr float RUN_SPEED = 300.0f; 
 		constexpr float BASIC_ATTACK_DURATION = 2.0f;
         constexpr float BASIC_ATTACK_RANGE = 150.0f; 
 		constexpr float SPIN_ATTACK_COOLDOWN = 15.0f;

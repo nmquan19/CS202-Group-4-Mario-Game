@@ -333,3 +333,10 @@ public:
     CanUseAerialAttackNode() : ActionNode() {}
     NodeStatus tick(Enemy* boss, float dt) override;
 };
+
+class MoveToTargetNode : public ActionNode
+{
+public:
+    MoveToTargetNode() : ActionNode(){}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};

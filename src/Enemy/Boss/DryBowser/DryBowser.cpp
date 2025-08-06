@@ -23,6 +23,8 @@
 #include "../../../../include/System/FrameData.h"
 #include "../../../../include/Game/GameContext.h"
 #include "../../../../include/System/Box2DWorldManager.h"
+#include "../../../../include/System/PhysicsManager.h"
+#include "../../../../include/Enemy/EnemyAI/EnemyNavigator.h"
 DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,size,TextureManager::DryBowser_texture){
     HP = 100;
     alive = true;
@@ -54,7 +56,7 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
 #include <iostream>
 void DryBowser::update(float dt) {
     // First, sync with Box2D physics body if available
-    canReachPlayerHeight();
+    setTarget(GameContext::getInstance().getCharacter()->getPosition());
     if (physicsBody) {
         // Get position and velocity from Box2D
         b2Vec2 b2Pos = physicsBody->GetPosition();
@@ -65,7 +67,6 @@ void DryBowser::update(float dt) {
         b2Vec2 b2Vel = physicsBody->GetLinearVelocity();
         velocity = Box2DWorldManager::b2ToRaylib(b2Vel);
     }
-    
     // Handle screen boundaries
     if (position.x < 0) {
         position.x = 0;
@@ -85,57 +86,51 @@ void DryBowser::update(float dt) {
             }
         }
     }
-    
+    if (velocityController.isActiveAtFrame(curFrame)) {
+        Vector2 multiplier = velocityController.getVelocityAtFrame(curFrame);
+        Vector2 newVelocity = { direction.x * multiplier.x, direction.y * multiplier.y };
+
+        if (physicsBody) {
+            physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(newVelocity));
+        }
+    }
     updateWorldState();
-    setTarget(GameContext::getInstance().getCharacter()->getPosition());
     targetHitboxes = GameContext::getInstance().getCharacter()->getHitBox()[0];
     hitbox.x = position.x;
     hitbox.y = position.y;
-    
     animController.update(dt);
     curFrame = animController.getCurrentFrame();
     if ((this->currentPhase->getCurMove() == "Jump"&& velocity.y <0) || this->currentPhase->getCurMove() == "Fall"|| this->currentPhase->getCurMove()=="AerialAttack")
     {
         this->onGround = false; 
-    }
-    // Ground collision detection (for non-Box2D fallback)
-    /*if (!physicsBody && getBottom() <= groundLevel) {
-        DrawText(TextFormat("Drybowser Position: x = %f, y = %f, Ground Level z = %f", position.x, position.y, groundLevel), 200, 400, 20, BLACK);
-        onGround = true;
-        if (velocity.y > 0) {
-            velocity.y = 0;
-        }
-    } */
-    //groundLevel = INT_MIN;
-    
+    }  
     // Apply frame-based velocity
-    if (velocityController.isActiveAtFrame(curFrame)) {
-        Vector2 multiplier = velocityController.getVelocityAtFrame(curFrame);
-        Vector2 newVelocity = { direction.x * multiplier.x, direction.y * multiplier.y };
-        
-        if (physicsBody) {
-            physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(newVelocity));
-        }
-    }
-    
     DrawText(TextFormat("Drybowser Velocity: x = %f, y = %f", velocity.x, velocity.y), 200, 250, 20, BLACK);
+    DrawText(TextFormat("Drybowser Direction: x = %f, y = %f", direction.x, direction.y), 200, 270, 20, BLACK);
+
     spritebox = TextureManager::DryBowser_sprite_boxes[curFrame];
     
+
+    updateCooldowns(dt);
+    if (currentPhase) currentPhase->update(this, dt);
+    if (physicsBody) {
+        physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(velocity));
+    }
     const FrameData* data = FrameDatabase::getInstance().getFrameData(this->getType(), curAniName, curFrame);
-    if (data&&lastTriggerFrame != curFrame) {
-        for(auto& event : data->events) {
+    if (data && lastTriggerFrame != curFrame) {
+        for (auto& event : data->events) {
             if (event.eventType != EventType::None) {
-                DrawText(TextFormat("Event Triggered:%d, %s", data->frameIndex, event.payload.c_str()), 200, 300, 20, RED);
                 auto func = FrameEventHandlers::bind(event, this);
                 if (func) {
                     func();
                 }
             }
-            lastTriggerFrame = curFrame; 
+            lastTriggerFrame = curFrame;
         }
     }
-    updateCooldowns(dt);
-    if (currentPhase) currentPhase->update(this, dt);
+
+    
+
 
 }
 
@@ -145,7 +140,14 @@ void DryBowser::draw() {
     DrawCircleLines(hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2, Constants::DryBowser::AERIAL_ATTACK_RANGE, BLUE);
     float selfBottomY = position.y + hitbox.height;
     float targetBottomY = targetPosition.y+targetHitboxes.height+5.0f;
-
+    if (!currentPath.empty())
+    {
+        for (const auto& node : currentPath)
+        {
+            node->draw(RED);
+        }
+    }
+    if(currentNode) currentNode->draw(BLACK);
     DrawLine(0, selfBottomY, 1000, selfBottomY, RED);
     DrawText("DryBowser Bottom", 10, selfBottomY - 15, 20, RED);
 
@@ -198,12 +200,24 @@ void DryBowser::handleEnvironmentCollision(std::shared_ptr<Object> other, Direct
         break;
         
     case Direction::LEFT:
+        if (isInSpinAttack()) {
+            DrawText("IN SPIN ATTACK COLL", 240, 200, 20, GREEN);
+
+            direction = { -direction.x, direction.y };
+            b2Vec2 b2Vel = physicsBody->GetLinearVelocity();
+            b2Vel.x *= -1;
+            physicsBody->SetLinearVelocity(b2Vel);
+        }
+
+        break;  
     case Direction::RIGHT:
         // Wall collision
         if (isInSpinAttack()) {
+            DrawText("IN SPIN ATTACK COLL", 240, 200, 20, GREEN);
             direction = { -direction.x, direction.y };
-            // Don't call setVelocity during collision - it causes the crash
-            // The velocity change will be applied in the next update cycle
+            b2Vec2 b2Vel = physicsBody->GetLinearVelocity();
+            b2Vel.x *= -1;
+            physicsBody->SetLinearVelocity(b2Vel);
         }
         break;
         
@@ -269,7 +283,14 @@ void DryBowser::die() {
 bool DryBowser::isAlive() const {
     return alive;
 }
-
+float DryBowser::getWalkVelocity() const
+{
+    return Constants::DryBowser::RUN_SPEED;
+}
+float DryBowser::getJumpVelocity() const
+{
+    return Constants::DryBowser::JUMP_VELOCITY;
+}
 void DryBowser::changePhase(std::unique_ptr<BossPhaseState> newPhase) {
     if (currentPhase) currentPhase->exit(this);
     currentPhase = std::move(newPhase);
@@ -378,6 +399,12 @@ void DryBowser::walkToTarget() {
         }
     }
 }
+bool DryBowser::moveToTarget()
+{
+    return Enemy::moveToTarget();
+}
+
+
 void DryBowser::attack() {
     if (currentPhase)
     {
@@ -626,6 +653,16 @@ void DryBowser::jumpFromWall() {
 void DryBowser::jump()
 {
     this->currentPhase->changeMoveState(this, std::make_shared<DryBowserJumpingState>());
+}
+float DryBowser::jumpTo(Vector2 targetPos, bool apply)
+{
+    if (velocity.y <0 && !isOnGround())
+    {
+        return _FMAX;
+    }
+    float t = Enemy::jumpTo(targetPos, apply);
+    this->currentPhase->changeMoveState(this, std::make_shared<DryBowserJumpingState>());
+    return t; 
 }
 bool DryBowser::isJumping() const
 {

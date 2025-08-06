@@ -95,7 +95,7 @@ void DryBowserWalkTurnState::update(Boss* boss, float dt) {
 void DryBowserWalkTurnState::exit(Boss* boss) {
     boss->flipDirection();
 	Vector2 d = boss->getDirection();
-	boss->setDirection({ -d.x, d.y });
+	//boss->setDirection({ -d.x, d.y });
 }
 
 bool DryBowserWalkTurnState::isFinished() const {

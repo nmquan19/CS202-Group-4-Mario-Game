@@ -134,6 +134,9 @@ std::shared_ptr<BehaviorTreeNode> BTFactory::buildTree(const json& nodeData) {
     else if (type == "CanUseAerialAttack") {
         return std::make_shared<CanUseAerialAttackNode>();
         }
+    else if (type == "MoveToTarget") {
+            return std::make_shared<MoveToTargetNode>();
+            }
     throw std::runtime_error("Unknown node type: " + type);
 }
 std::string GetEnemyName(EnemyType type) {
@@ -149,7 +152,7 @@ std::string GetEnemyName(EnemyType type) {
 std::shared_ptr<BehaviorTreeNode> BTFactory::createTree(EnemyType type) {
     std::string filename;
 
-	filename = "assets/enemy/BT/" + GetEnemyName(type) + ".json";
+	filename = "assets/enemy/BT/" + GetEnemyName(type)+"P2" + ".json";
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Failed to open BT JSON file: " + filename);
@@ -275,6 +278,9 @@ nlohmann::json BTFactory::to_json(const std::shared_ptr<BehaviorTreeNode>& node)
     {
         j["type"] = "ReactiveSequence";
     }
+    else if (std::dynamic_pointer_cast<MoveToTargetNode>(node)) {
+        j["type"] = "MoveToTarget";
+        }
     else {
         throw std::runtime_error("Unknown node type during serialization");
     }

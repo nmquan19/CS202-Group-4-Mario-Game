@@ -404,12 +404,10 @@ NodeStatus NeedTurnNode::tick(Enemy* boss, float dt)
 {
     if (!boss) return NodeStatus::Failure;
 
-    float bossX = boss->getPosition().x;
-    float targetX = boss->getTargetPos().x;
-    bool isFacingRight = boss->FacingRight();
-    bool shouldTurnLeft = (bossX > targetX) && isFacingRight;
-    bool shouldTurnRight = (bossX < targetX) && !isFacingRight;
-    if (shouldTurnLeft || shouldTurnRight) {
+    float bossX = boss->getVelocity().x;
+    float direction = boss->getDirection().x;
+    bool isFacing = boss->FacingRight();
+    if ((bossX>0 && !isFacing)||(bossX<0 && isFacing)){
         return NodeStatus::Success;
     }
     return NodeStatus::Failure;
@@ -613,6 +611,15 @@ NodeStatus CanUseAerialAttackNode::tick(Enemy* boss, float dt) {
     DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
     if (!dryBowser) return NodeStatus::Failure;
     if (dryBowser->canUseAerialAttack()) {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Failure;
+}
+NodeStatus MoveToTargetNode::tick(Enemy* boss, float dt)
+{
+    if (!boss) return NodeStatus::Failure; 
+    if (boss->moveToTarget())
+    {
         return NodeStatus::Success;
     }
     return NodeStatus::Failure;

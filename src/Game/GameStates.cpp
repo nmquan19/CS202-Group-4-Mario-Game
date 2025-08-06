@@ -10,6 +10,7 @@
 #include <iostream>
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/Constant.h"
+#include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
 #include <raymath.h>
 void handleCamera();
 
@@ -86,7 +87,10 @@ void GamePlayState::handleInput(GameContext& context) {
 }
 
 void GamePlayState::update(GameContext& context, float deltaTime) {
-	GameCameraSystem::getInstance().update(deltaTime); 
+    auto& cam = GameCameraSystem::getInstance(); 
+    cam.update(deltaTime);
+    NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
+
     //GameCameraSystem::getInstance().shakeCurrentCamera(10.0f, 0.1f);
 
     if (context.character) {
@@ -112,6 +116,8 @@ void GamePlayState::draw(GameContext& context) {
     ClearBackground(WHITE);
     BeginMode2D(GameCameraSystem::getInstance().getCamera());
     //DrawBackGround(TextureManager::getInstance().background_lv1);
+    //NavGraph::getInstance().draw();
+    //NavGraph::getInstance().clear();
     DrawText("Press Enter", 500, 100, 20, BLACK);
     
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
@@ -164,16 +170,20 @@ void EditorState::handleInput(GameContext& context) {
 void EditorState::update(GameContext& context, float deltaTime) {
     handleCamera();
     LevelEditor::getInstance().update();
+    NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
+
 }
 
 void EditorState::draw(GameContext& context) {
     BeginDrawing();
-    //BeginMode2D(GameContext::getInstance().camera);
     ClearBackground(WHITE);
     DrawText("Editor Mode", 500, 100, 20, BLACK);
+    BeginMode2D(GameContext::getInstance().camera);
+    NavGraph::getInstance().draw();
+    EndMode2D();
     LevelEditor::getInstance().draw();
+    NavGraph::getInstance().clear();
     DrawFPS(20, 50);
-    //EndMode2D();
 
     EndDrawing();
 }
@@ -187,6 +197,7 @@ void GameOverState::handleInput(GameContext& context) {
 
 void GameOverState::update(GameContext& context, float deltaTime) {
     // To be implemented
+ 
 }
 
 void GameOverState::draw(GameContext& context) {

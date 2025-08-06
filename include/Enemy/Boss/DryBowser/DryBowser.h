@@ -28,12 +28,13 @@ private:
     bool isWallSticking = false;  
   
 public:
-    DryBowser(Vector2 spawnPosition, Vector2 size = {2,2});
+    DryBowser(Vector2 spawnPosition, Vector2 size = {1,1});
 
     // Game loop
     void update(float dt) override;
     void draw() override;
-
+    float getWalkVelocity() const override;
+    float getJumpVelocity() const override;
     // Collision & physics
     void handleCharacterCollision(std::shared_ptr<Object> other) override;
     void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) override;
@@ -58,6 +59,7 @@ public:
     //
 	///Behavior Tree implementation
     void walkToTarget();
+    bool moveToTarget();
     void attack() override;
     bool isAttacking(); 
 	bool isNearTarget() const;
@@ -82,6 +84,7 @@ public:
     void setGravity(float scale);
     bool canReachPlayerHeight();
     bool canUseAerialAttack() const;
+    float jumpTo(Vector2 position, bool apply) override;
 private:
 
     int lastTriggerFrame; 

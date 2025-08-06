@@ -54,7 +54,7 @@ class GameCameraSystem
 private: 
 	GameCameraSystem() =default; 
 	std::vector<std::unique_ptr<GameCamera>> cameras; 
-	int curIndex;  
+	int curIndex = 0 ;  
 	CameraTransition transition;
 public: 
 	static GameCameraSystem& getInstance() {

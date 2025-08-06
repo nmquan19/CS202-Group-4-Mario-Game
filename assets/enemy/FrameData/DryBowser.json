@@ -77,26 +77,6 @@
   ],
   
   "Run": [
-    {
-      "frame": 32,
-      "events": [
-        {
-          "eventType": "ChangeVelocity",
-          "eventPayload": "150,0"
-        }
-      ],
-      "hitboxes": []
-    },
-    {
-      "frame": 41,
-      "events": [
-        {
-          "eventType": "ChangeVelocity",
-          "eventPayload": "0,0"
-        }
-      ],
-      "hitboxes": []
-    }
   ],
   "WalkTurn":[
     {
@@ -116,7 +96,7 @@
       "events": [
         {
           "eventType": "IncrementVelocity",
-          "eventPayload": "30,0"
+          "eventPayload": "250,0"
         }
       ],
 
@@ -127,7 +107,7 @@
       "events": [
         {
           "eventType": "IncrementVelocity",
-          "eventPayload": "30,0"
+          "eventPayload": "250,0"
         }
       ],
 
@@ -206,26 +186,6 @@
 
   ],
   "Jump":[
-    {
-      "frame": 50,
-      "events": [
-        {
-          "eventType": "ChangeVelocity",
-          "eventPayload": "0,0"
-        }
-      ],
-      "hitboxes": []
-    },
-    {
-      "frame": 52,
-      "events": [
-        {
-          "eventType": "IncrementVelocity",
-          "eventPayload": "0,-700"
-        }
-      ],
-      "hitboxes": []
-    }
   ],
   "WallJump":[
     {
@@ -259,7 +219,7 @@
         },
         {
           "eventType": "IncrementVelocity",
-          "eventPayload": "500,0"
+          "eventPayload": "750,0"
         }
       ],
 
