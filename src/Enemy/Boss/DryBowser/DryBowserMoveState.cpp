@@ -2,7 +2,7 @@
 #include <string>
 #include "../../../../include/Enemy/Boss/Boss.h"
 #include "../../../../include/System/Constant.h"
-
+#include "../../../../include/Enemy/Boss/DryBowser/DryBowser.h" 
 // ----------------------------
 // BowserStandingState
 // ----------------------------
@@ -46,22 +46,31 @@ std::string DryBowserRunningState::getName() const {
 // BowserWallJumpMoveState
 // ----------------------------
 void DryBowserWallJumpMoveState::enter(Boss* boss) {
-    boss->setAnimation("WallJump");
+    boss->setAnimation("Jump");
     timer = 0.0f;
 }
 
 void DryBowserWallJumpMoveState::update(Boss* boss, float dt) {
     timer += dt;
-    auto v = boss->getVelocity();
-    v.y  *= 1+friction;
-    boss->setVelocity(v);
+	DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss); 
+    if(boss->getAnimController().getCurrentFrame()== 2) 
+    {
+		boss->setVelocity({ boss->canWallJump()*Constants::DryBowser::RUN_SPEED, boss->getVelocity().y});
+    }
+    if(boss->checkWallContact())
+    {
+		dryBowser->setWallSticking(true); 
+		dryBowser->setAnimation("WallSticking");
+    }
 }
 
 void DryBowserWallJumpMoveState::exit(Boss* boss) {
+    DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+    dryBowser->setWallSticking(false);
 }
 
 bool DryBowserWallJumpMoveState::isFinished() const {
-    return timer >= 0.6f;
+    return timer >= Constants::DryBowser::JUMP_VELOCITY / Constants::GRAVITY;
 }
 
 std::string DryBowserWallJumpMoveState::getName() const {
@@ -86,7 +95,7 @@ void DryBowserWalkTurnState::update(Boss* boss, float dt) {
 void DryBowserWalkTurnState::exit(Boss* boss) {
     boss->flipDirection();
 	Vector2 d = boss->getDirection();
-	boss->setDirection({ -d.x, d.y });
+	//boss->setDirection({ -d.x, d.y });
 }
 
 bool DryBowserWalkTurnState::isFinished() const {
@@ -100,20 +109,46 @@ std::string DryBowserWalkTurnState::getName() const
 // BowserJumpingState
 // ----------------------------
 void DryBowserJumpingState::enter(Boss* boss) {
+    
     boss->setAnimation("Jump");
 }
 
 void DryBowserJumpingState::update(Boss* boss, float dt) {
+    DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
+    if (dryBowser->getVelocity().y > 0)
+    {
+        dryBowser->changeMoveState(std::make_shared<DryBowserFallState>());
+    }
 }
 
 void DryBowserJumpingState::exit(Boss* boss) {
-    // none
-    boss->flipDirection();
-    boss->setVelocity({ -boss->getVelocity().x, boss->getVelocity().y });
+
 }
 
 bool DryBowserJumpingState::isFinished() const {
-    return false; 
+    return true; 
+}
+
+std::string DryBowserJumpingState::getName() const
+{
+    return "Jump";
+}
+void DryBowserFallState::enter(Boss* boss) {
+    boss->setAnimation("Fall");
+}
+
+void DryBowserFallState::update(Boss* boss, float dt) {
+}
+
+void DryBowserFallState::exit(Boss* boss) {
+
+}
+std::string DryBowserFallState::getName() const
+{
+    return "Fall";
+}
+bool DryBowserFallState::isFinished() const {
+    return true;
 }
 
 // ----------------------------
@@ -190,4 +225,31 @@ bool DryBowserSpinAttackState::isFinished() const {
 
 std::string DryBowserSpinAttackState::getName() const {
     return "SpinAttack";
+}
+
+
+
+
+
+
+void DryBowserIntroState::enter(Boss* boss) {
+
+    boss->setAnimation("Intro");
+    timer = 0.0f;
+}
+
+void DryBowserIntroState::update(Boss* boss, float dt) {
+    timer += dt;
+}
+
+void DryBowserIntroState::exit(Boss* boss) {
+
+}
+
+bool DryBowserIntroState::isFinished() const {
+    return timer >= Constants::DryBowser::INTRO_DURATION;
+}
+
+std::string DryBowserIntroState::getName() const {
+    return "Intro";
 }

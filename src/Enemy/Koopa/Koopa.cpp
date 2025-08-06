@@ -32,6 +32,7 @@ Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::e
 
 void Koopa::onCollision(std::shared_ptr<Object> other, Direction dir) {
     switch (other->getObjectCategory()) {
+    case ObjectCategory::INTERACTIVE:
     case ObjectCategory::BLOCK:
         handleEnvironmentCollision(other, dir);
         break;
@@ -66,12 +67,14 @@ void Koopa::draw() {
 }
 
 void Koopa::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) {
+    b2Vec2 currentVel = physicsBody->GetLinearVelocity();
     switch (dir) {
     case Direction::LEFT:
         isFacingRight = true;
+        this->physicsBody->SetLinearVelocity(b2Vec2(abs(currentVel.x), currentVel.y));
+        break;
     case Direction::RIGHT:
-        b2Vec2 currentVel = physicsBody->GetLinearVelocity();
-        physicsBody->SetLinearVelocity(b2Vec2(-currentVel.x, currentVel.y));
+        this->physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
         isFacingRight = false;
         break;
     }

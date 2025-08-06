@@ -34,6 +34,7 @@ public:
     void saveLevel(const std::string& filename);
     void loadLevel(const std::string& filename);
     void clearLevel();
+    bool isBlock(std::pair<int, int> coord);
 private:
     static LevelEditor* instance;
     std::map<std::pair<int, int>, std::stack<std::shared_ptr<Object>>> gridBlocks;

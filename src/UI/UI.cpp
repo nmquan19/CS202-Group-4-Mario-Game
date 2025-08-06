@@ -14,8 +14,10 @@ isGameOver(false) {
     menuFont = LoadFont("./assets/font_sprites.png");
 }
 
+
+
 UIManager::~UIManager() {
-    UnloadFont(menuFont);
+    //UnloadFont(menuFont);
 }
 
 

@@ -9,6 +9,7 @@
 #include "../System/InterpolationController.h"
 #include <memory>
 #include <box2d/box2d.h>
+#include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
 class EnemyState; 
 
 class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable {
@@ -59,24 +60,58 @@ public :
 	void setDirection(Vector2 newDirection) { direction = newDirection; }
 	InterpolatedAnimationController& getAnimController() { return animController; }
 	FrameInterpolatedVelocityController& getVelocityController() { return velocityController; }
-
+	bool isOnGround() const { return onGround; }
+	virtual float getWalkVelocity() const {
+		return 0;
+	}
+	virtual float getJumpVelocity() const
+	{
+		return 0;
+	}
+	float getGravityScale()
+	{
+		if (!physicsBody) return 0;
+		return physicsBody->GetGravityScale();
+	}
 public: 
+	virtual bool checkWallContact()  { return false; } ;
 	Vector2 getTargetPos() const { return targetPosition;  }
+	virtual void jump(){}
+	virtual int isNearWall() const { return false; } 
+	virtual bool canWallJump() const { return false; }
+	virtual void wallJump() {}; 
+	virtual void jumpFromWall() {}; 
+	virtual bool isPlayerAtHigherGround() const;
 	virtual void walkToTarget() {}; 
+	virtual bool moveToTarget();
 	virtual void attack() {}; 
 	virtual bool isAttacking() { return false; }	
 	virtual void patrol() {}; 
 	virtual void idle() {};
 	virtual bool isTurning() const { return false; }
 	virtual void walkTurn(){}
+	virtual float jumpTo(Vector2 position, bool apply); 
+	virtual void executeTraversal(const Edge& edge);
 	virtual void avoidDanger() {};
 	virtual bool isNearTarget() const { return false; }
+	virtual bool isInWallJump() const { return false; }
+	virtual bool isJumping() const { return false;  }
+	virtual bool isBelowWall() const { return false; } 
+protected://pathfinding
+	std::shared_ptr<NavGraphNode> currentNode = nullptr;
+	std::shared_ptr<NavGraphNode> lastTargetNode = nullptr;
+	std::vector<std::shared_ptr<NavGraphNode>> currentPath;
+	int pathIndex = 0;
+	bool isTraversing = false;
+public://pathfinding
+	void onTraversalFinished();
 
- protected:
+protected:
 	InterpolatedAnimationController animController;
 	FrameInterpolatedVelocityController velocityController;
 	std::string curAniName;
 	Vector2 targetPosition; 
+	Rectangle targetHitboxes;
 	bool isalive; 
 	float aniTimer, aniSpeed; 
     int HP ;
@@ -98,6 +133,7 @@ public:
 	Vector2 accelleration; 
 	float groundLevel = INT_MAX;
 	bool collided;
+	
 };
 
 

@@ -9,6 +9,7 @@
 #include "../../include/System/Grid.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include <utility>
+#include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
 
 Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f), collided(false) {
     isalive = true;
@@ -34,7 +35,8 @@ Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(star
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
             b2Filter filter = fixture->GetFilterData();
             filter.maskBits = static_cast<uint16>(ObjectCategory::ENEMY);
-            filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::PROJECTILE); 
+            filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
+                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
             fixture->SetFilterData(filter);
         }
     }
@@ -58,7 +60,6 @@ std::vector<ObjectCategory> Enemy::getCollisionTargets() const
 void Enemy::update(float deltaTime)
 {
     aniTimer += deltaTime;
-    DrawText(TextFormat("curFrame: x =%f", curFrame), 700, 700, 12, BLACK);
     if (aniTimer >= aniSpeed) {
         curFrame += 1;
         aniTimer = 0;
@@ -197,6 +198,14 @@ std::vector<std::pair<int, int>> Enemy::getSpriteData() {
    }
 }
 
+
+bool Enemy::isPlayerAtHigherGround() const {
+  
+    float selfBottomY = position.y + hitbox.height;
+    float targetBottomY = targetPosition.y + targetHitboxes.height +5.0f;
+
+    return selfBottomY > targetBottomY;
+}
 Vector2 Enemy::getSize() const {
     switch(getType()) {
         case EnemyType::GOOMBA:
@@ -208,4 +217,141 @@ Vector2 Enemy::getSize() const {
         default:
             return {1, 1};
     }
+}
+bool Enemy::moveToTarget() {
+    auto& nav = NavGraph::getInstance();
+    Vector2 centerPos = {
+        this->getPosition().x + this->getHitBox()[0].width / 2,
+        this->getPosition().y + this->getHitBox()[0].height / 2
+    };
+    std::shared_ptr<NavGraphNode> curNode = nav.getNearestNode(centerPos, NodeType::Ground);
+    std::shared_ptr<NavGraphNode> targetNode = nav.getNearestNode(targetPosition, NodeType::Ground);
+    if (!curNode || !targetNode)
+        return false;
+  
+    DrawText(TextFormat("Current Pos: %.2f, %.2f", getPosition().x, getPosition().y), 200, 350, 20, WHITE);
+    if (!currentPath.empty() && pathIndex < currentPath.size()) {
+        DrawText(TextFormat("Target Node: %.2f, %.2f", currentPath[pathIndex]->getPosition().x, currentPath[pathIndex]->getPosition().y), 200, 370, 20, GREEN);
+    }
+
+    bool containsCurrentNode = false;
+    for (const auto& node : currentPath) {
+        if (Vector2Distance(node->getPosition(), curNode->getPosition()) < 1.0f) {
+            containsCurrentNode = true;
+            break;
+        }
+    }
+    bool shouldReplan = (!lastTargetNode||targetNode != lastTargetNode || !containsCurrentNode);
+    if (true) {
+        currentPath = nav.getShortestPath(this, targetPosition, NodeType::Ground);
+        pathIndex = 0;
+        lastTargetNode = targetNode;
+        if (currentPath.empty()) return false; 
+        //isTraversing = false;
+    }
+    DrawText(TextFormat("IsTraversing: %d", isTraversing), 300, 300, 20, RED);
+    currentNode = curNode;
+    if (!isTraversing &&  !currentPath.empty() && pathIndex < currentPath.size() - 1) {
+        std::shared_ptr<NavGraphNode> nextNode = currentPath[pathIndex + 1];
+        if (Vector2Distance(nextNode->getPosition(), centerPos) < 0.5f /*std::max(1.f, getWalkVelocity() * GetFrameTime())*/) {
+            ++pathIndex;
+            isTraversing = false;
+        }
+        else {
+            const Edge* edge = nullptr;
+            for (const auto& e : curNode->getNeighbors()) {
+                if (e.toNode == nextNode) {
+                    edge = &e;
+                    break;
+                }
+            }
+            if (edge) {
+                executeTraversal(*edge);
+                onTraversalFinished();
+            }
+        }
+    }
+}
+
+void Enemy::executeTraversal(const Edge& edge) {
+    Vector2 fromPos = {
+           this->getPosition().x + this->getHitBox()[0].width / 2,
+           this->getPosition().y + this->getHitBox()[0].height / 2
+    };
+    Vector2 toPos = edge.toNode->getPosition();
+    switch (edge.direction) {
+    case EdgeDirection::Horizontal:
+    {
+       
+        if(curAniName != "Run" || animController.isFinished()) setAnimation("Run");
+        Vector2 dir = Vector2Normalize(Vector2Subtract(toPos, fromPos));
+        this->direction = dir;
+        float moveSpeed = getWalkVelocity() / 2;
+        float distanceToTarget = Vector2Distance(fromPos, toPos);
+        float moveStep = std::min(moveSpeed * GetFrameTime(), distanceToTarget);
+         velocity.x = moveStep * dir.x / GetFrameTime();
+ 
+        break;
+    }
+    case EdgeDirection::Jumping:
+    {
+        DrawText("Jumping", 200, 400, 30, BLUE);
+        jumpTo(toPos, true);
+        break;
+    }
+    case EdgeDirection::Falling:
+    {
+        DrawText("Falling", 200, 400, 30, BLUE);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void Enemy::onTraversalFinished() {
+    pathIndex++;
+    if(pathIndex<currentPath.size()) currentNode = currentPath[pathIndex];
+    //setPosition(currentNode->getPosition()); k
+    isTraversing = false;
+}
+float Enemy::jumpTo(Vector2 targetPos, bool apply) {
+    float gravity = 980.0f;
+    float maxWalkSpeed = getWalkVelocity();
+    float maxJumpSpeed = std::fabs(getJumpVelocity());
+    Vector2 startPos = {
+        this->getPosition().x + this->getHitBox()[0].width / 2,
+        this->getPosition().y + this->getHitBox()[0].height / 2
+    };
+    float dx = targetPos.x - startPos.x;
+    float dy = targetPos.y - startPos.y;
+    float minT = 0.01f; 
+    float maxT = 2.0f * maxJumpSpeed / gravity; 
+    float bestT = _FMAX;
+    float bestVx = 0.0f, bestVy = 0.0f;
+    bool found = false;
+    float step = 0.01f;
+    int count = 0; 
+    for (float t = minT; t <= maxT; t += step) {
+        float vy = (dy + 0.5f * gravity * t * t) / t;
+        float vx = dx / t;
+        if (std::fabs(vx) <= maxWalkSpeed && std::fabs(vy) <= maxJumpSpeed) {
+            if (count == 0)
+            {
+                count++;
+                continue;
+            }
+            bestT = t;
+            bestVx = vx;
+            bestVy = vy;
+            found = true;
+            break; 
+        }
+    }
+
+    if (found && apply) {
+        this->velocity = { bestVx, bestVy };
+    }
+    
+    return found ? bestT : _FMAX;
 }
