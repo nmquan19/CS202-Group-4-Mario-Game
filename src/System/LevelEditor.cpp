@@ -49,7 +49,7 @@ void LevelEditor::update() {
 
 void LevelEditor::draw() {
     BeginMode2D(GameContext::getInstance().camera);
-    if (!clearing) {
+    if (!clearing) {    
         for (auto& it : gridBlocks) {
             Object* obj = it.second.top().get();
             if (!obj) continue;

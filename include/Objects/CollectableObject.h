@@ -36,7 +36,7 @@ public:
 	void setCollectable(bool c);
 	bool isCollectable() const;
     ObjectType getObjectType() const;
-    virtual void onRelease() {} 
+    //virtual void onRelease() {} 
 protected:
 	bool canbeCollected = true; 
     Texture2D texture;   
@@ -44,3 +44,5 @@ protected:
 	Rectangle hitBox;
     std::shared_ptr<TriggerZone> triggerZone = nullptr;
 };
+
+

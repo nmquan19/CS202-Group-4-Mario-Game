@@ -4,6 +4,7 @@
 class Spring : public InteractiveObject {
 public:
 	Spring(Vector2 position, Vector2 size);
+	virtual ~Spring();
 
 	void update(float deltaTime) override;
 	void draw() override;

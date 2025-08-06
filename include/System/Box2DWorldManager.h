@@ -17,6 +17,7 @@ public:
 	b2Body* createCharacterBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createBlockBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createEnemyBody(Vector2 pos, Vector2 hitboxSize);
+	b2Body* createItemBody(Vector2 pos, Vector2 hitboxSize);
 
 	void BeginContact(b2Contact* contact) override;
 	void EndContact(b2Contact* contact) override;

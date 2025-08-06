@@ -28,17 +28,18 @@ Goomba::Goomba(Vector2 startPos, Vector2 size) : Enemy(startPos,TextureManager::
 
 void Goomba::onCollision(std::shared_ptr<Object> other, Direction dir) {
     switch (other->getObjectCategory()) {
-        case ObjectCategory::BLOCK:
-            handleEnvironmentCollision(other, dir);
-            break;
-        case ObjectCategory::PROJECTILE:
-            this->changeState(&GoombaKnockState::GetInstance());
-            break;
-        case ObjectCategory::CHARACTER:
-            if (dir == Direction::UP) { 
-                this->changeState(&GoombaStompedState::GetInstance());
-            } 
-            break;
+    case ObjectCategory::INTERACTIVE:
+    case ObjectCategory::BLOCK:
+        handleEnvironmentCollision(other, dir);
+        break;
+    case ObjectCategory::PROJECTILE:
+        this->changeState(&GoombaKnockState::GetInstance());
+        break;
+    case ObjectCategory::CHARACTER:
+        if (dir == Direction::UP) { 
+            this->changeState(&GoombaStompedState::GetInstance());
+        } 
+        break;
     }
 }
 
@@ -57,12 +58,14 @@ void Goomba::draw() {
 }
 
 void Goomba::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) {
+    b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
     switch (dir) {
     case Direction::LEFT:
         isFacingRight = true;
+        physicsBody->SetLinearVelocity(b2Vec2(abs(currentVel.x), currentVel.y));
+        break;
     case Direction::RIGHT:
-        b2Vec2 currentVel = physicsBody->GetLinearVelocity();
-        physicsBody->SetLinearVelocity(b2Vec2(-currentVel.x, currentVel.y));
+        physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
         isFacingRight = false;
         break;
     }

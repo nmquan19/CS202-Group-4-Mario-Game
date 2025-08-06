@@ -3,37 +3,43 @@
 #include "../../include/System/Grid.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/Game/GameContext.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include <raymath.h>
-#include <memory> // Include this header for std::enable_shared_from_this
+#include <memory> 
 
-Item::Item() {
-	
-}
+Item::Item() {}
 
 Item::Item(Vector2 startPos)
     : position(startPos), active(true), scale(1.0f),
     velocity({ 0, 0 }),
     animation(new Anima(0, 3, 0.08f))
 {
-
     this->spritebox = { 0, 0, 32, 32 };
-    this->size = { 1, 1};
+    this->size = { 1, 1 };
     this->hitbox = { position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
+    physicsBody = Box2DWorldManager::getInstance().createItemBody(position, { hitbox.width, hitbox.height });
+    if (physicsBody) {
+        std::cout << "Item\n";
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+            std::cout << "Item1\n";
+            b2Filter filter = fixture->GetFilterData();
+            filter.maskBits = static_cast<uint16>(ObjectCategory::ITEM);
+            filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER);
+            fixture->SetFilterData(filter);
+        }
+    }
 }
 
 Item::~Item() {
-    // PhysicsManager::getInstance().markForDeletion(this);
     delete animation;
+    if (physicsBody) {
+        Box2DWorldManager::getInstance().destroyBody(physicsBody);
+        physicsBody = nullptr;
+    }
 }
 
 void Item::update(float deltaTime) {
-    /*velocity.y += gravity * deltaTime;
-    position.y += velocity.y * deltaTime;
-    if (position.y >= groundY) {
-        position.y = groundY;
-        velocity.y = 0;
-    }*/
-	//std::cout << deltaTime << " " << velocity.y << " " << position.y << std::endl;
     animation->Update();
 }
 
@@ -47,7 +53,6 @@ void Item::draw() {
         0,
         WHITE
     );
-    DrawText(TextFormat("hitbot: %f %f", hitbox.width, hitbox.height), 50, 50, 50, BLACK);
 }
 
 void Item::draw(Texture2D texture) {
