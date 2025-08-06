@@ -368,7 +368,7 @@ void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direct
 
 void Character::handleSpringCollision(std::shared_ptr<Spring> other, Direction direction) {
 	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
-	if (direction == Direction::DOWN && currentVel.y > 0) {
+	if (direction == Direction::DOWN) {
 		float mass = this->physicsBody->GetMass();
 		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Spring::BOUNCE_VELOCITY - currentVel.y)), true);
 		changeState(JumpingState::getInstance());

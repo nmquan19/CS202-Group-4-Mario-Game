@@ -55,9 +55,9 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().setEditMode(false);
             
             // Create test blocks for Box2D physics testing
-            //createTestBlocks();
+            createTestBlocks();
             
-            LevelEditor::getInstance().loadLevel("testlevel.json");
+            //LevelEditor::getInstance().loadLevel("testlevel.json");
             character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 400 });
             if (character) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
@@ -214,12 +214,8 @@ void GameContext::createTestBlocks() {
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({10.0f, 11.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 14.0f}), {1, 1});
-    addObject(ItemType::FIRE_FLOWER, GridSystem::getWorldPosition({ 20.0f, 9.0f }), { 1, 1 });
-    addObject(ItemType::MUSHROOM, GridSystem::getWorldPosition({ 21.0f, 9.0f }), { 1, 1 });
-    addObject(ItemType::ONE_UP, GridSystem::getWorldPosition({ 22.0f, 9.0f }), { 1, 1 });
-    addObject(ItemType::STAR, GridSystem::getWorldPosition({ 23.0f, 9.0f }), { 1, 1 });
-    //addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 10.0f, 10.0f }), { 1, 1 });
-
+    addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 1, 1 });
+    addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), {1, 1});
     addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
     //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1,1});
     
