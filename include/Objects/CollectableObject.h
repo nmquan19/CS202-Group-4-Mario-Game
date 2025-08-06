@@ -44,3 +44,5 @@ protected:
 	Rectangle hitBox;
     std::shared_ptr<TriggerZone> triggerZone = nullptr;
 };
+
+

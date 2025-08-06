@@ -18,14 +18,13 @@
 KoopaShell::KoopaShell(KoopaShellType type, Vector2 pos, Vector2 sz): type(type), spritebox({0,0,0,0}), CollectableObject(pos, sz, TextureManager::enemyTextures), aniSpeed(0.2f), aniTimer(0) {   
     physicsBody = Box2DWorldManager::getInstance().createEnemyBody(position, { sz.x * Constants::TILE_SIZE, sz.y * Constants::TILE_SIZE});
     if (physicsBody) {
-        std::cout << "ok" << std::endl;
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
-        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
-            b2Filter filter = fixture->GetFilterData();
-            filter.maskBits = static_cast<uint16>(ObjectCategory::SHELL);
-            filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::PROJECTILE);
-            fixture->SetFilterData(filter);
-        }
+        //for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+        //    b2Filter filter = fixture->GetFilterData();
+        //    filter.maskBits = static_cast<uint16>(ObjectCategory::SHELL);
+        //    filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::PROJECTILE);
+        //    fixture->SetFilterData(filter);
+        //}
     }
     currentState = &KoopaShellIdleState::getInstance();
     currentState->enter(this);

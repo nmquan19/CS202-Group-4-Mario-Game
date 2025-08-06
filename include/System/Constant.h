@@ -44,10 +44,11 @@ namespace Constants {
 	}
     namespace Character {
         constexpr float BOUNCE_AFTER_STRIKE_VELOCITY = 7.0f;
-        constexpr float INVINCIBLE_TIME = 1.0f;
-        constexpr float REVIVE_TIME = 2.0f;
-        constexpr CharacterStats MARIO_STATS = {3.5f, 11.0f};
-        constexpr CharacterStats LUIGI_STATS = {2.5f, 15.0f};
+        constexpr float INVINCIBLE_TIME_AFTER_STRIKE = 0.2f;
+        constexpr float STUNNED_STATE_DURATION = 1.0f;
+        constexpr float REVIVE_TIME = 3.0f;
+        constexpr CharacterStats MARIO_STATS = {3.5f, 10.0f};
+        constexpr CharacterStats LUIGI_STATS = {2.5f, 12.0f};
         const std::vector<std::vector<Rectangle>> MARIO_FRAME_DATA = {
             {{11, 23, 12, 15}}, // idle state
             {{118, 23, 12, 15}, {149, 22, 15, 16}}, // moving state
@@ -77,7 +78,7 @@ namespace Constants {
         constexpr float TAKE_DAMAGE_DURATION = 0.5f; 
     } 
     namespace Spring {
-        constexpr float BOUNCE_VELOCITY = -800.0f;
+        constexpr float BOUNCE_VELOCITY = 14.0f;
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };
         constexpr float BOUNCE_DURATION = 1.4f;
     }

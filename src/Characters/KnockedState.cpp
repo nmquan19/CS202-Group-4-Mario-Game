@@ -23,6 +23,7 @@ void KnockedState::update(Character* character, float deltaTime) {
 }
 
 void KnockedState::exit(Character* character) {
+	std::cout << character->reviveTimer << std::endl;
 	character->hp = 1;
 	b2Fixture* fixtures = character->physicsBody->GetFixtureList();
 	for (b2Fixture* fixture = fixtures; fixture != nullptr; fixture = fixture->GetNext()) {

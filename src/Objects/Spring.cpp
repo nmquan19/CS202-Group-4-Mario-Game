@@ -1,18 +1,36 @@
 #include "../../include/Objects/Spring.h"
 #include "../../include/System/Constant.h"
 #include "../../include/System/TextureManager.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include <iostream>
 
 Spring::Spring(Vector2 position, Vector2 size) : InteractiveObject(position, size) {
-	isBouncing = false;
-	bounceTimer = 0.0f;
-	aniTimer = 0.0f;
-	aniSpeed = 0.2f;
-	frameData = { {1, 467, 16, 16}, {18, 471, 16, 12}, {35, 476, 16, 7} };
-	currentFrame = 0;
-	spriteRec = frameData[0];
-	hitBox = { position.x, position.y, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE };
-	bottomY = position.y + size.y * Constants::TILE_SIZE;
+	this->isBouncing = false;
+	this->bounceTimer = 0.0f;
+	this->aniTimer = 0.0f;
+	this->aniSpeed = 0.2f;
+	this->frameData = { {1, 467, 16, 16}, {18, 471, 16, 12}, {35, 476, 16, 7} };
+	this->currentFrame = 0;
+	this->spriteRec = frameData[0];
+	this->physicsBody = Box2DWorldManager::getInstance().createBlockBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
+	if (this->physicsBody) {
+		this->physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+		for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+			b2Filter filter = fixture->GetFilterData();
+			filter.maskBits = static_cast<uint16>(ObjectCategory::INTERACTIVE);
+			filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::ENEMY) |
+				static_cast<uint16>(ObjectCategory::INTERACTIVE) | static_cast<uint16>(ObjectCategory::SHELL) |
+				static_cast<uint16>(ObjectCategory::PROJECTILE);
+			fixture->SetFilterData(filter);
+		}
+	}
+}
+
+Spring::~Spring() {
+	if (this->physicsBody) {
+		Box2DWorldManager::getInstance().destroyBody(physicsBody);
+		physicsBody = nullptr;
+	}
 }
 
 void Spring::update(float deltaTime) {
@@ -34,7 +52,7 @@ void Spring::update(float deltaTime) {
 	else {
 		currentFrame = 0;
 	}
-	updateHitBox();
+	//updateHitBox();
 }
 
 void Spring::draw() {
@@ -46,8 +64,11 @@ void Spring::draw() {
 void Spring::onCollision(std::shared_ptr<Object> other, Direction direction) {
 	switch (other->getObjectCategory()) {
 	case ObjectCategory::CHARACTER:
-		isBouncing = true;
-		currentFrame = 0;
+		if (direction == Direction::UP) {
+			setBouncing(true);
+			setAniTimer(0.0f);
+			setBounceTimer(0.0f);
+		}
 		break;
 	}
 }

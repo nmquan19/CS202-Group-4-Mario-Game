@@ -227,6 +227,13 @@
           },
           {
                "gridX": 10,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "SPRING"
+          },
+          {
+               "gridX": 10,
                "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -357,6 +364,13 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
+          },
+          {
+               "gridX": 15,
+               "gridY": 12,
+               "sizeX": 0.75,
+               "sizeY": 1.0,
+               "type": "GREEN_KOOPA"
           },
           {
                "gridX": 15,

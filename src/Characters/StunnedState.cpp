@@ -11,7 +11,7 @@ void StunnedState::enter(Character* character) {
 	character->aniSpeed = 0.1f;
 	character->aniTimer = 0.0f;
 	character->setCurrentStateRow(3);
-	character->invincibleTimer = Constants::Character::INVINCIBLE_TIME;
+	character->invincibleTimer = 0.75f;
 }
 
 void StunnedState::update(Character* character, float deltaTime) {

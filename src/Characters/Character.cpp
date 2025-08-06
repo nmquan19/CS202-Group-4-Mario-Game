@@ -153,8 +153,9 @@ bool Character::isOnGround() const{
 
 void Character::jump(){
 	if (isOnGround()) {
+		b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
 		float mass = this->physicsBody->GetMass();
-		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, -mass * jumpVel), true);
+		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-jumpVel - currentVel.y)), true);
 		groundContactCount = 0;
 	}
 }
@@ -343,14 +344,12 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other, Direct
 }
 
 void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction direction) {
-	if (direction == Direction::DOWN && physicsBody->GetLinearVelocity().y > 0) {
+	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+	if (direction == Direction::DOWN) {
 		float mass = physicsBody->GetMass();
-		physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, -mass * Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY), true);
+		physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY - currentVel.y)), true);
 		changeState(JumpingState::getInstance());
-		//invincibleTimer = 0.2f;
-		if (auto enemy = dynamic_cast<Enemy*>(other.get())) {
-			enemy->takeDamage(1);
-		}
+		invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_STRIKE;
 	}
 	else {
 		takeDamage(1);
@@ -368,12 +367,11 @@ void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direct
 }
 
 void Character::handleSpringCollision(std::shared_ptr<Spring> other, Direction direction) {
-	if (direction == Direction::DOWN && velocity.y > 0) {
-		velocity.y = Constants::Spring::BOUNCE_VELOCITY;
+	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+	if (direction == Direction::DOWN && currentVel.y > 0) {
+		float mass = this->physicsBody->GetMass();
+		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Spring::BOUNCE_VELOCITY - currentVel.y)), true);
 		changeState(JumpingState::getInstance());
-		other->setBouncing(true);
-		other->setAniTimer(0.0f);
-		other->setBounceTimer(0.0f);
 	}
 }
 

@@ -16,7 +16,8 @@ void KoopaShellIdleState::enter(KoopaShell* shell) {
     for (b2Fixture* fixture = shell->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
         b2Filter filter = fixture->GetFilterData();
         filter.maskBits = static_cast<uint16>(ObjectCategory::SHELL);
-        filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::PROJECTILE);
+        filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | 
+            static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
         fixture->SetFilterData(filter);
     }
 }
@@ -69,7 +70,9 @@ void KoopaShellMovingState::enter(KoopaShell* shell) {
     for (b2Fixture* fixture = shell->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
         b2Filter filter = fixture->GetFilterData();
         filter.maskBits = static_cast<uint16>(ObjectCategory::PROJECTILE);
-        filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::ENEMY);
+        filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
+            static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::ENEMY) |
+            static_cast<uint16>(ObjectCategory::INTERACTIVE);
         fixture->SetFilterData(filter);
     }
 }
@@ -102,6 +105,7 @@ void KoopaShellMovingState::onCollision(KoopaShell* shell, std::shared_ptr<Objec
 
     switch (other->getObjectCategory()) {
     case ObjectCategory::CHARACTER:
+        shell->physicsBody->SetLinearVelocity(b2Vec2(0, currentVel.y));
         shell->changeState(&KoopaShellIdleState::getInstance());
         break;
     }
@@ -122,7 +126,8 @@ void KoopaShellRevivingState::enter(KoopaShell* shell) {
     for (b2Fixture* fixture = shell->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
         b2Filter filter = fixture->GetFilterData();
         filter.maskBits = static_cast<uint16>(ObjectCategory::BLOCK);
-        filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::SHELL);
+        filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | 
+            static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::SHELL);
         fixture->SetFilterData(filter);
     }
 }

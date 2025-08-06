@@ -120,20 +120,8 @@ std::vector<std::vector<Rectangle>> ObjectFactory::getFrameData(CharacterType ty
     }
 }
 std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vector2 gridPos, Vector2 size) {
-    /*return createSpecificKoopaShell(type, gridPos, size);*/
     return std::make_unique<KoopaShell>(type, gridPos, size);
 }
-
-//std::unique_ptr<KoopaShell> ObjectFactory::createSpecificKoopaShell(KoopaShellType type, Vector2 startPosition, Vector2 size) {
-//    switch (type) {
-//    case KoopaShellType::GREEN_KOOPA_SHELL:
-//       return std::make_unique<KoopaGreenShell>(startPosition, size);
-//    case KoopaShellType::RED_KOOPA_SHELL:
-//        return std::make_unique<KoopaRedShell>(startPosition, size);
-//    default:
-//        return nullptr;
-//    }
-//}
 
 std::unique_ptr<Object> ObjectFactory::createSpring(Vector2 position, Vector2 size) {
     return std::make_unique<Spring>(position, size);
