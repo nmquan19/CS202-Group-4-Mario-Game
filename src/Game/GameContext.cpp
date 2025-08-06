@@ -19,6 +19,7 @@
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
     camera.rotation = 0.0f;
+	camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f }; 
     camera.zoom = 1.0f;
 }
 
@@ -215,7 +216,9 @@ void GameContext::createTestBlocks() {
     addObject(ItemType::ONE_UP, GridSystem::getWorldPosition({ 22.0f, 9.0f }), { 1, 1 });
     addObject(ItemType::STAR, GridSystem::getWorldPosition({ 23.0f, 9.0f }), { 1, 1 });
     //addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 10.0f, 10.0f }), { 1, 1 });
-    //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1, 1});
+
+    addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
+    //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1,1});
     
     spawnObject();
 }

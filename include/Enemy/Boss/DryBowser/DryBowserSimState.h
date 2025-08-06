@@ -13,8 +13,15 @@ public:
     bool isInAir = false;
     bool isNearWall = false;
 
+
     int bossHP = 100;
-    int playerHP = 100;
+    int playerHP = 1;
+    
+	bool IsPlayerInSpinAttackRange = false;  
+	bool isPlayerInMeleeRange = false;   
+	bool isPlayerInFireBreathRange = false;
+    bool isPlayerAtHigherGround = false; 
+
     bool playerInRange = false;
     bool canAttack = true;
     bool isVulnerable = true;

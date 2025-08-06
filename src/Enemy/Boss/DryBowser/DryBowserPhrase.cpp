@@ -26,7 +26,7 @@ DryBowserPhase1BT::DryBowserPhase1BT() {
 }
 void DryBowserPhase1BT::enter(Boss* boss)
 {
-
+	this->changeMoveState(boss, std::make_shared<DryBowserIntroState>());
 }
 void DryBowserPhase1BT::exit(Boss* boss)
 {

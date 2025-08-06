@@ -45,10 +45,15 @@
     <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
     <ClCompile Include="src\Item\Star\Star.cpp" />
     <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
+    <ClCompile Include="src\System\CameraSystem.cpp" />
     <ClCompile Include="include\System\Box2DWorldManager.h" />
     <ClCompile Include="src\System\Box2DWorldManager.cpp" />
     <ClCompile Include="src\Characters\KnockedState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
+    <ClCompile Include="src\System\PhysicsManager.cpp" />
+    <ClCompile Include="src\System\QuadTree.cpp" />
+    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -110,8 +115,11 @@
     <ClInclude Include="include\Item\Star\Star.h" />
     <ClInclude Include="include\Item\One_Up\One_Up.h" />
     <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
+    <ClInclude Include="include\System\CameraSystem.h" />
+    <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
     <ClInclude Include="include\Characters\KnockedState.h" />
     <ClInclude Include="include\Characters\StunnedState.h" />
+    <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">
@@ -124,12 +132,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Scenes\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\System\QuadTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\System\PhysicsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\UI\Menu.cpp">
@@ -239,7 +241,6 @@
     <Media Include="assets\sound\theme1.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\button\board.png" />
     <Image Include="assets\font_sprites.png" />
     <Image Include="assets\Super Mario Bros.png" />
     <Image Include="assets\button\check.png" />
@@ -248,10 +249,5 @@
     <Image Include="assets\button\cross_selected.png" />
     <Image Include="assets\button\home.png" />
     <Image Include="assets\button\option.png" />
-    <Image Include="assets\button\play.png" />
-    <Image Include="assets\button\return.png" />
-    <Image Include="assets\button\return_selected.png" />
-    <Image Include="assets\button\setting.png" />
-    <Image Include="assets\button\setting_selected.png" />
   </ItemGroup>
 </Project>

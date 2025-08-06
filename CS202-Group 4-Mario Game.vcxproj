@@ -39,6 +39,7 @@
     <ClInclude Include="include\Enemy\Boss\SimulateState.h" />
     <ClInclude Include="include\Enemy\Boss\WorldState.h" />
     <ClInclude Include="include\Enemy\Enemy.h" />
+    <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
     <ClInclude Include="include\Enemy\EnemyState.h" />
     <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
     <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
@@ -66,6 +67,7 @@
     <ClInclude Include="include\Objects\Spring.h" />
     <ClInclude Include="include\Objects\SpringState.h" />
     <ClInclude Include="include\Scenes\Scene.h" />
+    <ClInclude Include="include\System\CameraSystem.h" />
     <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\FrameData.h" />
     <ClInclude Include="include\System\Grid.h" />
@@ -91,11 +93,13 @@
     <ClCompile Include="src\Characters\MovingState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
     <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
     <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
     <ClCompile Include="src\Enemy\Enemy.cpp" />
+    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
     <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
     <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
     <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
@@ -119,10 +123,13 @@
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
     <ClCompile Include="src\Objects\Spring.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
+    <ClCompile Include="src\System\CameraSystem.cpp" />
     <ClCompile Include="src\System\Box2DWorldManager.cpp" />
     <ClCompile Include="src\System\FrameData.cpp" />
     <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />
+    <ClCompile Include="src\System\PhysicsManager.cpp" />
+    <ClCompile Include="src\System\QuadTree.cpp" />
     <ClCompile Include="src\System\Resources.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
     <ClCompile Include="src\UI\Button.cpp" />
@@ -259,11 +266,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\84775\Downloads\vcpkg\installed\x64-windows\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\84775\Downloads\vcpkg\installed\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -275,11 +284,13 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\84775\Downloads\vcpkg\installed\x64-windows\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\84775\Downloads\vcpkg\installed\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
