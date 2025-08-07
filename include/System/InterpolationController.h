@@ -95,11 +95,20 @@ namespace Easing {
     inline float easeInOut(float t) {
         return t < 0.5f ? 2 * t * t : 1 - std::pow(-2 * t + 2, 2) / 2;
     }
+    inline float easeDip(float t) {
+        return 4 * (t - 0.5f) * (t - 0.5f); 
+    }
+    inline float EaseInOutSine(float t) {
+        return -(cosf(PI * t) - 1.0f) / 2.0f;
+    };
     inline std::function<float(float)> getEasingFunction(const std::string& ease) {
         if (ease == "linear") return linear;
         else if (ease == "easeIn") return easeIn;
         else if (ease == "easeOut") return easeOut;
         else if (ease == "easeInOut") return easeInOut;
+        else if (ease == "easeDip") return easeDip;
+        else if(ease == "easeInOutSine") return EaseInOutSine;
         return linear;
     }
+  
 }

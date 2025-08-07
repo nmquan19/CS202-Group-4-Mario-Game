@@ -2,8 +2,9 @@
 #include <memory>
 #include <vector>
 #include <initializer_list>
-
-
+#include <functional>
+#include <string>
+#include "SimulateState.h"
 class Enemy;
 enum class NodeStatus{
     Success,
@@ -31,7 +32,19 @@ public:
 	std::vector<std::shared_ptr<BehaviorTreeNode>> getChildren() const { return children; }
     void reset() override;  
 };
+class ReactiveSequenceNode : public BehaviorTreeNode {
+private:
+    std::vector<std::shared_ptr<BehaviorTreeNode>> children;
+    size_t current = 0;
 
+public:
+    ReactiveSequenceNode() = default;
+    ReactiveSequenceNode(std::initializer_list<std::shared_ptr<BehaviorTreeNode>> nodes);
+    NodeStatus tick(Enemy* enemy, float dt) override;
+    void addChild(std::shared_ptr<BehaviorTreeNode> child);
+    std::vector<std::shared_ptr<BehaviorTreeNode>> getChildren() const { return children; }
+    void reset() override;
+};
 class SelectorNode : public BehaviorTreeNode {
 private:
     std::vector<std::shared_ptr<BehaviorTreeNode>> children;
@@ -47,6 +60,46 @@ public:
 
 };
 
+class ReactiveFallBackNode : public BehaviorTreeNode {
+private:
+    std::vector<std::shared_ptr<BehaviorTreeNode>> children;
+
+public:
+    ReactiveFallBackNode() = default;
+    ReactiveFallBackNode(std::initializer_list<std::shared_ptr<BehaviorTreeNode>> nodes);
+    NodeStatus tick(Enemy* enemy, float dt) override;
+    void addChild(std::shared_ptr<BehaviorTreeNode> child);
+    void reset() override;
+    std::vector<std::shared_ptr<BehaviorTreeNode>> getChildren() const { return children; }
+
+};
+
+namespace UtilityScorers {
+
+    using ScorerFunc = std::function<float(BaseSimState&)>;
+    extern std::unordered_map<std::string, ScorerFunc> registry;
+    void registerScorer(const std::string& name, ScorerFunc func);
+    ScorerFunc get(const std::string& name);
+    void registerDefaults();
+}
+class UtilitySelector : public BehaviorTreeNode {
+public:
+    using ScorerFunc = std::function<float(BaseSimState&)>;
+
+    UtilitySelector() = default;
+
+    NodeStatus tick(Enemy* boss, float dt) override;
+    void reset() override;
+
+    void addChild(std::shared_ptr<BehaviorTreeNode> child);
+    void addScorer(ScorerFunc scorer);
+
+    std::vector<std::shared_ptr<BehaviorTreeNode>> getChildren() const { return children; }
+
+private:
+    std::vector<std::shared_ptr<BehaviorTreeNode>> children;
+    std::vector<ScorerFunc> scorers;
+};
 
 
 class DecoratorNode : public BehaviorTreeNode
@@ -219,4 +272,71 @@ class IsTakingDamageNode : public ActionNode {
 public:
     IsTakingDamageNode() : ActionNode() {}
 	NodeStatus tick(Enemy* boss, float dt) override;    
+};
+
+class IsPlayerHigherNode : public ActionNode {
+public:
+    IsPlayerHigherNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+
+class IsFallingNode : public ActionNode {
+    public:
+    IsFallingNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+class IsInIntroNode : public ActionNode {
+public:
+    IsInIntroNode() : ActionNode() {}
+	NodeStatus tick(Enemy* boss, float dt) override;
+};
+class CanWallJumpNode : public ActionNode {
+public:
+    CanWallJumpNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+
+};
+class WallJumpNode : public ActionNode {
+public:
+    WallJumpNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+}; 
+class JumpNode : public ActionNode {
+public:
+    JumpNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+class IsInAirNode : public ActionNode {
+public:
+    IsInAirNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override; 
+}; 
+class AerialAttackNode : public ActionNode
+{
+public: 
+    AerialAttackNode(): ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;  
+};
+class IsInWallJumpNode : public ActionNode {
+public:
+    IsInWallJumpNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+class CanReachPlayerHeightNode : public ActionNode
+{
+    CanReachPlayerHeightNode(): ActionNode(){}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+class CanUseAerialAttackNode : public ActionNode
+{
+public:
+    CanUseAerialAttackNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+
+class MoveToTargetNode : public ActionNode
+{
+public:
+    MoveToTargetNode() : ActionNode(){}
+    NodeStatus tick(Enemy* boss, float dt) override;
 };

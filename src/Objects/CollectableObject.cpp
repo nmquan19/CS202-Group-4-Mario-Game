@@ -3,7 +3,6 @@
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
 #include "../../include/Enemy/TriggerZone.h"
-#include "../../include/System/PhysicsManager.h"
 #include "../../include/Game/GameContext.h"
 #include <raylib.h>
 #include "../../include/System/Grid.h"
@@ -16,7 +15,8 @@ CollectableObject::CollectableObject(Vector2 pos, Vector2 sz,Texture2D texture):
     size = sz;
 	hitBox = Rectangle{ pos.x, pos.y, sz.x*GridSystem::GRID_SIZE, sz.y * GridSystem::GRID_SIZE };
     triggerZone = std::make_unique<TriggerZone>(this, pos, sz);
-    PhysicsManager::getInstance().addObject(triggerZone);
+    // add trigger zone
+    //PhysicsManager::getInstance().addObject(triggerZone);
     GameContext::getInstance().Objects.push_back(triggerZone);
     this->active = true;
 }
@@ -24,6 +24,7 @@ CollectableObject::CollectableObject(Vector2 pos, Vector2 sz,Texture2D texture):
 CollectableObject::~CollectableObject() {
     this->active = false;
 }
+
 void CollectableObject::update(float deltaTime) {
     if (triggerZone) {
         triggerZone->update(deltaTime);
@@ -50,7 +51,7 @@ std::vector<ObjectCategory> CollectableObject::getCollisionTargets() const {
     return {};
 }
 
-void CollectableObject::checkCollision(const std::vector<std::shared_ptr<Object>>&) {
+void CollectableObject::onCollision(std::shared_ptr<Object> other, Direction direction) {
 }
 
 void CollectableObject::setActive(bool val) {

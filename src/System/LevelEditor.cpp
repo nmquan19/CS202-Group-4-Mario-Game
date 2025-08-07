@@ -38,7 +38,9 @@ LevelEditor::~LevelEditor() {
     }
     gridBlocks.clear();
 }
+
 void LevelEditor::update() {
+
     if (editMode) {
         palette.handleSelection();
         handleMouseInput();
@@ -47,7 +49,7 @@ void LevelEditor::update() {
 
 void LevelEditor::draw() {
     BeginMode2D(GameContext::getInstance().camera);
-    if (!clearing) {
+    if (!clearing) {    
         for (auto& it : gridBlocks) {
             Object* obj = it.second.top().get();
             if (!obj) continue;
@@ -69,7 +71,6 @@ void LevelEditor::draw() {
     }
     if (editMode) {
         GridSystem::drawGrid(Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT);
-
         Vector2 sMousePos = GetMousePosition();
         Vector2 wMousePos = GetScreenToWorld2D(sMousePos, GameContext::getInstance().camera);
         Vector2 gridCoord = GridSystem::getGridCoord(wMousePos);
@@ -159,32 +160,40 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             if (newBlock) {
                 gridBlocks[key].push(newBlock);
             }
+            GameContext::getInstance().Objects.push_back(newBlock);
         }
         else if constexpr (std::is_same_v<T, EnemyType>) {
             Vector2 size = { 1,1 };
-            if (actualType == EnemyType::DRY_BOWSER) size = { 2,2 };
+            if (actualType == EnemyType::DRY_BOWSER) size = {1.5,1.5};
             std::shared_ptr<Object> newEnemy = ObjectFactory::createEnemy(actualType, GridSystem::getWorldPosition(gridCoord), size);
             if (newEnemy) {
                 gridBlocks[key].push(newEnemy);
             }
+            GameContext::getInstance().Objects.push_back(newEnemy);
+
         }
         else if constexpr (std::is_same_v<T, CharacterType>) {
             std::shared_ptr<Object> newChar = ObjectFactory::createCharacter(actualType, GridSystem::getWorldPosition(gridCoord));
             if (newChar) {
                 gridBlocks[key].push(newChar);
             }
+            GameContext::getInstance().Objects.push_back(newChar);
+
         }
         else if constexpr (std::is_same_v<T, InteractiveType>) {
             std::shared_ptr<Object> newInter = ObjectFactory::createSpring(GridSystem::getWorldPosition(gridCoord));
             if (newInter) {
                 gridBlocks[key].push(newInter);
             }
+            GameContext::getInstance().Objects.push_back(newInter);
         }
         else if constexpr (std::is_same_v<T, ItemType>) {
             std::shared_ptr<Object> newItem = ObjectFactory::createItem(actualType, GridSystem::getWorldPosition(gridCoord), {1, 1});
             if (newItem) {
                 gridBlocks[key].push(newItem);
             }
+            GameContext::getInstance().Objects.push_back(newItem);
+
         }
     }, type);
 }
@@ -282,13 +291,9 @@ void LevelEditor::loadLevel(const std::string& filename) {
                     float gridY = objData["gridY"];
                     std::string typeStr = objData["type"];
                     ObjectType objType = stringToObjectType(typeStr);
-                    placeObject(objType, {gridX, gridY});
+                   placeObject(objType, {gridX, gridY});
                     float sizeX = objData["sizeX"];
                     float sizeY = objData["sizeY"];
-                    if (GameContext::getInstance().currentState && GameContext::getInstance().currentState == GameContext::getInstance().gamePlayState) {
-                        Vector2 worldPos = GridSystem::getWorldPosition({gridX, gridY});
-                        GameContext::getInstance().addObject(objType, worldPos, {sizeX, sizeY});
-                    }
                     loadedCount++;
                 } catch (const std::exception& e) {
                     std::cerr << "Error loading object: " << e.what() << "\n";
@@ -312,7 +317,6 @@ void LevelEditor::clearLevel() {
     gridBlocks.clear();
     clearing = false;
 }
-
 std::string LevelEditor::objectTypeToString(const ObjectType& type) {
     if (std::holds_alternative<BlockType>(type)) {
         BlockType blockType = std::get<BlockType>(type); 
@@ -400,4 +404,18 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "FIRE_FLOWER") return ItemType::FIRE_FLOWER;
     return BlockType::GROUND;
 }
+bool LevelEditor::isBlock(std::pair<int, int> coord)
+{
+    auto it = gridBlocks.find(coord);
+    if (it == gridBlocks.end()) return false;
 
+    std::stack<std::shared_ptr<Object>> copy = it->second;
+    while (!copy.empty()) {
+        std::shared_ptr<Object> obj = copy.top();
+        copy.pop();
+        if (obj && (obj->getObjectCategory()==ObjectCategory::BLOCK)) {
+            return true;
+        }
+    }
+    return false;
+}

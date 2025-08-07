@@ -7,9 +7,7 @@ void IdleState::enter(Character* character) {
 	character->setAniTime(0);
 	character->setAniSpeed(0.3f);
 	character->setCurrentStateRow(0);
-
-	Vector2 currentVel = character->getVelocity();
-	character->setVelocity({0, currentVel.y});
+	character->physicsBody->SetLinearVelocity(b2Vec2(0, 0));
 }
 
 void IdleState::update(Character* character, float deltaTime) {

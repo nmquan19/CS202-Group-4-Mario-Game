@@ -3,7 +3,7 @@
 #include "ObjectFactory.h"
 #include "../System/Interface.h"
 
-class Block : public Object {
+class Block : public Object, public IUpdatable {
 public:
     Block(Vector2 gridPos, BlockType type, Vector2);
     virtual ~Block();
@@ -13,8 +13,9 @@ public:
     std::vector<Rectangle> getHitBox() const override;
     ObjectCategory getObjectCategory() const override;
     std::vector<ObjectCategory> getCollisionTargets() const override;
-    void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
-    void onCollision(std::shared_ptr<Object> other) override;
+    void onCollision(std::shared_ptr<Object> other, Direction direction) override;
+
+    void update(float deltaTime);
 
     bool isActive() const override;
     void setActive(bool flag) override;
@@ -33,6 +34,14 @@ protected:
     Rectangle hitbox;
     BlockType blockType;
     bool solid;
+
+    bool isMoving;
+    float resetTimer = 0.0f;
+    const float RESET_TIME = 0.1f;
+    Vector2 originalPos;
+
+    bool pendingImpulse;
+    float impulseForce;
 };
 
 class GroundBlock : public Block {

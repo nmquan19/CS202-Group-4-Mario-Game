@@ -19,7 +19,14 @@
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Objects/Spring.h"
+#include "../../include/System/Box2DWorldManager.h"
 
+Object::~Object() {
+    if (physicsBody) {
+        Box2DWorldManager::getInstance().destroyBody(physicsBody);
+        physicsBody = nullptr;
+    }
+}
 
 std::unique_ptr<Object> ObjectFactory::createBlock(BlockType type, Vector2 gridPos) {
     return createSpecificBlock(type, gridPos);
@@ -65,22 +72,9 @@ std::unique_ptr<Object> ObjectFactory::createEnemy(EnemyType type, Vector2 gridP
 }
 
 std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size) {
-        switch (type) {
-            case EnemyType::GOOMBA:
-                return std::make_unique<Goomba>(startPosition, size);
-        case EnemyType::GREEN_KOOPA:
-            return std::make_unique<GreenKoopa>(startPosition, size);
-        case EnemyType::RED_KOOPA:
-            return std::make_unique<RedKoopa>(startPosition, size);
-        case EnemyType::DRY_BOWSER: 
-            return std::make_unique<DryBowser>(startPosition, size);
-
-        default:
-            return nullptr; 
-        }
     switch (type) {
-        case EnemyType::GOOMBA:
-            return std::make_unique<Goomba>(startPosition, size);
+    case EnemyType::GOOMBA:
+        return std::make_unique<Goomba>(startPosition, size);
     case EnemyType::GREEN_KOOPA:
         return std::make_unique<GreenKoopa>(startPosition, size);
     case EnemyType::RED_KOOPA:
@@ -126,20 +120,8 @@ std::vector<std::vector<Rectangle>> ObjectFactory::getFrameData(CharacterType ty
     }
 }
 std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vector2 gridPos, Vector2 size) {
-    return createSpecificKoopaShell(type, gridPos, size);
+    return std::make_unique<KoopaShell>(type, gridPos, size);
 }
-std::unique_ptr<KoopaShell> ObjectFactory::createSpecificKoopaShell(KoopaShellType type, Vector2 startPosition, Vector2 size) {
-    switch (type) {
-    case KoopaShellType::GREEN_KOOPA_SHELL:
-        return std::make_unique<KoopaGreenShell>(startPosition, size);
-    case KoopaShellType::RED_KOOPA_SHELL:
-        return std::make_unique<KoopaRedShell>(startPosition, size);
-    default:
-        return nullptr;
-    }
-}
-
-
 
 std::unique_ptr<Object> ObjectFactory::createSpring(Vector2 position, Vector2 size) {
     return std::make_unique<Spring>(position, size);

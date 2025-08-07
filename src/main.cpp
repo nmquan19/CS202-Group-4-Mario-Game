@@ -17,6 +17,7 @@
 #include "../include/Item/Fire_Flower/Fire_Flower.h"
 #include "../include/Item/Star/Star.h"
 #include "../include/Item/One_Up/One_Up.h"
+#include "../include/System/CameraSystem.h"
 
 int main() {
     InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
@@ -25,11 +26,12 @@ int main() {
 
     GameContext* context = &GameContext::getInstance(); 
     MenuState menuState;
+    CharacterSelectingState characterSelectingState;
     GamePlayState gamePlayState;
     EditorState editorState;
     GameOverState gameOverState;
-
-    context->setGameStates(&menuState, &gamePlayState, &editorState, &gameOverState);
+    GameCameraSystem::getInstance().init();
+    context->setGameStates(&menuState, &characterSelectingState, &gamePlayState, &editorState, &gameOverState);
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();

@@ -128,7 +128,7 @@
 >>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
                "gridX": 2,
@@ -210,7 +210,7 @@
 >>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
 <<<<<<< Updated upstream
@@ -479,68 +479,11 @@
           {
                "gridX": 8,
                "gridY": 10,
-=======
-               "type": "BRICK"
-          },
-          {
-               "gridX": 8,
-               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
-               "gridX": 9,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 9,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 10,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 10,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 11,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 11,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 12,
-               "gridY": 4,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-<<<<<<< Updated upstream
                "gridX": 8,
                "gridY": 14,
 =======
@@ -609,78 +552,17 @@
                "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
 <<<<<<< Updated upstream
                "gridX": 9,
                "gridY": 14,
-=======
-               "gridX": 15,
-               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
-               "gridX": 16,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 16,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 16,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 17,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 18,
-               "gridY": 8,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 18,
-               "gridY": 11,
-               "sizeX": 0.75,
-               "sizeY": 0.75,
-               "type": "GOOMBA"
-          },
-          {
-               "gridX": 18,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 19,
-               "gridY": 13,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-<<<<<<< Updated upstream
                "gridX": 10,
                "gridY": 5,
                "sizeX": 1.0,
@@ -729,7 +611,7 @@
 >>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
 <<<<<<< Updated upstream
@@ -762,7 +644,7 @@
 >>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
 <<<<<<< Updated upstream
@@ -774,7 +656,7 @@
 >>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
 <<<<<<< Updated upstream
@@ -810,7 +692,7 @@
 >>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
 <<<<<<< Updated upstream
@@ -822,7 +704,7 @@
 >>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
 <<<<<<< Updated upstream

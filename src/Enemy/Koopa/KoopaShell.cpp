@@ -8,13 +8,26 @@
 #include "../../../include/System/Interface.h"
 #include "../../../include/Characters/Character.h"
 #include "../../../include/System/Constant.h"
+#include "../../../include/System/Box2DWorldManager.h"
 #include <raymath.h>
 #include <utility>
 #include <memory>
 #include <iostream>
 #include "../../../include/Game/GameContext.h"
-KoopaShell::KoopaShell(Vector2 pos, Vector2 sz): spritebox({0,0,0,0}), velocity({0,0}), CollectableObject(pos, sz, TextureManager::enemyTextures), aniSpeed(0.2f), aniTimer(0) {   
-	
+
+KoopaShell::KoopaShell(KoopaShellType type, Vector2 pos, Vector2 sz): type(type), spritebox({0,0,0,0}), CollectableObject(pos, sz, TextureManager::enemyTextures), aniSpeed(0.2f), aniTimer(0) {   
+    physicsBody = Box2DWorldManager::getInstance().createEnemyBody(position, { sz.x * Constants::TILE_SIZE, sz.y * Constants::TILE_SIZE});
+    if (physicsBody) {
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+        //for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+        //    b2Filter filter = fixture->GetFilterData();
+        //    filter.maskBits = static_cast<uint16>(ObjectCategory::SHELL);
+        //    filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::PROJECTILE);
+        //    fixture->SetFilterData(filter);
+        //}
+    }
+    currentState = &KoopaShellIdleState::getInstance();
+    currentState->enter(this);
 }
 
 
@@ -24,145 +37,90 @@ void KoopaShell::onCollect(Character* player) {
     TraceLog(LOG_INFO, "KoopaShell collected!");
     player->setHoldingProjectile(true);
     player->holdProjectile(*this);
-	this->changeState(&KoopaShellCollectedState::getInstance());
+	//this->changeState(&KoopaShellCollectedState::getInstance());
     player->holdProjectile(*this);
     player->setHoldingProjectile(true);
 }
 
 void KoopaShell::update(float deltaTime) {
     aniTimer += deltaTime; 
-    CollectableObject::update(deltaTime); 
+    //CollectableObject::update(deltaTime); 
 
 	if(currentState)currentState->update(this, deltaTime);
+
     if (pendingState) {
         applyQueueState();
     }
-	DrawText(TextFormat("KoopaShell pos %f",position.x), 100, 100, 20, RED);
-	DrawText(TextFormat("KoopaShell velocity %f", velocity.x), 100, 120, 20, RED);
-    position += velocity * deltaTime;
-    applyGravity(deltaTime);
+
     if (aniTimer >= aniSpeed) {
         curFrame += 1;
         aniTimer = 0;
     }
    
-    if (position.y + hitBox.height >= groundLevel) {
-		position.y = groundLevel - hitBox.height;
-        onGround = true;
-        if (velocity.y > 0) {
-            velocity.y = 0;
-        }
-    }
-    else {
-        onGround = false;
-    }
-    if (position.x < 0)
-    {
-        position.x = 0;
-        velocity.x *= -1;
-       
-    }
-    if (position.x > 1920 - hitBox.width)
-    {
-        position.x = 1920 - hitBox.width;
-        velocity.x *= -1;
+    if (physicsBody) {
+        b2Vec2 b2Pos = physicsBody->GetPosition();
+        Vector2 bodyPos = Box2DWorldManager::b2ToRaylib(b2Pos);
+        position.x = bodyPos.x - hitBox.width * 0.5f;
+        position.y = bodyPos.y - hitBox.height * 0.5f;
+        hitBox.x = position.x;
+        hitBox.y = position.y;
     }
 }
+
 void KoopaShell::setVelocity(Vector2 newVelocity) {
     velocity = newVelocity;
 }
+
 Vector2 KoopaShell::getVelocity() {
     return velocity;
 }
-void KoopaShell::onCollision(std::shared_ptr<Object> other) {
-    
+
+void KoopaShell::onCollision(std::shared_ptr<Object> other, Direction dir) {
+    /*if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
+        if (dir == Direction::LEFT) {
+            physicsBody->SetLinearVelocity(b2Vec2({ 0.0f, -2.0f }));
+            std::cout << "touch" << std::endl;
+        }
+    }*/
+    if (currentState) {
+        currentState->onCollision(this, other, dir);
+    }
+}
+
+void KoopaShell::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) {
+
 }
 
 void KoopaShell::draw() {
-    if (isActive()) {
-        Rectangle sourceRec = this->spritebox;
-        if (isKnocked)
-        {
-            sourceRec.height *= -1;
-        }
-        Vector2 origin = { 0, 0 };
-        std::vector<Rectangle> hitBoxes = getHitBox();
-        if (!hitBoxes.empty()) {
-            DrawTexturePro(this->texture, sourceRec, hitBoxes[0], origin, 0.0f, WHITE);
-        }
+    Rectangle sourceRec = this->spritebox;
+    if (isKnocked)
+    {
+        sourceRec.height *= -1;
     }
+    Vector2 origin = { 0, 0 };
+    DrawTexturePro(this->texture, sourceRec, hitBox, origin, 0.0f, WHITE);
 }
 
 void KoopaShell::changeState(KoopaShellState* newState) {
-    if (currentState) currentState->exit(this);
+    if (currentState == newState) {
+        return;
+    }
+
+    if (currentState) {
+        currentState->exit(this);
+    }
+
     currentState = newState;
-   if(currentState) currentState->enter(this);
-}
 
-void KoopaShell::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
-{
-	if (currentState == nullptr) return;
-	currentState->checkCollision(this, candidates);
-}
-
-void KoopaShell ::applyGravity(float deltaTime) {
-    if (!onGround) {
-        velocity.y += Constants::GRAVITY * deltaTime;
-    }
-}
-void KoopaShell::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    std::vector<Rectangle> koopaBoxes = getHitBox();
-    std::vector<Rectangle> otherBoxes = other->getHitBox();
-    
-    if (koopaBoxes.empty() || otherBoxes.empty()) return;
-    
-    Rectangle koopaBox = koopaBoxes[0];
-    Rectangle otherBox = otherBoxes[0];
-    if (!CheckCollisionRecs(koopaBox, otherBox)) return;
-
-    // Calculate previous position
-    Vector2 prevPos = position - velocity*0.16;
-
-    Rectangle prevBox = {
-        prevPos.x,
-        prevPos.y,
-        koopaBox.width,
-        koopaBox.height
-    };
-
-    bool wasAbove = (prevBox.y + prevBox.height) <= otherBox.y;
-    bool wasBelow = prevBox.y >= (otherBox.y + otherBox.height);
-    bool wasLeft = (prevBox.x + prevBox.width) <= otherBox.x;
-    bool wasRight = prevBox.x >= (otherBox.x + otherBox.width);
-
-    const float snapOffset = 0.01f; 
-
-    if (wasAbove && velocity.y >= 0) {
-        // Landed on top
-        position.y = otherBox.y - koopaBox.height - snapOffset;
-        velocity.y = 0;
-        onGround = true;
-    }
-    else if (wasBelow && velocity.y <= 0) {
-        position.y = otherBox.y + otherBox.height + snapOffset;
-        velocity.y = 0;
-    }
-    else if (wasLeft && velocity.x >= 0) {
-        // Hit from left
-        position.x = otherBox.x - koopaBox.width - snapOffset;
-        velocity.x *= -1;
-    }
-    else if (wasRight && velocity.x <= 0) {
-        // Hit from right
-        position.x = otherBox.x + otherBox.width + snapOffset;
-        velocity.x *= -1;
+    if (newState) {
+        currentState->enter(this);
     }
 }
     
 std::vector<ObjectCategory> KoopaShell::getCollisionTargets() const {
-	if (!currentState) return {};
-	return currentState->getCollisionTargets();
+    return { ObjectCategory::CHARACTER, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE};
 }
+
 bool KoopaShell::isMovingState() const
 {
     return currentState == &KoopaShellMovingState::getInstance();  
@@ -176,16 +134,18 @@ ObjectCategory KoopaShell::getObjectCategory() const
     }
     return { };
 }
+
 void KoopaShell::queueState(KoopaShellState* newState) {
 	pendingState = newState;
 }
-void KoopaShell::applyQueueState()
-{
+
+void KoopaShell::applyQueueState() {
    	changeState(pendingState);  
 	pendingState = nullptr;  
 }
+
 std::vector<std::pair<int, int>> KoopaShell::getSpriteData() const {
-    switch(getType()){
+    switch(type){
         case KoopaShellType::GREEN_KOOPA_SHELL:
             return { {47,47},{49,52},{47, 48}};
         default:
@@ -193,32 +153,31 @@ std::vector<std::pair<int, int>> KoopaShell::getSpriteData() const {
 	}
 }
 
-
-KoopaGreenShell::KoopaGreenShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
-    changeState(&KoopaShellIdleState::getInstance());
-}
-KoopaShellType KoopaGreenShell::getType() const {
-    return KoopaShellType::GREEN_KOOPA_SHELL;
-}
-KoopaRedShell::KoopaRedShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
-    changeState(&KoopaShellIdleState::getInstance());
-}
-KoopaShellType KoopaRedShell::getType() const {
-    return KoopaShellType::RED_KOOPA_SHELL;
-}
-ObjectType KoopaGreenShell::getObjectType() const {
-    return KoopaShellType::GREEN_KOOPA_SHELL;
-}
-ObjectType KoopaRedShell::getObjectType() const {
-    return KoopaShellType::RED_KOOPA_SHELL;
-}
-void KoopaShell::onRelease() {
-    GameContext::getInstance().addObject(this->getType(), this->position, { 0.75,0.75 });
-}   
-
-std::shared_ptr<KoopaShell> KoopaGreenShell::clone()const {
-    return std::make_shared<KoopaGreenShell>(*this);  
-}
-std::shared_ptr<KoopaShell> KoopaRedShell::clone() const {
-    return std::make_shared<KoopaRedShell>(*this); 
-}
+//KoopaGreenShell::KoopaGreenShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
+//    changeState(&KoopaShellIdleState::getInstance());
+//}
+//KoopaShellType KoopaGreenShell::getType() const {
+//    return KoopaShellType::GREEN_KOOPA_SHELL;
+//}
+//KoopaRedShell::KoopaRedShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
+//    changeState(&KoopaShellIdleState::getInstance());
+//}
+//KoopaShellType KoopaRedShell::getType() const {
+//    return KoopaShellType::RED_KOOPA_SHELL;
+//}
+//ObjectType KoopaGreenShell::getObjectType() const {
+//    return KoopaShellType::GREEN_KOOPA_SHELL;
+//}
+//ObjectType KoopaRedShell::getObjectType() const {
+//    return KoopaShellType::RED_KOOPA_SHELL;
+//}
+//void KoopaShell::onRelease() {
+//    GameContext::getInstance().addObject(this->getType(), this->position, { 0.75,0.75 });
+//}   
+//
+//std::shared_ptr<KoopaShell> KoopaGreenShell::clone()const {
+//    return std::make_shared<KoopaGreenShell>(*this);  
+//}
+//std::shared_ptr<KoopaShell> KoopaRedShell::clone() const {
+//    return std::make_shared<KoopaRedShell>(*this); 
+//}

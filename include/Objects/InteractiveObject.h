@@ -15,8 +15,7 @@ public:
     std::vector<Rectangle> getHitBox() const override;
     virtual ObjectCategory getObjectCategory() const override;
     virtual std::vector<ObjectCategory> getCollisionTargets() const override;
-    virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0;
-    virtual void onCollision(std::shared_ptr<Object> other) override = 0;
+    virtual void onCollision(std::shared_ptr<Object> other, Direction direction) override = 0;
 
     void setActive(bool flag) override;
     bool isActive() const override;
