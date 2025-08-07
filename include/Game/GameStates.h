@@ -16,6 +16,12 @@ public:
     void draw(GameContext& context) override;
 };
 
+class RedirectState : public GameState {
+    void handleInput(GameContext& context) override;
+    void update(GameContext& context, float deltaTime) override;
+    void draw(GameContext& context) override;
+};
+
 class GamePlayState : public GameState {
 public:
     void handleInput(GameContext& context) override;
@@ -24,12 +30,22 @@ public:
     void DrawBackGround(Texture2D&);
 };
 
+class InformationState : public GameState {
+private:
+    float animationTime = 0;
+public:
+    void handleInput(GameContext& context) override;
+    void update(GameContext& context, float deltaTime) override;
+    void draw(GameContext& context) override;
+};
+
 class CharacterSelectingState : public GameState {
 public:
     void handleInput(GameContext& context) override;
     void update(GameContext& context, float deltaTime) override;
     void draw(GameContext& context) override;
 };
+
 
 
 class EditorState : public GameState {

@@ -33,7 +33,9 @@ public:
     GameState* currentState = nullptr;
     GameState* previousState = nullptr;
     GameState* menuState = nullptr;
+    GameState* redirectState = nullptr;
     GameState* characterSelectingState = nullptr;
+    GameState* informationState = nullptr;
     GameState* gamePlayState = nullptr;
     GameState* editorState = nullptr;
     GameState* gameOverState = nullptr;
@@ -45,7 +47,7 @@ public:
     void update(float deltaTime);
     void draw();
 	void addObject(ObjectType type, Vector2 worldpos, Vector2 size, std::function<void(std::shared_ptr<Object>)> onSpawn = nullptr);
-    void setGameStates(GameState* menu, GameState* character, GameState* game, GameState* editor, GameState* gameOver);
+    void setGameStates(GameState* menu, GameState* redirect, GameState* character, GameState* information, GameState* game, GameState* editor, GameState* gameOver);
     void mark_for_deletion_Object(std::shared_ptr<Object> object);
     void spawnObject();
 	void deleteObjects();

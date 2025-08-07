@@ -39,10 +39,11 @@ LevelEditor::~LevelEditor() {
     gridBlocks.clear();
 }
 
-void LevelEditor::update() {
+void LevelEditor::update(float deltaTime) {
 
     if (editMode) {
         palette.handleSelection();
+        palette.updatePalette(deltaTime);
         handleMouseInput();
     }
 }

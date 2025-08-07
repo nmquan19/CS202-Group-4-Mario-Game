@@ -23,7 +23,7 @@ public:
 
     ~LevelEditor();
 
-    void update();
+    void update(float deltaTime);
     void draw();
     void handleMouseInput();
     void placeObject(ObjectType type, Vector2 gridCoord);
