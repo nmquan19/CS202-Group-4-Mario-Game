@@ -27,6 +27,20 @@ std::shared_ptr<BehaviorTreeNode> BTFactory::buildTree(const json& nodeData) {
         }
         return node;
     }
+    else if (type == "ReactiveSequence") {
+        auto node = std::make_shared<ReactiveSequenceNode>();
+        for (const auto& child : nodeData.at("children")) {
+            node->addChild(buildTree(child));
+        }
+        return node;
+    }
+    else if (type == "ReactiveFallBack") {
+        auto node = std::make_shared<ReactiveFallBackNode>();
+        for (const auto& child : nodeData.at("children")) {
+            node->addChild(buildTree(child));
+        }
+        return node;
+    }
     else if (type == "Repeat") {
         auto node = std::make_shared<RepeatNode>();
         int times = nodeData.value("times", 1);
@@ -89,7 +103,40 @@ std::shared_ptr<BehaviorTreeNode> BTFactory::buildTree(const json& nodeData) {
     {
         return std::make_shared<IsTakingDamageNode>();
     }
-    
+    else if (type == "Intro")
+    {
+		return std::make_shared<IsInIntroNode>();
+    }
+    else if (type == "CanWallJump") {
+        return std::make_shared<CanWallJumpNode>();
+    }
+    else if (type == "WallJump") {
+        return std::make_shared<WallJumpNode>();
+    }
+    else if (type == "Jump") {
+        return std::make_shared<JumpNode>();
+    }
+    else if (type == "IsInAir") {
+        return std::make_shared<IsInAirNode>();
+    }
+    else if (type == "AerialAttack") {
+        return std::make_shared<AerialAttackNode>();
+    }
+    else if (type == "IsInWallJump") {
+        return std::make_shared<IsInWallJumpNode>();
+    }
+    else if (type == "IsPlayerHigher") {
+        return std::make_shared<IsPlayerHigherNode>();
+    }
+    else if (type == "IsFalling") {
+        return std::make_shared<IsFallingNode>();
+    }
+    else if (type == "CanUseAerialAttack") {
+        return std::make_shared<CanUseAerialAttackNode>();
+        }
+    else if (type == "MoveToTarget") {
+            return std::make_shared<MoveToTargetNode>();
+            }
     throw std::runtime_error("Unknown node type: " + type);
 }
 std::string GetEnemyName(EnemyType type) {
@@ -105,7 +152,7 @@ std::string GetEnemyName(EnemyType type) {
 std::shared_ptr<BehaviorTreeNode> BTFactory::createTree(EnemyType type) {
     std::string filename;
 
-	filename = "assets/enemy/BT/" + GetEnemyName(type) + ".json";
+	filename = "assets/enemy/BT/" + GetEnemyName(type)+"P2" + ".json";
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Failed to open BT JSON file: " + filename);
@@ -135,6 +182,13 @@ nlohmann::json BTFactory::to_json(const std::shared_ptr<BehaviorTreeNode>& node)
     }
     else if (auto sel = std::dynamic_pointer_cast<SelectorNode>(node)) {
         j["type"] = "Selector";
+        j["children"] = nlohmann::json::array();
+        for (const auto& child : sel->getChildren()) {
+            j["children"].push_back(to_json(child));
+        }
+    }
+    else if (auto sel = std::dynamic_pointer_cast<ReactiveFallBackNode>(node)) {
+        j["type"] = "ReactiveFallBack";
         j["children"] = nlohmann::json::array();
         for (const auto& child : sel->getChildren()) {
             j["children"].push_back(to_json(child));
@@ -189,6 +243,44 @@ nlohmann::json BTFactory::to_json(const std::shared_ptr<BehaviorTreeNode>& node)
     else if (std::dynamic_pointer_cast<IsTakingDamageNode>(node)) {
         j["type"] = "IsTakingDamage";
     }
+    else if (std::dynamic_pointer_cast<IsInIntroNode>(node)) {
+        j["type"] = "Intro";
+    }
+    else if (std::dynamic_pointer_cast<CanWallJumpNode>(node)) {
+        j["type"] = "CanWallJump";
+    }
+    else if (std::dynamic_pointer_cast<WallJumpNode>(node)) {
+        j["type"] = "WallJump";
+    }
+    else if (std::dynamic_pointer_cast<JumpNode>(node)) {
+        j["type"] = "Jump";
+    }
+    else if (std::dynamic_pointer_cast<IsInAirNode>(node)) {
+        j["type"] = "IsInAir";
+    }
+    else if (std::dynamic_pointer_cast<AerialAttackNode>(node)) {
+        j["type"] = "AerialAttack";
+    }
+    else if (std::dynamic_pointer_cast<IsInWallJumpNode>(node)) {
+        j["type"] = "IsInWallJump";
+    }
+    else if (std::dynamic_pointer_cast<IsPlayerHigherNode>(node)) {
+        j["type"] = "IsPlayerHigher";
+    }
+    else if (std::dynamic_pointer_cast<IsFallingNode>(node)) {
+        j["type"] = "IsFalling";
+    }
+    else if (std::dynamic_pointer_cast<CanUseAerialAttackNode>(node))
+    {
+        j["type"] = "CanUseAerialAttack";
+    }
+    else if (std::dynamic_pointer_cast<ReactiveSequenceNode>(node))
+    {
+        j["type"] = "ReactiveSequence";
+    }
+    else if (std::dynamic_pointer_cast<MoveToTargetNode>(node)) {
+        j["type"] = "MoveToTarget";
+        }
     else {
         throw std::runtime_error("Unknown node type during serialization");
     }

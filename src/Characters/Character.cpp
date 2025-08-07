@@ -9,34 +9,48 @@
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/Enemy.h"
 #include "../../include//Item/Item.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
 #include <variant>
 #include <memory>
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale)
-	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(1), projectile(nullptr), holdingProjectile(false),
+	: characterType(type), scale(scale), hp(1), projectile(nullptr), holdingProjectile(false),
 	invincibleTimer(0), reviveTimer(0), 
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
-	this->position = startPosition;
-	this->speed = stats.baseSpeed;
-	this->jumpForce = stats.jumpForce;
-	this->gravity = Constants::GRAVITY;
 	this->stateFrameData = stateFrameData;
 	this->spriteSheet = TextureManager::getInstance().getCharacterTexture();
+	this->speed = stats.baseSpeed;
+	this->jumpVel = stats.jumpVel;
 
-    if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
-        setCurrentStateRow(0);
-    }
+	if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
+		setCurrentStateRow(0);
+	}
+
+	physicsBody = Box2DWorldManager::getInstance().createCharacterBody(startPosition, { spriteRec.width * scale, spriteRec.height * scale });
+	if (physicsBody) {
+		physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+		for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+			b2Filter filter = fixture->GetFilterData();
+			filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);
+			filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::ENEMY) |
+				static_cast<uint16>(ObjectCategory::INTERACTIVE) | static_cast<uint16>(ObjectCategory::ITEM) |
+				static_cast<uint16>(ObjectCategory::SHELL) | static_cast<uint16>(ObjectCategory::PROJECTILE);
+			fixture->SetFilterData(filter);
+		}
+	}
 
     currentState = &IdleState::getInstance();
     currentState->enter(this);
-
 }
 
 Character::~Character() {
-	
+	if (physicsBody) {
+		Box2DWorldManager::getInstance().destroyBody(physicsBody);
+		physicsBody = nullptr;
+	}
 }
 
 void Character::changeState(ICharacterState& newState) {
@@ -69,12 +83,11 @@ void Character::update(float deltaTime) {
 	}
 
 	handleProjectile(deltaTime);
-	
-	applyGravity(deltaTime);
-    position.x += velocity.x * deltaTime;
-    position.y += velocity.y * deltaTime;
-	
-	handleGroundCheck();
+
+	if (physicsBody) {
+		auto newPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
+		position = {newPos.x - hitBoxWidth/2.0f, newPos.y - hitBoxHeight/2.0f};
+	}
 }
 
 void Character::draw() {
@@ -134,32 +147,38 @@ void Character::setAniSpeed(float newSpeed){
 	aniSpeed = newSpeed;
 }
 
-void Character::setOnGround(bool flag){
-	onGround = flag;
-}
-
 bool Character::isOnGround() const{
-	return onGround;
+	return groundContactCount > 0;
 }
 
 void Character::jump(){
-	if(onGround){
-		velocity.y = -jumpForce;
-		setOnGround(false);
+	if (isOnGround()) {
+		b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+		float mass = this->physicsBody->GetMass();
+		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-jumpVel - currentVel.y)), true);
+		groundContactCount = 0;
 	}
 }
 
-void Character::applyGravity(float deltaTime){
-	if(!onGround){
-		velocity.y += gravity * deltaTime;
-	}
+void Character::addGroundContact() {
+	groundContactCount++;
+}
+
+void Character::removeGroundContact() {
+	groundContactCount--;
 }
 
 void Character::setVelocity(Vector2 newVelocity){
 	velocity = newVelocity;
+	if (physicsBody) {
+		physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(newVelocity));
+	}
 }
 
 Vector2 Character::getVelocity(){
+	if (physicsBody) {
+		velocity = Box2DWorldManager::b2ToRaylib(physicsBody->GetLinearVelocity());
+	}
 	return velocity;
 }
 
@@ -173,6 +192,9 @@ float Character::getSpeed(){
 
 void Character::setPosition(Vector2 newPosition){
 	position = newPosition;
+	if (physicsBody) {
+		physicsBody->SetTransform(Box2DWorldManager::raylibToB2(newPosition), physicsBody->GetAngle());
+	}
 }
 
 Vector2 Character::getPosition() const {
@@ -231,32 +253,21 @@ std::vector<ObjectCategory> Character::getCollisionTargets() const {
 	return { ObjectCategory::BLOCK, ObjectCategory::ITEM, ObjectCategory::ENEMY, ObjectCategory::INTERACTIVE, ObjectCategory::SHELL };
 }
 
-void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
-	for (auto candidate : candidates) {
-		switch(candidate->getObjectCategory()) {
-			case ObjectCategory::ENEMY:
-				handleEnemyCollision(candidate);
-				break;
-			case ObjectCategory::BLOCK:
-				handleEnvironmentCollision(candidate);
-				break;
-			case ObjectCategory::INTERACTIVE:
-				handleInteractiveCollision(candidate);
-				break;
-			case ObjectCategory::SHELL:
-				// implement
-				break;
-			case ObjectCategory::ITEM:
-				// implement 
-
-				break;
-		}
+void Character::onCollision(std::shared_ptr<Object> other, Direction direction) {
+	switch (other->getObjectCategory()) {
+	case ObjectCategory::ENEMY:
+		handleEnemyCollision(other, direction);
+		break;
+	case ObjectCategory::BLOCK:
+		handleEnvironmentCollision(other, direction);
+		break;
+	case ObjectCategory::INTERACTIVE:
+		handleInteractiveCollision(other, direction);
+		break;
+	case ObjectCategory::ITEM:
+		// implement 
+		break;
 	}
-}
-
-
-void Character::onCollision(std::shared_ptr<Object> other) {
-
 }
 
 float Character::getBottom() const {
@@ -326,144 +337,41 @@ void Character::handleProjectile(float deltaTime) {
 	}
 }
 
-void Character::handleGroundCheck() {
-	if (!onGround) {
-		return;
-	}
-
-	Rectangle groundCheckBox = {
-		position.x + 5,
-		position.y + (spriteRec.height * scale),
-		(spriteRec.width * scale) - 10,
-		1.0f
-	};
-
-	std::vector<std::shared_ptr<Object>> nearbyObjects = PhysicsManager::getInstance().getObjectsInArea(groundCheckBox);
-
-	bool stillOnGround = false;
-	for (auto obj : nearbyObjects) {
-		if (obj.get() != this && obj->getObjectCategory() == ObjectCategory::BLOCK) {
-			if (CheckCollisionRecs(groundCheckBox, obj->getHitBox()[0])) {
-				stillOnGround = true;
-				break;
-			}
-		}
-	}
-
-	if (!stillOnGround) {
-		setOnGround(false);
+void Character::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction) {
+	if (direction == Direction::DOWN) {
+		addGroundContact();
 	}
 }
 
-void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-	std::vector<Rectangle> playerHitBoxes = getHitBox();
-	std::vector<Rectangle> otherHitBoxes = other->getHitBox();
-
-	if (playerHitBoxes.empty() || otherHitBoxes.empty()) return;
-
-	Rectangle playerHitBox = playerHitBoxes[0];
-	Rectangle otherHitBox = otherHitBoxes[0];
-
-	float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-	float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-	float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-	float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-
-	float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
-
-	if (minOverlap == overlapLeft) {
-		position.x = otherHitBox.x - playerHitBox.width;
-		velocity.x = 0;
-	}
-	else if (minOverlap == overlapRight) {
-		position.x = otherHitBox.x + otherHitBox.width;
-		velocity.x = 0;
-	}
-	else if (minOverlap == overlapTop) {
-		position.y = otherHitBox.y - playerHitBox.height;
-		velocity.y = 0;
-		setOnGround(true);
-	}
-	else if (minOverlap == overlapBottom) {
-		position.y = otherHitBox.y + otherHitBox.height;
-		if (velocity.y < 0) {
-			velocity.y = 0;
-		}
-	}
-}
-
-void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
-	std::vector<Rectangle> characterHitboxes = getHitBox();
-	std::vector<Rectangle> otherHitboxes = other->getHitBox();
-
-	if (characterHitboxes.empty() || otherHitboxes.empty()) return;
-
-	Rectangle characterHitbox = characterHitboxes[0];
-	Rectangle otherHitbox = otherHitboxes[0];
-
-	float overlapLeft = (characterHitbox.x + characterHitbox.width) - otherHitbox.x;
-	float overlapRight = (otherHitbox.x + otherHitbox.width) - characterHitbox.x;
-	float overlapTop = (characterHitbox.y + characterHitbox.height) - otherHitbox.y;
-	float overlapBottom = (otherHitbox.y + otherHitbox.height) - characterHitbox.y;
-	float minOverlap = std::min({ overlapLeft, overlapRight, overlapTop, overlapBottom });
-
-	if (minOverlap == overlapTop && velocity.y > 0) {
-		invincibleTimer = 0.3f;
-		velocity.y = Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY;
-		setOnGround(false);
-		auto enemy = dynamic_cast<Enemy*>(other.get());
-		enemy->takeDamage(1);
+void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction direction) {
+	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+	if (direction == Direction::DOWN) {
+		float mass = physicsBody->GetMass();
+		physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY - currentVel.y)), true);
+		changeState(JumpingState::getInstance());
+		invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_STRIKE;
 	}
 	else {
 		takeDamage(1);
 	}
 }
 
-void Character::handleInteractiveCollision(std::shared_ptr<Object> other) {
+void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction) {
     ObjectType objectType = other->getObjectType();
     if (auto* interactiveType = std::get_if<InteractiveType>(&objectType)) {
         switch (*interactiveType) {
 		case InteractiveType::SPRING:	
-			handleSpringCollision(std::dynamic_pointer_cast<Spring>(other));
+			handleSpringCollision(std::dynamic_pointer_cast<Spring>(other), direction);
         }
     }
 }
 
-void Character::handleSpringCollision(std::shared_ptr<Spring> other) {
-	std::vector<Rectangle> characterHitboxes = getHitBox();
-	std::vector<Rectangle> otherHitboxes = other->getHitBox();
-
-	if (characterHitboxes.empty() || otherHitboxes.empty()) return;
-
-	Rectangle characterHitbox = characterHitboxes[0];
-	Rectangle otherHitbox = otherHitboxes[0];
-
-	float overlapLeft = (characterHitbox.x + characterHitbox.width) - otherHitbox.x;
-	float overlapRight = (otherHitbox.x + otherHitbox.width) - characterHitbox.x;
-	float overlapTop = (characterHitbox.y + characterHitbox.height) - otherHitbox.y;
-	float overlapBottom = (otherHitbox.y + otherHitbox.height) - characterHitbox.y;
-	float minOverlap = std::min({ overlapLeft, overlapRight, overlapTop, overlapBottom });
-
-	if (minOverlap == overlapTop && velocity.y > 0) {
-		velocity.y = Constants::Spring::BOUNCE_VELOCITY;
+void Character::handleSpringCollision(std::shared_ptr<Spring> other, Direction direction) {
+	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+	if (direction == Direction::DOWN && currentVel.y > 0) {
+		float mass = this->physicsBody->GetMass();
+		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Spring::BOUNCE_VELOCITY - currentVel.y)), true);
 		changeState(JumpingState::getInstance());
-		other->setBouncing(true);
-		other->setAniTimer(0.0f);
-		other->setBounceTimer(0.0f);
-	}
-	else if (minOverlap == overlapBottom) {
-		position.y = otherHitbox.y + otherHitbox.height;
-		if (velocity.y < 0) {
-			velocity.y = 0;
-		}
-	}
-	else if (minOverlap == overlapLeft) {
-		position.x = otherHitbox.x - characterHitbox.width;
-		velocity.x = 0;
-	}
-	else if (minOverlap == overlapRight) {
-		position.x = otherHitbox.x + otherHitbox.width;
-		velocity.x = 0;
 	}
 }
 

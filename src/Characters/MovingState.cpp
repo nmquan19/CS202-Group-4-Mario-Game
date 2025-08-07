@@ -2,6 +2,7 @@
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
 #include "..\..\include\Characters\Character.h"
+#include "../../include/System/Box2DWorldManager.h"
 
 void MovingState::enter(Character* character) {
 	character->setAniTime(0);
@@ -17,22 +18,23 @@ void MovingState::update(Character* character, float deltaTime) {
     }
 
 	bool moving = false;
-	Vector2 currentVel = character->getVelocity();
+	b2Vec2 currentVel = character->physicsBody->GetLinearVelocity();
 	float speed = character->getSpeed();
 	
 	if (IsKeyDown(KEY_A)) {
-		character->setVelocity({-speed, currentVel.y});
+		character->physicsBody->SetLinearVelocity(b2Vec2(-speed, currentVel.y));
 		character->setFacingRight(false);
 		moving = true;
 	}
+	
 	if (IsKeyDown(KEY_D)) {
-		character->setVelocity({speed, currentVel.y});
+		character->physicsBody->SetLinearVelocity(b2Vec2(speed, currentVel.y));
 		character->setFacingRight(true);
 		moving = true;
 	}
+	
 	if (!moving) {
 		character->changeState(IdleState::getInstance());
-		return;
 	}
 }
 

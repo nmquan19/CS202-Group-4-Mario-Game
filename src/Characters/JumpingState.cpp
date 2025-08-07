@@ -2,6 +2,7 @@
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
 #include "..\..\include\Characters\Character.h"
+#include "../../include/System/Box2DWorldManager.h"
 
 void JumpingState::enter(Character* character){
     character->setAniTime(0);
@@ -10,28 +11,29 @@ void JumpingState::enter(Character* character){
 }
 
 void JumpingState::update(Character* character, float deltaTime){
-    Vector2 currentVel = character->getVelocity();
+    b2Vec2 currentVel = character->physicsBody->GetLinearVelocity();
     float speed = character->getSpeed();
+    float airControlFactor = 0.8f;
 
-    if(IsKeyDown(KEY_A)){
-        character->setVelocity({-speed, currentVel.y});
+    if (IsKeyDown(KEY_A)) {
+        character->physicsBody->SetLinearVelocity(b2Vec2(-speed * airControlFactor, currentVel.y));
         character->setFacingRight(false);
     }
-    else if(IsKeyDown(KEY_D)){
-        character->setVelocity({speed, currentVel.y});
+    else if (IsKeyDown(KEY_D)) {
+        character->physicsBody->SetLinearVelocity(b2Vec2(speed * airControlFactor, currentVel.y));
         character->setFacingRight(true);
     }
-    else{
-        character->setVelocity({currentVel.x, currentVel.y});
+    else {
+        character->physicsBody->SetLinearVelocity(b2Vec2(currentVel.x * 0.95f, currentVel.y));
     }
 
     if (IsKeyReleased(KEY_SPACE) && currentVel.y < 0) {
-        Vector2 vel = character->getVelocity();
-        vel.y *= 0.5f; // Cut jump short
-        character->setVelocity(vel);
+        b2Vec2 newVel = character->physicsBody->GetLinearVelocity();
+        newVel.y *= 0.5f;
+        character->physicsBody->SetLinearVelocity(newVel);
     }
-    
-    if (character->isOnGround() && currentVel.y >= 0) {
+
+    if (character->isOnGround()) {
         if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) {
             character->changeState(MovingState::getInstance());
         } else {

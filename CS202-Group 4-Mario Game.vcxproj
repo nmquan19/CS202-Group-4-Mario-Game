@@ -39,6 +39,7 @@
     <ClInclude Include="include\Enemy\Boss\SimulateState.h" />
     <ClInclude Include="include\Enemy\Boss\WorldState.h" />
     <ClInclude Include="include\Enemy\Enemy.h" />
+    <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
     <ClInclude Include="include\Enemy\EnemyState.h" />
     <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
     <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
@@ -65,7 +66,7 @@
     <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Objects\Spring.h" />
     <ClInclude Include="include\Objects\SpringState.h" />
-    <ClInclude Include="include\Scenes\Scene.h" />
+    <ClInclude Include="include\System\CameraSystem.h" />
     <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\FrameData.h" />
     <ClInclude Include="include\System\Grid.h" />
@@ -73,8 +74,7 @@
     <ClInclude Include="include\System\InterpolationController.h" />
     <ClInclude Include="include\System\json.hpp" />
     <ClInclude Include="include\System\LevelEditor.h" />
-    <ClInclude Include="include\System\PhysicsManager.h" />
-    <ClInclude Include="include\System\QuadTree.h" />
+    <ClInclude Include="include\System\ParticleSystem.h" />
     <ClInclude Include="include\System\TextureManager.h" />
     <ClInclude Include="include\UI\Button.h" />
     <ClInclude Include="include\UI\Menu.h" />
@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Enemy\Boss\BT_Factory.h" />
+    <ClCompile Include="include\System\Box2DWorldManager.h" />
     <ClCompile Include="src\Characters\Character.cpp" />
     <ClCompile Include="src\Characters\IdleState.cpp" />
     <ClCompile Include="src\Characters\JumpingState.cpp" />
@@ -92,11 +93,13 @@
     <ClCompile Include="src\Characters\MovingState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
     <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
     <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
     <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
     <ClCompile Include="src\Enemy\Enemy.cpp" />
+    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
     <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
     <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
     <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
@@ -120,11 +123,12 @@
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
     <ClCompile Include="src\Objects\Spring.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
+    <ClCompile Include="src\System\Box2DWorldManager.cpp" />
+    <ClCompile Include="src\System\CameraSystem.cpp" />
     <ClCompile Include="src\System\FrameData.cpp" />
     <ClCompile Include="src\System\InterpolationController.cpp" />
     <ClCompile Include="src\System\LevelEditor.cpp" />
-    <ClCompile Include="src\System\PhysicsManager.cpp" />
-    <ClCompile Include="src\System\QuadTree.cpp" />
+    <ClCompile Include="src\System\ParticleSystem.cpp" />
     <ClCompile Include="src\System\Resources.cpp" />
     <ClCompile Include="src\System\TextureManager.cpp" />
     <ClCompile Include="src\UI\Button.cpp" />
@@ -134,21 +138,28 @@
     <ClCompile Include="src\UI\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\button\board.png" />
-    <Image Include="assets\button\check_selected.png" />
+    <Image Include="assets\button\back.png" />
+    <Image Include="assets\button\back_selected.png" />
+    <Image Include="assets\button\board1.png" />
     <Image Include="assets\button\check.png" />
-    <Image Include="assets\button\cross_selected.png" />
+    <Image Include="assets\button\check_selected.png" />
     <Image Include="assets\button\cross.png" />
+    <Image Include="assets\button\cross_selected.png" />
     <Image Include="assets\button\home.png" />
+    <Image Include="assets\button\home_selected.png" />
     <Image Include="assets\button\option.png" />
-    <Image Include="assets\button\play.png" />
-    <Image Include="assets\button\return_selected.png" />
-    <Image Include="assets\button\return.png" />
-    <Image Include="assets\button\setting_selected.png" />
-    <Image Include="assets\button\setting.png" />
+    <Image Include="assets\button\option_selected.png" />
+    <Image Include="assets\button\small_board.png" />
+    <Image Include="assets\button\small_board_selected.png" />
+    <Image Include="assets\button\thin_board.png" />
+    <Image Include="assets\button\thin_board_selected.png" />
     <Image Include="assets\coin_sprite.png" />
     <Image Include="assets\font_sprites.png" />
+    <Image Include="assets\Luigi.png" />
+    <Image Include="assets\Mario.png" />
     <Image Include="assets\Super Mario Bros.png" />
+    <Image Include="assets\Toad.png" />
+    <Image Include="assets\Toadette.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav" />

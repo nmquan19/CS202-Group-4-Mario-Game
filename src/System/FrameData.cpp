@@ -225,7 +225,6 @@ const FrameData* FrameDatabase::getFrameData(EnemyType type, const std::string& 
         animIt = enemyData.find(type);
         if (animIt == enemyData.end()) {
             return nullptr;
-			DrawText("Error: Animation data not found for enemy type", 200, 200, 20, RED);
         }
     }
 	DrawText(animName.c_str(), 100, 100, 20, RED);
@@ -234,7 +233,6 @@ const FrameData* FrameDatabase::getFrameData(EnemyType type, const std::string& 
     if(frameIt != animMap.end()) {
             auto frameDataIt = frameIt->second.find(frame);
             if (frameDataIt != frameIt->second.end()) {
-                DrawText("Animation data found for enemy type", 200, 200, 20, RED);
                 return &frameDataIt->second;
             }
     }

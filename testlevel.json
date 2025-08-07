@@ -48,7 +48,7 @@
                "gridY": 6,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
                "gridX": 2,
@@ -104,7 +104,7 @@
                "gridY": 14,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
                "gridX": 5,
@@ -258,7 +258,7 @@
                "gridY": 10,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
                "gridX": 8,
@@ -293,14 +293,14 @@
                "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
                "gridX": 9,
                "gridY": 14,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
                "gridX": 10,
@@ -342,7 +342,7 @@
                "gridY": 14,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "GROUND"
           },
           {
                "gridX": 11,
@@ -370,14 +370,14 @@
                "gridY": 9,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
                "gridX": 11,
                "gridY": 14,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
                "gridX": 12,
@@ -398,14 +398,14 @@
                "gridY": 5,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
                "gridX": 13,
                "gridY": 6,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BRICK"
+               "type": "COIN"
           },
           {
                "gridX": 13,

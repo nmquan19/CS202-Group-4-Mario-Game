@@ -5,7 +5,8 @@
 #include "../System/Interface.h"  
 #include "../System/Constant.h"
 #include <raylib.h>  
-// Forward declaration for Item class  
+#include "box2d/box2d.h"
+
 class Item;  
 class Block;  
 class Character;  
@@ -15,7 +16,7 @@ class KoopaShell;
 
 class Object : public ICollidable, public IDrawable {  
 public:  
-	virtual ~Object() = default;  
+	virtual ~Object();  
 	virtual bool isActive() const = 0;  
 	virtual void setActive(bool) = 0;  
 	virtual bool isCollided() const = 0;  
@@ -29,16 +30,20 @@ public:
 	virtual std::vector<Rectangle> getHitBox() const override = 0;  
 	virtual ObjectCategory getObjectCategory() const override = 0;  
 	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;  
-	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0;
-	virtual void onCollision(std::shared_ptr<Object> other) override = 0;  
+	virtual void onCollision(std::shared_ptr<Object> other, Direction direction) override = 0;  
 	int getCollidedPart(const Object& other);  
 	virtual ObjectType getObjectType() const = 0;  
+
+	b2Body* getPhysicsBody() const {
+		return physicsBody;
+	}
 
 protected:  
 	Vector2 position;  
 	Vector2 size;  
 	bool active = true;  
 	bool collided = false;  
+	b2Body* physicsBody;
 };  
 
 class ObjectFactory {
@@ -53,7 +58,6 @@ private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, Vector2 startPosition, float scale);
-	static std::unique_ptr<KoopaShell> createSpecificKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
 	static std::unique_ptr<Item> createSpecificItem(ItemType type, Vector2 startPos, Vector2 size);
 	static CharacterStats getStats(CharacterType type);
     static std::vector<std::vector<Rectangle>> getFrameData(CharacterType type);

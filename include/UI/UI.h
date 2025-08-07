@@ -2,6 +2,8 @@
 #include <raylib.h>
 #include <string>
 
+class UIManager;
+
 class ScoreDisplay {
 public:
     Vector2 position;
@@ -70,40 +72,9 @@ public:
 
         const char* coinText = TextFormat(" x %d", coinCount);
         DrawTextEx(font, coinText, { position.x + 30, position.y }, 40, 2, BLACK);
-
-        //DrawText(coinText, position.x + 25, position.y + 2, 20, WHITE);
     }
 };
 
-/*
-class CoinDisplay {
-public:
-    Vector2 position;
-    int coinCount;
-    Font font;
-    Texture2D coinSpriteSheet;
-    Rectangle currentFrame;
-
-    CoinDisplay(Vector2 pos, const char* c) : position(pos), coinCount(0) {
-        coinSpriteSheet = LoadTexture(c);
-        currentFrame = { 0, 0, 320, 320 };
-        font = GetFontDefault();
-    }
-    ~CoinDisplay() {
-        UnloadTexture(coinSpriteSheet);
-    }
-    void Draw(Font f) {
-        font = f;
-        Rectangle dest = { position.x, position.y, 30, 30 };
-        Vector2 origin = { 0, 0 };
-        DrawTexturePro(coinSpriteSheet, currentFrame, dest, origin, 0.0f, WHITE);
-
-        const char* coinText = TextFormat(" x %d", coinCount);
-        DrawTextEx(font, coinText, { position.x + 30, position.y }, 40, 2, WHITE);
-        //DrawText(coinText, position.x + 25, position.y + 2, 20, WHITE);
-    }
-};
-*/
 class WorldDisplay {
 public:
     Vector2 position;
@@ -155,17 +126,26 @@ public:
 
 class UIManager {
 private:
+    
+    UIManager();
+    
+    UIManager(const UIManager&) = delete;
+    UIManager& operator=(const UIManager&) = delete;
+
     ScoreDisplay score;
     CoinDisplay coin;
     WorldDisplay world;
     TimerDisplay timer;
+
 public:
+    
+    static UIManager& getInstance();
+
     bool isGameOver;
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
     Font menuFont;
 
-    UIManager();
     ~UIManager();
 
     void updateInformationBoard(float deltaTime) {
@@ -188,4 +168,15 @@ public:
     void addCoin() { coin.coinCount++; }
     void setWorld(const char* w) { world.worldStr = w; }
     void resetTimer(float t) { timer.timeLeft = t; }
+
+    void DrawTypewriterText(const char* text, Vector2 position, float fontSize, float spacing, Color color, float delay, float& timer, int& visibleChars) {
+        timer += GetFrameTime();
+
+        if (text[visibleChars] != '\0' && timer >= delay) {
+            visibleChars++;
+            timer = 0.0f;
+        }
+
+        DrawTextEx(menuFont, TextSubtext(text, 0, visibleChars), position, fontSize, spacing, color);
+    }
 };
