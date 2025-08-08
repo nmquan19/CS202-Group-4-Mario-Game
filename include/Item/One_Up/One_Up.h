@@ -8,6 +8,9 @@ public:
 
 	~One_Up();
 
+	void update(float deltaTime) override;
+	void Move(double dt) override;
+
 private:
 
 };

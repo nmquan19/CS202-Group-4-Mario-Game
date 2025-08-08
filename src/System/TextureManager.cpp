@@ -92,7 +92,7 @@ void TextureManager::loadTextures() {
     int item_id, item_x, item_y, item_w, item_h;
     while (item_in >> item_id >> item_x >> item_y >> item_w >> item_h){
         Item_sprite_boxes.push_back({ (float)item_x,(float)item_y,(float)item_w, (float)item_h });
-        std::cout << "Loaded ID " << item_id << item_x << item_y << item_w << item_h << std::endl;
+        //std::cout << "Loaded ID " << item_id << item_x << item_y << item_w << item_h << std::endl;
     }
     itemTextures = LoadTexture("assets/item/item_spritesheet.png");
     item_in.close();

@@ -60,6 +60,36 @@ b2Body* Box2DWorldManager::createRectangleBody(Vector2 pos, Vector2 hitboxSize) 
 	return body;
 }
 
+b2Body* Box2DWorldManager::createDynamicRectangleBody(Vector2 pos, Vector2 hitboxSize) {
+	b2Vec2 b2_size = raylibToB2(hitboxSize);
+	b2Vec2 b2_pos = raylibToB2(pos);
+	b2_pos.x += b2_size.x / 2;
+	b2_pos.y += b2_size.y / 2;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = b2_pos;
+	bodyDef.fixedRotation = true;
+	bodyDef.allowSleep = true;
+	bodyDef.awake = true;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+
+	b2PolygonShape mainShape;
+	mainShape.SetAsBox(b2_size.x / 2, b2_size.y / 2);
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &mainShape;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.0f;
+	fixtureDef.restitution = 0.0f;
+
+	body->CreateFixture(&fixtureDef);
+
+	attachSensors(body, hitboxSize);
+
+	return body;
+}
+
 b2Body* Box2DWorldManager::createCapsuleBody(Vector2 pos, Vector2 hitboxSize) {
 	b2Vec2 b2_size = raylibToB2(hitboxSize);
 	b2Vec2 b2_pos = raylibToB2(pos);
@@ -188,7 +218,7 @@ b2Body* Box2DWorldManager::createEnemyBody(Vector2 pos, Vector2 hitboxSize) {
 b2Body* Box2DWorldManager::createItemBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
 
-	b2Body* body = createRectangleBody(pos, hitboxSize);
+	b2Body* body = createDynamicRectangleBody(pos, hitboxSize);
 	return body;
 }
 

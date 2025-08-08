@@ -54,7 +54,7 @@ void PlayerCenteredCamera::update(float dt) {
     bool wantLedgeBias = IsKeyDown(KEY_DOWN);
     float targetLedgeBias = wantLedgeBias ? 250.0f : 0.0f;
     currentLedgeBias = Lerp(currentLedgeBias, targetLedgeBias, dt * 5.0f);
-   if(curGroundIndex!=-1) std::cout<<groundBounds[curGroundIndex]<<" "<< character->getPosition().y << "\n";
+   if(curGroundIndex!=-1) //std::cout<<groundBounds[curGroundIndex]<<" "<< character->getPosition().y << "\n";
 
     // Screen shake
     if (shakeIntensity > 0.01f) {

@@ -19,10 +19,10 @@ Item::Item(Vector2 startPos)
     this->hitbox = { position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
     physicsBody = Box2DWorldManager::getInstance().createItemBody(position, { hitbox.width, hitbox.height });
     if (physicsBody) {
-        std::cout << "Item\n";
+        //std::cout << "Item\n";
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
-            std::cout << "Item1\n";
+            //std::cout << "Item1\n";
             b2Filter filter = fixture->GetFilterData();
             filter.maskBits = static_cast<uint16>(ObjectCategory::ITEM);
             filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER);
@@ -119,5 +119,7 @@ ObjectType Item::getObjectType() const {
     return type;
 }
 
+void Item::Move(double dt) {
 
+}
 

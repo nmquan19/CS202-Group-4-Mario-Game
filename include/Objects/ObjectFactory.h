@@ -38,6 +38,14 @@ public:
 		return physicsBody;
 	}
 
+	Rectangle getHitbox() {
+		float x = position.x;
+		float y = position.y;
+		float width = size.x;
+		float height = size.y;
+		return { x, y, width, height };
+	}
+
 protected:  
 	Vector2 position;  
 	Vector2 size;  

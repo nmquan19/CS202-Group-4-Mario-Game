@@ -2,94 +2,42 @@
      "gridSize": 64,
      "objects": [
           {
-<<<<<<< Updated upstream
                "gridX": 1,
-               "gridY": 7,
-=======
-               "gridX": 0,
                "gridY": 4,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 0,
+               "gridX": 1,
                "gridY": 5,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 0,
+               "gridX": 1,
                "gridY": 6,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 0,
+               "gridX": 1,
                "gridY": 7,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 0,
+               "gridX": 1,
                "gridY": 8,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 0,
-               "gridY": 9,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 0,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 0,
-               "gridY": 11,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 0,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 0,
-               "gridY": 13,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
                "gridX": 1,
-<<<<<<< Updated upstream
-               "gridY": 8,
-=======
-               "gridY": 4,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 1,
-<<<<<<< Updated upstream
                "gridY": 9,
                "sizeX": 1.0,
                "sizeY": 1.0,
@@ -112,381 +60,158 @@
           {
                "gridX": 1,
                "gridY": 12,
-=======
-               "gridY": 13,
->>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 2,
-<<<<<<< Updated upstream
-               "gridY": 6,
-=======
-               "gridY": 1,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 2,
-<<<<<<< Updated upstream
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 2,
+               "gridX": 1,
                "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 2,
+               "gridX": 1,
                "gridY": 14,
-=======
-               "gridY": 2,
->>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-<<<<<<< Updated upstream
+               "gridX": 1,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 2,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
                "gridX": 3,
-               "gridY": 14,
-=======
-               "gridX": 2,
-               "gridY": 2,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 2,
-               "gridY": 2,
->>>>>>> Stashed changes
+               "gridX": 4,
+               "gridY": 13,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "COIN"
+          },
+          {
+               "gridX": 4,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-<<<<<<< Updated upstream
-               "gridX": 4,
-               "gridY": 5,
-=======
-               "gridX": 2,
-               "gridY": 3,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 4,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 4,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 4,
-               "gridY": 14,
-=======
-               "gridX": 2,
-               "gridY": 4,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-<<<<<<< Updated upstream
                "gridX": 5,
-               "gridY": 5,
+               "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "COIN"
           },
           {
                "gridX": 5,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 5,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 5,
-               "gridY": 14,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
-          },
-          {
-               "gridX": 6,
-               "gridY": 5,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 6,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 6,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
           },
           {
                "gridX": 6,
                "gridY": 13,
-=======
-               "gridX": 2,
-               "gridY": 10,
->>>>>>> Stashed changes
-               "sizeX": 0.75,
+               "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "GREEN_KOOPA"
+               "type": "COIN"
           },
           {
-<<<<<<< Updated upstream
                "gridX": 6,
-               "gridY": 14,
-=======
-               "gridX": 2,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 7,
                "gridY": 13,
->>>>>>> Stashed changes
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "COIN"
+          },
+          {
+               "gridX": 7,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-<<<<<<< Updated upstream
-               "gridX": 7,
-               "gridY": 1,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 7,
-               "gridY": 2,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 7,
-               "gridY": 3,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 7,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 7,
-               "gridY": 5,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 7,
-               "gridY": 14,
-=======
-               "gridX": 3,
-               "gridY": 4,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-<<<<<<< Updated upstream
                "gridX": 8,
-               "gridY": 1,
-=======
-               "gridX": 3,
                "gridY": 13,
->>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "COIN"
           },
           {
-<<<<<<< Updated upstream
                "gridX": 8,
-               "gridY": 2,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-=======
-               "gridX": 4,
-               "gridY": 2,
-               "sizeX": 0.75,
-               "sizeY": 1.0,
-               "type": "RED_KOOPA"
-          },
-          {
-               "gridX": 4,
-               "gridY": 4,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 4,
+               "gridX": 9,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 10,
+               "gridY": 14,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 10,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 11,
                "gridY": 13,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 5,
-               "gridY": 4,
+               "gridX": 11,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 5,
-               "gridY": 11,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 5,
+               "gridX": 12,
                "gridY": 12,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 5,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 6,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 6,
-               "gridY": 11,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 6,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 6,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 7,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 7,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
->>>>>>> Stashed changes
-          },
-          {
-               "gridX": 8,
-               "gridY": 3,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-<<<<<<< Updated upstream
-               "type": "COIN"
-=======
-               "type": "BRICK"
->>>>>>> Stashed changes
-          },
-          {
-               "gridX": 8,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-<<<<<<< Updated upstream
-               "type": "COIN"
-          },
-          {
-               "gridX": 8,
-               "gridY": 5,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 8,
-               "gridY": 9,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "SPRING"
-          },
-          {
-               "gridX": 8,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 8,
-               "gridY": 14,
-=======
                "gridX": 12,
                "gridY": 13,
                "sizeX": 1.0,
@@ -494,356 +219,36 @@
                "type": "BRICK"
           },
           {
-               "gridX": 13,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 13,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 14,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 14,
-               "gridY": 12,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 9,
-               "gridY": 5,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 9,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 9,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 9,
-=======
-               "gridX": 14,
->>>>>>> Stashed changes
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 9,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 10,
-               "gridY": 5,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 10,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 10,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 10,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 10,
-               "gridY": 11,
-=======
-               "gridX": 20,
-               "gridY": 13,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 10,
-               "gridY": 14,
-=======
-               "gridX": 21,
-               "gridY": 2,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 11,
-               "gridY": 5,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 11,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 11,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 11,
-               "gridY": 9,
-=======
-               "gridX": 21,
-               "gridY": 3,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 11,
-               "gridY": 14,
-=======
-               "gridX": 21,
-               "gridY": 4,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 12,
-               "gridY": 7,
-=======
-               "gridX": 21,
-               "gridY": 5,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-<<<<<<< Updated upstream
                "gridX": 12,
                "gridY": 14,
-=======
-               "gridX": 21,
-               "gridY": 6,
->>>>>>> Stashed changes
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-<<<<<<< Updated upstream
-               "gridX": 13,
-               "gridY": 5,
-=======
-               "gridX": 21,
-               "gridY": 7,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 13,
-               "gridY": 6,
-=======
-               "gridX": 21,
-               "gridY": 8,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 13,
-               "gridY": 7,
-=======
-               "gridX": 21,
-               "gridY": 9,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 13,
-               "gridY": 8,
-=======
-               "gridX": 21,
-               "gridY": 10,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 13,
-               "gridY": 9,
-=======
-               "gridX": 21,
-               "gridY": 11,
->>>>>>> Stashed changes
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-<<<<<<< Updated upstream
-               "gridX": 13,
-               "gridY": 10,
+               "gridX": 12,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
                "gridX": 13,
-               "gridY": 14,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
                "gridX": 14,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 14,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 14,
-               "gridY": 14,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
                "gridX": 15,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 15,
-               "gridY": 5,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 15,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 15,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 15,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 15,
-               "gridY": 13,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 15,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 16,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 16,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 16,
-               "gridY": 10,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
@@ -851,200 +256,111 @@
           {
                "gridX": 16,
                "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 17,
-               "gridY": 6,
-               "sizeX": 0.75,
-               "sizeY": 1.0,
-               "type": "RED_KOOPA"
-          },
-          {
-               "gridX": 17,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 17,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 17,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 18,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 18,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 18,
-               "gridY": 11,
                "sizeX": 0.75,
                "sizeY": 0.75,
                "type": "GOOMBA"
           },
           {
+               "gridX": 16,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 17,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
                "gridX": 18,
-               "gridY": 14,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
                "gridX": 19,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "DRY_BOWSER"
-          },
-          {
-               "gridX": 19,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 19,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 20,
-               "gridY": 9,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 20,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 20,
-               "gridY": 14,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 21,
-               "gridY": 2,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 21,
-               "gridY": 3,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BRICK"
-          },
-          {
-               "gridX": 21,
                "gridY": 4,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 5,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 6,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 7,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 8,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 9,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 10,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 11,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-=======
->>>>>>> Stashed changes
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 12,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 13,
-<<<<<<< Updated upstream
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"
           },
           {
-               "gridX": 21,
+               "gridX": 19,
                "gridY": 14,
-=======
->>>>>>> Stashed changes
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BRICK"
+          },
+          {
+               "gridX": 19,
+               "gridY": 15,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BRICK"

@@ -72,7 +72,7 @@ public:
 
         float t = static_cast<float>(currentFrame - startFrame) / (endFrame - startFrame);
         float eased = easingFunction(std::clamp(t, 0.0f, 1.0f));
-        std::cout << (fromVelocity + (toVelocity - fromVelocity) * eased).y<<"\n";
+        //std::cout << (fromVelocity + (toVelocity - fromVelocity) * eased).y<<"\n";
         return fromVelocity + (toVelocity - fromVelocity) * eased;
     }
 

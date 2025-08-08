@@ -10,6 +10,7 @@
 #include <memory>
 #include <box2d/box2d.h>
 #include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
+
 class EnemyState; 
 
 class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable {

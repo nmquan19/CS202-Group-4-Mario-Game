@@ -73,7 +73,7 @@ void GoombaStompedState::exit(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
     goomba->isalive = false;
-    std::cout << goomba->stompedTime << std::endl;
+    //std::cout << goomba->stompedTime << std::endl;
     GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(goomba));
 }
 

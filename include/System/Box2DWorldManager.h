@@ -37,6 +37,7 @@ public:
 
 private:
 	b2Body* createRectangleBody(Vector2 pos, Vector2 hitboxSize);
+	b2Body* createDynamicRectangleBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createCapsuleBody(Vector2 pos, Vector2 hitboxSize);
 	void attachSensors(b2Body* body, Vector2 hitboxSize);
 
