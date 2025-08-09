@@ -17,7 +17,10 @@ void KnockedState::enter(Character* character) {
 }
 
 void KnockedState::update(Character* character, float deltaTime) {
-	if (character->reviveTimer <= 0) {
+	if (character->reviveTimer > 0) {
+		character->reviveTimer -= deltaTime;
+	}
+	else {
 		character->changeState(IdleState::getInstance());
 	}
 }

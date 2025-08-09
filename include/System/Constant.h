@@ -43,18 +43,31 @@ namespace Constants {
         constexpr float MOVING_DURATION = 7.5f;
 	}
     namespace Character {
+        constexpr Vector2 SMALL_STANDARD_SIZE = { 0.75f, 1.0f };
+        constexpr Vector2 SUPER_STANDARD_SIZE = { 1.0f, 1.5f };
         constexpr float BOUNCE_AFTER_STRIKE_VELOCITY = 7.0f;
         constexpr float INVINCIBLE_TIME_AFTER_STRIKE = 0.2f;
+        constexpr float INVINCIBLE_TIME_AFTER_TRANSFORM = 1.0f;
         constexpr float STUNNED_STATE_DURATION = 1.0f;
         constexpr float REVIVE_TIME = 3.0f;
-        constexpr CharacterStats MARIO_STATS = {3.5f, 10.0f};
-        constexpr CharacterStats LUIGI_STATS = {2.5f, 12.0f};
-        const std::vector<std::vector<Rectangle>> MARIO_FRAME_DATA = {
+        constexpr float TRANSFORM_DURATION = 0.8f;
+        constexpr CharacterStats MARIO_STATS = { 3.5f, 10.0f };
+        constexpr CharacterStats LUIGI_STATS = { 2.5f, 12.0f };
+        const std::vector<std::vector<Rectangle>> SMALL_MARIO_FRAME_DATA = {
             {{11, 23, 12, 15}}, // idle state
-            {{118, 23, 12, 15}, {149, 22, 15, 16}}, // moving state
+            {{118, 23, 12, 15}, {149, 22, 15, 16}, {186, 22, 16, 16}, {219, 22, 16, 16}}, // moving state
             {{293, 22, 16, 16}, {326, 22, 16, 16}}, // jumping state
             {{11, 23, 12, 15}, {49, 26, 11, 12}}, // stunned state
-            {{713, 22, 16, 16}} // knocked state
+            {{713, 22, 16, 16}}, // knocked state
+            {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 106, 16, 26}, {11, 106, 14, 27}} // super transform
+        };
+        const std::vector<std::vector<Rectangle>> SUPER_MARIO_FRAME_DATA = {
+            {{11, 106, 14, 27}}, // idle state
+            {{116, 106, 16, 27}, {149, 106, 16, 26}, {184, 106, 14, 27}}, // moving state
+            {{360, 106, 16, 26}, {393, 106, 16, 26}}, // jumping state
+            {{11, 106, 14, 27}, {48, 115, 14, 18}}, // stunned state
+            {{713, 22, 16, 16}}, // should be removed once add isSuper
+            {{11, 106, 14, 27}, {360, 106, 16, 26}, {293, 22, 16, 16}, {149, 22, 15, 16}, {11, 23, 12, 15}} // small transform
         };
         const std::vector<std::vector<Rectangle>> LUIGI_FRAME_DATA = {
             {{11, 893, 12, 15}}, // idle state
@@ -86,7 +99,7 @@ namespace Constants {
     namespace Spring {
         constexpr float BOUNCE_VELOCITY = 14.0f;
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };
-        constexpr float BOUNCE_DURATION = 1.4f;
+        constexpr float BOUNCE_DURATION = 0.8f;
     }
     namespace PaletteResources {
         constexpr Rectangle BRICK = { 12, 111, 128, 86 };

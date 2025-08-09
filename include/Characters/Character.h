@@ -3,14 +3,13 @@
 #include "raylib.h"
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
-#include "../System/PhysicsManager.h"
 #include "../Objects/Spring.h"
 
 class ICharacterState;
 
 class Character : public Object, public IUpdatable, public IMovable, public IDamageable {
 public:
-	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale);
+	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, Vector2 size);
 	~Character();
 	void changeState(ICharacterState& newState);
   
@@ -40,7 +39,6 @@ public:
 	bool isFacingRight() const;
 	void setFacingRight(bool flag);
 
-	void updateHitBox();
 	std::vector<Rectangle> getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
@@ -73,6 +71,8 @@ public:
 	friend class JumpingState;
 	friend class StunnedState;
 	friend class KnockedState;
+	friend class SuperTransformState;
+	friend class SmallTransformState;
 
 	void addGroundContact();
 	void removeGroundContact();
@@ -83,11 +83,12 @@ private:
 	void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction);
 	void handleEnemyCollision(std::shared_ptr<Object> other, Direction direction);
 	void handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction);
-	void handleSpringCollision(std::shared_ptr<Spring> other, Direction direction);
+	void handleSpringCollision(std::shared_ptr<Object> other, Direction direction);
 
 private:
 	ICharacterState* currentState;
 	CharacterType characterType;
+	PowerState powerState;
 
 	float scale;
 	Vector2 velocity;
@@ -105,14 +106,12 @@ private:
 	float aniTimer;
 	float aniSpeed;
 
-	float lastBottomY;
-	float hitBoxWidth;
-	float hitBoxHeight;
 	bool active = true;
 
 	int hp;
 	float invincibleTimer;
 	float reviveTimer;
+	float transformTimer;
 	
 	KoopaShell* projectile;
 	bool holdingProjectile;

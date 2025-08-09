@@ -15,21 +15,22 @@
 #include <algorithm>
 #include <variant>
 #include <memory>
-Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale)
-	: characterType(type), scale(scale), hp(1), projectile(nullptr), holdingProjectile(false),
-	invincibleTimer(0), reviveTimer(0), 
+
+Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, Vector2 size) 
+	: characterType(type), hp(1), projectile(nullptr), holdingProjectile(false), invincibleTimer(0), reviveTimer(0),
 	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
 	this->stateFrameData = stateFrameData;
 	this->spriteSheet = TextureManager::getInstance().getCharacterTexture();
 	this->speed = stats.baseSpeed;
 	this->jumpVel = stats.jumpVel;
+	this->size = size;
 
 	if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
 		setCurrentStateRow(0);
 	}
 
-	physicsBody = Box2DWorldManager::getInstance().createCharacterBody(startPosition, { spriteRec.width * scale, spriteRec.height * scale });
+	physicsBody = Box2DWorldManager::getInstance().createCharacterBody(startPosition, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
 	if (physicsBody) {
 		physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
 		for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
@@ -42,6 +43,7 @@ Character::Character(Vector2 startPosition, const CharacterStats& stats, const s
 		}
 	}
 
+	powerState = PowerState::SMALL;
     currentState = &IdleState::getInstance();
     currentState->enter(this);
 }
@@ -70,7 +72,6 @@ void Character::update(float deltaTime) {
 	if(aniTimer >= aniSpeed){
 		currentFrame = (currentFrame + 1) % stateFrameData[currentStateRow].size();
 		spriteRec = getCurrentStateFrame();
-		updateHitBox();
 		aniTimer = 0;
 	}
 
@@ -78,16 +79,7 @@ void Character::update(float deltaTime) {
 		invincibleTimer -= deltaTime;		
 	}
 
-	if (reviveTimer > 0) {
-		reviveTimer -= deltaTime;
-	}
-
 	handleProjectile(deltaTime);
-
-	if (physicsBody) {
-		auto newPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
-		position = {newPos.x - hitBoxWidth/2.0f, newPos.y - hitBoxHeight/2.0f};
-	}
 }
 
 void Character::draw() {
@@ -97,11 +89,16 @@ void Character::draw() {
 		sourceRec.width = -sourceRec.width;
 	}
 
+	Vector2 centerPosition = Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
+	Vector2 drawPosition = { centerPosition.x - size.x * Constants::TILE_SIZE * 0.5f, 
+		centerPosition.y - size.y * Constants::TILE_SIZE * 0.5f };
+	Rectangle reference = stateFrameData[0][0];
+
 	Rectangle destRec = {
-		position.x,
-		position.y,
-		abs(sourceRec.width) * scale,
-		sourceRec.height * scale
+		drawPosition.x,
+		drawPosition.y + size.y * Constants::TILE_SIZE - spriteRec.height / reference.height * size.y * Constants::TILE_SIZE,
+		spriteRec.width / reference.width * size.x * Constants::TILE_SIZE,
+		spriteRec.height / reference.height * size.y * Constants::TILE_SIZE
 	};
 
 	DrawTexturePro(spriteSheet, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
@@ -131,7 +128,6 @@ void Character::setCurrentStateRow(int newRow){
 		currentStateRow = newRow;
 		currentFrame = 0;
 		spriteRec = getCurrentStateFrame();
-		updateHitBox();
 	} 
 }
 
@@ -209,16 +205,15 @@ void Character::setFacingRight(bool flag) {
 	facingRight = flag;
 }
 
-void Character::updateHitBox(){
-	hitBoxWidth = spriteRec.width * scale;
-	hitBoxHeight = spriteRec.height * scale;
-	if (currentState == &StunnedState::getInstance()) {
-		position.y = lastBottomY - hitBoxHeight;
-	}
-}
-
 std::vector<Rectangle> Character::getHitBox() const {
-	return {{position.x, position.y, hitBoxWidth, hitBoxHeight}};
+	Vector2 centerPosition = Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
+	Rectangle hitbox = {
+		centerPosition.x - size.x * Constants::TILE_SIZE * 0.5f,
+		centerPosition.y - size.y * Constants::TILE_SIZE * 0.5f,
+		size.x * Constants::TILE_SIZE,
+		size.y * Constants::TILE_SIZE
+	};
+	return {hitbox};
 }
 
 bool Character::isActive() const {
@@ -255,6 +250,7 @@ std::vector<ObjectCategory> Character::getCollisionTargets() const {
 
 void Character::onCollision(std::shared_ptr<Object> other, Direction direction) {
 	switch (other->getObjectCategory()) {
+	case ObjectCategory::PROJECTILE:
 	case ObjectCategory::ENEMY:
 		handleEnemyCollision(other, direction);
 		break;
@@ -264,13 +260,8 @@ void Character::onCollision(std::shared_ptr<Object> other, Direction direction) 
 	case ObjectCategory::INTERACTIVE:
 		handleInteractiveCollision(other, direction);
 		break;
-	case ObjectCategory::PROJECTILE:
-		if (direction != Direction::UP) {
-			takeDamage(1);
-		}
-		else {
-			invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_STRIKE;
-		}
+	case ObjectCategory::SHELL:
+		invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_STRIKE;
 		break;
 	case ObjectCategory::ITEM:
 		// implement 
@@ -374,7 +365,7 @@ void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direct
     }
 }
 
-void Character::handleSpringCollision(std::shared_ptr<Spring> other, Direction direction) {
+void Character::handleSpringCollision(std::shared_ptr<Object> other, Direction direction) {
 	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
 	if (direction == Direction::DOWN) {
 		float mass = this->physicsBody->GetMass();

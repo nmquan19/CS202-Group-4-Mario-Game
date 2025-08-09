@@ -18,6 +18,11 @@ enum class ObjectCategory : uint16 {
 	BACKGROUND = 0x0100
 };
 
+enum class PowerState {
+	SMALL,
+	SUPER
+};
+
 enum class BlockType {
 	GROUND,
 	BRICK,

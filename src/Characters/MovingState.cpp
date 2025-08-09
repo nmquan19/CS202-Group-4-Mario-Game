@@ -6,7 +6,7 @@
 
 void MovingState::enter(Character* character) {
 	character->setAniTime(0);
-	character->setAniSpeed(0.3f);
+	character->setAniSpeed(0.2f);
 	character->setCurrentStateRow(1);
 }
 

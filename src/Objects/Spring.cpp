@@ -9,7 +9,7 @@ Spring::Spring(Vector2 position, Vector2 size) : InteractiveObject(position, siz
 	this->bounceTimer = 0.0f;
 	this->aniTimer = 0.0f;
 	this->aniSpeed = 0.2f;
-	this->frameData = { {1, 467, 16, 16}, {18, 471, 16, 12}, {35, 476, 16, 7} };
+	this->frameData = { {1, 467, 16, 16}, {18, 471, 16, 12}, {35, 476, 16, 7}, {18, 471, 16, 12}, {1, 467, 16, 16} };
 	this->currentFrame = 0;
 	this->spriteRec = frameData[0];
 	this->bottomY = position.y + size.y * Constants::TILE_SIZE;

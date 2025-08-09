@@ -35,9 +35,8 @@ public:
 	static float b2ToRaylib(const float value);
 	static float raylibToB2(const float value);
 
-private:
-	b2Body* createRectangleBody(Vector2 pos, Vector2 hitboxSize);
-	b2Body* createCapsuleBody(Vector2 pos, Vector2 hitboxSize);
+	void attachRectangleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
+	void attachCapsuleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachSensors(b2Body* body, Vector2 hitboxSize);
 
 private:
