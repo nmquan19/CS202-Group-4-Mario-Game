@@ -106,13 +106,14 @@ void Character::draw() {
 	};
 
 	DrawTexturePro(spriteSheet, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
+	Vector2 indicatorSize = MeasureTextEx(GetFontDefault(), id == PlayerID::PLAYER_01 ? "P1" : "P2", 20.0f, 1.5f);
 	DrawTextPro(GetFontDefault(),
 		id == PlayerID::PLAYER_01 ? "P1" : "P2",
-		Vector2(destRec.x + destRec.width * 0.5f, destRec.y - 10.0f),
+		Vector2(destRec.x + destRec.width * 0.5f - indicatorSize.x * 0.5f, destRec.y - indicatorSize.y * 0.5f - 10.0f),
 		Vector2{ 0, 0 },
 		0.0f,
 		20.0f,
-		1.0f,
+		1.5f,
 		BLACK
 	);
 
