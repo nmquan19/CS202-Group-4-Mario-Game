@@ -42,6 +42,17 @@ Item::~Item() {
 
 void Item::update(float deltaTime) {
     animation->Update();
+    
+    if (physicsBody) {
+        b2Vec2 bodyPos = physicsBody->GetPosition();
+        // Box2D mặc định dùng mét, bạn cần nhân với tỉ lệ pixel (GridSystem::GRID_SIZE)
+        position.x = (bodyPos.x -0.5)* GridSystem::GRID_SIZE;
+        position.y = (bodyPos.y -0.5)* GridSystem::GRID_SIZE;
+
+        hitbox.x = position.x;
+        hitbox.y = position.y;
+    }
+
 }
 
 void Item::draw() {

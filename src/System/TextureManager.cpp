@@ -54,6 +54,8 @@ Texture2D TextureManager::getItemTexture() const {
 void TextureManager::loadTextures() {
     if (texturesLoaded) return;
 
+    itemTextures = LoadTexture("assets/item/item_spritesheet.png");
+
     blocksTexture = LoadTexture("assets/item2_sprites.png");
 
     characterTextures = LoadTexture("assets/character_spritesheet.png");
@@ -94,7 +96,6 @@ void TextureManager::loadTextures() {
         Item_sprite_boxes.push_back({ (float)item_x,(float)item_y,(float)item_w, (float)item_h });
         //std::cout << "Loaded ID " << item_id << item_x << item_y << item_w << item_h << std::endl;
     }
-    itemTextures = LoadTexture("assets/item/item_spritesheet.png");
     item_in.close();
 
     itemTexturesLoaded = true;

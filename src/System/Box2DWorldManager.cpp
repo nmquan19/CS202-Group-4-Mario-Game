@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/Characters/Character.h"
 
@@ -219,6 +219,13 @@ b2Body* Box2DWorldManager::createItemBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
 
 	b2Body* body = createDynamicRectangleBody(pos, hitboxSize);
+	return body;
+}
+
+b2Body* Box2DWorldManager::createItemBodyForCoin(Vector2 pos, Vector2 hitboxSize) {
+	b2Body* body = createRectangleBody(pos, hitboxSize);
+	body->SetType(b2_kinematicBody);
+	body->SetGravityScale(0.0f); // Thêm dòng này để đảm bảo không bị rơi
 	return body;
 }
 

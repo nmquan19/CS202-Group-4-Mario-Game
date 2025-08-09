@@ -51,6 +51,30 @@ int main() {
 }
 
 //int main() {
+//	const int screenWidth = 800;
+//	const int screenHeight = 600;
+//	InitWindow(screenWidth, screenHeight, "Mario Game Demo");
+//	
+//
+//	Vector2 startPos = { 20, 10 };
+//	std::shared_ptr<One_Up> oneup = std::make_shared<One_Up>(startPos);
+//
+//
+//	while (!WindowShouldClose()) {
+//		float deltaTime = GetFrameTime();
+//		oneup->update(deltaTime);
+//		BeginDrawing();
+//		ClearBackground(RAYWHITE);
+//		oneup->draw();
+//		EndDrawing();
+//
+//	}
+//	CloseAudioDevice();
+//	CloseWindow();
+//	return 0;
+//}
+
+//int main() {
 //    const int screenWidth = 800;
 //    const int screenHeight = 600;
 //    InitWindow(screenWidth, screenHeight, "Test Blocks Demo");

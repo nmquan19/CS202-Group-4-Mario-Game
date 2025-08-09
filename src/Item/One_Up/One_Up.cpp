@@ -5,6 +5,8 @@
 #include <raylib.h>
 
 One_Up::One_Up(Vector2 startPos) : Item(startPos) {
+    animation->SetType(ItemType::ONE_UP);
+    
 	gravity = 600.0f; // Set gravity for the item
 
     size = { 1, 1 };
@@ -28,13 +30,10 @@ One_Up::~One_Up() {
     }
 }
 
-void One_Up::update(float deltaTime) {
-    aniTimer += deltaTime;
-    if (aniTimer >= aniSpeed) {
-        aniTimer = 0;
-        animation->Update();
-    }
-}
+//void One_Up::update(float deltaTime) {
+//	animation->Update();
+//	position.y = hitbox.y; // Ensure position is updated with hitbox y
+//}
 
 void One_Up::Move(double dt) {
     // Gravity effect
