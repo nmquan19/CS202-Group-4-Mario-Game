@@ -44,7 +44,8 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().cleanup();
             clearGame(); // Delete remaining objects in GameContext
             Box2DWorldManager::getInstance().cleanup();
-            character.reset();
+            character01.reset();
+            character02.reset();
         }
 
         previousState = currentState;
@@ -58,10 +59,12 @@ void GameContext::setState(GameState* newState) {
             createTestBlocks();
             
             //LevelEditor::getInstance().loadLevel("testlevel.json");
-            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 400 });
-            if (character) {
+            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+            // CAMERA NEEDS CHANGING
+            if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
-                camera.target = character->getPosition();
+                camera.target = character01->getPosition();
             }
         }
     }

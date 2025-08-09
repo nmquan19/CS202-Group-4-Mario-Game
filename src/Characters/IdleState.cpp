@@ -13,17 +13,29 @@ void IdleState::enter(Character* character) {
 }
 
 void IdleState::update(Character* character, float deltaTime) {
-	if (IsKeyPressed(KEY_SPACE) && character->isOnGround()) {
-		character->jump();
-        character->changeState(JumpingState::getInstance());
-        return;
-    }
+	
+}
 
-	if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) {
+void IdleState::exit(Character* character) {
+
+}
+
+void IdleState::handleInput(Character* character, const InputState& input) {
+
+}
+
+void IdleState::checkTransitions(Character* character, const InputState& input) {
+	if (input.jumpPressed && character->isOnGround()) {
+		character->jump();
+		character->changeState(JumpingState::getInstance());
+		return;
+	}
+
+	if (input.moveLeft || input.moveRight) {
 		character->changeState(MovingState::getInstance());
 	}
 
-	if (IsKeyDown(KEY_F)) {
+	if (input.superTransform) {
 		if (character->powerState == PowerState::SMALL) {
 			character->changeState(SuperTransformState::getInstance());
 		}
@@ -32,8 +44,6 @@ void IdleState::update(Character* character, float deltaTime) {
 		}
 	}
 }
-
-void IdleState::exit(Character* character) {}
 
 IdleState& IdleState::getInstance() {
 	static IdleState instance;

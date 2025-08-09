@@ -10,16 +10,24 @@ void JumpingState::enter(Character* character){
     character->setCurrentStateRow(2);
 }
 
-void JumpingState::update(Character* character, float deltaTime){
+void JumpingState::update(Character* character, float deltaTime) {
+
+}
+
+void JumpingState::exit(Character* character){
+
+}
+
+void JumpingState::handleInput(Character* character, const InputState& input) {
     b2Vec2 currentVel = character->physicsBody->GetLinearVelocity();
     float speed = character->getSpeed();
     float airControlFactor = 0.8f;
 
-    if (IsKeyDown(KEY_A)) {
+    if (input.moveLeft) {
         character->physicsBody->SetLinearVelocity(b2Vec2(-speed * airControlFactor, currentVel.y));
         character->setFacingRight(false);
     }
-    else if (IsKeyDown(KEY_D)) {
+    else if (input.moveRight) {
         character->physicsBody->SetLinearVelocity(b2Vec2(speed * airControlFactor, currentVel.y));
         character->setFacingRight(true);
     }
@@ -27,23 +35,23 @@ void JumpingState::update(Character* character, float deltaTime){
         character->physicsBody->SetLinearVelocity(b2Vec2(currentVel.x * 0.95f, currentVel.y));
     }
 
-    if (IsKeyReleased(KEY_SPACE) && currentVel.y < 0) {
+    if (input.jumpReleased && currentVel.y < 0) {
         b2Vec2 newVel = character->physicsBody->GetLinearVelocity();
         newVel.y *= 0.5f;
         character->physicsBody->SetLinearVelocity(newVel);
     }
-
-    if (character->isOnGround()) {
-        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) {
-            character->changeState(MovingState::getInstance());
-        } else {
-            character->changeState(IdleState::getInstance());
-        }
-        return;
-    }
 }
 
-void JumpingState::exit(Character* character){}
+void JumpingState::checkTransitions(Character* character, const InputState& input) {
+    if (character->isOnGround()) {
+        if (input.moveLeft || input.moveRight) {
+            character->changeState(MovingState::getInstance());
+        }
+        else {
+            character->changeState(IdleState::getInstance());
+        }
+    }
+}
 
 JumpingState& JumpingState::getInstance() {
     static JumpingState instance;

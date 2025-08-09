@@ -5,11 +5,49 @@
 #include "../System/Interface.h"
 #include "../Objects/Spring.h"
 
+struct PlayerInputMapping {
+	int moveLeft;
+	int moveRight;
+	int jump;
+	int superTransform;
+
+	static PlayerInputMapping getMapping(PlayerID id) {
+		switch (id) {
+		case PlayerID::PLAYER_01:
+			return { KEY_A, KEY_D, KEY_W, KEY_F };
+		case PlayerID::PLAYER_02:
+			return { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_J };
+		}
+	}
+};
+
+struct InputState {
+	bool moveLeft = false;
+	bool moveRight = false;
+	bool jump = false;
+	bool jumpPressed = false;
+	bool jumpReleased = false;
+	bool superTransform = false;
+
+	static InputState fromPlayer(PlayerID playerID) {
+		PlayerInputMapping mapping = PlayerInputMapping::getMapping(playerID);
+
+		InputState input;
+		input.moveLeft = IsKeyDown(mapping.moveLeft);
+		input.moveRight = IsKeyDown(mapping.moveRight);
+		input.jump = IsKeyDown(mapping.jump);
+		input.jumpPressed = IsKeyPressed(mapping.jump);
+		input.jumpReleased = IsKeyReleased(mapping.jump);
+		input.superTransform = IsKeyPressed(mapping.superTransform);
+		return input;
+	}
+};
+
 class ICharacterState;
 
 class Character : public Object, public IUpdatable, public IMovable, public IDamageable {
 public:
-	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, Vector2 size);
+	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, PlayerID id, Vector2 size);
 	~Character();
 	void changeState(ICharacterState& newState);
   
@@ -59,12 +97,12 @@ public:
 	bool isHoldingProjectile() const;
 	void holdProjectile(KoopaShell& p);
 
-	float getWidth() const;
+	/*float getWidth() const;
 	float getHeight() const;
 	float getBottom() const;
 	float getCenterX() const;
 	float getCenterY() const;
-	Vector2 getCenter() const;
+	Vector2 getCenter() const;*/
 
 	friend class IdleState;
 	friend class MovingState;
@@ -88,9 +126,9 @@ private:
 private:
 	ICharacterState* currentState;
 	CharacterType characterType;
+	PlayerID id;
 	PowerState powerState;
 
-	float scale;
 	Vector2 velocity;
 
 	float speed;

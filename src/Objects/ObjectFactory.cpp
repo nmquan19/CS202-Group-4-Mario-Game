@@ -41,22 +41,22 @@ std::unique_ptr<Block> ObjectFactory::createSpecificBlock(BlockType type, Vector
     }
 }
 
-std::unique_ptr<Object> ObjectFactory::createCharacter(CharacterType type, Vector2 startPosition, Vector2 size) {
+std::unique_ptr<Object> ObjectFactory::createCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size) {
     switch(type) {
         case CharacterType::MARIO:
-            return createSpecificCharacter(CharacterType::MARIO, startPosition, size);
+            return createSpecificCharacter(CharacterType::MARIO, id, startPosition, size);
         case CharacterType::LUIGI:
-            return createSpecificCharacter(CharacterType::LUIGI, startPosition, size);
+            return createSpecificCharacter(CharacterType::LUIGI, id, startPosition, size);
         default: 
             return nullptr;
     }
 }
 
-std::unique_ptr<Character> ObjectFactory::createSpecificCharacter(CharacterType type, Vector2 startPosition, Vector2 size) {
+std::unique_ptr<Character> ObjectFactory::createSpecificCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size) {
     CharacterStats stats = getStats(type);
     auto stateFrameData = getFrameData(type);
     
-    return std::make_unique<Character>(startPosition, stats, stateFrameData, type, size);
+    return std::make_unique<Character>(startPosition, stats, stateFrameData, type, id, size);
 }
 
 CharacterStats ObjectFactory::getStats(CharacterType type) {

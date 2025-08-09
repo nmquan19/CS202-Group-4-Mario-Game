@@ -172,14 +172,14 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             GameContext::getInstance().Objects.push_back(newEnemy);
 
         }
-        else if constexpr (std::is_same_v<T, CharacterType>) {
+        /*else if constexpr (std::is_same_v<T, CharacterType>) {
             std::shared_ptr<Object> newChar = ObjectFactory::createCharacter(actualType, GridSystem::getWorldPosition(gridCoord));
             if (newChar) {
                 gridBlocks[key].push(newChar);
             }
             GameContext::getInstance().Objects.push_back(newChar);
 
-        }
+        }*/
         else if constexpr (std::is_same_v<T, InteractiveType>) {
             std::shared_ptr<Object> newInter = ObjectFactory::createSpring(GridSystem::getWorldPosition(gridCoord));
             if (newInter) {

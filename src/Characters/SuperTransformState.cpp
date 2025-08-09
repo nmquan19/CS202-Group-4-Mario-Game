@@ -36,9 +36,10 @@ void SuperTransformState::exit(Character* character) {
 	for (b2Fixture* fixture = character->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
 		b2Filter filter = fixture->GetFilterData();
 		filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);
-		filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::ENEMY) |
-			static_cast<uint16>(ObjectCategory::INTERACTIVE) | static_cast<uint16>(ObjectCategory::ITEM) |
-			static_cast<uint16>(ObjectCategory::SHELL) | static_cast<uint16>(ObjectCategory::PROJECTILE);
+		filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::CHARACTER) |
+			static_cast<uint16>(ObjectCategory::ENEMY) | static_cast<uint16>(ObjectCategory::INTERACTIVE) |
+			static_cast<uint16>(ObjectCategory::ITEM) | static_cast<uint16>(ObjectCategory::SHELL) |
+			static_cast<uint16>(ObjectCategory::PROJECTILE);
 		fixture->SetFilterData(filter);
 	}
 
@@ -48,6 +49,14 @@ void SuperTransformState::exit(Character* character) {
 	character->invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_TRANSFORM;
 	character->currentState = &IdleState::getInstance();
 	character->changeState(IdleState::getInstance());
+}
+
+void SuperTransformState::handleInput(Character* character, const InputState& input) {
+
+}
+
+void SuperTransformState::checkTransitions(Character* character, const InputState& input) {
+
 }
 
 SuperTransformState& SuperTransformState::getInstance() {

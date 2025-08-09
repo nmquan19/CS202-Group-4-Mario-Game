@@ -16,9 +16,9 @@
 #include <variant>
 #include <memory>
 
-Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, Vector2 size) 
-	: characterType(type), hp(1), projectile(nullptr), holdingProjectile(false), invincibleTimer(0), reviveTimer(0),
-	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
+Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, PlayerID id, Vector2 size) 
+	: characterType(type), id(id), hp(1), projectile(nullptr), holdingProjectile(false), invincibleTimer(0), 
+	reviveTimer(0), facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
 	this->stateFrameData = stateFrameData;
 	this->spriteSheet = TextureManager::getInstance().getCharacterTexture();
@@ -36,9 +36,10 @@ Character::Character(Vector2 startPosition, const CharacterStats& stats, const s
 		for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
 			b2Filter filter = fixture->GetFilterData();
 			filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);
-			filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::ENEMY) |
-				static_cast<uint16>(ObjectCategory::INTERACTIVE) | static_cast<uint16>(ObjectCategory::ITEM) |
-				static_cast<uint16>(ObjectCategory::SHELL) | static_cast<uint16>(ObjectCategory::PROJECTILE);
+			filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::CHARACTER) |
+				static_cast<uint16>(ObjectCategory::ENEMY) | static_cast<uint16>(ObjectCategory::INTERACTIVE) | 
+				static_cast<uint16>(ObjectCategory::ITEM) | static_cast<uint16>(ObjectCategory::SHELL) | 
+				static_cast<uint16>(ObjectCategory::PROJECTILE);
 			fixture->SetFilterData(filter);
 		}
 	}
@@ -65,6 +66,9 @@ void Character::changeState(ICharacterState& newState) {
 
 void Character::update(float deltaTime) {
 	if (currentState) {
+		InputState input = InputState::fromPlayer(this->id);
+		currentState->handleInput(this, input);
+		currentState->checkTransitions(this, input);
 		currentState->update(this, deltaTime);
 	}
 
@@ -90,7 +94,7 @@ void Character::draw() {
 	}
 
 	Vector2 centerPosition = Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
-	Vector2 drawPosition = { centerPosition.x - size.x * Constants::TILE_SIZE * 0.5f, 
+	Vector2 drawPosition = { centerPosition.x - size.x * Constants::TILE_SIZE * 0.5f,
 		centerPosition.y - size.y * Constants::TILE_SIZE * 0.5f };
 	Rectangle reference = stateFrameData[0][0];
 
@@ -102,6 +106,15 @@ void Character::draw() {
 	};
 
 	DrawTexturePro(spriteSheet, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
+	DrawTextPro(GetFontDefault(),
+		id == PlayerID::PLAYER_01 ? "P1" : "P2",
+		Vector2(destRec.x + destRec.width * 0.5f, destRec.y - 10.0f),
+		Vector2{ 0, 0 },
+		0.0f,
+		20.0f,
+		1.0f,
+		BLACK
+	);
 
 	if(holdingProjectile && projectile != nullptr) {
 		projectile->draw();
@@ -269,29 +282,29 @@ void Character::onCollision(std::shared_ptr<Object> other, Direction direction) 
 	}
 }
 
-float Character::getBottom() const {
-	return position.y + spriteRec.height * scale;
-}
-
-float Character::getWidth() const {
-	return spriteRec.width * scale;
-}
-
-float Character::getHeight() const {
-	return spriteRec.height * scale;
-}
-
-float Character::getCenterX() const {
-	return position.x + (spriteRec.width * scale) / 2;
-}
-
-float Character::getCenterY() const {
-	return position.y + (spriteRec.height * scale) / 2;
-}
-
-Vector2 Character::getCenter() const {
-	return Vector2{getCenterX(), getCenterY()};
-}
+//float Character::getBottom() const {
+//	return position.y + spriteRec.height * scale;
+//}
+//
+//float Character::getWidth() const {
+//	return spriteRec.width * scale;
+//}
+//
+//float Character::getHeight() const {
+//	return spriteRec.height * scale;
+//}
+//
+//float Character::getCenterX() const {
+//	return position.x + (spriteRec.width * scale) / 2;
+//}
+//
+//float Character::getCenterY() const {
+//	return position.y + (spriteRec.height * scale) / 2;
+//}
+//
+//Vector2 Character::getCenter() const {
+//	return Vector2{getCenterX(), getCenterY()};
+//}
 
 void Character::takeDamage(int amount) {
 	if (invincibleTimer > 0) {
@@ -322,7 +335,7 @@ void Character::holdProjectile(KoopaShell& p) {
 }
 
 void Character::handleProjectile(float deltaTime) {
-	if (holdingProjectile && projectile != nullptr) {
+	/*if (holdingProjectile && projectile != nullptr) {
 		if (IsKeyPressed(KEY_X)) {
 			projectile->setPosition(Vector2{ this->position.x + (this->isFacingRight() ? this->getWidth() : -20.0f), this->getCenterY() });
 			projectile->onRelease();
@@ -333,7 +346,7 @@ void Character::handleProjectile(float deltaTime) {
 
 	if (projectile) {
 		projectile->update(deltaTime);
-	}
+	}*/
 }
 
 void Character::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction) {

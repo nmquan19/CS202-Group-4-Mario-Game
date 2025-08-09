@@ -25,7 +25,8 @@ public:
     //AudioManager audioManager;
     //UIManager uiManager;
     MenuManager menuManager;
-    std::shared_ptr<Object> character;
+    std::shared_ptr<Object> character01;
+    std::shared_ptr<Object> character02;
     std::vector<std::shared_ptr<Object>> Objects;
     std::vector<std::shared_ptr<Object>> ToDeleteObjects;
     std::vector<ObjectInfo> ToSpawnObjects;
@@ -52,7 +53,7 @@ public:
     std::shared_ptr<Object> getSharedPtrFromRaw(Object* rawPtr);
     void clearGame();
     void createTestBlocks(); // Add test blocks for Box2D testing
-    std::shared_ptr<Object> getCharacter() { return character; }
+    std::shared_ptr<Object> getCharacter() { return character01; }
     Camera2D camera;
 
     ParticleSystem* testParticle;

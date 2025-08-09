@@ -93,9 +93,13 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 
     //GameCameraSystem::getInstance().shakeCurrentCamera(10.0f, 0.1f);
 
-    if (context.character) {
-        std::shared_ptr<Character> character = std::dynamic_pointer_cast<Character>(context.character);
-        character->update(deltaTime);
+    if (context.character01) {
+        std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
+        character01->update(deltaTime);
+    }
+    if (context.character02) {
+        std::shared_ptr<Character> character02 = std::dynamic_pointer_cast<Character>(context.character02);
+        character02->update(deltaTime);
     }
     for (auto obj :context.Objects)
     {
@@ -123,8 +127,12 @@ void GamePlayState::draw(GameContext& context) {
         obj->draw();
     }
 
-    if (context.character) {
-        context.character->draw();
+    if (context.character01) {
+        context.character01->draw();
+    }
+
+    if (context.character02) {
+        context.character02->draw();
     }
     //GameContext::getInstance().testParticle->draw();
 
