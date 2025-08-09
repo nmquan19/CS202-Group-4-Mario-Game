@@ -36,7 +36,8 @@ Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(star
             b2Filter filter = fixture->GetFilterData();
             filter.maskBits = static_cast<uint16>(ObjectCategory::ENEMY);
             filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
-                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
+                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE) |
+                static_cast<uint16>(ObjectCategory::ENEMY);
             fixture->SetFilterData(filter);
         }
     }

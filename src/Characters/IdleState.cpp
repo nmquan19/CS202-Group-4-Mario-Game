@@ -2,6 +2,8 @@
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
 #include "..\..\include\Characters\Character.h"
+#include "../../include/Characters/SuperTransformState.h"
+#include "../../include/Characters/SmallTransformState.h"
 
 void IdleState::enter(Character* character) {
 	character->setAniTime(0);
@@ -11,18 +13,37 @@ void IdleState::enter(Character* character) {
 }
 
 void IdleState::update(Character* character, float deltaTime) {
-	if (IsKeyPressed(KEY_SPACE) && character->isOnGround()) {
-		character->jump();
-        character->changeState(JumpingState::getInstance());
-        return;
-    }
-
-	if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) {
-		character->changeState(MovingState::getInstance());
-	}
+	
 }
 
-void IdleState::exit(Character* character) {}
+void IdleState::exit(Character* character) {
+
+}
+
+void IdleState::handleInput(Character* character, const InputState& input) {
+
+}
+
+void IdleState::checkTransitions(Character* character, const InputState& input) {
+	if (input.jumpPressed && character->isOnGround()) {
+		character->jump();
+		character->changeState(JumpingState::getInstance());
+		return;
+	}
+
+	if (input.moveLeft || input.moveRight) {
+		character->changeState(MovingState::getInstance());
+	}
+
+	if (input.superTransform) {
+		if (character->powerState == PowerState::SMALL) {
+			character->changeState(SuperTransformState::getInstance());
+		}
+		else if (character->powerState == PowerState::SUPER) {
+			character->changeState(SmallTransformState::getInstance());
+		}
+	}
+}
 
 IdleState& IdleState::getInstance() {
 	static IdleState instance;
