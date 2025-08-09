@@ -47,10 +47,10 @@ public:
 	}
 
 protected:  
-	Vector2 position;  
-	Vector2 size;  
-	bool active = true;  
-	bool collided = false;  
+	Vector2 position;
+	Vector2 size;
+	bool active = true;
+	bool collided = false;
 	b2Body* physicsBody;
 };  
 

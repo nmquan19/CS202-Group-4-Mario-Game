@@ -26,7 +26,7 @@ int main() {
     InitAudioDevice();
     SetTargetFPS(60);
 
-    GameContext* context = &GameContext::getInstance(); 
+    GameContext* context = &GameContext::getInstance();
     MenuState menuState;
     CharacterSelectingState characterSelectingState;
     GamePlayState gamePlayState;
@@ -124,23 +124,29 @@ int main() {
 //
 //    SetTargetFPS(60);
 //
-//    // Tạo một vector lưu các block
+//    // Khởi tạo Box2D
+//    Box2DWorldManager::getInstance().initialize();
+//
+//    // Tạo vector lưu các block
 //    std::vector<std::shared_ptr<Block>> blocks;
 //
-//    // Tạo 1 hàng block tại y = 384 pixels => gridY = 384 / GRID_SIZE = 12
+//    // Tạo 1 hàng block tại y = 12 (tức là pixel = 12 * GRID_SIZE)
 //    int gridY = 12;
 //    for (int gridX = 0; gridX <= 10; ++gridX) {
 //        Vector2 gridPos = { (float)gridX, (float)gridY };
 //        blocks.push_back(std::make_shared<GroundBlock>(gridPos));
 //    }
 //
-//    // Load texture blocks (bắt buộc nếu bạn muốn thấy hình)
-//    TextureManager::blocksTexture = LoadTexture("assets/blocks.png");  // Đặt đúng đường dẫn ảnh
+//    // Load texture blocks (đảm bảo đường dẫn đúng)
+//    TextureManager::blocksTexture = LoadTexture("../assets/blocks.png");
 //
 //    while (!WindowShouldClose()) {
 //        float deltaTime = GetFrameTime();
 //
-//        // Update
+//        // Update Box2D world
+//        Box2DWorldManager::getInstance().step(deltaTime);
+//
+//        // Update tất cả block
 //        for (auto& block : blocks) {
 //            block->update(deltaTime);
 //        }
@@ -158,5 +164,8 @@ int main() {
 //
 //    UnloadTexture(TextureManager::blocksTexture);
 //    CloseWindow();
+//
 //    return 0;
 //}
+
+

@@ -33,7 +33,7 @@ void Star::Move(double dt) {
     hitbox.x = position.x;
     hitbox.y = position.y;
 
-    std::cout << "Star pos.y: " << position.y << ", vel.y: " << velocity.y << std::endl;
+    //std::cout << "Star pos.y: " << position.y << ", vel.y: " << velocity.y << std::endl;
 }
 
 void Star::update(float deltaTime) {

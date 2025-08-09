@@ -1,47 +1,69 @@
-﻿#pragma once
-#include "../../../include/Item/One_Up/One_Up.h"
+﻿#include "../../../include/Item/One_Up/One_Up.h"
 #include "../../../include/Game/GameContext.h"
 #include "../../../include/System/Box2DWorldManager.h"
 #include "../../../include/System/Grid.h"
+#include <raylib.h>
 
-One_Up::One_Up(Vector2 position) : Item(position) {
-	animation->SetType(ItemType::ONE_UP);
-    active = true;
+One_Up::One_Up(Vector2 startPos) : Item(startPos) {
+	gravity = 600.0f; // Set gravity for the item
 
-    velocity = { 0, 0 };
+    size = { 1, 1 };
+    hitbox = {
+        startPos.x,
+        startPos.y,
+        size.x * GridSystem::GRID_SIZE,
+        size.y * GridSystem::GRID_SIZE
+    };
 
-    hitbox.width = GridSystem::GRID_SIZE;
-    hitbox.height = GridSystem::GRID_SIZE;
-    hitbox.x = position.x;
-    hitbox.y = position.y;
-
-    // ✅ Tạo Box2D body động (để rơi, va chạm với block)
-    physicsBody = Box2DWorldManager::getInstance().createItemBody(
-        position,
-        { hitbox.width, hitbox.height }
-    );
+    //physicsBody = Box2DWorldManager::getInstance().createItemBody(startPos, { hitbox.width, hitbox.height });
+    //if (physicsBody) {
+    //    physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+    //}
 }
 
 One_Up::~One_Up() {
-	// Destructor logic if needed
+    if (physicsBody) {
+        Box2DWorldManager::getInstance().destroyBody(physicsBody);
+        physicsBody = nullptr;
+    }
 }
 
 void One_Up::update(float deltaTime) {
-    animation->Update();
-    Move(deltaTime);
+    aniTimer += deltaTime;
+    if (aniTimer >= aniSpeed) {
+        aniTimer = 0;
+        animation->Update();
+    }
 }
 
 void One_Up::Move(double dt) {
-    if (!active || physicsBody == nullptr) return;
+    // Gravity effect
+	velocity.y += gravity * dt; // Adjust gravity effect as needed
 
-    // Lấy vị trí từ Box2D
-    b2Vec2 bodyPos = physicsBody->GetPosition();
+	position.y += velocity.y * dt; // Update position based on velocity
 
-    // Scale về toạ độ pixel trong game (Box2D xài đơn vị mét)
-    position.x = Box2DWorldManager::b2ToRaylib(bodyPos.x) - hitbox.width / 2.0f;
-    position.y = Box2DWorldManager::b2ToRaylib(bodyPos.y) - hitbox.height / 2.0f;
 
-    // Cập nhật hitbox theo position
+
+    if (physicsBody) {
+        b2Vec2 b2Pos = physicsBody->GetPosition();
+        Vector2 bodyPos = Box2DWorldManager::b2ToRaylib(b2Pos);
+        position.x = bodyPos.x - hitbox.width * 0.5f;
+        position.y = bodyPos.y - hitbox.height * 0.5f;
+        hitbox.x = position.x;
+        hitbox.y = position.y;
+    }
+
+    if (position.y + hitbox.height < 0) {
+        active = false;
+        GameContext::getInstance().mark_for_deletion_Object(
+            GameContext::getInstance().getSharedPtrFromRaw(this)
+        );
+        return;
+    }
+
+
+    // Update hitbox position
     hitbox.x = position.x;
     hitbox.y = position.y;
 }
+

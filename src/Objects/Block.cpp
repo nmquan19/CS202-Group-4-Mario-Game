@@ -22,7 +22,7 @@ Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos)
             filter.maskBits = static_cast<uint16>(ObjectCategory::BLOCK);
             filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::ENEMY) |
                                 static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::SHELL) |
-                                static_cast<uint16>(ObjectCategory::BLOCK);
+                                static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::ITEM);
             fixture->SetFilterData(filter);
         }
     }
