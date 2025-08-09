@@ -6,6 +6,10 @@
 Coin::Coin(Vector2 position) : Item(position) {
 	animation->SetType(ItemType::COIN);
 
+
+	if (physicsBody) {
+		Box2DWorldManager::getInstance().destroyBody(physicsBody);
+	}
 	physicsBody = Box2DWorldManager::getInstance().createItemBodyForCoin(position, { hitbox.width, hitbox.height });
 }
 
