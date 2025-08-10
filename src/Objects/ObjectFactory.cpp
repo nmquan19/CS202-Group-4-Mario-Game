@@ -201,3 +201,16 @@ void Object::HarmonicOscillationMove(float amplitude, float frequency, float del
     position.y = renderPos.y - Constants::TILE_SIZE / 2;
 
 }
+
+void Object::StarShapeMove(Vector2 center, float deltaTime, float frequency) {
+    totalTime += deltaTime;
+    position.x = -(center.x + 3 * cos(0.4 * totalTime) + 2 * sin(0.6 * totalTime));
+    position.y = -(center.y + 3 * sin(0.4 * totalTime) + 2 * cos(0.6 * totalTime));
+
+	std::cout << "StarShapeMove: " << position.x << ", " << position.y << std::endl;
+    if (physicsBody) {
+        physicsBody->SetTransform(b2Vec2(position.x / GridSystem::GRID_SIZE, position.y / GridSystem::GRID_SIZE),
+            physicsBody->GetAngle());
+    }
+}
+

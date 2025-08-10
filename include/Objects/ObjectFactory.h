@@ -51,6 +51,7 @@ public:
 
 	void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
 	void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
+	void StarShapeMove(Vector2 center, float deltaTime, float frequency);
 
 protected:  
 	Vector2 position;
@@ -62,7 +63,9 @@ protected:
 
 
 	float totalTime = 0.0f; // for oscillation and circular movement
-
+	float radius; // Radius for circular movement
+	float Amplitude; // Amplitude for oscillation
+	float frequency; // Frequency for oscillation
 	
 };  
 
