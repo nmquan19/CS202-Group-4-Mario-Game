@@ -58,6 +58,7 @@ enum class CharacterType {
 	MARIO,
 	LUIGI
 };
+
 enum class KoopaShellType {
 	GREEN_KOOPA_SHELL,
 	RED_KOOPA_SHELL
@@ -75,6 +76,11 @@ enum class InteractiveType {
 	SPRING
 };
 
+enum class ProjectileType {
+	FIRE_BALL,
+	BLAST
+};
+
 enum class Direction {
 	UP = 1,
 	DOWN,
@@ -82,6 +88,7 @@ enum class Direction {
 	RIGHT,
 	NONE
 };
+
 class IDrawable {
 public:
 	virtual ~IDrawable() = default;
@@ -104,15 +111,18 @@ public:
 	virtual bool isAlive() const = 0;
 	virtual void die() = 0;
 };
+
 class IUpdatable {
 public:
 	virtual ~IUpdatable() = default;
 	virtual void update(float deltaTime) = 0;
 };
+
 class IMovable {
 public:
 	virtual ~IMovable() = default;
 	virtual void setVelocity(Vector2 newVelocity) = 0;
 	virtual Vector2 getVelocity() = 0;
 };
-using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType, InteractiveType>;
+
+using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType, InteractiveType, ProjectileType>;

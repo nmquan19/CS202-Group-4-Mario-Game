@@ -10,13 +10,14 @@ struct PlayerInputMapping {
 	int moveRight;
 	int jump;
 	int superTransform;
+	int fire;
 
 	static PlayerInputMapping getMapping(PlayerID id) {
 		switch (id) {
 		case PlayerID::PLAYER_01:
-			return { KEY_A, KEY_D, KEY_W, KEY_F };
+			return { KEY_A, KEY_D, KEY_W, KEY_F, KEY_G };
 		case PlayerID::PLAYER_02:
-			return { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_J };
+			return { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_J, KEY_K };
 		}
 	}
 };
@@ -28,6 +29,7 @@ struct InputState {
 	bool jumpPressed = false;
 	bool jumpReleased = false;
 	bool superTransform = false;
+	bool fire = false;
 
 	static InputState fromPlayer(PlayerID playerID) {
 		PlayerInputMapping mapping = PlayerInputMapping::getMapping(playerID);
@@ -39,6 +41,7 @@ struct InputState {
 		input.jumpPressed = IsKeyPressed(mapping.jump);
 		input.jumpReleased = IsKeyReleased(mapping.jump);
 		input.superTransform = IsKeyPressed(mapping.superTransform);
+		input.fire = IsKeyPressed(mapping.fire);
 		return input;
 	}
 };

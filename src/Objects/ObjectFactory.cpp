@@ -1,7 +1,6 @@
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/Objects/Block.h"
 #include "../../include/Characters/Character.h"
-#include <memory>
 #include "../../include/Enemy/Enemy.h"
 #include "../../include/Enemy/Goomba/Goomba.h"
 #include "../../include/Enemy/Koopa/Koopa.h"
@@ -13,13 +12,15 @@
 #include "../../include/Item/One_Up/One_Up.h"
 #include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../include/System/Interface.h"
-#include <raylib.h>
-#include <vector>
-#include <algorithm>
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Objects/Spring.h"
+#include "../../include/Objects/Projectile/FireBall.h"
 #include "../../include/System/Box2DWorldManager.h"
+#include <raylib.h>
+#include <vector>
+#include <algorithm>
+#include <memory>
 
 Object::~Object() {
     if (physicsBody) {
@@ -125,6 +126,18 @@ std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vec
 
 std::unique_ptr<Object> ObjectFactory::createSpring(Vector2 position, Vector2 size) {
     return std::make_unique<Spring>(position, size);
+}
+
+std::unique_ptr<Object> ObjectFactory::createProjectile(ProjectileType type, Vector2 position, Vector2 size) {
+    return createSpecificProjectile(type, position, size);
+}
+
+std::unique_ptr<Projectile> ObjectFactory::createSpecificProjectile(ProjectileType type, Vector2 position, Vector2 size) {
+    switch (type) {
+    case ProjectileType::FIRE_BALL:
+        return std::make_unique<FireBall>(position, size);
+      // case...
+    }
 }
 
 int Object::getCollidedPart(const Object& other){

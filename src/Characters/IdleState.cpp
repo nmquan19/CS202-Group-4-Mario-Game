@@ -4,6 +4,7 @@
 #include "..\..\include\Characters\Character.h"
 #include "../../include/Characters/SuperTransformState.h"
 #include "../../include/Characters/SmallTransformState.h"
+#include "../../include/Game/GameContext.h"
 
 void IdleState::enter(Character* character) {
 	character->setAniTime(0);
@@ -21,7 +22,9 @@ void IdleState::exit(Character* character) {
 }
 
 void IdleState::handleInput(Character* character, const InputState& input) {
-
+	if (input.fire) {
+		GameContext::getInstance().addObject(ProjectileType::FIRE_BALL, Vector2{ 600, 500 }, { 0.5f, 0.5f });
+	}
 }
 
 void IdleState::checkTransitions(Character* character, const InputState& input) {

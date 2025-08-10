@@ -56,6 +56,8 @@
     <ClCompile Include="src\Characters\SuperTransformState.cpp" />
     <ClCompile Include="include\Characters\SmallTransformState.h" />
     <ClCompile Include="src\Characters\SmallTransformState.cpp" />
+    <ClCompile Include="src\Objects\Projectile\FireBall.cpp" />
+    <ClCompile Include="src\Objects\Projectile\Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -105,7 +107,6 @@
     <ClInclude Include="include\System\InterpolationController.h" />
     <ClInclude Include="include\Objects\InteractiveObject.h" />
     <ClInclude Include="include\Objects\Spring.h" />
-    <ClInclude Include="include\Objects\SpringState.h" />
     <ClInclude Include="include\Item\Anima.h" />
     <ClInclude Include="include\Item\Item.h" />
     <ClInclude Include="include\Item\Coin\Coin.h" />
@@ -122,6 +123,8 @@
     <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
     <ClInclude Include="include\System\CameraSystem.h" />
     <ClInclude Include="include\Characters\SuperTransformState.h" />
+    <ClInclude Include="include\Objects\Projectile\FireBall.h" />
+    <ClInclude Include="include\Objects\Projectile\Projectile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

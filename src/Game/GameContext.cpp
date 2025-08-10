@@ -145,6 +145,9 @@ void GameContext::spawnObject() {
             else if constexpr (std::is_same_v<T, InteractiveType>) {
                 object = ObjectFactory::createSpring(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
             }
+            else if constexpr (std::is_same_v<T, ProjectileType>) {
+                object = ObjectFactory::createProjectile(actualType, request.worldpos, request.size);
+            }
             else if constexpr (std::is_same_v<T, ItemType>) {
 				object = ObjectFactory::createItem(actualType, request.worldpos, request.size);
             }

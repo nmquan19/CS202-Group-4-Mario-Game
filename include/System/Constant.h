@@ -75,6 +75,9 @@ namespace Constants {
             {{293, 892, 16, 16}, {326, 892, 16, 16}} // jumping state
         };
     }
+    namespace FireBall {
+        constexpr float DURATION = 5.0f;
+    }
     namespace DryBowser{
 		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;
         constexpr float WalkTurnDuration = 0.25f;  
@@ -104,9 +107,5 @@ namespace Constants {
     namespace PaletteResources {
         constexpr Rectangle BRICK = { 12, 111, 128, 86 };
         constexpr Rectangle GROUND = { 786, 111, 128, 86 };
-    }
-    namespace HUD {
-        constexpr float SPACING = 2.0f;
-        constexpr float SCALE = 3.0f;
     }
 }
