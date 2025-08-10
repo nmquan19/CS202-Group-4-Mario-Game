@@ -1,4 +1,4 @@
-#include "../../include/Objects/ObjectFactory.h"
+﻿#include "../../include/Objects/ObjectFactory.h"
 #include "../../include/Objects/Block.h"
 #include "../../include/Characters/Character.h"
 #include <memory>
@@ -172,11 +172,32 @@ void Object::CircleMove(Vector2 center, float radius, float speed, float deltaTi
 
 void Object::HarmonicOscillationMove(float amplitude, float frequency, float deltaTime) {
     totalTime += deltaTime;
-	float omega = frequency * std::numbers::pi_v<float> *2; // Convert frequency to angular frequency
-    float vx = omega * amplitude * sin(omega * totalTime);
-    std::cout  << "vx: " << vx << std::endl;
+
+    // Tần số góc ω = 2πf
+    float omega = 2.0f * std::numbers::pi_v<float> *frequency;
+
+    // Tính vị trí offset (pixel)
+    float offsetX = amplitude * cos(omega * totalTime);
+
+    // Tính vận tốc theo pixel/s
+    float vxPixelsPerSecond = -omega * amplitude * sin(omega * totalTime);
+
+    std::cout << "Amplitude: " << amplitude << ", Frequency: " << frequency 
+              << ", DeltaTime: " << deltaTime << ", OffsetX: " << offsetX 
+		<< ", VxPixelsPerSecond: " << vxPixelsPerSecond << std::endl;
+	std::cout << "centerPosition: " << centerPosition.x << ", " << centerPosition.y << std::endl;
+
+    // Đổi vận tốc sang mét/s cho Box2D
+    float vxMetersPerSecond = Box2DWorldManager::raylibToB2(vxPixelsPerSecond);
+
     if (physicsBody) {
-        b2Vec2 vel(vx, physicsBody->GetLinearVelocity().y);
+        b2Vec2 vel(vxMetersPerSecond, physicsBody->GetLinearVelocity().y);
         physicsBody->SetLinearVelocity(vel);
     }
+
+    // Cập nhật vị trí hiển thị từ physics body
+    Vector2 renderPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
+    position.x = renderPos.x - Constants::TILE_SIZE / 2;
+    position.y = renderPos.y - Constants::TILE_SIZE / 2;
+
 }

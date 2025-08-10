@@ -16,13 +16,15 @@ class Enemy;
 class KoopaShell;  
 
 class Object : public ICollidable, public IDrawable {  
-public:  
+public: 
 	virtual ~Object();  
 	virtual bool isActive() const = 0;  
 	virtual void setActive(bool) = 0;  
 	virtual bool isCollided() const = 0;  
 	virtual void setCollided(bool) = 0;  
-	virtual Vector2 getPosition() const = 0;  
+	virtual Vector2 getPosition() const {
+		return position;
+	}
 	virtual void setPosition(Vector2 newPos) = 0;  
 	virtual Vector2 getSize() const = 0;  
 
@@ -48,11 +50,11 @@ public:
 	}
 
 	void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
-
 	void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
 
 protected:  
 	Vector2 position;
+	Vector2 centerPosition; // Center position for circular movement
 	Vector2 size;
 	bool active = true;
 	bool collided = false;

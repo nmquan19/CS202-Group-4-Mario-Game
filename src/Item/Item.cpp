@@ -29,6 +29,8 @@ Item::Item(Vector2 startPos)
         }
     }
 
+	centerPosition = position; // Center position for circular movement
+
 }
 
 Item::~Item() {
