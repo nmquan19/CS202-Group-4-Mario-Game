@@ -15,7 +15,7 @@ Star::~Star() {
 
 void Star::Move(double dt) {
     // Gravity làm giảm dần vận tốc đi lên
-    velocity.y += gravity * dt * 0.00001;
+    velocity.y += gravity * dt * 0.0000000001;
 
     // Cập nhật vị trí: do velocity.y âm nên sẽ giảm y ⇒ đi lên
     position.y += velocity.y * dt;

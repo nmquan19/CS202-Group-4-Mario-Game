@@ -7,7 +7,7 @@ public:
 
 	~Mushroom();
 
-	void Move(double dt) override;
+	void update(float deltaTime) override;
 
 private:
 

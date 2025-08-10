@@ -1,4 +1,4 @@
-#pragma once// Constants.h
+#pragma once // Constants.h
 #include "Interface.h"
 #include <raylib.h>
 #include <vector>
@@ -110,3 +110,4 @@ namespace Constants {
         constexpr float SCALE = 3.0f;
     }
 }
+

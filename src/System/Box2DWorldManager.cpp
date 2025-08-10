@@ -442,7 +442,7 @@ void Box2DWorldManager::PreSolve(b2Contact* contact, const b2Manifold* oldManifo
 }
 
 Vector2 Box2DWorldManager::b2ToRaylib(const b2Vec2& vec) {
-	return { vec.x * Constants::TILE_SIZE, vec.y * Constants::TILE_SIZE };
+	return { vec.x  * Constants::TILE_SIZE, vec.y  * Constants::TILE_SIZE };
 }
 
 b2Vec2 Box2DWorldManager::raylibToB2(const Vector2& vec) {
