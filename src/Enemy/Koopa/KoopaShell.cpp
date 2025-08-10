@@ -29,11 +29,6 @@ void KoopaShell::onCollect(Character* player) {
     if (!player) return;
     std::cout << "On collect\n";
     TraceLog(LOG_INFO, "KoopaShell collected!");
-    player->setHoldingProjectile(true);
-    player->holdProjectile(*this);
-	//this->changeState(&KoopaShellCollectedState::getInstance());
-    player->holdProjectile(*this);
-    player->setHoldingProjectile(true);
 }
 
 void KoopaShell::update(float deltaTime) {

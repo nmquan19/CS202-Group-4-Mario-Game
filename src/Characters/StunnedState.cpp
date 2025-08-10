@@ -36,7 +36,7 @@ void StunnedState::checkTransitions(Character* character, const InputState& inpu
 		if (character->powerState == PowerState::SMALL) {
 			character->changeState(KnockedState::getInstance());
 		}
-		else if (character->powerState == PowerState::SUPER) {
+		else if (character->powerState == PowerState::SUPER || character->powerState == PowerState::FIRE) {
 			character->changeState(SmallTransformState::getInstance());
 		}
 		return;

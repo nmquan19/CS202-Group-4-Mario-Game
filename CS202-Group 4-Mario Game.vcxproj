@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Characters\AttackState.h" />
+    <ClInclude Include="include\Characters\FireTransformState.h" />
     <ClInclude Include="include\Characters\SuperTransformState.h" />
     <ClInclude Include="include\Characters\Character.h" />
     <ClInclude Include="include\Characters\ICharacterState.h" />
@@ -89,6 +91,8 @@
     <ClCompile Include="include\Characters\SmallTransformState.h" />
     <ClCompile Include="include\Enemy\Boss\BT_Factory.h" />
     <ClCompile Include="include\System\Box2DWorldManager.h" />
+    <ClCompile Include="src\Characters\AttackState.cpp" />
+    <ClCompile Include="src\Characters\FireTransformState.cpp" />
     <ClCompile Include="src\Characters\SmallTransformState.cpp" />
     <ClCompile Include="src\Characters\SuperTransformState.cpp" />
     <ClCompile Include="src\Characters\Character.cpp" />

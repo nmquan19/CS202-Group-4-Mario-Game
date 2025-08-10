@@ -128,14 +128,14 @@ std::unique_ptr<Object> ObjectFactory::createSpring(Vector2 position, Vector2 si
     return std::make_unique<Spring>(position, size);
 }
 
-std::unique_ptr<Object> ObjectFactory::createProjectile(ProjectileType type, Vector2 position, Vector2 size) {
-    return createSpecificProjectile(type, position, size);
+std::unique_ptr<Object> ObjectFactory::createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size) {
+    return createSpecificProjectile(type, position, direction, size);
 }
 
-std::unique_ptr<Projectile> ObjectFactory::createSpecificProjectile(ProjectileType type, Vector2 position, Vector2 size) {
+std::unique_ptr<Projectile> ObjectFactory::createSpecificProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size) {
     switch (type) {
     case ProjectileType::FIRE_BALL:
-        return std::make_unique<FireBall>(position, size);
+        return std::make_unique<FireBall>(position, direction, size);
       // case...
     }
 }

@@ -146,7 +146,7 @@ void GameContext::spawnObject() {
                 object = ObjectFactory::createSpring(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
             }
             else if constexpr (std::is_same_v<T, ProjectileType>) {
-                object = ObjectFactory::createProjectile(actualType, request.worldpos, request.size);
+                object = ObjectFactory::createProjectile(actualType, request.worldpos, std::dynamic_pointer_cast<Character>((playerCallsRequest == 1 ? character01 : character02))->isFacingRight() ? 1 : -1,  request.size);
             }
             else if constexpr (std::is_same_v<T, ItemType>) {
 				object = ObjectFactory::createItem(actualType, request.worldpos, request.size);

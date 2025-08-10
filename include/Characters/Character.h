@@ -10,14 +10,15 @@ struct PlayerInputMapping {
 	int moveRight;
 	int jump;
 	int superTransform;
-	int fire;
+	int fireTransform;
+	int attack;
 
 	static PlayerInputMapping getMapping(PlayerID id) {
 		switch (id) {
 		case PlayerID::PLAYER_01:
-			return { KEY_A, KEY_D, KEY_W, KEY_F, KEY_G };
+			return { KEY_A, KEY_D, KEY_W, KEY_F1, KEY_F2, KEY_F };
 		case PlayerID::PLAYER_02:
-			return { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_J, KEY_K };
+			return { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_F3, KEY_F4, KEY_J };
 		}
 	}
 };
@@ -29,7 +30,8 @@ struct InputState {
 	bool jumpPressed = false;
 	bool jumpReleased = false;
 	bool superTransform = false;
-	bool fire = false;
+	bool fireTransform = false;
+	bool attack = false;
 
 	static InputState fromPlayer(PlayerID playerID) {
 		PlayerInputMapping mapping = PlayerInputMapping::getMapping(playerID);
@@ -41,7 +43,8 @@ struct InputState {
 		input.jumpPressed = IsKeyPressed(mapping.jump);
 		input.jumpReleased = IsKeyReleased(mapping.jump);
 		input.superTransform = IsKeyPressed(mapping.superTransform);
-		input.fire = IsKeyPressed(mapping.fire);
+		input.fireTransform = IsKeyPressed(mapping.fireTransform);
+		input.attack = IsKeyPressed(mapping.attack);
 		return input;
 	}
 };
@@ -96,31 +99,20 @@ public:
 	bool isAlive() const override;
 	void die() override;
 
-	void setHoldingProjectile(bool flag);
-	bool isHoldingProjectile() const;
-	void holdProjectile(KoopaShell& p);
-
-	/*float getWidth() const;
-	float getHeight() const;
-	float getBottom() const;
-	float getCenterX() const;
-	float getCenterY() const;
-	Vector2 getCenter() const;*/
-
 	friend class IdleState;
 	friend class MovingState;
 	friend class JumpingState;
 	friend class StunnedState;
 	friend class KnockedState;
+	friend class AttackState;
 	friend class SuperTransformState;
 	friend class SmallTransformState;
+	friend class FireTransformState;
 
 	void addGroundContact();
 	void removeGroundContact();
 
 private:
-	void handleProjectile(float deltaTime);
-
 	void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction);
 	void handleEnemyCollision(std::shared_ptr<Object> other, Direction direction);
 	void handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction);
@@ -153,9 +145,9 @@ private:
 	float invincibleTimer;
 	float reviveTimer;
 	float transformTimer;
-	
-	KoopaShell* projectile;
-	bool holdingProjectile;
+	float attackTimer;
+
+	int projectilesLeft = 0;
 
 	int groundContactCount = 0;
 };

@@ -59,15 +59,26 @@ namespace Constants {
             {{293, 22, 16, 16}, {326, 22, 16, 16}}, // jumping state
             {{11, 23, 12, 15}, {49, 26, 11, 12}}, // stunned state
             {{713, 22, 16, 16}}, // knocked state
-            {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 106, 16, 26}, {11, 106, 14, 27}} // super transform
+            {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 106, 16, 26}, {11, 106, 14, 27}}, // super transform
+            {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 262, 16, 26}, {11, 262, 14, 27}} // fire transform
         };
         const std::vector<std::vector<Rectangle>> SUPER_MARIO_FRAME_DATA = {
             {{11, 106, 14, 27}}, // idle state
             {{116, 106, 16, 27}, {149, 106, 16, 26}, {184, 106, 14, 27}}, // moving state
             {{360, 106, 16, 26}, {393, 106, 16, 26}}, // jumping state
             {{11, 106, 14, 27}, {48, 115, 14, 18}}, // stunned state
-            {{713, 22, 16, 16}}, // should be removed once add isSuper
-            {{11, 106, 14, 27}, {360, 106, 16, 26}, {293, 22, 16, 16}, {149, 22, 15, 16}, {11, 23, 12, 15}} // small transform
+            {{713, 22, 16, 16}}, // none
+            {{11, 106, 14, 27}, {360, 106, 16, 26}, {293, 22, 16, 16}, {149, 22, 15, 16}, {11, 23, 12, 15}}, // small transform
+            {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 262, 16, 26}, {11, 262, 14, 27}} // fire transform
+        };
+        const std::vector<std::vector<Rectangle>> FIRE_MARIO_FRAME_DATA = {
+            {{11, 262, 14, 27}}, // idle state
+            {{116, 262, 16, 27}, {149, 262, 16, 26}, {184, 262, 14, 27}}, // moving state
+            {{360, 262, 16, 26}, {393, 262, 16, 26}}, // jumping state
+            {{11, 262, 14, 27}, {48, 271, 14, 18}}, // stunned state 
+            {}, // none
+            {{11, 262, 14, 27}, {360, 262, 16, 26}, {293, 22, 16, 16}, {149, 22, 15, 16}, {11, 23, 12, 15}}, // small transform
+            {{11, 317, 14, 27}, {44, 317, 14, 27}} // attack state
         };
         const std::vector<std::vector<Rectangle>> LUIGI_FRAME_DATA = {
             {{11, 893, 12, 15}}, // idle state
@@ -75,8 +86,11 @@ namespace Constants {
             {{293, 892, 16, 16}, {326, 892, 16, 16}} // jumping state
         };
     }
-    namespace FireBall {
-        constexpr float DURATION = 5.0f;
+    namespace Projectile {
+        constexpr Vector2 STANDARD_SIZE = { 0.5f, 0.5f };
+        namespace FireBall {
+            constexpr float DURATION = 5.0f;
+        }
     }
     namespace DryBowser{
 		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;

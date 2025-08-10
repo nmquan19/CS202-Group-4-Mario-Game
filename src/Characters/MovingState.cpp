@@ -2,6 +2,8 @@
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
 #include "..\..\include\Characters\Character.h"
+#include "../../include/Characters/AttackState.h"
+#include "../../include/Characters/SmallTransformState.h"
 #include "../../include/System/Box2DWorldManager.h"
 
 void MovingState::enter(Character* character) {
@@ -31,6 +33,15 @@ void MovingState::handleInput(Character* character, const InputState& input) {
 	if (input.moveRight) {
 		character->physicsBody->SetLinearVelocity(b2Vec2(speed, currentVel.y));
 		character->setFacingRight(true);
+	}
+
+	if (character->powerState == PowerState::FIRE) {
+		if (input.attack) {
+			character->changeState(AttackState::getInstance());
+		}
+		if (character->projectilesLeft <= 0 && character->attackTimer < 0) {
+			character->changeState(SmallTransformState::getInstance());
+		}
 	}
 }
 

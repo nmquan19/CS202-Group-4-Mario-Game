@@ -25,7 +25,8 @@ enum class PlayerID {
 
 enum class PowerState {
 	SMALL,
-	SUPER
+	SUPER,
+	FIRE
 };
 
 enum class BlockType {
