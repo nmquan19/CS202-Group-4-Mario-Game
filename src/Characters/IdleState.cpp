@@ -4,6 +4,9 @@
 #include "..\..\include\Characters\Character.h"
 #include "../../include/Characters/SuperTransformState.h"
 #include "../../include/Characters/SmallTransformState.h"
+#include "../../include/Characters/FireTransformState.h"
+#include "../../include/Characters/AttackState.h"
+#include "../../include/Game/GameContext.h"
 
 void IdleState::enter(Character* character) {
 	character->setAniTime(0);
@@ -21,7 +24,7 @@ void IdleState::exit(Character* character) {
 }
 
 void IdleState::handleInput(Character* character, const InputState& input) {
-
+	
 }
 
 void IdleState::checkTransitions(Character* character, const InputState& input) {
@@ -35,11 +38,29 @@ void IdleState::checkTransitions(Character* character, const InputState& input) 
 		character->changeState(MovingState::getInstance());
 	}
 
+	if (character->powerState == PowerState::FIRE) {
+		if (input.attack) {
+			character->changeState(AttackState::getInstance());
+		}
+		if (character->projectilesLeft <= 0 && character->attackTimer < 0) {
+			character->changeState(SmallTransformState::getInstance());
+		}
+	}
+
 	if (input.superTransform) {
 		if (character->powerState == PowerState::SMALL) {
 			character->changeState(SuperTransformState::getInstance());
 		}
 		else if (character->powerState == PowerState::SUPER) {
+			character->changeState(SmallTransformState::getInstance());
+		}
+	}
+
+	if (input.fireTransform) {
+		if (character->powerState == PowerState::SMALL || character->powerState == PowerState::SUPER) {
+			character->changeState(FireTransformState::getInstance());
+		}
+		else if (character->powerState == PowerState::FIRE) {
 			character->changeState(SmallTransformState::getInstance());
 		}
 	}

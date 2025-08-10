@@ -1,13 +1,14 @@
-#include "../../include/Characters/SuperTransformState.h" 
-#include "../../include/Characters/Character.h"
-#include "../../include/System/Box2DWorldManager.h"
+#include "../../include/Characters/FireTransformState.h"
 #include "../../include/Characters/IdleState.h"
+#include "../../include/System/Box2DWorldManager.h"
+#include "../../include/Characters/Character.h"
 
-void SuperTransformState::enter(Character* character) {
+void FireTransformState::enter(Character* character) {
 	character->setAniTime(0.0f);
 	character->setAniSpeed(0.2f);
 	character->transformTimer = Constants::Character::TRANSFORM_DURATION;
-	character->setCurrentStateRow(5);
+	character->setCurrentStateRow(6);
+	character->projectilesLeft = 1;
 	for (b2Fixture* fixture = character->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
 		b2Filter filter = fixture->GetFilterData();
 		filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);
@@ -16,7 +17,7 @@ void SuperTransformState::enter(Character* character) {
 	}
 }
 
-void SuperTransformState::update(Character* character, float deltaTime) {
+void FireTransformState::update(Character* character, float deltaTime) {
 	if (character->transformTimer > 0) {
 		character->transformTimer -= deltaTime;
 	}
@@ -25,7 +26,7 @@ void SuperTransformState::update(Character* character, float deltaTime) {
 	}
 }
 
-void SuperTransformState::exit(Character* character) {
+void FireTransformState::exit(Character* character) {
 	for (b2Fixture* fixture = character->physicsBody->GetFixtureList(); fixture; ) {
 		b2Fixture* temp = fixture;
 		fixture = fixture->GetNext();
@@ -49,23 +50,23 @@ void SuperTransformState::exit(Character* character) {
 		fixture->SetFilterData(filter);
 	}
 
-	character->stateFrameData = Constants::Character::SUPER_MARIO_FRAME_DATA;
+	character->stateFrameData = Constants::Character::FIRE_MARIO_FRAME_DATA;
 	character->size = Constants::Character::SUPER_STANDARD_SIZE;
-	character->powerState = PowerState::SUPER;
+	character->powerState = PowerState::FIRE;
 	character->invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_TRANSFORM;
 	character->currentState = &IdleState::getInstance();
 	character->changeState(IdleState::getInstance());
 }
 
-void SuperTransformState::handleInput(Character* character, const InputState& input) {
+void FireTransformState::handleInput(Character* character, const InputState& input) {
 
 }
 
-void SuperTransformState::checkTransitions(Character* character, const InputState& input) {
+void FireTransformState::checkTransitions(Character* character, const InputState& input) {
 
 }
 
-SuperTransformState& SuperTransformState::getInstance() {
-	static SuperTransformState instance;
+FireTransformState& FireTransformState::getInstance() {
+	static FireTransformState instance;
 	return instance;
 }

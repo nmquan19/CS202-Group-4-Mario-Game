@@ -40,6 +40,7 @@ public:
     GameState* gamePlayState = nullptr;
     GameState* editorState = nullptr;
     GameState* gameOverState = nullptr;
+    int playerCallsRequest;
     GameContext();
     ~GameContext();
 	static GameContext& getInstance();
@@ -55,6 +56,7 @@ public:
     std::shared_ptr<Object> getSharedPtrFromRaw(Object* rawPtr);
     void clearGame();
     void createTestBlocks(); // Add test blocks for Box2D testing
+    void setPlayerCallsRequest(int id) { playerCallsRequest = id; }
     std::shared_ptr<Object> getCharacter() { return character01; }
     Camera2D camera;
 
