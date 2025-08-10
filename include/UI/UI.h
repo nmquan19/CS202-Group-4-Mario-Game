@@ -13,21 +13,23 @@ public:
     ScoreDisplay(Vector2 pos) : position(pos), score(0) {
         font = GetFontDefault();
     }
-
-    void Draw(Font f) {
+    int getScore() {
+        return score;
+    }
+    void Draw(Font f, Color color) {
         font = f;
-        DrawTextEx(font, "MARIO", position, 40, 2, BLACK);
+        DrawTextEx(font, "MARIO", position, 40, 2, color);
         const char* scoreStr = TextFormat("%06d", score);
         Vector2 size = MeasureTextEx(font, "MARIO", 40, 2);
         Vector2 scorePos = { position.x, position.y + size.y };
-        DrawTextEx(font, scoreStr, scorePos, 40, 2, BLACK);
+        DrawTextEx(font, scoreStr, scorePos, 40, 2, color);
     }
 };
 
 class CoinDisplay {
-public:
+private:
     Vector2 position;
-    int coinCount;
+
     Texture2D coinSpriteSheet;
     Rectangle currentFrame;
 
@@ -38,7 +40,8 @@ public:
     float animationTime;
     float frameDuration;
     int currentFrameIndex;
-
+public:
+    int coinCount;
     Font font;
 
     CoinDisplay(Vector2 pos, const char* c) : position(pos), coinCount(0), frameCount(5), animationTime(0), frameDuration(2.0f / 5.0f), currentFrameIndex(0) {
@@ -64,14 +67,14 @@ public:
             currentFrame.x = currentFrameIndex * frameWidth;
         }
     }
-    void Draw(Font f) {
+    void Draw(Font f, Color color) {
         font = f;
         Rectangle dest = { position.x, position.y, 30, 30 };
         Vector2 origin = { 0, 0 };
         DrawTexturePro(coinSpriteSheet, currentFrame, dest, origin, 0.0f, WHITE);
 
         const char* coinText = TextFormat(" x %d", coinCount);
-        DrawTextEx(font, coinText, { position.x + 30, position.y }, 40, 2, BLACK);
+        DrawTextEx(font, coinText, { position.x + 30, position.y }, 40, 2, color);
     }
 };
 
@@ -85,14 +88,14 @@ public:
         font = GetFontDefault();
     }
 
-    void Draw(Font f) {
+    void Draw(Font f, Color color) {
         font = f;
-        DrawTextEx(font, "WORLD", position, 40, 2, BLACK);
+        DrawTextEx(font, "WORLD", position, 40, 2, color);
 
         Vector2 size1 = MeasureTextEx(font, "WORLD", 40, 2);
         Vector2 size2 = MeasureTextEx(font, worldStr, 40, 2);
         Vector2 pos2 = { position.x + (size1.x - size2.x) / 2.0f, position.y + size1.y };
-        DrawTextEx(font, worldStr, pos2, 40, 2, BLACK);
+        DrawTextEx(font, worldStr, pos2, 40, 2, color);
     }
 };
 
@@ -113,22 +116,22 @@ public:
         }
     }
 
-    void Draw(Font f) {
+    void Draw(Font f, Color color) {
         font = f;
-        DrawTextEx(font, "TIME", position, 40, 2, BLACK);
+        DrawTextEx(font, "TIME", position, 40, 2, color);
         const char* timeStr = TextFormat("%03d", (int)timeLeft);
         Vector2 size1 = MeasureTextEx(font, "TIME", 40, 2);
         Vector2 size2 = MeasureTextEx(font, timeStr, 40, 2);
         Vector2 pos2 = { position.x + (size1.x - size2.x) / 2.0f, position.y + size1.y };
-        DrawTextEx(font, timeStr, pos2, 40, 2, BLACK);
+        DrawTextEx(font, timeStr, pos2, 40, 2, color);
     }
 };
 
 class UIManager {
 private:
-    
+
     UIManager();
-    
+
     UIManager(const UIManager&) = delete;
     UIManager& operator=(const UIManager&) = delete;
 
@@ -138,7 +141,7 @@ private:
     TimerDisplay timer;
 
 public:
-    
+
     static UIManager& getInstance();
 
     bool isGameOver;
@@ -153,11 +156,11 @@ public:
         timer.Update(deltaTime);
     }
 
-    void drawInformationBoard() {
-        score.Draw(menuFont);
-        coin.Draw(menuFont);
-        world.Draw(menuFont);
-        timer.Draw(menuFont);
+    void drawInformationBoard(Color color) {
+        score.Draw(menuFont, color);
+        coin.Draw(menuFont, color);
+        world.Draw(menuFont, color);
+        timer.Draw(menuFont, color);
     }
 
     void ShowGameOver();

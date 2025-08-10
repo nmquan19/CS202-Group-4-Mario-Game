@@ -2,17 +2,18 @@
 #include "ICharacterState.h"
 
 class Character;
+struct InputState;
 
-class IdleState : public ICharacterState {
+class SuperTransformState : public ICharacterState {
 public:
 	void enter(Character* character) override;
 	void update(Character* chatacter, float deltaTime) override;
 	void exit(Character* character) override;
 	void handleInput(Character* character, const InputState& input) override;
 	void checkTransitions(Character* character, const InputState& input) override;
-	static IdleState& getInstance();
+	static SuperTransformState& getInstance();
 private:
-	IdleState() = default;
-	IdleState(const IdleState&) = delete;
-	void operator=(const IdleState&) = delete;
+	SuperTransformState() = default;
+	SuperTransformState(const SuperTransformState&) = delete;
+	void operator=(const SuperTransformState&) = delete;
 };

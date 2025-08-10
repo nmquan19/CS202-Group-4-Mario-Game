@@ -4,7 +4,6 @@
 #include "../include/UI/SoundEffect.h"
 #include "../include/UI/Menu.h"
 #include "../include/UI/UI.h"
-#include "../include/System/PhysicsManager.h"
 #include "../include/System/LevelEditor.h"
 #include "../include/System/TextureManager.h"
 #include "../include/Characters/Character.h"
@@ -28,7 +27,9 @@ int main() {
 
     GameContext* context = &GameContext::getInstance();
     MenuState menuState;
+    RedirectState redirectState;
     CharacterSelectingState characterSelectingState;
+    InformationState  informationState;
     GamePlayState gamePlayState;
     EditorState editorState;
     GameOverState gameOverState;
@@ -36,7 +37,7 @@ int main() {
 
     Box2DWorldManager::getInstance().setDebugDraw(true);
 
-    context->setGameStates(&menuState, &characterSelectingState, &gamePlayState, &editorState, &gameOverState);
+    context->setGameStates(&menuState, &redirectState, &characterSelectingState, &informationState, &gamePlayState, &editorState, &gameOverState);
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();

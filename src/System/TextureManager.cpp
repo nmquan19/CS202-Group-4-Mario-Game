@@ -119,8 +119,36 @@ void TextureManager::unloadTextures() {
 	Item_sprite_boxes.clear();
 }
 
+void ObjectPalette::updatePalette(float deltaTime) {
+    float dx = target.x - rect.x;
+    float dy = target.y - rect.y;
+    float distance = sqrtf(dx * dx + dy * dy);
+
+    if (distance > 1.0f) {
+        float moveX = (dx / distance) * 300.0f * deltaTime;
+        float moveY = (dy / distance) * 300.0f * deltaTime;
+
+        if (fabsf(moveX) > fabsf(dx)) moveX = dx;
+        if (fabsf(moveY) > fabsf(dy)) moveY = dy;
+
+        rect.x += moveX;
+        rect.y += moveY;
+    }
+    paletteRect.x = rect.x + 20;
+    paletteRect.y = rect.y - (float)GetScreenHeight() / 4.0f;
+    startX = paletteRect.x + 50;
+    yBlock = paletteRect.y + 50;
+    yEnemy = yBlock + 150;
+    yInteractive = yEnemy + 150;
+    yItem = yInteractive + 150;
+    spacing = 120;
+    iconSize = 100;
+
+}
+
 void ObjectPalette::drawPalette() {
-    DrawRectangleRec(paletteRect, LIGHTGRAY);
+    DrawRectangleRec(rect, DARKGRAY);
+    DrawRectangleRec(paletteRect, ORANGE);
     DrawRectangleLinesEx(paletteRect, 2, BLACK);
 
     TextureManager& tm = TextureManager::getInstance();
@@ -195,6 +223,17 @@ void ObjectPalette::handleSelection() {
     if (!IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) return;
 
     Vector2 mousePos = GetMousePosition();
+
+    if (CheckCollisionPointRec(mousePos, rect)) {
+        if (isAtA) {
+            target = B;
+        }
+        else {
+            target = A;
+        }
+        isAtA = !isAtA;
+    }
+
     if (!CheckCollisionPointRec(mousePos, paletteRect)) return;
 
     // Block selection rectangles

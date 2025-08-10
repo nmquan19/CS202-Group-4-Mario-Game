@@ -76,12 +76,6 @@ Vector2 KoopaShell::getVelocity() {
 }
 
 void KoopaShell::onCollision(std::shared_ptr<Object> other, Direction dir) {
-    /*if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        if (dir == Direction::LEFT) {
-            physicsBody->SetLinearVelocity(b2Vec2({ 0.0f, -2.0f }));
-            std::cout << "touch" << std::endl;
-        }
-    }*/
     if (currentState) {
         currentState->onCollision(this, other, dir);
     }

@@ -9,9 +9,10 @@ Spring::Spring(Vector2 position, Vector2 size) : InteractiveObject(position, siz
 	this->bounceTimer = 0.0f;
 	this->aniTimer = 0.0f;
 	this->aniSpeed = 0.2f;
-	this->frameData = { {1, 467, 16, 16}, {18, 471, 16, 12}, {35, 476, 16, 7} };
+	this->frameData = { {1, 467, 16, 16}, {18, 471, 16, 12}, {35, 476, 16, 7}, {18, 471, 16, 12}, {1, 467, 16, 16} };
 	this->currentFrame = 0;
 	this->spriteRec = frameData[0];
+	this->bottomY = position.y + size.y * Constants::TILE_SIZE;
 	this->physicsBody = Box2DWorldManager::getInstance().createBlockBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
 	if (this->physicsBody) {
 		this->physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
@@ -52,12 +53,13 @@ void Spring::update(float deltaTime) {
 	else {
 		currentFrame = 0;
 	}
-	//updateHitBox();
+	updateHitBox();
 }
 
 void Spring::draw() {
 	Rectangle source = spriteRec; 
 	Rectangle dest = hitBox;
+
 	DrawTexturePro(TextureManager::interactiveTextures, source, dest, { 0, 0 }, 0.0f, WHITE);
 }
 
@@ -97,7 +99,9 @@ void Spring::updateHitBox() {
 		size.y = 0.5f;
 		break;
 	}
-	hitBox = { position.x, bottomY - size.y * Constants::TILE_SIZE, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE};
+	Vector2 physicsBodyPosition = Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
+	Vector2 drawPosition = { physicsBodyPosition.x - size.x * Constants::TILE_SIZE * 0.5f, physicsBodyPosition.y - size.y * Constants::TILE_SIZE * 0.5f };
+	hitBox = { drawPosition.x, bottomY - size.y * Constants::TILE_SIZE, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE};
 	spriteRec = frameData[currentFrame];
 }
 

@@ -90,21 +90,8 @@ b2Body* Box2DWorldManager::createDynamicRectangleBody(Vector2 pos, Vector2 hitbo
 	return body;
 }
 
-b2Body* Box2DWorldManager::createCapsuleBody(Vector2 pos, Vector2 hitboxSize) {
+void Box2DWorldManager::attachCapsuleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize) {
 	b2Vec2 b2_size = raylibToB2(hitboxSize);
-	b2Vec2 b2_pos = raylibToB2(pos);
-	b2_pos.x += b2_size.x / 2;
-	b2_pos.y += b2_size.y / 2;
-
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position = b2_pos;
-	bodyDef.fixedRotation = true;
-	bodyDef.allowSleep = true;
-	bodyDef.awake = true;
-
-	b2Body* body = world->CreateBody(&bodyDef);
-
 	float radius = b2_size.x / 2;
 	float rectHeight = b2_size.y - b2_size.x;
 
@@ -132,10 +119,6 @@ b2Body* Box2DWorldManager::createCapsuleBody(Vector2 pos, Vector2 hitboxSize) {
 		rectFixture.density = 0.5f;
 		body->CreateFixture(&rectFixture);
 	}
-
-	attachSensors(body, hitboxSize);
-
-	return body;
 }
 
 void Box2DWorldManager::attachSensors(b2Body* body, Vector2 hitboxSize) {
@@ -145,9 +128,9 @@ void Box2DWorldManager::attachSensors(b2Body* body, Vector2 hitboxSize) {
 	float sensorHeight = hitboxSize.y * 0.6f;
 
 	// Bottom
-	b2CircleShape botSensor;
-	botSensor.m_radius = raylibToB2(2.0f);
-	botSensor.m_p.Set(0.0f, raylibToB2(hitboxSize.y / 2.0f));
+	b2PolygonShape botSensor;
+	botSensor.SetAsBox(raylibToB2(sensorWidth * 0.5f), raylibToB2(sensorThickness * 0.5f),
+		b2Vec2(0, raylibToB2(hitboxSize.y * 0.5f + sensorThickness * 0.5f)), 0);
 	b2FixtureDef botFixture;
 	botFixture.shape = &botSensor;
 	botFixture.isSensor = true;
@@ -197,22 +180,69 @@ void Box2DWorldManager::destroyBody(b2Body* body) {
 b2Body* Box2DWorldManager::createCharacterBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
 
-	b2Body* body = createCapsuleBody(pos, hitboxSize);
+	b2Vec2 b2_size = raylibToB2(hitboxSize);
+	b2Vec2 b2_pos = raylibToB2(pos);
+	b2_pos.x += b2_size.x / 2;
+	b2_pos.y += b2_size.y / 2;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = b2_pos;
+	bodyDef.fixedRotation = true;
+	bodyDef.allowSleep = true;
+	bodyDef.awake = true;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+	
+	attachCapsuleFixtures(body, pos, hitboxSize);
+	attachSensors(body, hitboxSize);
+
 	return body;
 }
 
-b2Body* Box2DWorldManager::createBlockBody(Vector2 pos, Vector2 hitbboxSize) {
+b2Body* Box2DWorldManager::createBlockBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
 
-	b2Body* body = createRectangleBody(pos, hitbboxSize);
-	body->SetType(b2_kinematicBody);
+	b2Vec2 b2_size = raylibToB2(hitboxSize);
+	b2Vec2 b2_pos = raylibToB2(pos);
+	b2_pos.x += b2_size.x / 2;
+	b2_pos.y += b2_size.y / 2;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_kinematicBody;
+	bodyDef.position = b2_pos;
+	bodyDef.fixedRotation = true;
+	bodyDef.allowSleep = true;
+	bodyDef.awake = true;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+
+	attachRectangleFixtures(body, pos, hitboxSize);
+	attachSensors(body, hitboxSize);
+
 	return body;
 }
 
 b2Body* Box2DWorldManager::createEnemyBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
 
-	b2Body* body = createCapsuleBody(pos, hitboxSize);
+	b2Vec2 b2_size = raylibToB2(hitboxSize);
+	b2Vec2 b2_pos = raylibToB2(pos);
+	b2_pos.x += b2_size.x / 2;
+	b2_pos.y += b2_size.y / 2;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = b2_pos;
+	bodyDef.fixedRotation = true;
+	bodyDef.allowSleep = true;
+	bodyDef.awake = true;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+
+	attachCapsuleFixtures(body, pos, hitboxSize);
+	attachSensors(body, hitboxSize);
+	
 	return body;
 }
 b2Body* Box2DWorldManager::createItemBody(Vector2 pos, Vector2 hitboxSize) {
@@ -223,7 +253,23 @@ b2Body* Box2DWorldManager::createItemBody(Vector2 pos, Vector2 hitboxSize) {
 }
 
 b2Body* Box2DWorldManager::createItemBodyForCoin(Vector2 pos, Vector2 hitboxSize) {
-	b2Body* body = createRectangleBody(pos, hitboxSize);
+	b2Vec2 b2_size = raylibToB2(hitboxSize);
+	b2Vec2 b2_pos = raylibToB2(pos);
+	b2_pos.x += b2_size.x / 2;
+	b2_pos.y += b2_size.y / 2;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_staticBody;
+	bodyDef.position = b2_pos;
+	bodyDef.fixedRotation = true;
+	bodyDef.allowSleep = true;
+	bodyDef.awake = true;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+
+	attachRectangleFixtures(body, pos, hitboxSize);
+	attachSensors(body, hitboxSize);
+
 	body->SetType(b2_kinematicBody);
 	body->SetGravityScale(0.0f); // Thêm dòng này để đảm bảo không bị rơi
 	return body;

@@ -32,6 +32,7 @@ Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::e
 
 void Koopa::onCollision(std::shared_ptr<Object> other, Direction dir) {
     switch (other->getObjectCategory()) {
+    case ObjectCategory::ENEMY:
     case ObjectCategory::INTERACTIVE:
     case ObjectCategory::BLOCK:
         handleEnvironmentCollision(other, dir);

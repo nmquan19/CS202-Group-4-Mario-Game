@@ -47,6 +47,7 @@ private:
 class ObjectPalette {
 public:
     void drawPalette();
+    void updatePalette(float deltaTime);
     void handleSelection();
 
     bool isBlock() const { return std::holds_alternative<BlockType>(selected); }
@@ -64,8 +65,13 @@ public:
 
 
 private:
-    Rectangle paletteRect = { (float)GetScreenWidth() - 500, 0, (float)GetScreenWidth(), (float)GetScreenHeight() };
-    ObjectType selected = BlockType::GROUND;
+    Vector2 A = { (float)GetScreenWidth() - 500 - 20, (float)GetScreenHeight() / 4.0f };
+    Vector2 B = { (float)GetScreenWidth() - 20, (float)GetScreenHeight() / 4.0f };
+    Vector2 target = A;
+
+    bool isAtA = true;
+    Rectangle rect = { A.x, A.y, 20, (float)GetScreenHeight() / 2.0f };
+    Rectangle paletteRect = { rect.x + 20, rect.y - (float)GetScreenHeight() / 4.0f, (float)GetScreenWidth(), (float)GetScreenHeight() };    ObjectType selected = BlockType::GROUND;
     float startX = paletteRect.x + 50;
     float yBlock = paletteRect.y + 50;
     float yEnemy = yBlock + 150;

@@ -44,7 +44,8 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().cleanup();
             clearGame(); // Delete remaining objects in GameContext
             Box2DWorldManager::getInstance().cleanup();
-            character.reset();
+            character01.reset();
+            character02.reset();
         }
 
         previousState = currentState;
@@ -57,11 +58,13 @@ void GameContext::setState(GameState* newState) {
             // Create test blocks for Box2D physics testing
             createTestBlocks();
             
-            //LevelEditor::getInstance().loadLevel("testlevel.json");
-            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 400 });
-            if (character) {
+            ////LevelEditor::getInstance().loadLevel("testlevel.json");
+            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+            // CAMERA NEEDS CHANGING
+            if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
-                camera.target = character->getPosition();
+                camera.target = character01->getPosition();
             }
         }
     }
@@ -101,9 +104,11 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* character, GameState* game, GameState* editor, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* character, GameState* information, GameState* game, GameState* editor, GameState* gameOver) {
     menuState = menu;
+    redirectState = redirect;
     characterSelectingState = character;
+    informationState = information;
     gamePlayState = game;
     editorState = editor;
     gameOverState = gameOver;
@@ -205,23 +210,13 @@ void GameContext::createTestBlocks() {
         addObject(BlockType::BRICK, worldPos, {1, 1});
     }
     
-    // Create a platform in the air for jump testing
-    // for (int x = 18; x <= 22; x++) {
-    //     Vector2 worldPos = GridSystem::getWorldPosition({static_cast<float>(x), 12.0f});
-    //     addObject(BlockType::GROUND, worldPos, {1, 1});
-    // }
-    
     // Add some single blocks for platforming
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({10.0f, 11.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 14.0f}), {1, 1});
 	addObject(ItemType::COIN, GridSystem::getWorldPosition({ 19.0f, 9.0f }), { 1, 1 });
-    addObject(ItemType::FIRE_FLOWER, GridSystem::getWorldPosition({ 20.0f, 9.0f }), { 1, 1 });
-    addObject(ItemType::MUSHROOM, GridSystem::getWorldPosition({ 21.0f, 9.0f }), { 1, 1 });
-    addObject(ItemType::ONE_UP, GridSystem::getWorldPosition({ 22.0f, 9.0f }), { 1, 1 });
-    addObject(ItemType::STAR, GridSystem::getWorldPosition({ 23.0f, 9.0f }), { 1, 1 });
-    //addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 10.0f, 10.0f }), { 1, 1 });
-
+    addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 0.75f, 0.75f });
+    addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), {1, 1});
     addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
     //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1,1});
     

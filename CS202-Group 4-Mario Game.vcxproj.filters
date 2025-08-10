@@ -53,6 +53,9 @@
     <ClCompile Include="src\System\CameraSystem.cpp" />
     <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
     <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
+    <ClCompile Include="src\Characters\SuperTransformState.cpp" />
+    <ClCompile Include="include\Characters\SmallTransformState.h" />
+    <ClCompile Include="src\Characters\SmallTransformState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -118,6 +121,7 @@
     <ClInclude Include="include\System\ParticleSystem.h" />
     <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
     <ClInclude Include="include\System\CameraSystem.h" />
+    <ClInclude Include="include\Characters\SuperTransformState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

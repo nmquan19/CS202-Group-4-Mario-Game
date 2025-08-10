@@ -99,25 +99,28 @@ void GoombaKnockState::enter(Enemy* enemy)
     goomba->active = false;
 	goomba->knockAnimation = true;
     goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->getSpriteData()[2].first];
+
+    for (b2Fixture* fixture = goomba->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+        b2Filter filter = fixture->GetFilterData();
+        filter.maskBits = 0;
+        fixture->SetFilterData(filter);
+    }
 }
 void GoombaKnockState::checkCondition(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    if (goomba->position.y >= GetScreenHeight())
-    {
-
-        goomba->knockAnimation = false;
-        //goomba->velocity = { 0, 0 };
-        goomba->active = false;
-        goomba->changeState(nullptr);
+    if (goomba->position.y >= GetScreenHeight()) {
+        exit(enemy);
     }
 }
+
 void GoombaKnockState::exit(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
     goomba->isalive = false;
 	GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(goomba));
 }
+
 void GoombaKnockState::update(Enemy* enemy, float deltaTime)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
