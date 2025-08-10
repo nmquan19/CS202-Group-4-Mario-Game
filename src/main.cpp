@@ -35,11 +35,11 @@ int main() {
     GameOverState gameOverState;
     GameCameraSystem::getInstance().init();
 
-    Box2DWorldManager::getInstance().setDebugDraw(true);
-
     context->setGameStates(&menuState, &redirectState, &characterSelectingState, &informationState, &gamePlayState, &editorState, &gameOverState);
 
     while (!WindowShouldClose()) {
+        Box2DWorldManager::getInstance().setDebugDraw(true);
+
         float deltaTime = GetFrameTime();
         context->handleInput();
         context->update(deltaTime);

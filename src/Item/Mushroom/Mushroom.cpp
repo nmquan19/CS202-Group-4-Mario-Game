@@ -14,52 +14,48 @@ Mushroom::~Mushroom() {
 }
 
 void Mushroom::update(float deltaTime) {
-	animation->Update();
-    // 1. Lấy vị trí item và mario
-    Vector2 itemPos = this->getPosition();
-    Vector2 marioPos1 = GameContext::getInstance().character01->getPosition(); // bạn cần truyền mario vào hoặc lấy từ GameContext
+    animation->Update();
+
+    totalTime += deltaTime;
+
+    Vector2 itemPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
+    Vector2 marioPos = Box2DWorldManager::b2ToRaylib(
+		GameContext::getInstance().character01->getPhysicsBody()->GetPosition()
+    );
 
     int itemGridX = (int)(itemPos.x / GridSystem::GRID_SIZE);
     int itemGridY = (int)(itemPos.y / GridSystem::GRID_SIZE);
-    int marioGridX = (int)(marioPos1.x / GridSystem::GRID_SIZE);
-    int marioGridY = (int)(marioPos1.y / GridSystem::GRID_SIZE);
+    int marioGridX = (int)(marioPos.x / GridSystem::GRID_SIZE);
+    int marioGridY = (int)(marioPos.y / GridSystem::GRID_SIZE);
 
-    int dx = itemGridX - marioGridX;
-    int dy = itemGridY - marioGridY;
+    int dx = marioGridX - itemGridX;
+    int dy = marioGridY - itemGridY;
     float distance = sqrt(dx * dx + dy * dy);
 
-    // 2. Lấy velocity hiện tại
     b2Vec2 vel = physicsBody->GetLinearVelocity();
 
-    // 3. Quyết định hành vi
     if (distance <= 5) {
-        Vector2 dir = { (float)dx, (float)dy };
+        Vector2 dir = { (float)(itemGridX - marioGridX), (float)(itemGridY - marioGridY) };
         float len = sqrt(dir.x * dir.x + dir.y * dir.y);
         if (len != 0) {
             dir.x /= len;
-            dir.y /= len;
         }
-        float speed = 3.0f;
-        vel.Set(dir.x * speed, dir.y * speed);
+
+        moveDirX = dir.x > 0 ? 1.0f : -1.0f; // lưu hướng mới
+        vel.Set(moveDirX * 5.0f, vel.y); // tốc độ chạy tránh Mario
         physicsBody->SetLinearVelocity(vel);
     }
     else {
-		float normalSpeed = 1.0f; // Tốc độ mặc định khi không gần Mario
-        // ====== Hành vi mặc định ======
-        vel.Set(-normalSpeed, vel.y); // ví dụ: di chuyển ngang với tốc độ normalSpeed
+        float vx = omega * Amplitude * cos(omega * totalTime);
+        vel.Set(vx, vel.y);
         physicsBody->SetLinearVelocity(vel);
     }
 
-    //giúp tôi sửa đoạn dưới này để cái texture đi theo cái body đi
-    //hitbox = physicsBody;
-    //position = physicsBody;
-
     Vector2 renderPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
-    position.x = renderPos.x - Constants::TILE_SIZE/2;
+    position.x = renderPos.x - Constants::TILE_SIZE / 2;
     position.y = renderPos.y - Constants::TILE_SIZE / 2;
     hitbox.x = position.x;
     hitbox.y = position.y;
 }
-
 
 

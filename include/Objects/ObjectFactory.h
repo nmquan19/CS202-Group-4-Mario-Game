@@ -52,6 +52,8 @@ protected:
 	bool active = true;
 	bool collided = false;
 	b2Body* physicsBody;
+
+	
 };  
 
 class ObjectFactory {

@@ -59,8 +59,8 @@ void GameContext::setState(GameState* newState) {
             createTestBlocks();
             
             ////LevelEditor::getInstance().loadLevel("testlevel.json");
-            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
-            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 500, 400 });
+            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 400, 400 });
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
@@ -220,7 +220,7 @@ void GameContext::createTestBlocks() {
 	//addObject(ItemType::STAR, GridSystem::getWorldPosition({ 22.0f, 9.0f }), { 1, 1 });
 	//addObject(ItemType::ONE_UP, GridSystem::getWorldPosition({ 23.0f, 9.0f }), { 1, 1 });
     //addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 0.75f, 0.75f });
-    addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), {1, 1});
+    //addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), {1, 1});
     //addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
     //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1,1});
     
