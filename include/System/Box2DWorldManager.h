@@ -37,6 +37,7 @@ public:
 	static float raylibToB2(const float value);
 
 	void attachRectangleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
+	b2Body* createRectangleBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createDynamicRectangleBody(Vector2 pos, Vector2 hitboxSize);
 	void attachCapsuleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachSensors(b2Body* body, Vector2 hitboxSize);
