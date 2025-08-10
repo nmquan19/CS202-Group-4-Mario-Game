@@ -212,6 +212,13 @@ void GameContext::createTestBlocks() {
     
     // Add some single blocks for platforming
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({10.0f, 11.0f}), {1, 1});
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 6.0f }), { 1, 1 });
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 7.0f }), { 1, 1 });
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 8.0f }), { 1, 1 });
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 9.0f }), { 1, 1 });
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 10.0f }), { 1, 1 });
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 11.0f }), { 1, 1 });
+    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 12.0f }), { 1, 1 });
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 14.0f}), {1, 1});
 	//addObject(ItemType::COIN, GridSystem::getWorldPosition({ 19.0f, 9.0f }), { 1, 1 });

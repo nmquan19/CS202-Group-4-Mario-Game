@@ -6,6 +6,7 @@
 #include "../System/Constant.h"
 #include <raylib.h>  
 #include "box2d/box2d.h"
+#include "../System/Grid.h"
 
 class Item;  
 class Block;  
@@ -46,12 +47,19 @@ public:
 		return { x, y, width, height };
 	}
 
+	void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
+
+	void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
+
 protected:  
 	Vector2 position;
 	Vector2 size;
 	bool active = true;
 	bool collided = false;
 	b2Body* physicsBody;
+
+
+	float totalTime = 0.0f; // for oscillation and circular movement
 
 	
 };  

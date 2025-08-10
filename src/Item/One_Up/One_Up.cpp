@@ -68,7 +68,7 @@ void One_Up::update(float deltaTime) {
     b2Vec2 vel = physicsBody->GetLinearVelocity();
 
 
-    std::cout << distance << std::endl;
+    //std::cout << distance << std::endl;
     if (distance <= 5) {
         Vector2 dir = { (float)(itemGridX - marioGridX), (float)(itemGridY - marioGridY) };
         float len = sqrt(dir.x * dir.x + dir.y * dir.y);
@@ -81,10 +81,15 @@ void One_Up::update(float deltaTime) {
         physicsBody->SetLinearVelocity(vel);
     }
     else {
-        float vx = omega * Amplitude * cos(omega * totalTime);
-        float vy = omega * Amplitude * sin(omega * totalTime);
-        vel.Set(vx, vel.y);
-        physicsBody->SetLinearVelocity(vel);
+        //float vx = omega * Amplitude * cos(omega * totalTime);
+        //float vy = omega * Amplitude * sin(omega * totalTime);
+        //vel.Set(vx, vel.y);
+        //physicsBody->SetLinearVelocity(vel);
+
+        HarmonicOscillationMove(Amplitude, frequency, deltaTime);
+        std::cout << "Amplitude: " << Amplitude << std::endl
+            << "frequency: " << frequency << std::endl
+            << "deltaTime: " << deltaTime << std::endl;
     }
 
     Vector2 renderPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());

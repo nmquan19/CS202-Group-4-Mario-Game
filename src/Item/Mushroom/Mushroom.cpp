@@ -64,10 +64,12 @@ void Mushroom::update(float deltaTime) {
         physicsBody->SetLinearVelocity(vel);
     }
     else {
-        float vx = omega * Amplitude * cos(omega * totalTime);
-		float vy = omega * Amplitude * sin(omega * totalTime); 
-        vel.Set(vx, vel.y);
-        physicsBody->SetLinearVelocity(vel);
+        //float vx = omega * Amplitude * cos(omega * totalTime);
+		//float vy = omega * Amplitude * sin(omega * totalTime);
+        //vel.Set(vx, vel.y);
+        //physicsBody->SetLinearVelocity(vel);
+
+		HarmonicOscillationMove(Amplitude, omega, deltaTime);
     }
 
     Vector2 renderPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());

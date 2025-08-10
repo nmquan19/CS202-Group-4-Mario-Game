@@ -14,6 +14,6 @@ public:
 private:
 	float moveDirX = -1.0f;
 	float totalTime = 0.0f;
-	float omega = 1.0f;
-	float Amplitude = 4.0f;
+	float frequency = 1.0f;
+	float Amplitude = 2.0f;
 };

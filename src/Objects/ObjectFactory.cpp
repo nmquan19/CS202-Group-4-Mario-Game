@@ -20,6 +20,7 @@
 #include "../../include/System/Constant.h"
 #include "../../include/Objects/Spring.h"
 #include "../../include/System/Box2DWorldManager.h"
+#include <numbers>
 
 Object::~Object() {
     if (physicsBody) {
@@ -157,4 +158,25 @@ int Object::getCollidedPart(const Object& other){
     } else if(minOverlap == overlapRight) {
         return 4; 
 	}
+}
+
+void Object::CircleMove(Vector2 center, float radius, float speed, float deltaTime) {
+    totalTime += deltaTime;
+    position.x = center.x + radius * cos(speed * totalTime);
+    position.y = center.y + radius * sin(speed * totalTime);
+    if (physicsBody) {
+        physicsBody->SetTransform(b2Vec2(position.x / GridSystem::GRID_SIZE, position.y / GridSystem::GRID_SIZE),
+            physicsBody->GetAngle());
+    }
+}
+
+void Object::HarmonicOscillationMove(float amplitude, float frequency, float deltaTime) {
+    totalTime += deltaTime;
+	float omega = frequency * std::numbers::pi_v<float> *2; // Convert frequency to angular frequency
+    float vx = omega * amplitude * sin(omega * totalTime);
+    std::cout  << "vx: " << vx << std::endl;
+    if (physicsBody) {
+        b2Vec2 vel(vx, physicsBody->GetLinearVelocity().y);
+        physicsBody->SetLinearVelocity(vel);
+    }
 }
