@@ -239,6 +239,27 @@ void EditorState::draw(GameContext& context) {
     EndDrawing();
 }
 
+
+void EditorSelectingState::handleInput(GameContext& context) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        Vector2 mousePos = GetMousePosition();
+        if (context.menuManager.day_groundBoard.checkCollision(mousePos)) {
+            context.setState(context.editorState);
+        }
+    }
+}
+
+void EditorSelectingState::update(GameContext& context, float deltaTime) {
+    context.menuManager.UpdateEditorSelecting(deltaTime);
+}
+
+void EditorSelectingState::draw(GameContext& context) {
+    BeginDrawing();
+    ClearBackground(SKYBLUE);
+    context.menuManager.DrawEditorSelecting();
+    EndDrawing();
+}
+
 void GameOverState::handleInput(GameContext& context) {
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.menuState);
@@ -263,7 +284,7 @@ void handleCamera() {
 
     // Handle zoom
     float wheel = GetMouseWheelMove();
-    if (wheel != 0.0f) {
+    if (wheel != 0.0f && !CheckCollisionPointRec(GetMousePosition(), LevelEditor::getInstance().getObjectPalette().getPaletteRect())) {
         // Center zoom around mouse
         Vector2 mouseWorldBefore = GetScreenToWorld2D(GetMousePosition(), cam);
         cam.zoom *= expf(wheel * 0.1f);

@@ -32,6 +32,12 @@ MenuManager::MenuManager() {
     menuBoard.load("./assets/button/small_board.png", "./assets/button/small_board.png");
 
 
+    day_groundBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    day_undergroundBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    night_airshipBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    night_snowBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+
+
     mario = LoadTexture("./assets/Mario.png");
     luigi = LoadTexture("./assets/Luigi.png");
     toad = LoadTexture("./assets/Toad.png");
@@ -362,4 +368,22 @@ void MenuManager::DrawRedirect() {
     restartBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Restart", 1.5, 1.0);
     levelBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Level", 1.5, 1.0);
     menuBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 13 / 20.0f }, "Menu", 1.5, 1.0);
+}
+
+
+void MenuManager::HandleEditorSelecting() {
+
+}
+
+void MenuManager::UpdateEditorSelecting(float deltaTime) {
+    day_groundBoard.update(deltaTime);
+    day_undergroundBoard.update(deltaTime);
+    night_airshipBoard.update(deltaTime);
+    night_snowBoard.update(deltaTime);
+}
+void MenuManager::DrawEditorSelecting() {
+    day_groundBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 7 / 20.0f }, "Map 1", 1.5, 1.0);
+    day_undergroundBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Map 2", 1.5, 1.0);
+    night_airshipBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Map 3", 1.5, 1.0);
+    night_snowBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 13 / 20.0f }, "Map 4", 1.5, 1.0);
 }

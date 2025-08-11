@@ -103,13 +103,14 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* character, GameState* information, GameState* game, GameState* editor, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* character, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
     menuState = menu;
     redirectState = redirect;
     characterSelectingState = character;
     informationState = information;
     gamePlayState = game;
     editorState = editor;
+    editorSelectingState = editorSelecting;
     gameOverState = gameOver;
     currentState = menuState;
 }

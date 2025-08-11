@@ -165,9 +165,17 @@
     <Image Include="assets\button\thin_board.png" />
     <Image Include="assets\button\thin_board_selected.png" />
     <Image Include="assets\coin_sprite.png" />
+    <Image Include="assets\day_ground.png" />
+    <Image Include="assets\day_underground.png" />
     <Image Include="assets\font_sprites.png" />
+    <Image Include="assets\level_map1.png" />
+    <Image Include="assets\level_map2.png" />
+    <Image Include="assets\level_map3.png" />
     <Image Include="assets\Luigi.png" />
     <Image Include="assets\Mario.png" />
+    <Image Include="assets\menu background.jpg" />
+    <Image Include="assets\night_airship.png" />
+    <Image Include="assets\night_snow.png" />
     <Image Include="assets\Super Mario Bros.png" />
     <Image Include="assets\Toad.png" />
     <Image Include="assets\Toadette.png" />
