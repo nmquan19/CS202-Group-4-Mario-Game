@@ -547,7 +547,9 @@ enum class ItemType {
 
 enum class CharacterType {
 	MARIO,
-	LUIGI
+	LUIGI,
+	TOAD,
+	TOADETTE
 };
 
 enum class KoopaShellType {

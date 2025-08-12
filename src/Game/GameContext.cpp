@@ -58,8 +58,8 @@ void GameContext::setState(GameState* newState) {
             createTestBlocks();
             
             //LevelEditor::getInstance().loadLevel("testlevel.json");
-            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
-            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+            character01 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
