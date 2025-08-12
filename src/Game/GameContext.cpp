@@ -201,30 +201,6 @@ void GameContext::clearGame() {
 }
 
 void GameContext::createTestBlocks() {
-    // Create a ground platform for testing using world coordinates
-    // Bottom ground blocks (y = 15 grid units = 15 * TILE_SIZE pixels, spanning from x = 5 to x = 25)
-    for (int x = 5; x <= 25; x++) {
-        Vector2 worldPos = GridSystem::getWorldPosition({static_cast<float>(x), 15.0f});
-        addObject(BlockType::GROUND, worldPos, {1, 1});
-    }
-    
-    // Create some brick blocks for variety
-    for (int x = 8; x <= 12; x++) {
-        Vector2 worldPos = GridSystem::getWorldPosition({static_cast<float>(x), 14.0f});
-        addObject(BlockType::BRICK, worldPos, {1, 1});
-    }
-    
-    // Add some single blocks for platforming
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({10.0f, 11.0f}), {1, 1});
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 6.0f }), { 1, 1 });
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 7.0f }), { 1, 1 });
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 8.0f }), { 1, 1 });
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 9.0f }), { 1, 1 });
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 10.0f }), { 1, 1 });
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 11.0f }), { 1, 1 });
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({ 25.0f, 12.0f }), { 1, 1 });
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 14.0f}), {1, 1});
 	//addObject(ItemType::COIN, GridSystem::getWorldPosition({ 19.0f, 9.0f }), { 1, 1 });
 	//addObject(ItemType::MUSHROOM, GridSystem::getWorldPosition({ 20.0f, 9.0f }), { 1, 1 });
 	//addObject(ItemType::FIRE_FLOWER, GridSystem::getWorldPosition({ 21.0f, 9.0f }), { 1, 1 });

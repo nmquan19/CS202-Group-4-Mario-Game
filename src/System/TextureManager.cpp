@@ -160,6 +160,10 @@ void ObjectPalette::updatePalette(float deltaTime) {
     itemRect = { rect.x + 20, (float)GetScreenHeight() * 3.0f / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
     startX = paletteRect.x + 50;
     startY = paletteRect.y + 50;
+    map1Rect = { rect.x + 60, 0, mapWidth, 40 };
+    map2Rect = { rect.x + 60 + mapWidth, 0, mapWidth, 40 };
+    map3Rect = { rect.x + 60 + 2 * mapWidth, 0, mapWidth, 40 };
+    map4Rect = { rect.x + 60 + 3 * mapWidth, 0, mapWidth, 40 };
     spacingX = 120;
     spacingY = 120;
     iconSize = 100;
@@ -231,316 +235,302 @@ void ObjectPalette::drawPalette() {
     DrawRectangleLinesEx(paletteRect, 2, BLACK);
 
     TextureManager& tm = TextureManager::getInstance();
-    Texture2D blocksTexture = TextureManager::blocksTexture;
-
-    Texture2D day_groundTexture;
-    if (map == 1) day_groundTexture = TextureManager::day_groundTexture;
-    else if (map == 2) day_groundTexture = TextureManager::day_undergroundTexture;
-    else if (map == 3) day_groundTexture = TextureManager::night_airshipTexture;
-    else day_groundTexture = TextureManager::night_snowTexture;
-    //Texture2D day_groundTexture = TextureManager::day_groundTexture;
-    //Texture2D day_undergroundTexture = TextureManager::day_undergroundTexture;
-    //Texture2D night_airshipTexture = TextureManager::night_airshipTexture;
-    //Texture2D night_snowTexture = TextureManager::night_snowTexture;
+    Texture2D blocksTexture;
+    if (map == 1) blocksTexture = TextureManager::day_groundTexture;
+    else if (map == 2) blocksTexture = TextureManager::day_undergroundTexture;
+    else if (map == 3) blocksTexture = TextureManager::night_airshipTexture;
+    else blocksTexture = TextureManager::night_snowTexture;
     if (selectRect == 1) {
-        // Ground Block
-        Rectangle groundRect = { startX, startY, iconSize, iconSize };
-        if (blocksTexture.id != 0) {
-            DrawTexturePro(blocksTexture, Constants::PaletteResources::GROUND, groundRect, { 0, 0 }, 0.0f, WHITE);
-        }
-        DrawRectangleLinesEx(groundRect, 2, (isBlock() && getBlockType() == BlockType::GROUND) ? RED : BLACK);
-
-        // Brick Block
-        Rectangle brickRect = { startX + spacingX, startY, iconSize, iconSize };
-        if (blocksTexture.id != 0) {
-            DrawTexturePro(blocksTexture, Constants::PaletteResources::BRICK, brickRect, { 0, 0 }, 0.0f, WHITE);
-        }
-        DrawRectangleLinesEx(brickRect, 2, (isBlock() && getBlockType() == BlockType::BRICK) ? RED : BLACK);
         int traverse;
         if (map == 1 || map == 2 || map == 3 || map == 4) {
-            traverse = 3;
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_1_2, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            traverse = 1;
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_1_2, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_1_2) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_1_3, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_1_3, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_1_3) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_1_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_1_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_1_12) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_1_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_1_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_1_13) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_1_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_1_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_1_14) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_1_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_1_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_1_15) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_1_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_1_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_1_16) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_2_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_2_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_2_7) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_2_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_2_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_2_8) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_2_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_2_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_2_12) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_2_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_2_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_2_13) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_2_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_2_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_2_14) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_2_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_2_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_2_15) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_2_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_2_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_2_16) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_3_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_3_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_3_4) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_3_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_3_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_3_5) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_3_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_3_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_3_6) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_3_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_3_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_3_7) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_3_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_3_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_3_8) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_3_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_3_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_3_15) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_3_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_3_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_3_16) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_4) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_5) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_6) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_7) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_11) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_12) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_13) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_14) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_15) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_4_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_4_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_4_16) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_4) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_5) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_6) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_8) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_9, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_9, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_9) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_10, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_10, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_10) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_11) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_12) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_13) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_14) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_15) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_5_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_5_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_5_16) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_6_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_6_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_6_5) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_6_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_6_6) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_1, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_1, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_1) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_2, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_2, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_2) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_3, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_3, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_3) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_4) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_5) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_6) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_7) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_11) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_12) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_13) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_14) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_15) ? RED : BLACK); traverse++;
 
-            if (day_groundTexture.id != 0) {
-                DrawTexturePro(day_groundTexture, Constants::PaletteResources::BLOCK_1_7_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_7_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_16) ? RED : BLACK); traverse++;
 
@@ -648,9 +638,7 @@ void ObjectPalette::handleSelection() {
     Rectangle coinRect = { startX, startY, iconSize, iconSize };
     Rectangle ffRect = { startX + spacingX, startY, iconSize, iconSize };
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        int traverse = 3;
-        if (CheckCollisionPointRec(mousePos, groundRect) && selectRect == 1) selected = BlockType::GROUND;
-        if (CheckCollisionPointRec(mousePos, brickRect) && selectRect == 1) selected = BlockType::BRICK;
+        int traverse = 1;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_1_2; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_1_3; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_1_12; traverse++;
@@ -709,9 +697,7 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_7_14; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_7_15; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_7_16; traverse++;
-        traverse = 3;
-        if (CheckCollisionPointRec(mousePos, groundRect) && selectRect == 1) selected = BlockType::GROUND;
-        if (CheckCollisionPointRec(mousePos, brickRect) && selectRect == 1) selected = BlockType::BRICK;
+        traverse = 1;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_1_2; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_1_3; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_1_12; traverse++;
@@ -770,9 +756,7 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_7_14; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_7_15; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_7_16; traverse++;
-        traverse = 3;
-        if (CheckCollisionPointRec(mousePos, groundRect) && selectRect == 1) selected = BlockType::GROUND;
-        if (CheckCollisionPointRec(mousePos, brickRect) && selectRect == 1) selected = BlockType::BRICK;
+        traverse = 1;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_1_2; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_1_3; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_1_12; traverse++;
@@ -832,9 +816,7 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_7_15; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_7_16; traverse++;
 
-        traverse = 3;
-        if (CheckCollisionPointRec(mousePos, groundRect) && selectRect == 1) selected = BlockType::GROUND;
-        if (CheckCollisionPointRec(mousePos, brickRect) && selectRect == 1) selected = BlockType::BRICK;
+        traverse = 1;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_1_2; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_1_3; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_1_12; traverse++;

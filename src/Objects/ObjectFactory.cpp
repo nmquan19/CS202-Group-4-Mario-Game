@@ -36,10 +36,6 @@ std::unique_ptr<Object> ObjectFactory::createBlock(BlockType type, Vector2 gridP
 
 std::unique_ptr<Block> ObjectFactory::createSpecificBlock(BlockType type, Vector2 gridPos) {
     switch (type) {
-        case BlockType::GROUND:
-            return std::make_unique<GroundBlock>(gridPos);
-        case BlockType::BRICK:
-            return std::make_unique<BrickBlock>(gridPos);
         case BlockType::BLOCK_1_1_2:
             return std::make_unique<Block_1_1_2Block>(gridPos);
         case BlockType::BLOCK_1_1_3:
