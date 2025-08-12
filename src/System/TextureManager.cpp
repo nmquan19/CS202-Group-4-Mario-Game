@@ -895,6 +895,7 @@ void ObjectPalette::drawPalette() {
         DrawTexturePro(TextureManager::interactiveTextures, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
         DrawRectangleLinesEx(springRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::SPRING) ? RED : BLACK);
 
+        // Moving platform
     }
     if (selectRect == 4) {
         // Coin
@@ -1454,8 +1455,8 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, rkoopaRect) && selectRect == 2) selected = EnemyType::RED_KOOPA;
         if (CheckCollisionPointRec(mousePos, dryBRect) && selectRect == 2) selected = EnemyType::DRY_BOWSER;
         if (CheckCollisionPointRec(mousePos, springRect) && selectRect == 3) selected = InteractiveType::SPRING;
+        // 
         if (CheckCollisionPointRec(mousePos, coinRect) && selectRect == 4) selected = ItemType::COIN;
         if (CheckCollisionPointRec(mousePos, ffRect) && selectRect == 4) selected = ItemType::FIRE_FLOWER;
     }
-
 }

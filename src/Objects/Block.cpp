@@ -2077,17 +2077,15 @@ std::vector<ObjectCategory> Block::getCollisionTargets() const {
 }
 
 void Block::onCollision(std::shared_ptr<Object> other, Direction direction) {
-    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        if (direction == Direction::DOWN && !isMoving && !isSolid()) {
-            physicsBody->SetLinearVelocity(b2Vec2{ 0.0f, -2.0f });
-            isMoving = true;
-            resetTimer = 0.0f;
-            // if large character
-            Vector2 centerPos = { position.x + hitbox.width * 0.5f, position.y + hitbox.height * 0.5f };
-            BrokenBlockEffect* p = new BrokenBlockEffect(centerPos, { 30, 30 }, { -200, -400 }, { 200, -400 }, { 0, 1000 }, 5.0f, 0.01f, TextureManager::blocksTexture);
-            ParticleSystem::getInstance().addEffect(p);
-            GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
-        }
+    if (direction == Direction::DOWN && !isMoving && !isSolid()) {
+        physicsBody->SetLinearVelocity(b2Vec2{ 0.0f, -2.0f });
+        isMoving = true;
+        resetTimer = 0.0f;
+        // if large character
+        Vector2 centerPos = { position.x + hitbox.width * 0.5f, position.y + hitbox.height * 0.5f };
+        BrokenBlockEffect* p = new BrokenBlockEffect(centerPos, {30, 30}, {-200, -400}, {200, -400}, {0, 1000}, 5.0f, 0.01f, TextureManager::day_groundTexture);
+        ParticleSystem::getInstance().addEffect(p);
+        GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
     }
 }
 

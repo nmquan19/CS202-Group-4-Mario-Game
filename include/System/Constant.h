@@ -53,7 +53,7 @@ namespace Constants {
         namespace Mario {
             const Vector2 SMALL_SIZE = { 0.75f, 1.0f };
             const Vector2 SUPER_SIZE = { 1.0f, 1.5f };
-            const CharacterStats STATS = { 3.5f, 10.0f };
+            const CharacterStats STATS = { 3.0f, 12.0f };
             const std::vector<std::vector<Rectangle>> SMALL_FRAME_DATA = {
                 {{11, 23, 12, 15}}, // idle state
                 {{118, 23, 12, 15}, {149, 22, 15, 16}, {186, 22, 16, 16}, {219, 22, 16, 16}}, // moving state
@@ -86,7 +86,7 @@ namespace Constants {
         namespace Luigi {
             const Vector2 SMALL_SIZE = { 0.75f, 1.25f };
             const Vector2 SUPER_SIZE = { 1.0f, 1.75f };
-            const CharacterStats STATS = { 2.5f, 12.0f };
+            const CharacterStats STATS = { 2.0f, 14.0f };
             const std::vector<std::vector<Rectangle>> SMALL_FRAME_DATA = {
                 {{11, 893, 12, 15}}, // idle state
                 {{118, 893, 12, 15}, {149, 892, 15, 16}, {186, 892, 16, 16}, {219, 892, 16, 16}}, // moving state
@@ -119,12 +119,12 @@ namespace Constants {
         namespace Toad {
             const Vector2 SMALL_SIZE = { 0.75f, 1.0f };
             const Vector2 SUPER_SIZE = { 1.0f, 1.5f };
-            const CharacterStats STATS = { 3.5f, 10.0f };
+            const CharacterStats STATS = { 4.0f, 10.0f };
             const std::vector<std::vector<Rectangle>> SMALL_FRAME_DATA = {
                 {{11, 1752, 12, 15}}, // idle state
                 {{118, 1752, 12, 15}, {149, 1751, 14, 16}, {186, 1751, 16, 16}, {219, 1751, 16, 16}}, // moving state
                 {{293, 1751, 16, 16}, {326, 1751, 16, 16}}, // jumping state
-                {{11, 1752, 12, 15}, {49, 1755, 12, 13}}, // stunned state
+                {{11, 1752, 12, 15}, {49, 1754, 14, 13}}, // stunned state
                 {{713, 1751, 16, 16}}, // knocked state
                 {{11, 1752, 12, 15}, {149, 1751, 14, 16}, {293, 1751, 16, 16}, {359, 1826, 18, 25}, {9, 1826, 15, 26}}, // super transform
                 {{11, 1752, 12, 15}, {149, 1751, 14, 16}, {293, 1751, 16, 16}, {359, 1982, 18, 25}, {9, 1982, 15, 26}} // fire transform
