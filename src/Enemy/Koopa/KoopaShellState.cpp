@@ -71,8 +71,7 @@ void KoopaShellMovingState::enter(KoopaShell* shell) {
         b2Filter filter = fixture->GetFilterData();
         filter.maskBits = static_cast<uint16>(ObjectCategory::PROJECTILE);
         filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
-            static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::ENEMY) |
-            static_cast<uint16>(ObjectCategory::INTERACTIVE);
+            static_cast<uint16>(ObjectCategory::ENEMY) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
         fixture->SetFilterData(filter);
     }
 }
@@ -100,13 +99,6 @@ void KoopaShellMovingState::onCollision(KoopaShell* shell, std::shared_ptr<Objec
         break;
     case Direction::RIGHT:
         shell->physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
-        break;
-    }
-
-    switch (other->getObjectCategory()) {
-    case ObjectCategory::CHARACTER:
-        shell->physicsBody->SetLinearVelocity(b2Vec2(0, currentVel.y));
-        shell->changeState(&KoopaShellIdleState::getInstance());
         break;
     }
 }

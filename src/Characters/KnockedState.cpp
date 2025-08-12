@@ -17,13 +17,12 @@ void KnockedState::enter(Character* character) {
 }
 
 void KnockedState::update(Character* character, float deltaTime) {
-	if (character->reviveTimer <= 0) {
-		character->changeState(IdleState::getInstance());
+	if (character->reviveTimer > 0) {
+		character->reviveTimer -= deltaTime;
 	}
 }
 
 void KnockedState::exit(Character* character) {
-	std::cout << character->reviveTimer << std::endl;
 	character->hp = 1;
 	b2Fixture* fixtures = character->physicsBody->GetFixtureList();
 	for (b2Fixture* fixture = fixtures; fixture != nullptr; fixture = fixture->GetNext()) {
@@ -33,6 +32,16 @@ void KnockedState::exit(Character* character) {
 	}
 	character->physicsBody->SetLinearVelocity(b2Vec2(0, 0));
 	character->physicsBody->SetTransform(Box2DWorldManager::raylibToB2(Vector2{ 500, 500 }), 0);
+}
+
+void KnockedState::handleInput(Character* character, const InputState& input) {
+
+}
+
+void KnockedState::checkTransitions(Character* character, const InputState& input) {
+	if (character->reviveTimer <= 0) {
+		character->changeState(IdleState::getInstance());
+	}
 }
 
 KnockedState& KnockedState::getInstance() {

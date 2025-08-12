@@ -23,7 +23,7 @@ void MenuState::handleInput(GameContext& context) {
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
         && context.menuManager.playBoard.checkCollision(GetMousePosition())) {
-        context.setState(context.characterSelectingState);
+        context.setState(context.redirectState);
     }
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
@@ -43,9 +43,35 @@ void MenuState::draw(GameContext& context) {
     EndDrawing();
 }
 
+void RedirectState::handleInput(GameContext& context) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        Vector2 mousePos = GetMousePosition();
+        if (context.menuManager.characterBoard.checkCollision(mousePos)) context.setState(context.characterSelectingState);
+        if (context.menuManager.continueBoard.checkCollision(mousePos)) context.setState(context.informationState);
+        if (context.menuManager.restartBoard.checkCollision(mousePos)) context.setState(context.informationState);
+        if (context.menuManager.levelBoard.checkCollision(mousePos)) context.setState(context.informationState);
+        if (context.menuManager.menuBoard.checkCollision(mousePos)) context.setState(context.menuState);
+    }
+}
+
+void RedirectState::draw(GameContext& context) {
+    BeginDrawing();
+    ClearBackground(SKYBLUE);
+    context.menuManager.DrawRedirect();
+    EndDrawing();
+}
+
+void RedirectState::update(GameContext& context, float deltaTime) {
+    context.menuManager.characterBoard.update(deltaTime);
+    context.menuManager.continueBoard.update(deltaTime);
+    context.menuManager.restartBoard.update(deltaTime);
+    context.menuManager.levelBoard.update(deltaTime);
+    context.menuManager.menuBoard.update(deltaTime);
+}
+
 void CharacterSelectingState::handleInput(GameContext& context) {
     context.menuManager.HandleSelecting();
-    if (IsKeyPressed(KEY_ENTER)) context.setState(context.gamePlayState);
+    if (IsKeyPressed(KEY_ENTER)) context.setState(context.redirectState);
 }
 
 void CharacterSelectingState::update(GameContext& context, float deltaTime) {
@@ -59,6 +85,24 @@ void CharacterSelectingState::draw(GameContext& context) {
     //int screenHeight = UIManager::getInstance().screenHeight;
     //DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 1.0f - 0.5f));
     context.menuManager.DrawSelecting();
+    EndDrawing();
+}
+
+void InformationState::handleInput(GameContext& context) {
+    if (animationTime > 2.0f) {
+        animationTime = 0.0f;
+        context.setState(context.gamePlayState);
+    }
+}
+
+void InformationState::update(GameContext& context, float deltaTime) {
+    animationTime += deltaTime;
+}
+
+void InformationState::draw(GameContext& context) {
+    BeginDrawing();
+    ClearBackground(BLACK);
+    UIManager::getInstance().drawInformationBoard(WHITE);
     EndDrawing();
 }
 
@@ -93,9 +137,13 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 
     //GameCameraSystem::getInstance().shakeCurrentCamera(10.0f, 0.1f);
 
-    if (context.character) {
-        std::shared_ptr<Character> character = std::dynamic_pointer_cast<Character>(context.character);
-        character->update(deltaTime);
+    if (context.character01) {
+        std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
+        character01->update(deltaTime);
+    }
+    if (context.character02) {
+        std::shared_ptr<Character> character02 = std::dynamic_pointer_cast<Character>(context.character02);
+        character02->update(deltaTime);
     }
     for (auto obj :context.Objects)
     {
@@ -124,8 +172,12 @@ void GamePlayState::draw(GameContext& context) {
         obj->draw();
     }
 
-    if (context.character) {
-        context.character->draw();
+    if (context.character01) {
+        context.character01->draw();
+    }
+
+    if (context.character02) {
+        context.character02->draw();
     }
     ParticleSystem::getInstance().draw();
     Box2DWorldManager::getInstance().drawDebugBodies();
@@ -139,7 +191,7 @@ void GamePlayState::draw(GameContext& context) {
     }
     
     context.menuManager.DrawSetting();
-    UIManager::getInstance().drawInformationBoard();
+    UIManager::getInstance().drawInformationBoard(BLACK);
     EndDrawing();
 }
 
@@ -153,7 +205,7 @@ void EditorState::handleInput(GameContext& context) {
     context.menuManager.HandleSetting();
 
     if (IsKeyPressed(KEY_ENTER)) {
-        context.setState(context.gameOverState);
+        context.setState(context.menuState);
     }
     if (IsKeyPressed(KEY_F9) && LevelEditor::getInstance().isInEditMode()) {
         LevelEditor::getInstance().clearLevel();
@@ -168,7 +220,7 @@ void EditorState::handleInput(GameContext& context) {
 
 void EditorState::update(GameContext& context, float deltaTime) {
     handleCamera();
-    LevelEditor::getInstance().update();
+    LevelEditor::getInstance().update(deltaTime);
     Box2DWorldManager::getInstance().step(deltaTime);
     NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
 }
@@ -187,6 +239,27 @@ void EditorState::draw(GameContext& context) {
     EndDrawing();
 }
 
+
+void EditorSelectingState::handleInput(GameContext& context) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        Vector2 mousePos = GetMousePosition();
+        if (context.menuManager.day_groundBoard.checkCollision(mousePos)) {
+            context.setState(context.editorState);
+        }
+    }
+}
+
+void EditorSelectingState::update(GameContext& context, float deltaTime) {
+    context.menuManager.UpdateEditorSelecting(deltaTime);
+}
+
+void EditorSelectingState::draw(GameContext& context) {
+    BeginDrawing();
+    ClearBackground(SKYBLUE);
+    context.menuManager.DrawEditorSelecting();
+    EndDrawing();
+}
+
 void GameOverState::handleInput(GameContext& context) {
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.menuState);
@@ -201,8 +274,8 @@ void GameOverState::update(GameContext& context, float deltaTime) {
 
 void GameOverState::draw(GameContext& context) {
     BeginDrawing();
-    ClearBackground(WHITE);
-    UIManager::getInstance().DrawGameOver();
+    ClearBackground(BLACK);
+    UIManager::getInstance().drawInformationBoard(WHITE);
     EndDrawing();
 }
 
@@ -211,7 +284,7 @@ void handleCamera() {
 
     // Handle zoom
     float wheel = GetMouseWheelMove();
-    if (wheel != 0.0f) {
+    if (wheel != 0.0f && !CheckCollisionPointRec(GetMousePosition(), LevelEditor::getInstance().getObjectPalette().getPaletteRect())) {
         // Center zoom around mouse
         Vector2 mouseWorldBefore = GetScreenToWorld2D(GetMousePosition(), cam);
         cam.zoom *= expf(wheel * 0.1f);

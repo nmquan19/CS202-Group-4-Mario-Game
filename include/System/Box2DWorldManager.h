@@ -15,6 +15,7 @@ public:
 	void step(float deltaTime);
 
 	b2Body* createCharacterBody(Vector2 pos, Vector2 hitboxSize);
+	b2Body* createProjectileBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createBlockBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createEnemyBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createItemBody(Vector2 pos, Vector2 hitboxSize);
@@ -35,9 +36,9 @@ public:
 	static float b2ToRaylib(const float value);
 	static float raylibToB2(const float value);
 
-private:
-	b2Body* createRectangleBody(Vector2 pos, Vector2 hitboxSize);
-	b2Body* createCapsuleBody(Vector2 pos, Vector2 hitboxSize);
+	void attachRectangleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
+	void attachCapsuleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
+	void attachSphericalFixture(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachSensors(b2Body* body, Vector2 hitboxSize);
 
 private:
