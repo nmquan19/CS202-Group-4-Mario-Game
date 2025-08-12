@@ -10,7 +10,8 @@
 #include <raylib.h>
 #include <iostream>
 
-Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos), blockType(type), isMoving(false) {
+Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : blockType(type), isMoving(false) {
+    gridPosition = gridPos;
     position = { gridPos.x * GridSystem::GRID_SIZE, gridPos.y * GridSystem::GRID_SIZE };
     originalPos = position;
     size = s;
@@ -2076,15 +2077,17 @@ std::vector<ObjectCategory> Block::getCollisionTargets() const {
 }
 
 void Block::onCollision(std::shared_ptr<Object> other, Direction direction) {
-    if (direction == Direction::DOWN && !isMoving && !isSolid()) {
-        physicsBody->SetLinearVelocity(b2Vec2{ 0.0f, -2.0f });
-        isMoving = true;
-        resetTimer = 0.0f;
-        // if large character
-        Vector2 centerPos = { position.x + hitbox.width * 0.5f, position.y + hitbox.height * 0.5f };
-        BrokenBlockEffect* p = new BrokenBlockEffect(centerPos, {30, 30}, {-200, -400}, {200, -400}, {0, 1000}, 5.0f, 0.01f, TextureManager::blocksTexture);
-        ParticleSystem::getInstance().addEffect(p);
-        GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
+    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
+        if (direction == Direction::DOWN && !isMoving && !isSolid()) {
+            physicsBody->SetLinearVelocity(b2Vec2{ 0.0f, -2.0f });
+            isMoving = true;
+            resetTimer = 0.0f;
+            // if large character
+            Vector2 centerPos = { position.x + hitbox.width * 0.5f, position.y + hitbox.height * 0.5f };
+            BrokenBlockEffect* p = new BrokenBlockEffect(centerPos, { 30, 30 }, { -200, -400 }, { 200, -400 }, { 0, 1000 }, 5.0f, 0.01f, TextureManager::blocksTexture);
+            ParticleSystem::getInstance().addEffect(p);
+            GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
+        }
     }
 }
 
@@ -2154,7 +2157,7 @@ Vector2 Block::getSize() const {
     return size;
 }
 Block_1_1_2Block::Block_1_1_2Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_2, { 1,1 }) { solid = false; }
-Block_1_1_3Block::Block_1_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_3, { 1,1 }) { solid = false; }
+Block_1_1_3Block::Block_1_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_3, { 1,1 }) { solid = true; }
 Block_1_1_12Block::Block_1_1_12Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_12, { 1,1 }) { solid = false; }
 Block_1_1_13Block::Block_1_1_13Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_13, { 1,1 }) { solid = false; }
 Block_1_1_14Block::Block_1_1_14Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_14, { 1,1 }) { solid = false; }

@@ -32,7 +32,6 @@ public:
     BlockType getType() const;
 protected:
     Vector2 position;
-    Vector2 gridPosition;
     Rectangle hitbox;
     BlockType blockType;
     bool solid;
