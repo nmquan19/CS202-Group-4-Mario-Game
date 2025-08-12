@@ -44,6 +44,7 @@ protected:
 
     bool pendingImpulse;
     float impulseForce;
+
 };
 
 class Block_1_1_2Block : public Block {
