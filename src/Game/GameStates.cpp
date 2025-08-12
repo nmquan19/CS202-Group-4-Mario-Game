@@ -107,6 +107,7 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     context.deleteObjects();
     UIManager::getInstance().updateInformationBoard(deltaTime);
     Box2DWorldManager::getInstance().step(deltaTime);
+    ParticleSystem::getInstance().update(deltaTime);
 }
 
 void GamePlayState::draw(GameContext& context) {
@@ -126,8 +127,7 @@ void GamePlayState::draw(GameContext& context) {
     if (context.character) {
         context.character->draw();
     }
-    //GameContext::getInstance().testParticle->draw();
-
+    ParticleSystem::getInstance().draw();
     Box2DWorldManager::getInstance().drawDebugBodies();
     EndMode2D();
     DrawFPS(20, 50); 

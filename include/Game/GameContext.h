@@ -54,6 +54,4 @@ public:
     void createTestBlocks(); // Add test blocks for Box2D testing
     std::shared_ptr<Object> getCharacter() { return character; }
     Camera2D camera;
-
-    ParticleSystem* testParticle;
 };

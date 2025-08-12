@@ -5,6 +5,8 @@
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
 #include "../../include/System/Box2DWorldManager.h"
+#include "../../include/System/ParticleSystem.h"
+#include "../../include/Game/GameContext.h"
 #include <raylib.h>
 #include <iostream>
 
@@ -69,6 +71,11 @@ void Block::onCollision(std::shared_ptr<Object> other, Direction direction) {
         physicsBody->SetLinearVelocity(b2Vec2{ 0.0f, -2.0f });
         isMoving = true;
         resetTimer = 0.0f;
+        // if large character
+        Vector2 centerPos = { position.x + hitbox.width * 0.5f, position.y + hitbox.height * 0.5f };
+        BrokenBlockEffect* p = new BrokenBlockEffect(centerPos, {30, 30}, {-200, -400}, {200, -400}, {0, 1000}, 5.0f, 0.01f, TextureManager::blocksTexture);
+        ParticleSystem::getInstance().addEffect(p);
+        GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
     }
 }
 

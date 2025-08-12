@@ -3,7 +3,6 @@
 #include "raylib.h"
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
-#include "../System/PhysicsManager.h"
 #include "../Objects/Spring.h"
 
 class ICharacterState;
