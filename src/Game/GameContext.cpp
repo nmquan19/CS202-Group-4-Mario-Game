@@ -54,12 +54,9 @@ void GameContext::setState(GameState* newState) {
             Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
             LevelEditor::getInstance().setEditMode(false);
             
-            // Create test blocks for Box2D physics testing
-            createTestBlocks();
-            
-            //LevelEditor::getInstance().loadLevel("testlevel.json");
-            character01 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_01, Vector2{ 400, 400 });
-            character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+            LevelEditor::getInstance().loadLevel("testlevel.json");
+            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
@@ -165,6 +162,7 @@ void GameContext::spawnObject() {
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
         ToDeleteObjects.push_back(object);
+        LevelEditor::getInstance().removeObject(object->getGridPos());
     }
 }
 
@@ -195,30 +193,4 @@ void GameContext::clearGame() {
     }
     deleteObjects();
     Objects.clear();
-}
-
-void GameContext::createTestBlocks() {
-    addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 0.75f, 0.75f });
-    addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), {1, 1});
-    addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
-    //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1,1});
-
-    for (int x = 5; x <= 25; x++) {
-        Vector2 worldPos = GridSystem::getWorldPosition({ static_cast<float>(x), 15.0f });
-        addObject(BlockType::BLOCK_1_13_11, worldPos, { 1, 1 });
-    }
-
-    for (int x = 8; x <= 12; x++) {
-        Vector2 worldPos = GridSystem::getWorldPosition({ static_cast<float>(x), 14.0f });
-        addObject(BlockType::BLOCK_1_13_10, worldPos, { 1, 1 });
-    }
-
-    addObject(BlockType::BLOCK_1_13_10, GridSystem::getWorldPosition({ 10.0f, 11.0f }), { 1, 1 });
-    addObject(BlockType::BLOCK_1_13_10, GridSystem::getWorldPosition({ 25.0f, 13.0f }), { 1, 1 });
-    addObject(BlockType::BLOCK_1_13_10, GridSystem::getWorldPosition({ 25.0f, 14.0f }), { 1, 1 });
-    addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 0.75f, 0.75f });
-    addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), { 1, 1 });
-    addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({ 15.0f, 10.0f }), { 0.75f, 0.75f });
-    
-    spawnObject();
 }

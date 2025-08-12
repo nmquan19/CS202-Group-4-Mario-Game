@@ -167,7 +167,6 @@ void ObjectPalette::updatePalette(float deltaTime) {
     spacingX = 120;
     spacingY = 120;
     iconSize = 100;
-
 }
 
 void ObjectPalette::drawPalette() {

@@ -10,7 +10,8 @@
 #include <raylib.h>
 #include <iostream>
 
-Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : gridPosition(gridPos), blockType(type), isMoving(false) {
+Block::Block(Vector2 gridPos, BlockType type, Vector2 s) : blockType(type), isMoving(false) {
+    gridPosition = gridPos;
     position = { gridPos.x * GridSystem::GRID_SIZE, gridPos.y * GridSystem::GRID_SIZE };
     originalPos = position;
     size = s;
@@ -2154,7 +2155,7 @@ Vector2 Block::getSize() const {
     return size;
 }
 Block_1_1_2Block::Block_1_1_2Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_2, { 1,1 }) { solid = false; }
-Block_1_1_3Block::Block_1_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_3, { 1,1 }) { solid = false; }
+Block_1_1_3Block::Block_1_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_3, { 1,1 }) { solid = true; }
 Block_1_1_12Block::Block_1_1_12Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_12, { 1,1 }) { solid = false; }
 Block_1_1_13Block::Block_1_1_13Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_13, { 1,1 }) { solid = false; }
 Block_1_1_14Block::Block_1_1_14Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_14, { 1,1 }) { solid = false; }
