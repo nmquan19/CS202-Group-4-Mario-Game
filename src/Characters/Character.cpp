@@ -17,7 +17,7 @@
 #include <memory>
 
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, PlayerID id, Vector2 size) 
-	: characterType(type), id(id), hp(1), projectile(nullptr), holdingProjectile(false), invincibleTimer(0), 
+	: characterType(type), id(id), hp(1), invincibleTimer(0), 
 	reviveTimer(0), facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
 	this->stateFrameData = stateFrameData;
@@ -82,8 +82,6 @@ void Character::update(float deltaTime) {
 	if(invincibleTimer > 0) {
 		invincibleTimer -= deltaTime;		
 	}
-
-	handleProjectile(deltaTime);
 }
 
 void Character::draw() {
@@ -116,10 +114,6 @@ void Character::draw() {
 		1.5f,
 		BLACK
 	);
-
-	if(holdingProjectile && projectile != nullptr) {
-		projectile->draw();
-	}
 }
 
 Rectangle Character::getCurrentStateFrame() const{
@@ -283,30 +277,6 @@ void Character::onCollision(std::shared_ptr<Object> other, Direction direction) 
 	}
 }
 
-//float Character::getBottom() const {
-//	return position.y + spriteRec.height * scale;
-//}
-//
-//float Character::getWidth() const {
-//	return spriteRec.width * scale;
-//}
-//
-//float Character::getHeight() const {
-//	return spriteRec.height * scale;
-//}
-//
-//float Character::getCenterX() const {
-//	return position.x + (spriteRec.width * scale) / 2;
-//}
-//
-//float Character::getCenterY() const {
-//	return position.y + (spriteRec.height * scale) / 2;
-//}
-//
-//Vector2 Character::getCenter() const {
-//	return Vector2{getCenterX(), getCenterY()};
-//}
-
 void Character::takeDamage(int amount) {
 	if (invincibleTimer > 0) {
 		return;
@@ -321,33 +291,6 @@ bool Character::isAlive() const {
 
 void Character::die() {
 
-}
-
-void Character::setHoldingProjectile(bool flag) {
-	holdingProjectile = flag;
-}
-
-bool Character::isHoldingProjectile() const {
-	return holdingProjectile;
-}
-
-void Character::holdProjectile(KoopaShell& p) {
-	projectile = &p;
-}
-
-void Character::handleProjectile(float deltaTime) {
-	/*if (holdingProjectile && projectile != nullptr) {
-		if (IsKeyPressed(KEY_X)) {
-			projectile->setPosition(Vector2{ this->position.x + (this->isFacingRight() ? this->getWidth() : -20.0f), this->getCenterY() });
-			projectile->onRelease();
-			projectile->changeState(nullptr);
-			projectile = nullptr;
-		}
-	}
-
-	if (projectile) {
-		projectile->update(deltaTime);
-	}*/
 }
 
 void Character::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction) {
@@ -387,7 +330,3 @@ void Character::handleSpringCollision(std::shared_ptr<Object> other, Direction d
 		changeState(JumpingState::getInstance());
 	}
 }
-
-
-
-

@@ -136,6 +136,21 @@ void Box2DWorldManager::attachCapsuleFixtures(b2Body* body, Vector2 pos, Vector2
 	}
 }
 
+void Box2DWorldManager::attachSphericalFixture(b2Body* body, Vector2 pos, Vector2 hitboxSize) {
+	b2Vec2 b2_size = raylibToB2(hitboxSize);
+	float radius = b2_size.x / 2;
+
+	b2CircleShape mainShape;
+	mainShape.m_radius = radius;
+	mainShape.m_p = b2Vec2(0, 0);
+	b2FixtureDef mainFixture;
+	mainFixture.shape = &mainShape;
+	mainFixture.density = 0.5f;
+	mainFixture.friction = 0.3f;
+	mainFixture.restitution = 0.9f;
+	body->CreateFixture(&mainFixture);
+}
+
 void Box2DWorldManager::attachSensors(b2Body* body, Vector2 hitboxSize) {
 	// Sensor
 	float sensorThickness = 2.0f;
@@ -210,6 +225,29 @@ b2Body* Box2DWorldManager::createCharacterBody(Vector2 pos, Vector2 hitboxSize) 
 	b2Body* body = world->CreateBody(&bodyDef);
 	
 	attachCapsuleFixtures(body, pos, hitboxSize);
+	attachSensors(body, hitboxSize);
+
+	return body;
+}
+
+b2Body* Box2DWorldManager::createProjectileBody(Vector2 pos, Vector2 hitboxSize) {
+	if (!world) return nullptr;
+
+	b2Vec2 b2_size = raylibToB2(hitboxSize);
+	b2Vec2 b2_pos = raylibToB2(pos);
+	b2_pos.x += b2_size.x * 0.5f;
+	b2_pos.y += b2_size.y * 0.5f;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = b2_pos;
+	bodyDef.fixedRotation = true;
+	bodyDef.allowSleep = true;
+	bodyDef.awake = true;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+
+	attachSphericalFixture(body, pos, hitboxSize);
 	attachSensors(body, hitboxSize);
 
 	return body;

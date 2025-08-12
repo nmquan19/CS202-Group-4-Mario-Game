@@ -2,8 +2,6 @@
 #include "ObjectFactory.h"
 #include "../System/Interface.h"
 
-class TriggerZone;
-
 class InteractiveObject : public Object, public IUpdatable {
 public:
     InteractiveObject(Vector2 position, Vector2 size);

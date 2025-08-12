@@ -104,13 +104,14 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* character, GameState* information, GameState* game, GameState* editor, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* character, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
     menuState = menu;
     redirectState = redirect;
     characterSelectingState = character;
     informationState = information;
     gamePlayState = game;
     editorState = editor;
+    editorSelectingState = editorSelecting;
     gameOverState = gameOver;
     currentState = menuState;
 }
@@ -145,6 +146,9 @@ void GameContext::spawnObject() {
             }
             else if constexpr (std::is_same_v<T, InteractiveType>) {
                 object = ObjectFactory::createSpring(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
+            }
+            else if constexpr (std::is_same_v<T, ProjectileType>) {
+                object = ObjectFactory::createProjectile(actualType, request.worldpos, std::dynamic_pointer_cast<Character>((playerCallsRequest == 1 ? character01 : character02))->isFacingRight() ? 1 : -1,  request.size);
             }
             else if constexpr (std::is_same_v<T, ItemType>) {
 				object = ObjectFactory::createItem(actualType, request.worldpos, request.size);

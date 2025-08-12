@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Characters\AttackState.h" />
+    <ClInclude Include="include\Characters\FireTransformState.h" />
     <ClInclude Include="include\Characters\SuperTransformState.h" />
     <ClInclude Include="include\Characters\Character.h" />
     <ClInclude Include="include\Characters\ICharacterState.h" />
@@ -63,10 +65,11 @@
     <ClInclude Include="include\Item\Star\Star.h" />
     <ClInclude Include="include\Objects\Block.h" />
     <ClInclude Include="include\Objects\CollectableObject.h" />
+    <ClInclude Include="include\Objects\Projectile\FireBall.h" />
     <ClInclude Include="include\Objects\InteractiveObject.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
+    <ClInclude Include="include\Objects\Projectile\Projectile.h" />
     <ClInclude Include="include\Objects\Spring.h" />
-    <ClInclude Include="include\Objects\SpringState.h" />
     <ClInclude Include="include\System\CameraSystem.h" />
     <ClInclude Include="include\System\Constant.h" />
     <ClInclude Include="include\System\FrameData.h" />
@@ -88,6 +91,8 @@
     <ClCompile Include="include\Characters\SmallTransformState.h" />
     <ClCompile Include="include\Enemy\Boss\BT_Factory.h" />
     <ClCompile Include="include\System\Box2DWorldManager.h" />
+    <ClCompile Include="src\Characters\AttackState.cpp" />
+    <ClCompile Include="src\Characters\FireTransformState.cpp" />
     <ClCompile Include="src\Characters\SmallTransformState.cpp" />
     <ClCompile Include="src\Characters\SuperTransformState.cpp" />
     <ClCompile Include="src\Characters\Character.cpp" />
@@ -123,8 +128,10 @@
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\CollectableObject.cpp" />
+    <ClCompile Include="src\Objects\Projectile\FireBall.cpp" />
     <ClCompile Include="src\Objects\InteractiveObject.cpp" />
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
+    <ClCompile Include="src\Objects\Projectile\Projectile.cpp" />
     <ClCompile Include="src\Objects\Spring.cpp" />
     <ClCompile Include="src\Scenes\Scene.cpp" />
     <ClCompile Include="src\System\Box2DWorldManager.cpp" />
@@ -158,9 +165,17 @@
     <Image Include="assets\button\thin_board.png" />
     <Image Include="assets\button\thin_board_selected.png" />
     <Image Include="assets\coin_sprite.png" />
+    <Image Include="assets\day_ground.png" />
+    <Image Include="assets\day_underground.png" />
     <Image Include="assets\font_sprites.png" />
+    <Image Include="assets\level_map1.png" />
+    <Image Include="assets\level_map2.png" />
+    <Image Include="assets\level_map3.png" />
     <Image Include="assets\Luigi.png" />
     <Image Include="assets\Mario.png" />
+    <Image Include="assets\menu background.jpg" />
+    <Image Include="assets\night_airship.png" />
+    <Image Include="assets\night_snow.png" />
     <Image Include="assets\Super Mario Bros.png" />
     <Image Include="assets\Toad.png" />
     <Image Include="assets\Toadette.png" />

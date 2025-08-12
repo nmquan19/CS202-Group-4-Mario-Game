@@ -3,6 +3,8 @@
 #include "..\..\include\Characters\JumpingState.h"
 #include "..\..\include\Characters\Character.h"
 #include "../../include/System/Box2DWorldManager.h"
+#include "../../include/Characters/AttackState.h"
+#include "../../include/Characters/SmallTransformState.h"
 
 void JumpingState::enter(Character* character){
     character->setAniTime(0);
@@ -19,6 +21,15 @@ void JumpingState::exit(Character* character){
 }
 
 void JumpingState::handleInput(Character* character, const InputState& input) {
+    if (character->powerState == PowerState::FIRE) {
+        if (input.attack) {
+            character->changeState(AttackState::getInstance());
+        }
+        if (character->projectilesLeft <= 0 && character->attackTimer < 0) {
+            character->changeState(SmallTransformState::getInstance());
+        }
+    }
+
     b2Vec2 currentVel = character->physicsBody->GetLinearVelocity();
     float speed = character->getSpeed();
     float airControlFactor = 0.8f;
