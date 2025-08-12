@@ -17,7 +17,12 @@
 #include "../../include/Objects/Spring.h"
 #include "../../include/Objects/Projectile/FireBall.h"
 #include "../../include/System/Box2DWorldManager.h"
-
+#include <raylib.h>
+#include <vector>
+#include <algorithm>
+#include <memory>
+#include <numbers>
+#include "../../include/Objects/Torch.h"
 Object::~Object() {
     if (physicsBody) {
         Box2DWorldManager::getInstance().destroyBody(physicsBody);
@@ -591,6 +596,21 @@ std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vec
 
 std::unique_ptr<Object> ObjectFactory::createSpring(Vector2 position, Vector2 size) {
     return std::make_unique<Spring>(position, size);
+}
+
+std::unique_ptr<Object> ObjectFactory::createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size) {
+    return createSpecificProjectile(type, position, direction, size);
+}
+
+std::unique_ptr<Projectile> ObjectFactory::createSpecificProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size) {
+    switch (type) {
+    case ProjectileType::FIRE_BALL:
+        return std::make_unique<FireBall>(position, direction, size);
+      // case...
+    }
+}
+std::unique_ptr<Object> ObjectFactory::createTorch(Vector2 position, Vector2 size, float brightness, float radius, Color innerColor, Color outerColor) {
+    return std::make_unique<Torch>(position,size,radius,brightness,innerColor,outerColor);
 }
 
 int Object::getCollidedPart(const Object& other){
