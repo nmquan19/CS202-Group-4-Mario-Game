@@ -134,8 +134,6 @@ void DryBowser::update(float dt) {
 
 void DryBowser::draw() {
 
-	//DrawRectangle(targetPosition.x, targetPosition.y, 50,50, RED);
-    DrawCircleLines(hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2, Constants::DryBowser::AERIAL_ATTACK_RANGE, BLUE);
     float selfBottomY = position.y + hitbox.height;
     float targetBottomY = targetPosition.y+targetHitboxes.height+5.0f;
     if (!currentPath.empty())
@@ -146,11 +144,6 @@ void DryBowser::draw() {
         }
     }
     if(currentNode) currentNode->draw(BLACK);
-    DrawLine(0, selfBottomY, 1000, selfBottomY, RED);
-    DrawText("DryBowser Bottom", 10, selfBottomY - 15, 20, RED);
-
-    DrawLine(0, targetBottomY, 1000, targetBottomY, GREEN);
-    DrawText("Target Bottom + 10", 10, targetBottomY - 15, 20, GREEN);
     Rectangle source = spritebox;
     Rectangle dest = hitbox;
     if (!isFacingRight)
@@ -158,7 +151,6 @@ void DryBowser::draw() {
         source.width *= -1;
     }
     Vector2 origin = { 0, 0 };
-	DrawText(TextFormat("DryBowser HP: %d", HP), 200, 300, 40, BLACK);
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
 }
 

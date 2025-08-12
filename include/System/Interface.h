@@ -64,7 +64,9 @@ enum class InteractiveType {
 	MOVING_PLATFORM,
 	SPRING
 };
-
+enum class BackGroundObjectType {
+	TORCH
+};
 enum class Direction {
 	UP = 1,
 	DOWN,
@@ -105,4 +107,4 @@ public:
 	virtual void setVelocity(Vector2 newVelocity) = 0;
 	virtual Vector2 getVelocity() = 0;
 };
-using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType, InteractiveType>;
+using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType, InteractiveType, BackGroundObjectType>;

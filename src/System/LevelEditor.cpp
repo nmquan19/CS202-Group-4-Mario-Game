@@ -15,6 +15,7 @@
 #include <fstream>
 #include <stack>
 #include <vector>
+#include "../../include/System/LightingSystem.h"
 LevelEditor* LevelEditor::instance = nullptr;
 LevelEditor& LevelEditor::getInstance() {
     if (!instance) {
@@ -49,6 +50,8 @@ void LevelEditor::update() {
 
 void LevelEditor::draw() {
     BeginMode2D(GameContext::getInstance().camera);
+
+
     if (!clearing) {    
         for (auto& it : gridBlocks) {
             Object* obj = it.second.top().get();

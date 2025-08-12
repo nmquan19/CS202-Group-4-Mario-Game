@@ -20,7 +20,7 @@
 #include "../../include/System/Constant.h"
 #include "../../include/Objects/Spring.h"
 #include "../../include/System/Box2DWorldManager.h"
-
+#include "../../include/Objects/Torch.h"
 Object::~Object() {
     if (physicsBody) {
         Box2DWorldManager::getInstance().destroyBody(physicsBody);
@@ -79,6 +79,8 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         return std::make_unique<GreenKoopa>(startPosition, size);
     case EnemyType::RED_KOOPA:
         return std::make_unique<RedKoopa>(startPosition, size);
+    case EnemyType::DRY_BOWSER: 
+        return std::make_unique<DryBowser>(startPosition, size);
     default:
         return nullptr; 
     }
@@ -125,6 +127,9 @@ std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vec
 
 std::unique_ptr<Object> ObjectFactory::createSpring(Vector2 position, Vector2 size) {
     return std::make_unique<Spring>(position, size);
+}
+std::unique_ptr<Object> ObjectFactory::createTorch(Vector2 position, Vector2 size, float brightness, float radius, Color innerColor, Color outerColor) {
+    return std::make_unique<Torch>(position,size,radius,brightness,innerColor,outerColor);
 }
 
 int Object::getCollidedPart(const Object& other){

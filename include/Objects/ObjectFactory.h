@@ -54,6 +54,8 @@ public:
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
 	static std::unique_ptr<Object> createSpring(Vector2 position, Vector2 size = Constants::Spring::STANDARD_SIZE);
 	static std::unique_ptr<Object> createItem(ItemType type, Vector2 startPos, Vector2 size);
+	static std::unique_ptr<Object> createTorch(Vector2 position, Vector2 size = Constants::Torch::STANDARD_SIZE, float brightness = Constants::Torch::STANDARD_BRIGHTNESS, float radius = Constants::Torch::STANDARD_LIGHT_RADIUS, Color innerColor = { 48,252,244,255 }, Color outerColor = { 0,171,254,255 });
+
 private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);

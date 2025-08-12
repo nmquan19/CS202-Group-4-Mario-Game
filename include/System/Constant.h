@@ -88,6 +88,11 @@ namespace Constants {
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };
         constexpr float BOUNCE_DURATION = 1.4f;
     }
+    namespace Torch {
+        constexpr Vector2 STANDARD_SIZE = { 1, 1 };
+        constexpr float STANDARD_LIGHT_RADIUS = 0.2f;
+        constexpr float STANDARD_BRIGHTNESS = 0.5f;
+    }
     namespace PaletteResources {
         constexpr Rectangle BRICK = { 12, 111, 128, 86 };
         constexpr Rectangle GROUND = { 786, 111, 128, 86 };
@@ -96,4 +101,5 @@ namespace Constants {
         constexpr float SPACING = 2.0f;
         constexpr float SCALE = 3.0f;
     }
+
 }

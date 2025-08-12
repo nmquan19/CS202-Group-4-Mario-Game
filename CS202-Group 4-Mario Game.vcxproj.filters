@@ -53,6 +53,8 @@
     <ClCompile Include="src\System\CameraSystem.cpp" />
     <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
     <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
+    <ClCompile Include="src\System\LightSystem.cpp" />
+    <ClCompile Include="src\Objects\Torch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -118,6 +120,9 @@
     <ClInclude Include="include\System\ParticleSystem.h" />
     <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
     <ClInclude Include="include\System\CameraSystem.h" />
+    <ClInclude Include="include\System\LightingSystem.h" />
+    <ClInclude Include="include\Objects\LightPole.h" />
+    <ClInclude Include="include\Objects\Torch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

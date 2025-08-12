@@ -281,8 +281,8 @@ void Enemy::executeTraversal(const Edge& edge) {
     Vector2 toPos = edge.toNode->getPosition();
     switch (edge.direction) {
     case EdgeDirection::Horizontal:
-    {
-       
+    { 
+        physicsBody->SetGravityScale(1);
         if(curAniName != "Run" || animController.isFinished()) setAnimation("Run");
         Vector2 dir = Vector2Normalize(Vector2Subtract(toPos, fromPos));
         this->direction = dir;

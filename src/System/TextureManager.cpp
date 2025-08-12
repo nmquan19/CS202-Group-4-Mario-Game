@@ -18,6 +18,8 @@ Texture2D TextureManager::fontTexture;
 Texture2D TextureManager::interactiveTextures;
 Texture2D TextureManager::background_lv1;
 
+std::vector<Rectangle> TextureManager::torch_sprite_boxes;
+Texture2D TextureManager::torch_texture;
 std::unordered_map<char, Rectangle> TextureManager::fontSprites = {
     {'0', {90, 3, 6, 7}}, {'1', {97, 3, 4, 7}}, {'2', {102, 3, 6, 7}}, {'3', {109, 3, 6, 7}}, {'4', {116, 3, 6, 7}},
     {'5', {1, 16, 6, 7}}, {'6', {8, 16, 6, 7}}, {'7', {15, 16, 6, 7}}, {'8', {22, 16, 6, 7}}, {'9', {29, 16, 6, 7}}, 
@@ -98,6 +100,19 @@ void TextureManager::loadTextures() {
     item_in.close();
 
     itemTexturesLoaded = true;
+
+    //torch textures 
+    std::ifstream  torch_in;
+    torch_in.open("assets/object/torch/torch_output.txt");
+
+    while (torch_in >> id >> x >> y >> w >> h)
+    {
+        torch_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
+    }
+      torch_texture = Texture2D(LoadTexture("assets/object/torch/Torch_Sheet.png"));
+    torch_in.close();
+    texturesLoaded = true;
+
 }
 
 void TextureManager::unloadTextures() {

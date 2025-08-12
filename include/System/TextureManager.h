@@ -9,7 +9,8 @@
 class TextureManager {
 public:
     static TextureManager& getInstance();
-
+    static Texture2D  torch_texture; 
+    static std::vector<Rectangle> torch_sprite_boxes;
     static std::vector<Rectangle> Enemy_sprite_boxes;
 	static Texture2D DryBowser_texture;   
     static std::vector<Rectangle> DryBowser_sprite_boxes;
