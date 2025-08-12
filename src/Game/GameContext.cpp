@@ -55,9 +55,9 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().setEditMode(false);
             
             // Create test blocks for Box2D physics testing
-            createTestBlocks();
+            //createTestBlocks();
             
-            //LevelEditor::getInstance().loadLevel("testlevel.json");
+            LevelEditor::getInstance().loadLevel("testlevel.json");
             character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
             character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
             // CAMERA NEEDS CHANGING
@@ -165,6 +165,7 @@ void GameContext::spawnObject() {
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
         ToDeleteObjects.push_back(object);
+        LevelEditor::getInstance().removeObject(object->getGridPos());
     }
 }
 

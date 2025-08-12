@@ -35,16 +35,16 @@ public:
 	int getCollidedPart(const Object& other);  
 	virtual ObjectType getObjectType() const = 0;  
 
-	b2Body* getPhysicsBody() const {
-		return physicsBody;
-	}
-
+	b2Body* getPhysicsBody() const {return physicsBody;}
+	Vector2 getGridPos() const { return gridPosition; }
+	void setGridPos(Vector2 gridPos) { gridPosition = gridPos; }
 protected:  
 	Vector2 position;  
 	Vector2 size;  
 	bool active = true;  
 	bool collided = false;  
 	b2Body* physicsBody;
+	Vector2 gridPosition = { 0, 0 };
 };  
 
 class ObjectFactory {

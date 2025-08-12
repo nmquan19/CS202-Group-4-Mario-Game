@@ -126,15 +126,10 @@ void DryBowser::update(float dt) {
             lastTriggerFrame = curFrame;
         }
     }
-
-    
-
-
 }
 
 void DryBowser::draw() {
-
-	//DrawRectangle(targetPosition.x, targetPosition.y, 50,50, RED);
+  	//DrawRectangle(targetPosition.x, targetPosition.y, 50,50, RED);
     DrawCircleLines(hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2, Constants::DryBowser::AERIAL_ATTACK_RANGE, BLUE);
     float selfBottomY = position.y + hitbox.height;
     float targetBottomY = targetPosition.y+targetHitboxes.height+5.0f;

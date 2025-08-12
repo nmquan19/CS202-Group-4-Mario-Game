@@ -160,6 +160,7 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             std::shared_ptr<Object> newBlock = ObjectFactory::createBlock(actualType, gridCoord);
             if (newBlock) {
                 gridBlocks[key].push(newBlock);
+                newBlock->setGridPos(gridCoord);
             }
             GameContext::getInstance().Objects.push_back(newBlock);
         }
@@ -169,22 +170,16 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             std::shared_ptr<Object> newEnemy = ObjectFactory::createEnemy(actualType, GridSystem::getWorldPosition(gridCoord), size);
             if (newEnemy) {
                 gridBlocks[key].push(newEnemy);
+                newEnemy->setGridPos(gridCoord);
             }
             GameContext::getInstance().Objects.push_back(newEnemy);
 
         }
-        /*else if constexpr (std::is_same_v<T, CharacterType>) {
-            std::shared_ptr<Object> newChar = ObjectFactory::createCharacter(actualType, GridSystem::getWorldPosition(gridCoord));
-            if (newChar) {
-                gridBlocks[key].push(newChar);
-            }
-            GameContext::getInstance().Objects.push_back(newChar);
-
-        }*/
         else if constexpr (std::is_same_v<T, InteractiveType>) {
             std::shared_ptr<Object> newInter = ObjectFactory::createSpring(GridSystem::getWorldPosition(gridCoord));
             if (newInter) {
                 gridBlocks[key].push(newInter);
+                newInter->setGridPos(gridCoord);
             }
             GameContext::getInstance().Objects.push_back(newInter);
         }
@@ -192,19 +187,47 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             std::shared_ptr<Object> newItem = ObjectFactory::createItem(actualType, GridSystem::getWorldPosition(gridCoord), {1, 1});
             if (newItem) {
                 gridBlocks[key].push(newItem);
+                newItem->setGridPos(gridCoord);
             }
             GameContext::getInstance().Objects.push_back(newItem);
-
         }
     }, type);
 }
 
-void LevelEditor::removeObject(Vector2 gridCoord) {
+// Remove top of stack
+void LevelEditor::removeObject(Vector2 gridCoord) { 
     auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
     auto it = gridBlocks.find(key);
     if (it != gridBlocks.end() && !it->second.empty()) {
         if (it->second.top()) {
             it->second.pop();
+        }
+
+        if (it->second.empty()) {
+            gridBlocks.erase(it);
+        }
+    }
+}
+
+// Remove correct object in stack
+void LevelEditor::removeObject(Vector2 gridCoord, std::shared_ptr<Object>& target) { 
+    auto key = std::make_pair((int)gridCoord.x, (int)gridCoord.y);
+    auto it = gridBlocks.find(key);
+    if (it != gridBlocks.end() && !it->second.empty()) {
+        std::stack<std::shared_ptr<Object>> tempStack;
+        while (!it->second.empty()) {
+            auto obj = it->second.top();
+            it->second.pop();
+
+            if (obj == target) {
+                break;
+            }
+            tempStack.push(obj);
+        }
+
+        while (!tempStack.empty()) {
+            it->second.push(tempStack.top());
+            tempStack.pop();
         }
 
         if (it->second.empty()) {
@@ -292,7 +315,7 @@ void LevelEditor::loadLevel(const std::string& filename) {
                     float gridY = objData["gridY"];
                     std::string typeStr = objData["type"];
                     ObjectType objType = stringToObjectType(typeStr);
-                   placeObject(objType, {gridX, gridY});
+                    placeObject(objType, {gridX, gridY});
                     float sizeX = objData["sizeX"];
                     float sizeY = objData["sizeY"];
                     loadedCount++;
@@ -324,7 +347,7 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
         switch (blockType)
         {
         case BlockType::GROUND: return "GROUND";
-            
+            break;
         case BlockType::BRICK: return "BRICK";
             break;
         case BlockType::BLOCK_1_1_2: return "BLOCK_1_1_2";

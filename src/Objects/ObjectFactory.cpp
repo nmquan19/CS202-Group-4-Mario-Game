@@ -547,6 +547,8 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         return std::make_unique<GreenKoopa>(startPosition, size);
     case EnemyType::RED_KOOPA:
         return std::make_unique<RedKoopa>(startPosition, size);
+    case EnemyType::DRY_BOWSER:
+        return std::make_unique<DryBowser>(startPosition, size);
     default:
         return nullptr; 
     }
