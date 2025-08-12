@@ -172,7 +172,7 @@ void BrokenBlockEffect::draw() {
 	for (it = particles.begin(); it != particles.end(); it++) {
 		//DrawTextureEx(sprite, (*it)->getPosition(), 0.0f, 0.05f, WHITE);
 		Rectangle dest = { (*it)->getPosition().x, (*it)->getPosition().y, 64 * 0.3, 64 * 0.3 };
-		DrawTexturePro(sprite, Constants::PaletteResources::BRICK, dest, { 0,0 }, degree[i++], WHITE);
+		DrawTexturePro(sprite, Constants::PaletteResources::BLOCK_1_1_2, dest, { 0,0 }, degree[i++], WHITE);
 		if (i >= 4) i = 0;
 	}
 }

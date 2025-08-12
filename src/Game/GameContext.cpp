@@ -202,6 +202,23 @@ void GameContext::createTestBlocks() {
     addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), {1, 1});
     addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
     //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1,1});
+
+    for (int x = 5; x <= 25; x++) {
+        Vector2 worldPos = GridSystem::getWorldPosition({ static_cast<float>(x), 15.0f });
+        addObject(BlockType::BLOCK_1_13_11, worldPos, { 1, 1 });
+    }
+
+    for (int x = 8; x <= 12; x++) {
+        Vector2 worldPos = GridSystem::getWorldPosition({ static_cast<float>(x), 14.0f });
+        addObject(BlockType::BLOCK_1_13_10, worldPos, { 1, 1 });
+    }
+
+    addObject(BlockType::BLOCK_1_13_10, GridSystem::getWorldPosition({ 10.0f, 11.0f }), { 1, 1 });
+    addObject(BlockType::BLOCK_1_13_10, GridSystem::getWorldPosition({ 25.0f, 13.0f }), { 1, 1 });
+    addObject(BlockType::BLOCK_1_13_10, GridSystem::getWorldPosition({ 25.0f, 14.0f }), { 1, 1 });
+    addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 0.75f, 0.75f });
+    addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), { 1, 1 });
+    addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({ 15.0f, 10.0f }), { 0.75f, 0.75f });
     
     spawnObject();
 }
