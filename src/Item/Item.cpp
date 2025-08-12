@@ -1,5 +1,4 @@
 ﻿#include "../../include/Item/Item.h"
-#include "../../include/System/PhysicsManager.h"
 #include "../../include/System/Grid.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/Game/GameContext.h"
@@ -19,16 +18,19 @@ Item::Item(Vector2 startPos)
     this->hitbox = { position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
     physicsBody = Box2DWorldManager::getInstance().createItemBody(position, { hitbox.width, hitbox.height });
     if (physicsBody) {
-        std::cout << "Item\n";
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
-            std::cout << "Item1\n";
+            //std::cout << "Item1\n";
             b2Filter filter = fixture->GetFilterData();
             filter.maskBits = static_cast<uint16>(ObjectCategory::ITEM);
-            filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER);
+            filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::ENEMY) |
+                static_cast<uint16>(ObjectCategory::INTERACTIVE) | static_cast<uint16>(ObjectCategory::SHELL) | static_cast<uint16>(ObjectCategory::PROJECTILE);
             fixture->SetFilterData(filter);
         }
     }
+
+	centerPosition = position; // Center position for circular movement
+
 }
 
 Item::~Item() {
@@ -41,6 +43,17 @@ Item::~Item() {
 
 void Item::update(float deltaTime) {
     animation->Update();
+    
+    if (physicsBody) {
+        b2Vec2 bodyPos = physicsBody->GetPosition();
+        // Box2D mặc định dùng mét, bạn cần nhân với tỉ lệ pixel (GridSystem::GRID_SIZE)
+        position.x = (bodyPos.x -0.5)* GridSystem::GRID_SIZE;
+        position.y = (bodyPos.y -0.5)* GridSystem::GRID_SIZE;
+
+        hitbox.x = position.x;
+        hitbox.y = position.y;
+    }
+
 }
 
 void Item::draw() {
@@ -119,5 +132,7 @@ ObjectType Item::getObjectType() const {
     return type;
 }
 
+void Item::Move(double dt) {
 
+}
 

@@ -64,6 +64,6 @@ void ParticleSystem::draw() {
 	for (it = particles.begin(); it != particles.end(); it++) {
 		DrawTextureEx(sprite, GetWorldToScreen2D((*it)->getPosition(), GameContext::getInstance().camera), 0.0f, 0.1f, WHITE);
 		Vector2 pos = GetWorldToScreen2D((*it)->getPosition(), GameContext::getInstance().camera);
-		std::cout << pos.x << " " << pos.y << "\n";
+		//std::cout << pos.x << " " << pos.y << "\n";
 	}
 }

@@ -6,6 +6,7 @@
 #include "../System/Constant.h"
 #include <raylib.h>  
 #include "box2d/box2d.h"
+#include "../System/Grid.h"
 
 class Item;  
 class Block;  
@@ -13,15 +14,18 @@ class Character;
 struct CharacterStats;  
 class Enemy;  
 class KoopaShell;  
+class Projectile;
 
 class Object : public ICollidable, public IDrawable {  
-public:  
+public: 
 	virtual ~Object();  
 	virtual bool isActive() const = 0;  
 	virtual void setActive(bool) = 0;  
 	virtual bool isCollided() const = 0;  
 	virtual void setCollided(bool) = 0;  
-	virtual Vector2 getPosition() const = 0;  
+	virtual Vector2 getPosition() const {
+		return position;
+	}
 	virtual void setPosition(Vector2 newPos) = 0;  
 	virtual Vector2 getSize() const = 0;  
 
@@ -38,18 +42,39 @@ public:
 		return physicsBody;
 	}
 
+	Rectangle getHitbox() {
+		float x = position.x;
+		float y = position.y;
+		float width = size.x;
+		float height = size.y;
+		return { x, y, width, height };
+	}
+
+	void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
+	void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
+	void StarShapeMove(Vector2 center, float deltaTime, float frequency);
+
 protected:  
-	Vector2 position;  
-	Vector2 size;  
-	bool active = true;  
-	bool collided = false;  
+	Vector2 position;
+	Vector2 centerPosition; // Center position for circular movement
+	Vector2 size;
+	bool active = true;
+	bool collided = false;
 	b2Body* physicsBody;
+
+
+	float totalTime = 0.0f; // for oscillation and circular movement
+	float radius; // Radius for circular movement
+	float Amplitude; // Amplitude for oscillation
+	float frequency; // Frequency for oscillation
+	
 };  
 
 class ObjectFactory {
 public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
-	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 4.0f);
+	static std::unique_ptr<Object> createCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size = Constants::Character::SMALL_STANDARD_SIZE);
+	static std::unique_ptr<Object> createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size = Constants::Projectile::STANDARD_SIZE);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
 	static std::unique_ptr<Object> createSpring(Vector2 position, Vector2 size = Constants::Spring::STANDARD_SIZE);
@@ -59,8 +84,9 @@ public:
 private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
-	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, Vector2 startPosition, float scale);
+	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Item> createSpecificItem(ItemType type, Vector2 startPos, Vector2 size);
+	static std::unique_ptr<Projectile> createSpecificProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size);
 	static CharacterStats getStats(CharacterType type);
     static std::vector<std::vector<Rectangle>> getFrameData(CharacterType type);
 };

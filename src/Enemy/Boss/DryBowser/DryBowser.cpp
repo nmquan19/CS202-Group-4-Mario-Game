@@ -453,7 +453,7 @@ bool DryBowser::isTargetInRange(BowserAttackType type) const
 }
 bool DryBowser::canUseSpin() const
 {
-    std::cout << (onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack)) << "\n";
+    //std::cout << (onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack)) << "\n";
     return onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack); 
 }
 

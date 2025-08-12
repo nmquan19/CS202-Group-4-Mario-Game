@@ -19,12 +19,6 @@ KoopaShell::KoopaShell(KoopaShellType type, Vector2 pos, Vector2 sz): type(type)
     physicsBody = Box2DWorldManager::getInstance().createEnemyBody(position, { sz.x * Constants::TILE_SIZE, sz.y * Constants::TILE_SIZE});
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
-        //for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
-        //    b2Filter filter = fixture->GetFilterData();
-        //    filter.maskBits = static_cast<uint16>(ObjectCategory::SHELL);
-        //    filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::PROJECTILE);
-        //    fixture->SetFilterData(filter);
-        //}
     }
     currentState = &KoopaShellIdleState::getInstance();
     currentState->enter(this);
@@ -35,11 +29,6 @@ void KoopaShell::onCollect(Character* player) {
     if (!player) return;
     std::cout << "On collect\n";
     TraceLog(LOG_INFO, "KoopaShell collected!");
-    player->setHoldingProjectile(true);
-    player->holdProjectile(*this);
-	//this->changeState(&KoopaShellCollectedState::getInstance());
-    player->holdProjectile(*this);
-    player->setHoldingProjectile(true);
 }
 
 void KoopaShell::update(float deltaTime) {
@@ -76,12 +65,6 @@ Vector2 KoopaShell::getVelocity() {
 }
 
 void KoopaShell::onCollision(std::shared_ptr<Object> other, Direction dir) {
-    /*if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        if (dir == Direction::LEFT) {
-            physicsBody->SetLinearVelocity(b2Vec2({ 0.0f, -2.0f }));
-            std::cout << "touch" << std::endl;
-        }
-    }*/
     if (currentState) {
         currentState->onCollision(this, other, dir);
     }

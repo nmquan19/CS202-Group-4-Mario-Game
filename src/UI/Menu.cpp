@@ -25,8 +25,19 @@ MenuManager::MenuManager() {
     editingBoard.load("./assets/button/thin_board.png", "./assets/button/thin_board_selected.png");
 
 
+    characterBoard.load("./assets/button/small_board.png", "./assets/button/small_board.png");
+    continueBoard.load("./assets/button/small_board.png", "./assets/button/small_board.png");
+    restartBoard.load("./assets/button/small_board.png", "./assets/button/small_board.png");
+    levelBoard.load("./assets/button/small_board.png", "./assets/button/small_board.png");
+    menuBoard.load("./assets/button/small_board.png", "./assets/button/small_board.png");
 
-    //character = LoadTexture("./assets/character_sample.png");
+
+    day_groundBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    day_undergroundBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    night_airshipBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    night_snowBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+
+
     mario = LoadTexture("./assets/Mario.png");
     luigi = LoadTexture("./assets/Luigi.png");
     toad = LoadTexture("./assets/Toad.png");
@@ -56,13 +67,12 @@ MenuManager::MenuManager() {
     slideBarSoundPosition.x = boardPosition.x + board.width * scale / 5.0f;
     slideBarSoundPosition.y = boardPosition.y + board.height * scale * 5 / 10.0f;
 
-    //manager.Init(4, 100.0f, 400.0f, 100.0f, RED, BLUE);
+    manager.Init(4, UIManager::getInstance().screenHeight / 2.0f, UIManager::getInstance().screenWidth / 6.0f, UIManager::getInstance().screenHeight, SKYBLUE, MARIO_COLOR, LUIGI_COLOR, TOAD_COLOR, TOADETTE_COLOR);
 }
 
 MenuManager::~MenuManager() {
     UnloadTexture(logo);
     UnloadTexture(board);
-    //UnloadTexture(character);
     UnloadTexture(mario);
     UnloadTexture(luigi);
     UnloadTexture(toad);
@@ -76,7 +86,7 @@ void MenuManager::DrawMenu() {
     Rectangle recLogo; recLogo.x = 0; recLogo.y = 0; recLogo.width = 886; recLogo.height = 352;
     float scale = 0.75;
     DrawTextureEx(logo, { (width - recLogo.width * scale) / 2, height / 5 }, 0, scale, WHITE); // center
-    //thin_board.draw({ 300, 500 }, "Text");
+
 
     Font currentMenuFont = UIManager::getInstance().menuFont;
     if (!settingDialog && !exitDialog) {
@@ -85,35 +95,11 @@ void MenuManager::DrawMenu() {
         exitBoard.draw({ width / 2.0f, height * 8.0f / 10.0f }, "Exit");
         editingBoard.draw({ width / 2.0f, height * 9.0f / 10.0f }, "Editing");
     }
-    /*
-    if (select == 0 && !settingDialog && !exitDialog) {
-        DrawTextEx(currentMenuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, YELLOW);
-        DrawTextEx(currentMenuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, WHITE);
-        DrawTextEx(currentMenuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, WHITE);
-        DrawTextEx(currentMenuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, WHITE);
-    }
-    else if (select == 1 && !settingDialog && !exitDialog) {
-        DrawTextEx(currentMenuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, WHITE);
-        DrawTextEx(currentMenuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, YELLOW);
-        DrawTextEx(currentMenuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, WHITE);
-        DrawTextEx(currentMenuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, WHITE);
-    }
-    else if (select == 2 && !settingDialog && !exitDialog) {
-        DrawTextEx(currentMenuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, WHITE);
-        DrawTextEx(currentMenuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, WHITE);
-        DrawTextEx(currentMenuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, YELLOW);
-        DrawTextEx(currentMenuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, WHITE);
-    }
-    else if (select == 3 && !settingDialog && !exitDialog) {
-        DrawTextEx(currentMenuFont, "Play", { width * 2 / 5, height * 2 / 3 }, 50, 10, WHITE);
-        DrawTextEx(currentMenuFont, "Setting", { width * 2 / 5 , height * 2 / 3 + 40 }, 50, 10, WHITE);
-        DrawTextEx(currentMenuFont, "Exit", { width * 2 / 5 , height * 2 / 3 + 80 }, 50, 10, WHITE);
-        DrawTextEx(currentMenuFont, "Editor Mode", { width * 2 / 5 , height * 2 / 3 + 120 }, 50, 10, YELLOW);
-    }
-    */
+
     if (settingDialog) {
         DrawSetting();
     }
+
     if (exitDialog) {
         DrawExit();
     }
@@ -137,28 +123,7 @@ void MenuManager::HandleInput() {
             std::cout << "Editor mode\n";
         }
     }
-    /*
-    if ((IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_U)) && select != 0 && !settingDialog && !exitDialog) {
-        select--;
-        AudioManager::getInstance().PlaySoundEffect("click");
 
-    }
-    if ((IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_D)) && select != 3 && !settingDialog && !exitDialog) {
-        select++;
-        AudioManager::getInstance().PlaySoundEffect("click");
-
-    }
-
-    if (IsKeyPressed(KEY_ENTER) && select == 1) {
-
-    }
-    if (IsKeyPressed(KEY_ENTER) && select == 2) {
-        exitDialog = true;
-    }
-    if (IsKeyPressed(KEY_ENTER) && select == 3) {
-        std::cout << "Editor mode\n";
-    }
-    */
     if (settingDialog && !exitDialog) {
         Vector2 mousePos = GetMousePosition();
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && returnButton.checkCollision(mousePos)) {
@@ -272,7 +237,7 @@ void MenuManager::HandleSelecting() {
 void MenuManager::DrawSelecting() {
     Vector2 mousePos = GetMousePosition();
     Vector2 screen = { UIManager::getInstance().screenWidth, UIManager::getInstance().screenHeight };
-
+    // this code check a single parallelogram
     /*
     Parallelogram p11, p12;
 
@@ -285,24 +250,58 @@ void MenuManager::DrawSelecting() {
 
     if (p11.CheckCollisionPointParallelogram(mousePos)) DrawText("Collide", 100, 100, 50, WHITE);
     */
-    //manager.Draw();
+
+
+
+
+
+    manager.Draw();
     Vector2 textSize = MeasureTextEx(UIManager::getInstance().menuFont, "Select a player", 50, 10);
     DrawText("Press Enter", 50, 100, 25, BLACK);
     DrawTextEx(UIManager::getInstance().menuFont, "Select a player", { (screen.x - textSize.x) / 2.0f, screen.y / 5.0f }, 50, 10, WHITE);
-    Vector2 marioPosition = { screen.x / 5.0f - mario.width / 2.0f, screen.y / 3.0f };
-    Vector2 luigiPosition = { screen.x * 2.0f / 5.0f - luigi.width / 2.0f, screen.y / 3.0f };
-    Vector2 toadPosition = { screen.x * 3.0f / 5.0f - toad.width / 2.0f, screen.y / 3.0f };
-    Vector2 toadettePosition = { screen.x * 4.0f / 5.0f - toadette.width / 2.0f, screen.y / 3.0f };
-    DrawTextureEx(mario, marioPosition, 0, 1.0f, WHITE);
-    DrawTextureEx(luigi, luigiPosition, 0, 1.0f, WHITE);
-    DrawTextureEx(toad, toadPosition, 0, 1.0f, WHITE);
-    DrawTextureEx(toadette, toadettePosition, 0, 1.0f, WHITE);
+    //Vector2 marioPosition = { screen.x / 5.0f - mario.width / 2.0f, screen.y / 3.0f };
+    //Vector2 luigiPosition = { screen.x * 2.0f / 5.0f - luigi.width / 2.0f, screen.y / 3.0f };
+    //Vector2 toadPosition = { screen.x * 3.0f / 5.0f - toad.width / 2.0f, screen.y / 3.0f };
+    //Vector2 toadettePosition = { screen.x * 4.0f / 5.0f - toadette.width / 2.0f, screen.y / 3.0f };
+    //DrawTextureEx(mario, marioPosition, 0, 1.0f, WHITE);
+    //DrawTextureEx(luigi, luigiPosition, 0, 1.0f, WHITE);
+    //DrawTextureEx(toad, toadPosition, 0, 1.0f, WHITE);
+    //DrawTextureEx(toadette, toadettePosition, 0, 1.0f, WHITE);
+    Vector2 marioPosition = { manager.getCenter(0).x - mario.width / 2.0f, manager.getCenter(0).y - mario.height / 2.0f };
+    Vector2 luigiPosition = { manager.getCenter(1).x - luigi.width / 2.0f, manager.getCenter(1).y - luigi.height / 2.0f };
+    Vector2 toadPosition = { manager.getCenter(2).x - toad.width / 2.0f, manager.getCenter(2).y - toad.height / 2.0f };
+    Vector2 toadettePosition = { manager.getCenter(3).x - toadette.width / 2.0f, manager.getCenter(3).y - toadette.height / 2.0f };
+    DrawTextureEx(mario, marioPosition, 0, manager.getScale(0), WHITE);
+    DrawTextureEx(luigi, luigiPosition, 0, manager.getScale(1), WHITE);
+    DrawTextureEx(toad, toadPosition, 0, manager.getScale(2), WHITE);
+    DrawTextureEx(toadette, toadettePosition, 0, manager.getScale(3), WHITE);
 
     Vector2 marioText = MeasureTextEx(UIManager::getInstance().menuFont, "MARIO", 50, 10);
     Vector2 luigiText = MeasureTextEx(UIManager::getInstance().menuFont, "LUIGI", 50, 10);
     Vector2 toadText = MeasureTextEx(UIManager::getInstance().menuFont, "TOAD", 50, 10);
     Vector2 toadetteText = MeasureTextEx(UIManager::getInstance().menuFont, "TOADETTE", 50, 10);
 
+
+
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        for (int i = 0; i < manager.getSize(); i++) {
+            if (manager.checkCollision(GetMousePosition(), i)) characterSelect = i;
+        }
+    }
+    for (int i = 0; i < manager.getSize(); i++) {
+        if (characterSelect == i) manager.textColor[i] = YELLOW;
+        else manager.textColor[i] = WHITE;
+    }
+    DrawTextEx(UIManager::getInstance().menuFont, "MARIO",
+        { marioPosition.x + mario.width / 2.0f - marioText.x / 2.0f, marioPosition.y + mario.height + marioText.y }, 50, 10, manager.textColor[0]);
+    DrawTextEx(UIManager::getInstance().menuFont, "LUIGI",
+        { luigiPosition.x + luigi.width / 2.0f - luigiText.x / 2.0f, luigiPosition.y + luigi.height + luigiText.y }, 50, 10, manager.textColor[1]);
+    DrawTextEx(UIManager::getInstance().menuFont, "TOAD",
+        { toadPosition.x + toad.width / 2.0f - toadText.x / 2.0f, toadPosition.y + toad.height + toadText.y }, 50, 10, manager.textColor[2]);
+    DrawTextEx(UIManager::getInstance().menuFont, "TOADETTE",
+        { toadettePosition.x + toadette.width / 2.0f - toadetteText.x / 2.0f, toadettePosition.y + toadette.height + toadetteText.y }, 50, 10, manager.textColor[3]);
+
+    /*
     if (characterSelect == 0) {
         DrawTextEx(UIManager::getInstance().menuFont, "MARIO",
             { marioPosition.x + mario.width / 2.0f - marioText.x / 2.0f, marioPosition.y + mario.height }, 50, 10, YELLOW);
@@ -343,8 +342,48 @@ void MenuManager::DrawSelecting() {
         DrawTextEx(UIManager::getInstance().menuFont, "TOADETTE",
             { toadettePosition.x + toadette.width / 2.0f - toadetteText.x / 2.0f, toadettePosition.y + toadette.height }, 50, 10, YELLOW);
     }
-
+    */
 }
 void MenuManager::UpdateSelecting(float deltaTime) {
-    //manager.Update(deltaTime);
+    manager.Update(deltaTime);
+}
+
+
+void MenuManager::HandleRedirect() {
+
+}
+
+void MenuManager::UpdateRedirect(float deltaTime) {
+    characterBoard.update(deltaTime);
+    continueBoard.update(deltaTime);
+    restartBoard.update(deltaTime);
+    levelBoard.update(deltaTime);
+    menuBoard.update(deltaTime);
+
+}
+
+void MenuManager::DrawRedirect() {
+    characterBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 5 / 20.0f }, "Character", 1.5, 1.0);
+    continueBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 7 / 20.0f }, "Continue", 1.5, 1.0);
+    restartBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Restart", 1.5, 1.0);
+    levelBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Level", 1.5, 1.0);
+    menuBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 13 / 20.0f }, "Menu", 1.5, 1.0);
+}
+
+
+void MenuManager::HandleEditorSelecting() {
+
+}
+
+void MenuManager::UpdateEditorSelecting(float deltaTime) {
+    day_groundBoard.update(deltaTime);
+    day_undergroundBoard.update(deltaTime);
+    night_airshipBoard.update(deltaTime);
+    night_snowBoard.update(deltaTime);
+}
+void MenuManager::DrawEditorSelecting() {
+    day_groundBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 7 / 20.0f }, "Map 1", 1.5, 1.0);
+    day_undergroundBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Map 2", 1.5, 1.0);
+    night_airshipBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Map 3", 1.5, 1.0);
+    night_snowBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 13 / 20.0f }, "Map 4", 1.5, 1.0);
 }
