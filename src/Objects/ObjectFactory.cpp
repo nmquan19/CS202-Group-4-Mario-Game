@@ -204,8 +204,8 @@ void Object::HarmonicOscillationMove(float amplitude, float frequency, float del
 
 void Object::StarShapeMove(Vector2 center, float deltaTime, float frequency) {
     totalTime += deltaTime;
-    position.x = -(center.x + 3 * cos(0.4 * totalTime) + 2 * sin(0.6 * totalTime));
-    position.y = -(center.y + 3 * sin(0.4 * totalTime) + 2 * cos(0.6 * totalTime));
+    position.x = center.x - 0.25*(3 * cos(0.4 * totalTime) + 2 * sin(0.6 * totalTime));
+    position.y = center.y - 0.25*(3 * sin(0.4 * totalTime) + 2 * cos(0.6 * totalTime));
 
 	std::cout << "StarShapeMove: " << position.x << ", " << position.y << std::endl;
     if (physicsBody) {

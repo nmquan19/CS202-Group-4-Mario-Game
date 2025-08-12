@@ -1,5 +1,4 @@
 #pragma once
-
 #include "ObjectFactory.h"
 #include "../System/Interface.h"
 
