@@ -509,12 +509,16 @@ std::unique_ptr<Block> ObjectFactory::createSpecificBlock(BlockType type, Vector
     }
 }
 
-std::unique_ptr<Object> ObjectFactory::createCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size) {
+std::unique_ptr<Object> ObjectFactory::createCharacter(CharacterType type, PlayerID id, Vector2 startPosition) {
     switch(type) {
         case CharacterType::MARIO:
-            return createSpecificCharacter(CharacterType::MARIO, id, startPosition, size);
+            return createSpecificCharacter(CharacterType::MARIO, id, startPosition, Constants::Character::Mario::SMALL_SIZE);
         case CharacterType::LUIGI:
-            return createSpecificCharacter(CharacterType::LUIGI, id, startPosition, size);
+            return createSpecificCharacter(CharacterType::LUIGI, id, startPosition, Constants::Character::Luigi::SMALL_SIZE);
+        case CharacterType::TOAD:
+            return createSpecificCharacter(CharacterType::TOAD, id, startPosition, Constants::Character::Toad::SMALL_SIZE);
+        case CharacterType::TOADETTE:
+            return createSpecificCharacter(CharacterType::TOADETTE, id, startPosition, Constants::Character::Toadette::SMALL_SIZE);
         default: 
             return nullptr;
     }
@@ -529,10 +533,14 @@ std::unique_ptr<Character> ObjectFactory::createSpecificCharacter(CharacterType 
 
 CharacterStats ObjectFactory::getStats(CharacterType type) {
     switch (type) {
-        case CharacterType::MARIO:
-            return Constants::Character::MARIO_STATS;
-        case CharacterType::LUIGI:  
-            return Constants::Character::LUIGI_STATS;
+    case CharacterType::MARIO:
+        return Constants::Character::Mario::STATS;
+    case CharacterType::LUIGI:  
+        return Constants::Character::Luigi::STATS;
+    case CharacterType::TOAD:
+        return Constants::Character::Toad::STATS;
+    case CharacterType::TOADETTE:
+        return Constants::Character::Toadette::STATS;
     }
 }
 std::unique_ptr<Object> ObjectFactory::createEnemy(EnemyType type, Vector2 gridPos, Vector2 size) {
@@ -581,12 +589,17 @@ std::unique_ptr<Item> ObjectFactory::createSpecificItem(ItemType type, Vector2 s
 
 std::vector<std::vector<Rectangle>> ObjectFactory::getFrameData(CharacterType type) {
     switch (type) {
-        case CharacterType::MARIO: 
-            return Constants::Character::SMALL_MARIO_FRAME_DATA;
-        case CharacterType::LUIGI:
-            return Constants::Character::LUIGI_FRAME_DATA;
+    case CharacterType::MARIO: 
+        return Constants::Character::Mario::SMALL_FRAME_DATA;
+    case CharacterType::LUIGI:
+        return Constants::Character::Luigi::SMALL_FRAME_DATA;
+    case CharacterType::TOAD:
+        return Constants::Character::Toad::SMALL_FRAME_DATA;
+    case CharacterType::TOADETTE:
+        return Constants::Character::Toadette::SMALL_FRAME_DATA;
     }
 }
+
 std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vector2 gridPos, Vector2 size) {
     return std::make_unique<KoopaShell>(type, gridPos, size);
 }
@@ -605,36 +618,4 @@ std::unique_ptr<Projectile> ObjectFactory::createSpecificProjectile(ProjectileTy
         return std::make_unique<FireBall>(position, direction, size);
       // case...
     }
-}
-
-int Object::getCollidedPart(const Object& other){
-    std::vector<Rectangle> playerHitBoxes = getHitBox();
-    std::vector<Rectangle> otherHitBoxes = other.getHitBox();
-    
-    if (playerHitBoxes.empty() || otherHitBoxes.empty()) return 0;
-    
-    Rectangle playerHitBox = playerHitBoxes[0];
-    Rectangle otherHitBox = otherHitBoxes[0];
-
-    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-
-    const float MIN_OVERLAP = 2.0f;
-
-    if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
-        return 0 ;
-    }
-
-    float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
-    if(minOverlap == overlapTop) {
-        return 1; 
-    } else if(minOverlap == overlapBottom) {
-        return 2; 
-    } else if(minOverlap == overlapLeft) {
-        return 3; 
-    } else if(minOverlap == overlapRight) {
-        return 4; 
-	}
 }

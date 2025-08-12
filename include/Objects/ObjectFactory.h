@@ -31,8 +31,7 @@ public:
 	virtual std::vector<Rectangle> getHitBox() const override = 0;  
 	virtual ObjectCategory getObjectCategory() const override = 0;  
 	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;  
-	virtual void onCollision(std::shared_ptr<Object> other, Direction direction) override = 0;  
-	int getCollidedPart(const Object& other);  
+	virtual void onCollision(std::shared_ptr<Object> other, Direction direction) override = 0;   
 	virtual ObjectType getObjectType() const = 0;  
 
 	b2Body* getPhysicsBody() const {
@@ -50,7 +49,7 @@ protected:
 class ObjectFactory {
 public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
-	static std::unique_ptr<Object> createCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size = Constants::Character::SMALL_STANDARD_SIZE);
+	static std::unique_ptr<Object> createCharacter(CharacterType type, PlayerID id, Vector2 startPosition);
 	static std::unique_ptr<Object> createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size = Constants::Projectile::STANDARD_SIZE);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
