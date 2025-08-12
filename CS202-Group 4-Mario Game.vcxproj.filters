@@ -58,6 +58,8 @@
     <ClCompile Include="src\Characters\SmallTransformState.cpp" />
     <ClCompile Include="src\Objects\Projectile\FireBall.cpp" />
     <ClCompile Include="src\Objects\Projectile\Projectile.cpp" />
+    <ClCompile Include="src\Characters\AttackState.cpp" />
+    <ClCompile Include="src\Characters\FireTransformState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -125,6 +127,8 @@
     <ClInclude Include="include\Characters\SuperTransformState.h" />
     <ClInclude Include="include\Objects\Projectile\FireBall.h" />
     <ClInclude Include="include\Objects\Projectile\Projectile.h" />
+    <ClInclude Include="include\Characters\AttackState.h" />
+    <ClInclude Include="include\Characters\FireTransformState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">
@@ -225,6 +229,14 @@
     <Image Include="assets\Mario.png" />
     <Image Include="assets\Toad.png" />
     <Image Include="assets\Toadette.png" />
+    <Image Include="assets\day_ground.png" />
+    <Image Include="assets\day_underground.png" />
+    <Image Include="assets\level_map1.png" />
+    <Image Include="assets\level_map2.png" />
+    <Image Include="assets\level_map3.png" />
+    <Image Include="assets\menu background.jpg" />
+    <Image Include="assets\night_airship.png" />
+    <Image Include="assets\night_snow.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav" />

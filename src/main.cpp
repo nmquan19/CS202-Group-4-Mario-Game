@@ -27,12 +27,13 @@ int main() {
     MenuState menuState;
     RedirectState redirectState;
     CharacterSelectingState characterSelectingState;
-    InformationState  informationState;
+    InformationState informationState;
     GamePlayState gamePlayState;
     EditorState editorState;
+    EditorSelectingState editorSelectingState;
     GameOverState gameOverState;
     GameCameraSystem::getInstance().init();
-    context->setGameStates(&menuState, &redirectState, &characterSelectingState, &informationState, &gamePlayState, &editorState, &gameOverState);
+    context->setGameStates(&menuState, &redirectState, &characterSelectingState, &informationState, &gamePlayState, &editorState, &editorSelectingState, &gameOverState);
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();

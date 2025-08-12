@@ -211,6 +211,7 @@ private:
 public:
     Button playBoard, settingBoard, exitBoard, editingBoard;
     Button characterBoard, continueBoard, restartBoard, levelBoard, menuBoard;
+    Button day_groundBoard, day_undergroundBoard, night_airshipBoard, night_snowBoard;
     SlideBar slideBarMusic, slideBarSound;
     Vector2 slideBarMusicPosition, slideBarSoundPosition;
     int select, characterSelect;
@@ -228,6 +229,10 @@ public:
     void HandleRedirect();
     void UpdateRedirect(float deltaTime);
     void DrawRedirect();
+
+    void HandleEditorSelecting();
+    void UpdateEditorSelecting(float deltaTime);
+    void DrawEditorSelecting();
 
     void HandleSelecting();
     void UpdateSelecting(float deltaTime);
