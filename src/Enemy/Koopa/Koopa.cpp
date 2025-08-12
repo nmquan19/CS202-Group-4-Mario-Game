@@ -113,11 +113,11 @@ void Koopa::update(float deltaTime) {
 
 GreenKoopa::GreenKoopa(Vector2 startPos, Vector2 size) : Koopa(startPos, size) {
     changeState(&KoopaWanderingState::GetInstance());
-
+    spritebox = TextureManager::Enemy_sprite_boxes[45];
  }
 GreenKoopa::GreenKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Koopa(startPos, velocity, accelleration) {
     changeState(&KoopaWanderingState::GetInstance());
-
+    spritebox = TextureManager::Enemy_sprite_boxes[45];
 }
 EnemyType GreenKoopa::getType() const {
     return EnemyType::GREEN_KOOPA;
@@ -125,11 +125,11 @@ EnemyType GreenKoopa::getType() const {
 
 RedKoopa::RedKoopa(Vector2 startPos, Vector2 size) : Koopa(startPos, size) {
     changeState(&KoopaWanderingState::GetInstance());
-
+    spritebox = TextureManager::Enemy_sprite_boxes[53];
 }
 RedKoopa::RedKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Koopa(startPos, velocity, accelleration) {
     changeState(&KoopaWanderingState::GetInstance());
-
+    spritebox = TextureManager::Enemy_sprite_boxes[53];
 }
 EnemyType RedKoopa::getType() const {
     return EnemyType::RED_KOOPA;

@@ -237,6 +237,9 @@
     <Image Include="assets\menu background.jpg" />
     <Image Include="assets\night_airship.png" />
     <Image Include="assets\night_snow.png" />
+    <Image Include="assets\Fireball_sprites.png" />
+    <Image Include="assets\character_spritesheet.png" />
+    <Image Include="assets\interactive_sprites.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="assets\sound\2-108080.wav" />

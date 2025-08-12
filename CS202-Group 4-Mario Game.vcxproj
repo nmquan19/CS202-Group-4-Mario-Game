@@ -164,10 +164,13 @@
     <Image Include="assets\button\small_board_selected.png" />
     <Image Include="assets\button\thin_board.png" />
     <Image Include="assets\button\thin_board_selected.png" />
+    <Image Include="assets\character_spritesheet.png" />
     <Image Include="assets\coin_sprite.png" />
     <Image Include="assets\day_ground.png" />
     <Image Include="assets\day_underground.png" />
+    <Image Include="assets\Fireball_sprites.png" />
     <Image Include="assets\font_sprites.png" />
+    <Image Include="assets\interactive_sprites.png" />
     <Image Include="assets\level_map1.png" />
     <Image Include="assets\level_map2.png" />
     <Image Include="assets\level_map3.png" />
