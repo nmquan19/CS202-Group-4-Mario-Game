@@ -42,6 +42,7 @@ protected:
 
     bool pendingImpulse;
     float impulseForce;
+
 };
 
 class GroundBlock : public Block {
