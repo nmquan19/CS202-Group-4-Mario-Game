@@ -198,23 +198,6 @@ void GameContext::clearGame() {
 }
 
 void GameContext::createTestBlocks() {
-    // Create a ground platform for testing using world coordinates
-    // Bottom ground blocks (y = 15 grid units = 15 * TILE_SIZE pixels, spanning from x = 5 to x = 25)
-    for (int x = 5; x <= 25; x++) {
-        Vector2 worldPos = GridSystem::getWorldPosition({static_cast<float>(x), 15.0f});
-        addObject(BlockType::GROUND, worldPos, {1, 1});
-    }
-    
-    // Create some brick blocks for variety
-    for (int x = 8; x <= 12; x++) {
-        Vector2 worldPos = GridSystem::getWorldPosition({static_cast<float>(x), 14.0f});
-        addObject(BlockType::BRICK, worldPos, {1, 1});
-    }
-    
-    // Add some single blocks for platforming
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({10.0f, 11.0f}), {1, 1});
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
-    addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 14.0f}), {1, 1});
     addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 0.75f, 0.75f });
     addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), {1, 1});
     addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
