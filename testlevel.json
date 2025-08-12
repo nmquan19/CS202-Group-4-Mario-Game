@@ -2,67 +2,53 @@
      "gridSize": 64,
      "objects": [
           {
-               "gridX": 9,
+               "gridX": 5,
                "gridY": 5,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BLOCK_3_1_3"
+               "type": "BLOCK_4_14_15"
           },
           {
-               "gridX": 9,
+               "gridX": 5,
                "gridY": 6,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BLOCK_3_1_3"
+               "type": "BLOCK_4_14_16"
           },
           {
-               "gridX": 9,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_3_1_3"
-          },
-          {
-               "gridX": 9,
-               "gridY": 8,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_2_7"
-          },
-          {
-               "gridX": 10,
-               "gridY": 4,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "GROUND"
-          },
-          {
-               "gridX": 10,
+               "gridX": 6,
                "gridY": 5,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BLOCK_3_1_3"
+               "type": "BLOCK_4_15_12"
           },
           {
-               "gridX": 10,
+               "gridX": 6,
                "gridY": 6,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BLOCK_3_1_3"
+               "type": "BLOCK_4_15_12"
           },
           {
-               "gridX": 10,
-               "gridY": 7,
+               "gridX": 16,
+               "gridY": 0,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BLOCK_3_1_3"
+               "type": "BLOCK_1_1_2"
           },
           {
-               "gridX": 10,
-               "gridY": 8,
+               "gridX": 18,
+               "gridY": 0,
                "sizeX": 1.0,
                "sizeY": 1.0,
-               "type": "BLOCK_4_2_7"
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 20,
+               "gridY": 0,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
           }
      ],
      "version": "1.0"

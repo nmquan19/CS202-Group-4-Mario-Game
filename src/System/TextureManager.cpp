@@ -534,6 +534,325 @@ void ObjectPalette::drawPalette() {
             }
             DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_7_16) ? RED : BLACK); traverse++;
 
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_1, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_1) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_2, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_2) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_3, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_3) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_4) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_5) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_6) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_7) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_8) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_9, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_9) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_10, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_10) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_11) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_12) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_13) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_14) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_15) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_13_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_13_16) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_1, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_1) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_2, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_2) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_3, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_3) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_4) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_5) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_6) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_7) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_8) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_9, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_9) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_10, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_10) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_11) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_12) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_13) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_14) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_15) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_14_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_14_16) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_1, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_1) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_2, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_2) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_3, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_3) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_4) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_5) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_6) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_7) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_8) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_9, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_9) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_10, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_10) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_11) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_12) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_13) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_14) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_15) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_15_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_15_16) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_1, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_1) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_2, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_2) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_3, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_3) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_4, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_4) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_5, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_5) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_6, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_6) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_7, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_7) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_8, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_8) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_9, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_9) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_10, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_10) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_11, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_11) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_12, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_12) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_13, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_13) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_14, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_14) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_15, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_15) ? RED : BLACK); traverse++;
+
+            if (blocksTexture.id != 0) {
+                DrawTexturePro(blocksTexture, Constants::PaletteResources::BLOCK_1_16_16, ordinalRect(traverse), { 0, 0 }, 0.0f, WHITE);
+            }
+            DrawRectangleLinesEx(ordinalRect(traverse), 2, (isBlock() && getBlockType() == BlockType::BLOCK_1_16_16) ? RED : BLACK); traverse++;
         }
     }
     if (selectRect == 2) {
@@ -697,6 +1016,70 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_7_14; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_7_15; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_7_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_13_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_14_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_15_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_16_16; traverse++;
         traverse = 1;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_1_2; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_1_3; traverse++;
@@ -756,6 +1139,70 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_7_14; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_7_15; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_7_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_13_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_14_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_15_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 2) selected = BlockType::BLOCK_2_16_16; traverse++;
         traverse = 1;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_1_2; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_1_3; traverse++;
@@ -815,7 +1262,70 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_7_14; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_7_15; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_7_16; traverse++;
-
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_13_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_14_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_15_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 3) selected = BlockType::BLOCK_3_16_16; traverse++;
         traverse = 1;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_1_2; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_1_3; traverse++;
@@ -875,6 +1385,70 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_7_14; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_7_15; traverse++;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_7_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_13_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_14_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_15_16; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_1; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_2; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_3; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_4; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_5; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_6; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_7; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_8; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_9; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_10; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_11; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_12; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_13; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_14; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_15; traverse++;
+        if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 4) selected = BlockType::BLOCK_4_16_16; traverse++;
 
         if (CheckCollisionPointRec(mousePos, goombaRect) && selectRect == 2) selected = EnemyType::GOOMBA;
         if (CheckCollisionPointRec(mousePos, gkoopaRect) && selectRect == 2) selected = EnemyType::GREEN_KOOPA;
