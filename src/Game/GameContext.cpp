@@ -226,7 +226,7 @@ void GameContext::createTestBlocks() {
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 13.0f}), {1, 1});
     addObject(BlockType::BRICK, GridSystem::getWorldPosition({25.0f, 14.0f}), {1, 1});
 	//addObject(ItemType::COIN, GridSystem::getWorldPosition({ 19.0f, 9.0f }), { 1, 1 });
-	//addObject(ItemType::MUSHROOM, GridSystem::getWorldPosition({ 20.0f, 9.0f }), { 1, 1 });
+	addObject(ItemType::MUSHROOM, GridSystem::getWorldPosition({ 20.0f, 9.0f }), { 1, 1 });
 	//addObject(ItemType::FIRE_FLOWER, GridSystem::getWorldPosition({ 21.0f, 9.0f }), { 1, 1 });
 	addObject(ItemType::STAR, GridSystem::getWorldPosition({ 15.0f, 5.0f }), { 1, 1 });
 	//addObject(ItemType::ONE_UP, GridSystem::getWorldPosition({ 23.0f, 9.0f }), { 1, 1 });
