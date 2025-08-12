@@ -42,10 +42,6 @@ void Block::draw() {
     Rectangle srcRec;
 
     switch (blockType) {
-        case(BlockType::GROUND): srcRec = Constants::PaletteResources::GROUND;
-            break;
-        case(BlockType::BRICK): srcRec = Constants::PaletteResources::BRICK;
-            break;
         case(BlockType::BLOCK_1_1_2):
             srcRec = Constants::PaletteResources::BLOCK_1_1_2;
             DrawTexturePro(TextureManager::day_groundTexture, srcRec, destRec, { 0, 0 }, 0.0f, WHITE);
@@ -1024,7 +1020,7 @@ void Block::draw() {
             srcRec = Constants::PaletteResources::BLOCK_1_7_16;
             DrawTexturePro(TextureManager::night_snowTexture, srcRec, destRec, { 0, 0 }, 0.0f, WHITE);
             break;
-        default: srcRec = Constants::PaletteResources::BRICK;
+        default: srcRec = Constants::PaletteResources::BLOCK_1_1_2;
     }
 
     DrawTexturePro(TextureManager::blocksTexture, srcRec, destRec, { 0, 0 }, 0.0f, WHITE);
@@ -1115,9 +1111,6 @@ BlockType Block::getType() const {
 Vector2 Block::getSize() const {
     return size;
 }
-
-GroundBlock::GroundBlock(Vector2 gridPos) : Block(gridPos, BlockType::GROUND, {1, 1}) { solid = false; }
-BrickBlock::BrickBlock(Vector2 gridPos) : Block(gridPos, BlockType::BRICK, {1, 1}) { solid = false; }
 Block_1_1_2Block::Block_1_1_2Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_2, { 1,1 }) { solid = false; }
 Block_1_1_3Block::Block_1_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_3, { 1,1 }) { solid = false; }
 Block_1_1_12Block::Block_1_1_12Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_1_1_12, { 1,1 }) { solid = false; }

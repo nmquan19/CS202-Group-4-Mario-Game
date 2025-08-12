@@ -44,16 +44,6 @@ protected:
     float impulseForce;
 };
 
-class GroundBlock : public Block {
-public:
-    GroundBlock(Vector2 gridPos);
-};
-
-class BrickBlock : public Block {
-public:
-    BrickBlock(Vector2 gridPos);
-};
-
 class Block_1_1_2Block : public Block {
 public:
     Block_1_1_2Block(Vector2 gridPos);

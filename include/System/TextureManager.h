@@ -3,7 +3,7 @@
 #include <map>
 #include "raylib.h"
 #include "Interface.h"
-#include "UI/UI.h"
+#include "../UI/UI.h"
 #include <variant>
 #include <vector>
 #include <unordered_map>
@@ -12,7 +12,7 @@ public:
     static TextureManager& getInstance();
 
     static std::vector<Rectangle> Enemy_sprite_boxes;
-	static Texture2D DryBowser_texture;   
+    static Texture2D DryBowser_texture;
     static std::vector<Rectangle> DryBowser_sprite_boxes;
     static Texture2D blocksTexture;
 
@@ -31,10 +31,10 @@ public:
     static std::unordered_map<char, Rectangle> fontSprites;
 
     static Texture2D background_lv1;
-    
+
     Texture2D getCharacterTexture() const;
     Texture2D getItemTexture() const;
-    void loadTextures(); 
+    void loadTextures();
     void unloadTextures();
 
     TextureManager(const TextureManager&) = delete;
@@ -48,7 +48,7 @@ private:
     Texture2D characterTextures;
 
     bool texturesLoaded = false;
-	bool itemTexturesLoaded = false;
+    bool itemTexturesLoaded = false;
 };
 
 class ObjectPalette {
@@ -68,7 +68,7 @@ public:
     ItemType getItemType() const { return std::get<ItemType>(selected); }
 
     Rectangle getPaletteRect() const { return paletteRect; }
-	ObjectType getSelectedType() const { return selected; }
+    ObjectType getSelectedType() const { return selected; }
 
 
 private:
@@ -83,14 +83,15 @@ private:
     Rectangle objectRect = { rect.x + 20, (float)GetScreenHeight() * 2.0f / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
     Rectangle itemRect = { rect.x + 20, (float)GetScreenHeight() * 3.0f / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
 
-    Rectangle map1Rect = { rect.x + 60, 0, ((float)GetScreenWidth() - rect.x - 60) / 4.0f, 40 };
-    Rectangle map2Rect = { rect.x + 60 + ((float)GetScreenWidth() - rect.x - 60) / 4.0f, 0, ((float)GetScreenWidth() - rect.x - 60) / 4.0f, 40 };
-    Rectangle map3Rect = { rect.x + 60 + ((float)GetScreenWidth() - rect.x - 60) * 2.0f / 4.0f, 0, ((float)GetScreenWidth() - rect.x - 60) / 4.0f, 40 };
-    Rectangle map4Rect = { rect.x + 60 + ((float)GetScreenWidth() - rect.x - 60) * 3.0f / 4.0f, 0, ((float)GetScreenWidth() - rect.x - 60) / 4.0f, 40 };
+    float mapWidth = ((float)GetScreenWidth() - rect.x - 60) / 4.0f;
+    Rectangle map1Rect = { rect.x + 60, 0, mapWidth, 40 };
+    Rectangle map2Rect = { rect.x + 60 + mapWidth, 0, mapWidth, 40 };
+    Rectangle map3Rect = { rect.x + 60 + 2 * mapWidth, 0, mapWidth, 40 };
+    Rectangle map4Rect = { rect.x + 60 + 3 * mapWidth, 0, mapWidth, 40 };
     int map = 1;
     int selectRect = 1;
     Rectangle paletteRect = { rect.x + 20, target.y - (float)GetScreenHeight() / 4.0f, (float)GetScreenWidth(), (float)GetScreenHeight() * 10.0f };
-    ObjectType selected = BlockType::GROUND;
+    ObjectType selected = BlockType::BLOCK_1_1_2;
     float startX = paletteRect.x + 150;
     float startY = paletteRect.y + 50;
     float spacingX = 120;

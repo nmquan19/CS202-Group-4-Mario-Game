@@ -323,10 +323,6 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
         BlockType blockType = std::get<BlockType>(type); 
         switch (blockType)
         {
-        case BlockType::GROUND: return "GROUND";
-            
-        case BlockType::BRICK: return "BRICK";
-            break;
         case BlockType::BLOCK_1_1_2: return "BLOCK_1_1_2";
             break;
         case BlockType::BLOCK_1_1_3: return "BLOCK_1_1_3";
@@ -857,8 +853,6 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
 }
 
 ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
-    if (typeStr == "GROUND") return BlockType::GROUND;
-    if (typeStr == "BRICK") return BlockType::BRICK;
 
     if (typeStr == "BLOCK_1_1_2") return BlockType::BLOCK_1_1_2;
     if (typeStr == "BLOCK_1_1_3") return BlockType::BLOCK_1_1_3;
@@ -1107,7 +1101,7 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "SPRING") return InteractiveType::SPRING;
     if (typeStr == "COIN") return ItemType::COIN;
     if (typeStr == "FIRE_FLOWER") return ItemType::FIRE_FLOWER;
-    return BlockType::GROUND;
+    return BlockType::BLOCK_1_1_2;
 }
 bool LevelEditor::isBlock(std::pair<int, int> coord)
 {
