@@ -3,13 +3,57 @@
 #include "raylib.h"
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
-#include "../System/PhysicsManager.h"
+#include "../Objects/Spring.h"
+
+struct PlayerInputMapping {
+	int moveLeft;
+	int moveRight;
+	int jump;
+	int superTransform;
+	int fireTransform;
+	int attack;
+
+	static PlayerInputMapping getMapping(PlayerID id) {
+		switch (id) {
+		case PlayerID::PLAYER_01:
+			return { KEY_A, KEY_D, KEY_W, KEY_F1, KEY_F2, KEY_F };
+		case PlayerID::PLAYER_02:
+			return { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_F3, KEY_F4, KEY_J };
+		}
+	}
+};
+
+struct InputState {
+	bool moveLeft = false;
+	bool moveRight = false;
+	bool jump = false;
+	bool jumpPressed = false;
+	bool jumpReleased = false;
+	bool superTransform = false;
+	bool fireTransform = false;
+	bool attack = false;
+
+	static InputState fromPlayer(PlayerID playerID) {
+		PlayerInputMapping mapping = PlayerInputMapping::getMapping(playerID);
+
+		InputState input;
+		input.moveLeft = IsKeyDown(mapping.moveLeft);
+		input.moveRight = IsKeyDown(mapping.moveRight);
+		input.jump = IsKeyDown(mapping.jump);
+		input.jumpPressed = IsKeyPressed(mapping.jump);
+		input.jumpReleased = IsKeyReleased(mapping.jump);
+		input.superTransform = IsKeyPressed(mapping.superTransform);
+		input.fireTransform = IsKeyPressed(mapping.fireTransform);
+		input.attack = IsKeyPressed(mapping.attack);
+		return input;
+	}
+};
 
 class ICharacterState;
 
 class Character : public Object, public IUpdatable, public IMovable, public IDamageable {
 public:
-	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale);
+	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, PlayerID id, Vector2 size);
 	~Character();
 	void changeState(ICharacterState& newState);
   
@@ -25,9 +69,7 @@ public:
 	void setAniSpeed(float newSpeed);
 
 	bool isOnGround() const;
-  	void setOnGround(bool flag);
 	void jump();
-	void applyGravity(float deltaTime);
 
 	void setVelocity(Vector2 newVelocity);
 	Vector2 getVelocity();
@@ -40,13 +82,11 @@ public:
 
 	bool isFacingRight() const;
 	void setFacingRight(bool flag);
-
-	void updateHitBox();
-	Rectangle getHitBox() const override;
+	Vector2 getCenterPos() const ;
+	std::vector<Rectangle> getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
-	void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
-	void onCollision(std::shared_ptr<Object> other) override;
+	void onCollision(std::shared_ptr<Object> other, Direction direction) override;
 	bool isActive() const override;
 	void setActive(bool) override;
 	bool isCollided() const override;
@@ -59,28 +99,35 @@ public:
 	bool isAlive() const override;
 	void die() override;
 
-	void setHoldingProjectile(bool flag);
-	bool isHoldingProjectile() const;
-	void holdProjectile(KoopaShell& p);
+	friend class IdleState;
+	friend class MovingState;
+	friend class JumpingState;
+	friend class StunnedState;
+	friend class KnockedState;
+	friend class AttackState;
+	friend class SuperTransformState;
+	friend class SmallTransformState;
+	friend class FireTransformState;
 
-	float getWidth() const;
-	float getHeight() const;
-	float getBottom() const;
-	float getCenterX() const;
-	float getCenterY() const;
-	Vector2 getCenter() const;
-	
+	void addGroundContact();
+	void removeGroundContact();
+
+private:
+	void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction);
+	void handleEnemyCollision(std::shared_ptr<Object> other, Direction direction);
+	void handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction);
+	void handleSpringCollision(std::shared_ptr<Object> other, Direction direction);
+
 private:
 	ICharacterState* currentState;
 	CharacterType characterType;
+	PlayerID id;
+	PowerState powerState;
 
-	float scale;
 	Vector2 velocity;
 
-	bool onGround = true;
 	float speed;
-	float jumpForce;
-	float gravity;
+	float jumpVel;
 
 	bool facingRight;
 
@@ -92,18 +139,15 @@ private:
 	float aniTimer;
 	float aniSpeed;
 
-	float hitBoxWidth;
-	float hitBoxHeight;
 	bool active = true;
 
 	int hp;
-	float invincibleTime;
 	float invincibleTimer;
-	
-	KoopaShell* projectile;
-	bool holdingProjectile;
+	float reviveTimer;
+	float transformTimer;
+	float attackTimer;
 
-	void handleEnvironmentCollision(std::shared_ptr<Object> other);
-	void handleEnemyCollision(std::shared_ptr<Object> other);
-	//void handleItemCollsion(ICollidable* other);
+	int projectilesLeft = 0;
+
+	int groundContactCount = 0;
 };

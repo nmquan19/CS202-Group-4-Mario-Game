@@ -1,26 +1,193 @@
-#include "../../include/Item/Item.h"
+﻿#include "../../include/Item/Item.h"
+#include "../../include/System/Grid.h"
+#include "../../include/System/TextureManager.h"
+#include "../../include/Game/GameContext.h"
+#include "../../include/System/Box2DWorldManager.h"
+#include <raymath.h>
+#include <memory> 
+#include <numbers>
 
+Item::Item() {}
 
+Item::Item(Vector2 startPos)
+    : position(startPos), active(true), scale(1.0f),
+    velocity({ 0, 0 }),
+    animation(new Anima(0, 3, 0.08f))
+{
+    this->spritebox = { 0, 0, 32, 32 };
+    this->size = { 1, 1 };
+    this->hitbox = { position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
+    physicsBody = Box2DWorldManager::getInstance().createItemBody(position, { hitbox.width, hitbox.height });
+    if (physicsBody) {
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+            //std::cout << "Item1\n";
+            b2Filter filter = fixture->GetFilterData();
+            filter.maskBits = static_cast<uint16>(ObjectCategory::ITEM);
+            filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::ENEMY) |
+                static_cast<uint16>(ObjectCategory::INTERACTIVE) | static_cast<uint16>(ObjectCategory::SHELL) | static_cast<uint16>(ObjectCategory::PROJECTILE);
+            fixture->SetFilterData(filter);
+        }
+    }
 
-Item::Item(){
-	hitbox = { 0,0,0,0 };
+	centerPosition = position; // Center position for circular movement
 
-
-	PhysicsManager::getInstance().addObject(this);
 }
 
 Item::~Item() {
-	PhysicsManager::getInstance().markForDeletion(this);
+    delete animation;
+    if (physicsBody) {
+        Box2DWorldManager::getInstance().destroyBody(physicsBody);
+        physicsBody = nullptr;
+    }
 }
 
-Rectangle Item::getHitBox() const{
-	return hitbox;
+void Item::update(float deltaTime) {
+    animation->Update();
+    
+    if (physicsBody) {
+        b2Vec2 bodyPos = physicsBody->GetPosition();
+        // Box2D mặc định dùng mét, bạn cần nhân với tỉ lệ pixel (GridSystem::GRID_SIZE)
+        position.x = (bodyPos.x -0.5)* GridSystem::GRID_SIZE;
+        position.y = (bodyPos.y -0.5)* GridSystem::GRID_SIZE;
+
+        hitbox.x = position.x;
+        hitbox.y = position.y;
+    }
+
+}
+
+void Item::draw() {
+    // Draw the item using the animation frames
+    DrawTexturePro(
+        TextureManager::getInstance().getItemTexture(),
+        animation->GetFrame(),
+        hitbox,
+        { 0, 0 },
+        0,
+        WHITE
+    );
+}
+
+void Item::draw(Texture2D texture) {
+    DrawTexturePro(
+        texture,
+        animation->GetFrame(),
+        { position.x, position.y, 32, 32 },
+        { 0, 0 },
+        0,
+        WHITE
+    );
+}
+
+std::vector<Rectangle> Item::getHitBox() const {
+    return { hitbox }; // Đưa Rectangle đơn vào trong vector
+}
+
+ObjectCategory Item::getObjectCategory() const {
+    return ObjectCategory::ITEM;
+}
+
+std::vector<ObjectCategory> Item::getCollisionTargets() const {
+    return { ObjectCategory::CHARACTER };
+}
+
+void Item::onCollision(std::shared_ptr<Object> other, Direction direction) {
+    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
+        setActive(false);
+        GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
+    }
+}
+
+Vector2 Item::getPosition() const {
+    return position;
+}
+
+void Item::setPosition(Vector2 newPosition) {
+    position = newPosition;
+    hitbox.x = position.x;
+    hitbox.y = position.y;
+}
+
+bool Item::isActive() const {
+    return active;
+}
+
+void Item::setActive(bool flag) {
+    active = flag;
+}
+
+bool Item::isCollided() const {
+    return collided;
+}
+
+void Item::setCollided(bool value) {
+    collided = value;
+}
+
+Vector2 Item::getSize() const {
+    return size;
+}
+
+ObjectType Item::getObjectType() const {
+    return type;
+}
+
+void Item::Move(double dt) {
+
 }
 
 
+void Item::CircleMove(Vector2 center, float radius, float speed, float deltaTime) {
+    totalTime += deltaTime;
+    position.x = center.x + radius * cos(speed * totalTime);
+    position.y = center.y + radius * sin(speed * totalTime);
+    if (physicsBody) {
+        physicsBody->SetTransform(b2Vec2(position.x / GridSystem::GRID_SIZE, position.y / GridSystem::GRID_SIZE),
+            physicsBody->GetAngle());
+    }
+}
 
+void Item::HarmonicOscillationMove(float amplitude, float frequency, float deltaTime) {
+    totalTime += deltaTime;
 
-bool Item::isActive() {
-	return IsActive;
+    // Tần số góc ω = 2πf
+    float omega = 2.0f * std::numbers::pi_v<float> *frequency;
+
+    // Tính vị trí offset (pixel)
+    float offsetX = amplitude * cos(omega * totalTime);
+
+    // Tính vận tốc theo pixel/s
+    float vxPixelsPerSecond = -omega * amplitude * sin(omega * totalTime);
+
+    std::cout << "Amplitude: " << amplitude << ", Frequency: " << frequency
+        << ", DeltaTime: " << deltaTime << ", OffsetX: " << offsetX
+        << ", VxPixelsPerSecond: " << vxPixelsPerSecond << std::endl;
+    std::cout << "centerPosition: " << centerPosition.x << ", " << centerPosition.y << std::endl;
+
+    // Đổi vận tốc sang mét/s cho Box2D
+    float vxMetersPerSecond = Box2DWorldManager::raylibToB2(vxPixelsPerSecond);
+
+    if (physicsBody) {
+        b2Vec2 vel(vxMetersPerSecond, physicsBody->GetLinearVelocity().y);
+        physicsBody->SetLinearVelocity(vel);
+    }
+
+    // Cập nhật vị trí hiển thị từ physics body
+    Vector2 renderPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
+    position.x = renderPos.x - Constants::TILE_SIZE / 2;
+    position.y = renderPos.y - Constants::TILE_SIZE / 2;
+
+}
+
+void Item::StarShapeMove(Vector2 center, float deltaTime, float frequency) {
+    totalTime += deltaTime;
+    position.x = center.x - 0.25 * (3 * cos(0.4 * totalTime) + 2 * sin(0.6 * totalTime));
+    position.y = center.y - 0.25 * (3 * sin(0.4 * totalTime) + 2 * cos(0.6 * totalTime));
+
+    if (physicsBody) {
+        physicsBody->SetTransform(b2Vec2(position.x / GridSystem::GRID_SIZE, position.y / GridSystem::GRID_SIZE),
+            physicsBody->GetAngle());
+    }
 }
 

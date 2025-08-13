@@ -18,12 +18,10 @@
         friend class KoopaWanderingState;
         friend class KoopaStompedState;
         friend class KoopaKnockState;
-        void handleEnvironmentCollision(std::shared_ptr<Object> other) override;
-        void onCollision(std::shared_ptr<Object> other) override;
+        void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction) override;
+        void onCollision(std::shared_ptr<Object> other, Direction direction) override;
         void update(float deltaTime);
         void draw() override;
-        void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override;
-        void handleCharacterCollision(std::shared_ptr<Object> other);
         void die() override;
         void takeDamage(int damage) override;
 		KoopaShellType getShellType() const;

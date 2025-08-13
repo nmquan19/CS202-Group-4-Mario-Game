@@ -23,10 +23,11 @@ public:
 
     ~LevelEditor();
 
-    void update();
+    void update(float deltaTime);
     void draw();
     void handleMouseInput();
     void placeObject(ObjectType type, Vector2 gridCoord);
+    void removeObject(Vector2 gridCoord, std::shared_ptr<Object>& target);
     void removeObject(Vector2 gridCoord);
     void setEditMode(bool flag);
     bool isInEditMode() const;
@@ -34,6 +35,10 @@ public:
     void saveLevel(const std::string& filename);
     void loadLevel(const std::string& filename);
     void clearLevel();
+    bool isBlock(std::pair<int, int> coord);
+    ObjectPalette getObjectPalette() {
+        return palette;
+    }
 private:
     static LevelEditor* instance;
     std::map<std::pair<int, int>, std::stack<std::shared_ptr<Object>>> gridBlocks;

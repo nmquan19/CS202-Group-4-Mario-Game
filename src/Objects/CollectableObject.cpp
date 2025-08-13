@@ -3,24 +3,28 @@
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
 #include "../../include/Enemy/TriggerZone.h"
-#include "../../include/System/PhysicsManager.h"
+#include "../../include/Game/GameContext.h"
 #include <raylib.h>
 #include "../../include/System/Grid.h"
 #include <memory>
 
 CollectableObject::CollectableObject(Vector2 pos, Vector2 sz,Texture2D texture): texture(texture)
 {
+	canbeCollected = true; 
     position = pos;
     size = sz;
 	hitBox = Rectangle{ pos.x, pos.y, sz.x*GridSystem::GRID_SIZE, sz.y * GridSystem::GRID_SIZE };
     triggerZone = std::make_unique<TriggerZone>(this, pos, sz);
-    this->active = true; 
-    // PhysicsManager::getInstance().addObject(this);
+    // add trigger zone
+    //PhysicsManager::getInstance().addObject(triggerZone);
+    GameContext::getInstance().Objects.push_back(triggerZone);
+    this->active = true;
 }
 
 CollectableObject::~CollectableObject() {
     this->active = false;
 }
+
 void CollectableObject::update(float deltaTime) {
     if (triggerZone) {
         triggerZone->update(deltaTime);
@@ -35,8 +39,8 @@ void CollectableObject::draw() {
 
 }
 
-Rectangle CollectableObject::getHitBox() const {
-    return hitBox;
+std::vector<Rectangle> CollectableObject::getHitBox() const {
+    return {hitBox};
 }
 
 ObjectCategory CollectableObject::getObjectCategory() const {
@@ -47,7 +51,7 @@ std::vector<ObjectCategory> CollectableObject::getCollisionTargets() const {
     return {};
 }
 
-void CollectableObject::checkCollision(const std::vector<std::shared_ptr<Object>>&) {
+void CollectableObject::onCollision(std::shared_ptr<Object> other, Direction direction) {
 }
 
 void CollectableObject::setActive(bool val) {
@@ -78,4 +82,10 @@ void CollectableObject::setPosition(Vector2 newPos) {
 
 ObjectType CollectableObject::getObjectType() const {
     return type;
+}
+bool CollectableObject::isCollectable() const {
+    return canbeCollected;
+}
+void CollectableObject::setCollectable(bool flag) {
+    canbeCollected = flag;
 }

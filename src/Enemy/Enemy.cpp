@@ -7,65 +7,73 @@
 #include "../../include/Enemy/EnemyState.h"
 #include <algorithm>
 #include "../../include/System/Grid.h"
-#include "../../include/System/PhysicsManager.h"
-#include "../../include/System/PhysicsBody.h"
-#include "../../include/Game/GameContext.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include <utility>
-Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f) {
+#include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
+
+Enemy::Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration,Texture2D texture) : position(startPos), active(true), velocity(velocity), accelleration(accelleration), texture(texture), aniTimer(0), aniSpeed(0.2f), collided(false) {
     isalive = true;
     hitbox = { position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE};
     currentState = nullptr; 
+    physicsBody = Box2DWorldManager::getInstance().createEnemyBody(position, { hitbox.width, hitbox.height });
+    if (physicsBody) {
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+    }
 }
-Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f) {
+
+Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(startPos), active(true), velocity({0,0}), accelleration({0,0}), texture(texture), aniTimer(0), aniSpeed(0.2f), collided(false) {
     this->size = size; 
 	isalive = true;
     this->spritebox = { 0, 0, 32, 32}; 
     hitbox = {position.x, position.y,  size.x * GridSystem::GRID_SIZE,
         size.y * GridSystem::GRID_SIZE };
     currentState = nullptr;
-}
-Enemy::~Enemy() {
+    physicsBody = Box2DWorldManager::getInstance().createEnemyBody(position, { hitbox.width, hitbox.height });
+    if (physicsBody) {
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+            b2Filter filter = fixture->GetFilterData();
+            filter.maskBits = static_cast<uint16>(ObjectCategory::ENEMY);
+            filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
+                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE) |
+                static_cast<uint16>(ObjectCategory::ENEMY);
+            fixture->SetFilterData(filter);
+        }
+    }
 }
 
-Rectangle Enemy::getHitBox() const {
-    return hitbox;
+Enemy::~Enemy() {
+    if (physicsBody) {
+        Box2DWorldManager::getInstance().destroyBody(physicsBody);
+        physicsBody = nullptr;
+    }
+}
+
+std::vector<Rectangle> Enemy::getHitBox() const {
+    return {hitbox};
 }
 std::vector<ObjectCategory> Enemy::getCollisionTargets() const 
 {
-	return { ObjectCategory::CHARACTER, ObjectCategory::ENEMY, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE };
+	return { ObjectCategory::CHARACTER, ObjectCategory::BLOCK, ObjectCategory::PROJECTILE};
 }
-void Enemy::applyGravity(float deltaTime) {
-    if (!onGround) {
-        velocity.y +=  980* deltaTime;
-    }
-}
+
 void Enemy::update(float deltaTime)
 {
     aniTimer += deltaTime;
-    DrawText(TextFormat("curFrame: x =%f", curFrame), 700, 700, 12, BLACK);
     if (aniTimer >= aniSpeed) {
         curFrame += 1;
         aniTimer = 0;
     }
     
-    // Sync position and velocity with Box2D physics body
-    auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-        GameContext::getInstance().getSharedPtrFromRaw(this)
-    );
     if (physicsBody) {
-        position = physicsBody->getPosition();
-        velocity = physicsBody->getVelocity();
-        
-        // Update hitbox position
+        b2Vec2 b2Pos = physicsBody->GetPosition();
+        Vector2 bodyPos = Box2DWorldManager::b2ToRaylib(b2Pos);
+        position.x = bodyPos.x - hitbox.width * 0.5f;
+        position.y = bodyPos.y - hitbox.height * 0.5f;
         hitbox.x = position.x;
         hitbox.y = position.y;
-    }
-    
-    // Ground detection is now handled by Box2D contact listener
-    onGround = PhysicsManager::getInstance().isObjectOnGround(
-        GameContext::getInstance().getSharedPtrFromRaw(this)
-    );
+    } 
 }
 
 void Enemy::draw() {
@@ -79,101 +87,41 @@ ObjectCategory Enemy::getObjectCategory() const {
 }
 void Enemy::changeState(EnemyState* other)
 {      
-     if(currentState) currentState->exit(this);
-      currentState =  other; 
-      if(other)   currentState->enter(this);
+    if (currentState == other) {
+        return;
+    }
+
+    if (currentState) {
+        currentState->exit(this);
+    }
+
+    currentState =  other; 
+
+    if (other) {
+        currentState->enter(this);
+    }
 }
+
+void Enemy::flipDirection()
+{
+    isFacingRight ^= 1; 
+}
+
 bool Enemy::isAlive() const {
     return isalive;
 }
-void Enemy::onCollision(std::shared_ptr<Object> other) {
-	if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-            // velocity = {0,0} ;  
-            // accelleration = {0,0};
-    }
-    if (other->getObjectCategory() == ObjectCategory::ENEMY) {
-        // Push enemy away from Mario slightly to prevent sticking
-        Rectangle otherHitBox = other->getHitBox();
-        Vector2 pushDirection = {
-            position.x - otherHitBox.x,
-            position.y - otherHitBox.y
-        };
 
-        // Normalize and apply small push
-        float length = pushDirection.x * pushDirection.x + pushDirection.y * pushDirection.y;
-        if (length > 0) {
-            pushDirection.x /= length;
-            pushDirection.y /= length;
-            position.x += pushDirection.x * 500.0f; // Small push away
-            position.y += pushDirection.y * 500.0f;
-        }
-    }
-}
-void Enemy::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other->getHitBox();
-
-    if (!CheckCollisionRecs(playerHitBox, otherHitBox)) {
-        return;
-    }
-
-    // Calculate overlap amounts for each direction
-    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-
-    const float MIN_OVERLAP = 2.0f;
-
-    if (overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
-        return;
-    }
-
-    float minOverlap = std::min({ overlapTop, overlapBottom, overlapLeft, overlapRight });
-
-    if (minOverlap == overlapTop) {
-        position.y = otherHitBox.y - playerHitBox.height;
-        velocity.y = 0;
-        onGround = true; 
-    }
-    else if (minOverlap == overlapBottom) {
-        position.y = otherHitBox.y + otherHitBox.height;
-        if (velocity.y < 0) {
-            velocity.y = 0;
-        }
-    }
-    else if (minOverlap == overlapLeft && overlapLeft >= MIN_OVERLAP) {
-        position.x = otherHitBox.x - playerHitBox.width;
-        velocity.x *=-1;
-    }
-    else if (minOverlap == overlapRight && overlapRight >= MIN_OVERLAP) {
-        position.x = otherHitBox.x + otherHitBox.width;
-        velocity.x *= -1;
-    }
-}
 bool Enemy::isActive() const {
 	return active;
 }
+
 void Enemy::setVelocity(Vector2 newVelocity) {
-    velocity = newVelocity;
-    
-    // Update Box2D physics body
-    auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-        GameContext::getInstance().getSharedPtrFromRaw(this)
-    );
     if (physicsBody) {
-        physicsBody->setVelocity(newVelocity);
+        physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(newVelocity));
     }
 }
 
 Vector2 Enemy::getVelocity() {
-    // Get velocity from Box2D physics body if available
-    auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-        GameContext::getInstance().getSharedPtrFromRaw(this)
-    );
-    if (physicsBody) {
-        velocity = physicsBody->getVelocity();
-    }
     return velocity;
 }
 
@@ -187,24 +135,18 @@ float Enemy::getSpeed() {
 
 void Enemy::setPosition(Vector2 newPosition) {
     position = newPosition;
-    
-    // Update Box2D physics body
-    auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-        GameContext::getInstance().getSharedPtrFromRaw(this)
-    );
     if (physicsBody) {
-        physicsBody->setPosition(newPosition);
+        physicsBody->SetTransform(Box2DWorldManager::raylibToB2(newPosition), physicsBody->GetAngle());
     }
-    
-    // Update hitbox
-    hitbox.x = position.x;
-    hitbox.y = position.y;
+}
+
+Vector2 Enemy::getDirection() const {
+    return direction;
 }
 
 Vector2 Enemy::getPosition() const {
     return position;
 }
-
 
 void Enemy::setActive(bool flag) {
     active = flag;
@@ -217,7 +159,6 @@ bool Enemy::isCollided() const {
 void Enemy::setCollided(bool flag) {
     collided = flag;
 }
-
 
 float Enemy::getWidth() const {
     return spritebox.width * scale;
@@ -258,6 +199,182 @@ std::vector<std::pair<int, int>> Enemy::getSpriteData() {
    }
 }
 
+
+bool Enemy::isPlayerAtHigherGround() const {
+  
+    float selfBottomY = position.y + hitbox.height;
+    float targetBottomY = targetPosition.y + targetHitboxes.height +5.0f;
+
+    return selfBottomY > targetBottomY;
+}
 Vector2 Enemy::getSize() const {
-    return size;
+    switch(getType()) {
+        case EnemyType::GOOMBA:
+            return Constants::Goomba::standardSize;
+        case EnemyType::GREEN_KOOPA:
+            return  Constants::GreenKoopa::standardSize;
+        case EnemyType::RED_KOOPA:
+			return Constants::RedKoopa::standardSize;
+        default:
+            return {1, 1};
+    }
+}
+void Enemy::setTarget(Vector2 targetPos)
+{
+    this->targetPosition = targetPos;
+}
+bool Enemy::moveToTarget() {
+    NodeType type = getTraverseType();
+    auto& nav = NavGraph::getInstance();
+    Vector2 centerPos = {
+        this->getPosition().x + this->getHitBox()[0].width / 2,
+        this->getPosition().y + this->getHitBox()[0].height / 2
+    };
+    std::shared_ptr<NavGraphNode> curNode = nav.getNearestNode(centerPos, type);
+    std::shared_ptr<NavGraphNode> targetNode = nav.getNearestNode(targetPosition, type);
+    if (!curNode || !targetNode) 
+        return false;
+    bool containsCurrentNode = false;
+    for (const auto& node : currentPath) {
+        if (Vector2Distance(node->getPosition(), curNode->getPosition()) < 1.0f) {
+            containsCurrentNode = true;
+            break;
+        }
+    }
+    bool shouldReplan = (!lastTargetNode||targetNode != lastTargetNode || !containsCurrentNode);
+    if (true) {
+        currentPath = nav.getShortestPath(this, targetPosition, type);
+        pathIndex = 0;
+        lastTargetNode = targetNode;
+        if (currentPath.empty()) return false; 
+        //isTraversing = false;
+    }
+    currentNode = curNode;
+    if (!isTraversing &&  !currentPath.empty() && pathIndex < currentPath.size() - 1) {
+        std::shared_ptr<NavGraphNode> nextNode = currentPath[pathIndex + 1];
+        if (Vector2Distance(nextNode->getPosition(), centerPos) < 0.5f /*std::max(1.f, getWalkVelocity() * GetFrameTime())*/) {
+            ++pathIndex;
+            isTraversing = false;
+        }
+        else {
+            const Edge* edge = nullptr;
+            for (const auto& e : curNode->getNeighbors()) {
+                if (e.toNode == nextNode) {
+                    edge = &e;
+                    break;
+                }
+            }
+            if (edge) {
+                executeTraversal(*edge);
+                onTraversalFinished();
+            }
+        }
+    }
+}
+
+void Enemy::executeTraversal(const Edge& edge) {
+    Vector2 fromPos = {
+           this->getPosition().x + this->getHitBox()[0].width / 2,
+           this->getPosition().y + this->getHitBox()[0].height / 2
+    };
+    Vector2 toPos = edge.toNode->getPosition();
+    switch (edge.direction) {
+    case EdgeDirection::Horizontal:
+    { 
+        physicsBody->SetGravityScale(1);
+        if(curAniName != "Run" || animController.isFinished()) setAnimation("Run");
+        Vector2 dir = Vector2Normalize(Vector2Subtract(toPos, fromPos));
+        this->direction = dir;
+        float moveSpeed = getWalkVelocity() / 2;
+        float distanceToTarget = Vector2Distance(fromPos, toPos);
+        float moveStep = std::min(moveSpeed * GetFrameTime(), distanceToTarget);
+         velocity.x = moveStep * dir.x / GetFrameTime();
+ 
+        break;
+    }
+    case EdgeDirection::Jumping:
+    {
+        DrawText("Jumping", 200, 400, 30, BLUE);
+        jumpTo(toPos, true);
+        break;
+    }
+    case EdgeDirection::Falling:
+    {
+        DrawText("Falling", 200, 400, 30, BLUE);
+        break;
+    }
+    case EdgeDirection::Flying:
+    {
+        if (curAniName != "Flying" || animController.isFinished())  setAnimation("Flying");
+        Vector2 dir = Vector2Subtract(toPos, fromPos);
+        float distanceToTarget = Vector2Length(dir);
+        if (distanceToTarget < 0.001f)
+        {
+            velocity = { 0, 0 };
+            break;
+        }
+        dir = Vector2Scale(dir, 1.0f / distanceToTarget); 
+        float baseSpeed = getWalkVelocity() / 2.0f;
+        float speedMultiplier = std::clamp(distanceToTarget / Constants::TILE_SIZE, 0.4f, 1.0f);
+        float moveSpeed = baseSpeed * speedMultiplier;
+        float moveStep = moveSpeed * GetFrameTime();
+        if (moveStep > distanceToTarget)
+            moveStep = distanceToTarget;
+        velocity = {
+            dir.x * moveSpeed,
+            dir.y * moveSpeed
+        };
+        break;
+    }
+
+    default:
+        break;
+    }
+}
+
+void Enemy::onTraversalFinished() {
+    pathIndex++;
+    if(pathIndex<currentPath.size()) currentNode = currentPath[pathIndex];
+    //setPosition(currentNode->getPosition()); k
+    isTraversing = false;
+}
+float Enemy::jumpTo(Vector2 targetPos, bool apply) {
+    float gravity = 980.0f;
+    float maxWalkSpeed = getWalkVelocity();
+    float maxJumpSpeed = std::fabs(getJumpVelocity());
+    Vector2 startPos = {
+        this->getPosition().x + this->getHitBox()[0].width / 2,
+        this->getPosition().y + this->getHitBox()[0].height / 2
+    };
+    float dx = targetPos.x - startPos.x;
+    float dy = targetPos.y - startPos.y;
+    float minT = 0.01f; 
+    float maxT = 2.0f * maxJumpSpeed / gravity; 
+    float bestT = _FMAX;
+    float bestVx = 0.0f, bestVy = 0.0f;
+    bool found = false;
+    float step = 0.01f;
+    int count = 0; 
+    for (float t = minT; t <= maxT; t += step) {
+        float vy = (dy + 0.5f * gravity * t * t) / t;
+        float vx = dx / t;
+        if (std::fabs(vx) <= maxWalkSpeed && std::fabs(vy) <= maxJumpSpeed) {
+            if (count == 0)
+            {
+                count++;
+                continue;
+            }
+            bestT = t;
+            bestVx = vx;
+            bestVy = vy;
+            found = true;
+            break; 
+        }
+    }
+
+    if (found && apply) {
+        this->velocity = { bestVx, bestVy };
+    }
+    
+    return found ? bestT : _FMAX;
 }

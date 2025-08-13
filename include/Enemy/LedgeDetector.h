@@ -11,11 +11,10 @@ public:
     ~LedgeDetector();
     void update(Enemy* enemy, float deltaTime);
 
-    Rectangle getHitBox() const ;
+    std::vector<Rectangle> getHitBox() const ;
     ObjectCategory getObjectCategory() const ;
     std::vector<ObjectCategory> getCollisionTargets() const;
-    void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates);
-    void onCollision(std::shared_ptr<Object> other);
+    void onCollision(std::shared_ptr<Object> other, Direction direction);
     bool isNearLedge() const;
 	LedgeDetector& getInstance();
 

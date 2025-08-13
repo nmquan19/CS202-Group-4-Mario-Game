@@ -2,38 +2,59 @@
 #include "..\..\include\Characters\IdleState.h"
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
+#include "../../include/Characters/StunnedState.h"
+#include "../../include/Characters/KnockedState.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
-#include "../../include/System/PhysicsManager.h"
-#include "../../include/System/PhysicsBody.h"
+#include "../../include/Enemy/Enemy.h"
+#include "../../include//Item/Item.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include "../../include/Game/GameContext.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <variant>
+#include <memory>
 
-Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, float scale)
-	: characterType(type), velocity({ 0, 0 }), scale(scale), hp(5), projectile(nullptr), holdingProjectile(false),
-	invincibleTimer(0), invincibleTime(2.0f),
-	facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
+Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, PlayerID id, Vector2 size) 
+	: characterType(type), id(id), hp(1), invincibleTimer(0), 
+	reviveTimer(0), facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
-	this->position = startPosition;
-	this->speed = stats.baseSpeed;
-	this->jumpForce = stats.jumpForce;
-	this->gravity = Constants::GRAVITY;
 	this->stateFrameData = stateFrameData;
 	this->spriteSheet = TextureManager::getInstance().getCharacterTexture();
+	this->speed = stats.baseSpeed;
+	this->jumpVel = stats.jumpVel;
+	this->size = size;
 
-    if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
-        setCurrentStateRow(0);
-    }
+	if (!stateFrameData.empty() && !stateFrameData[0].empty()) {
+		setCurrentStateRow(0);
+	}
 
+	physicsBody = Box2DWorldManager::getInstance().createCharacterBody(startPosition, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
+	if (physicsBody) {
+		physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+		for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+			b2Filter filter = fixture->GetFilterData();
+			filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);
+			filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::CHARACTER) |
+				static_cast<uint16>(ObjectCategory::ENEMY) | static_cast<uint16>(ObjectCategory::INTERACTIVE) | 
+				static_cast<uint16>(ObjectCategory::ITEM) | static_cast<uint16>(ObjectCategory::SHELL) | 
+				static_cast<uint16>(ObjectCategory::PROJECTILE);
+			fixture->SetFilterData(filter);
+		}
+	}
+
+	powerState = PowerState::SMALL;
     currentState = &IdleState::getInstance();
     currentState->enter(this);
 }
 
 Character::~Character() {
-	
+	if (physicsBody) {
+		Box2DWorldManager::getInstance().destroyBody(physicsBody);
+		physicsBody = nullptr;
+	}
 }
 
 void Character::changeState(ICharacterState& newState) {
@@ -46,6 +67,9 @@ void Character::changeState(ICharacterState& newState) {
 
 void Character::update(float deltaTime) {
 	if (currentState) {
+		InputState input = InputState::fromPlayer(this->id);
+		currentState->handleInput(this, input);
+		currentState->checkTransitions(this, input);
 		currentState->update(this, deltaTime);
 	}
 
@@ -53,68 +77,44 @@ void Character::update(float deltaTime) {
 	if(aniTimer >= aniSpeed){
 		currentFrame = (currentFrame + 1) % stateFrameData[currentStateRow].size();
 		spriteRec = getCurrentStateFrame();
-		updateHitBox();
 		aniTimer = 0;
 	}
 
 	if(invincibleTimer > 0) {
 		invincibleTimer -= deltaTime;		
 	}
-
-	if(holdingProjectile && projectile != nullptr) {
-		if(IsKeyPressed(KEY_X)) {
-			Vector2 throwDirection = isFacingRight() ? Vector2{300.0f, -100.0f} : Vector2{-300.0f, -100.0f};
-			
-			// Get physics body and apply force
-			auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-				GameContext::getInstance().getSharedPtrFromRaw(projectile)
-			);
-			if (physicsBody) {
-				physicsBody->setVelocity(throwDirection);
-			}
-			
-			setHoldingProjectile(false);
-			projectile = nullptr;
-		}
-	}
-
-	if(projectile) {
-		projectile->update(deltaTime);
-	}
-	
-	// Note: Physics (gravity, position updates) are now handled by Box2D
-	// We just need to sync our position with the physics body
-	auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-		GameContext::getInstance().getSharedPtrFromRaw(this)
-	);
-	if (physicsBody) {
-		position = physicsBody->getPosition();
-		velocity = physicsBody->getVelocity();
-	}
 }
 
 void Character::draw() {
 	Rectangle sourceRec = spriteRec;
 
-	if(!isFacingRight()){
+	if (!isFacingRight()) {
 		sourceRec.width = -sourceRec.width;
 	}
 
+	Vector2 centerPosition = Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
+	Vector2 drawPosition = { centerPosition.x - size.x * Constants::TILE_SIZE * 0.5f,
+		centerPosition.y - size.y * Constants::TILE_SIZE * 0.5f };
+	Rectangle reference = stateFrameData[0][0];
+
 	Rectangle destRec = {
-		position.x,
-		position.y,
-		abs(sourceRec.width) * scale,
-		sourceRec.height * scale
+		drawPosition.x,
+		drawPosition.y + size.y * Constants::TILE_SIZE - spriteRec.height / reference.height * size.y * Constants::TILE_SIZE,
+		spriteRec.width / reference.width * size.x * Constants::TILE_SIZE,
+		spriteRec.height / reference.height * size.y * Constants::TILE_SIZE
 	};
 
-	DrawTexturePro(spriteSheet, sourceRec, destRec, {0, 0}, 0.0f, WHITE);
-	std::string s = "hp: " + std::to_string(hp);
-	DrawText(s.c_str(), 20, 460, 25, BLACK);
-
-	if(holdingProjectile && projectile != nullptr) {
-		DrawText("holding projectile", 20, 540, 25, BLACK);
-		projectile->draw();
-	}
+	DrawTexturePro(spriteSheet, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
+	Vector2 indicatorSize = MeasureTextEx(GetFontDefault(), id == PlayerID::PLAYER_01 ? "P1" : "P2", 20.0f, 1.5f);
+	DrawTextPro(GetFontDefault(),
+		id == PlayerID::PLAYER_01 ? "P1" : "P2",
+		Vector2(destRec.x + destRec.width * 0.5f - indicatorSize.x * 0.5f, destRec.y - indicatorSize.y * 0.5f - 10.0f),
+		Vector2{ 0, 0 },
+		0.0f,
+		20.0f,
+		1.5f,
+		BLACK
+	);
 }
 
 Rectangle Character::getCurrentStateFrame() const{
@@ -137,7 +137,6 @@ void Character::setCurrentStateRow(int newRow){
 		currentStateRow = newRow;
 		currentFrame = 0;
 		spriteRec = getCurrentStateFrame();
-		updateHitBox();
 	} 
 }
 
@@ -153,53 +152,37 @@ void Character::setAniSpeed(float newSpeed){
 	aniSpeed = newSpeed;
 }
 
-void Character::setOnGround(bool flag){
-	onGround = flag;
-}
-
 bool Character::isOnGround() const{
-	return onGround;
+	return groundContactCount > 0;
 }
 
 void Character::jump(){
-	if(onGround){
-		// Use Box2D physics for jumping
-		auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-			GameContext::getInstance().getSharedPtrFromRaw(this)
-		);
-		if (physicsBody) {
-			Vector2 currentVel = physicsBody->getVelocity();
-			currentVel.y = -jumpForce;
-			physicsBody->setVelocity(currentVel);
-		}
-		setOnGround(false);
+	if (isOnGround()) {
+		b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+		float mass = this->physicsBody->GetMass();
+		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-jumpVel - currentVel.y)), true);
+		groundContactCount = 0;
 	}
 }
 
-void Character::applyGravity(float deltaTime){
-	// Gravity is now handled by Box2D physics world
-	// This method is kept for compatibility but does nothing
+void Character::addGroundContact() {
+	groundContactCount++;
+}
+
+void Character::removeGroundContact() {
+	groundContactCount--;
 }
 
 void Character::setVelocity(Vector2 newVelocity){
 	velocity = newVelocity;
-	
-	// Update Box2D physics body
-	auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-		GameContext::getInstance().getSharedPtrFromRaw(this)
-	);
 	if (physicsBody) {
-		physicsBody->setVelocity(newVelocity);
+		physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(newVelocity));
 	}
 }
 
 Vector2 Character::getVelocity(){
-	// Get velocity from Box2D physics body if available
-	auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-		GameContext::getInstance().getSharedPtrFromRaw(this)
-	);
 	if (physicsBody) {
-		velocity = physicsBody->getVelocity();
+		velocity = Box2DWorldManager::b2ToRaylib(physicsBody->GetLinearVelocity());
 	}
 	return velocity;
 }
@@ -214,20 +197,19 @@ float Character::getSpeed(){
 
 void Character::setPosition(Vector2 newPosition){
 	position = newPosition;
-	
-	// Update Box2D physics body
-	auto physicsBody = PhysicsManager::getInstance().getPhysicsBody(
-		GameContext::getInstance().getSharedPtrFromRaw(this)
-	);
 	if (physicsBody) {
-		physicsBody->setPosition(newPosition);
+		physicsBody->SetTransform(Box2DWorldManager::raylibToB2(newPosition), physicsBody->GetAngle());
 	}
 }
 
 Vector2 Character::getPosition() const {
 	return position;
 }
-
+Vector2 Character::getCenterPos()const
+{
+	return Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
+	
+}
 bool Character::isFacingRight() const {
 	return facingRight;
 }
@@ -236,13 +218,15 @@ void Character::setFacingRight(bool flag) {
 	facingRight = flag;
 }
 
-void Character::updateHitBox(){
-	hitBoxWidth = spriteRec.width * scale;
-	hitBoxHeight = spriteRec.height * scale;
-}
-
-Rectangle Character::getHitBox() const {
-	return {position.x, position.y, hitBoxWidth, hitBoxHeight};
+std::vector<Rectangle> Character::getHitBox() const {
+	Vector2 centerPosition = Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
+	Rectangle hitbox = {
+		centerPosition.x - size.x * Constants::TILE_SIZE * 0.5f,
+		centerPosition.y - size.y * Constants::TILE_SIZE * 0.5f,
+		size.x * Constants::TILE_SIZE,
+		size.y * Constants::TILE_SIZE
+	};
+	return {hitbox};
 }
 
 bool Character::isActive() const {
@@ -274,114 +258,28 @@ ObjectCategory Character::getObjectCategory() const {
 }
 
 std::vector<ObjectCategory> Character::getCollisionTargets() const {
-	return { ObjectCategory::BLOCK, ObjectCategory::ITEM, ObjectCategory::ENEMY };
+	return { ObjectCategory::BLOCK, ObjectCategory::ITEM, ObjectCategory::ENEMY, ObjectCategory::INTERACTIVE, ObjectCategory::SHELL };
 }
 
-void Character::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) {
-	for (auto candidate : candidates) {
-		switch(candidate->getObjectCategory()) {
-			case ObjectCategory::ENEMY:
-				handleEnemyCollision(candidate);
-				takeDamage(1);
-				break;
-			case ObjectCategory::BLOCK:
-				handleEnvironmentCollision(candidate);
-				break;
-			case ObjectCategory::PROJECTILE:
-				// implement
-				//position =  Vector2{position.x - 50, position.y - 20};
-				break;
-			case ObjectCategory::ITEM:
-				// implement 
-				break;
-		}
+void Character::onCollision(std::shared_ptr<Object> other, Direction direction) {
+	switch (other->getObjectCategory()) {
+	case ObjectCategory::PROJECTILE:
+	case ObjectCategory::ENEMY:
+		handleEnemyCollision(other, direction);
+		break;
+	case ObjectCategory::BLOCK:
+		handleEnvironmentCollision(other, direction);
+		break;
+	case ObjectCategory::INTERACTIVE:
+		handleInteractiveCollision(other, direction);
+		break;
+	case ObjectCategory::SHELL:
+		invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_STRIKE;
+		break;
+	case ObjectCategory::ITEM:
+		// implement 
+		break;
 	}
-}
-
-
-void Character::onCollision(std::shared_ptr<Object> other) {}
-
-void Character::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    Rectangle playerHitBox = getHitBox();
-    Rectangle otherHitBox = other->getHitBox();
-
-    float overlapLeft = (playerHitBox.x + playerHitBox.width) - otherHitBox.x;
-    float overlapRight = (otherHitBox.x + otherHitBox.width) - playerHitBox.x;
-    float overlapTop = (playerHitBox.y + playerHitBox.height) - otherHitBox.y;
-    float overlapBottom = (otherHitBox.y + otherHitBox.height) - playerHitBox.y;
-    
-	const float MIN_OVERLAP = 2.0f;
-
-	if(overlapTop < MIN_OVERLAP && overlapBottom < MIN_OVERLAP && overlapLeft < MIN_OVERLAP && overlapRight < MIN_OVERLAP) {
-		return;
-	}
-	float minOverlap = std::min({overlapTop, overlapBottom, overlapLeft, overlapRight});
-
-	if(minOverlap == overlapTop) {
-		position.y = otherHitBox.y - playerHitBox.height;
-		velocity.y = 0;
-		setOnGround(true);
-	}
-	else if(minOverlap == overlapBottom) {
-		position.y = otherHitBox.y + otherHitBox.height;
-		if(velocity.y < 0) {
-			velocity.y = 0;
-		}
-	}
-	else if(minOverlap == overlapLeft && overlapLeft >= MIN_OVERLAP) {
-		position.x = otherHitBox.x - playerHitBox.width;
-		velocity.x = 0;
-	}
-	else if (minOverlap == overlapRight && overlapRight >= MIN_OVERLAP) {
-		position.x = otherHitBox.x + otherHitBox.width;
-		velocity.x = 0;
-	}
-}
-
-void Character::handleEnemyCollision(std::shared_ptr<Object> other) {
-    Rectangle characterHitbox = getHitBox();
-    Rectangle otherHitbox = other->getHitBox();
-
-    float overlapLeft = (characterHitbox.x + characterHitbox.width) - otherHitbox.x;
-    float overlapRight = (otherHitbox.x + otherHitbox.width) - characterHitbox.x;
-    float overlapTop = (characterHitbox.y + characterHitbox.height) - otherHitbox.y;
-    float overlapBottom = (otherHitbox.y + otherHitbox.height) - characterHitbox.y;
-
-    float minOverlap = std::min({overlapLeft, overlapRight, overlapTop, overlapBottom});
-
-    if (minOverlap == overlapTop) {
-        DrawText("deal damage", 50, 200, 30, BLACK);
-		invincibleTimer = 0.2f;
-        velocity.y = -200.0f;
-        setOnGround(false);
-    }
-    else {
-		DrawText("got hit", 50, 200, 30, BLACK);
-    }
-}
-
-float Character::getBottom() const {
-	return position.y + spriteRec.height * scale;
-}
-
-float Character::getWidth() const {
-	return spriteRec.width * scale;
-}
-
-float Character::getHeight() const {
-	return spriteRec.height * scale;
-}
-
-float Character::getCenterX() const {
-	return position.x + (spriteRec.width * scale) / 2;
-}
-
-float Character::getCenterY() const {
-	return position.y + (spriteRec.height * scale) / 2;
-}
-
-Vector2 Character::getCenter() const {
-	return Vector2{getCenterX(), getCenterY()};
 }
 
 void Character::takeDamage(int amount) {
@@ -389,7 +287,7 @@ void Character::takeDamage(int amount) {
 		return;
 	}
 	hp -= amount;
-	invincibleTimer = invincibleTime;
+	changeState(StunnedState::getInstance());
 }
 
 bool Character::isAlive() const {
@@ -400,14 +298,40 @@ void Character::die() {
 
 }
 
-void Character::setHoldingProjectile(bool flag) {
-	holdingProjectile = flag;
+void Character::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction) {
+	if (direction == Direction::DOWN) {
+		addGroundContact();
+	}
 }
 
-bool Character::isHoldingProjectile() const {
-	return holdingProjectile;
+void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction direction) {
+	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+	if (direction == Direction::DOWN) {
+		float mass = physicsBody->GetMass();
+		physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY - currentVel.y)), true);
+		changeState(JumpingState::getInstance());
+		invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_STRIKE;
+	}
+	else {
+		takeDamage(1);
+	}
 }
 
-void Character::holdProjectile(KoopaShell& p) {
-	projectile = &p;
+void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction) {
+    ObjectType objectType = other->getObjectType();
+    if (auto* interactiveType = std::get_if<InteractiveType>(&objectType)) {
+        switch (*interactiveType) {
+		case InteractiveType::SPRING:	
+			handleSpringCollision(std::dynamic_pointer_cast<Spring>(other), direction);
+        }
+    }
+}
+
+void Character::handleSpringCollision(std::shared_ptr<Object> other, Direction direction) {
+	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+	if (direction == Direction::DOWN) {
+		float mass = this->physicsBody->GetMass();
+		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Spring::BOUNCE_VELOCITY - currentVel.y)), true);
+		changeState(JumpingState::getInstance());
+	}
 }

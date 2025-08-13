@@ -10,48 +10,44 @@
 #include <vector>
 #include <algorithm>
 #include "../../../include/Enemy/LedgeDetector.h"
-#include "../../../include/System/PhysicsManager.h"
-#include "../../../include/System/PhysicsFactory.h"
 #include <memory>
 #include <utility>
 Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures)
 {
+    HP = 1;
     stompedAnimation = false;
-    isFacingRight = velocity.x > 0;
-
-    ledgeDetector = std::make_shared<LedgeDetector>(1000.0f);
-    // Create physics body for ledge detector using trigger body
-    auto ledgeBodyInfo = PhysicsFactory::createTriggerBody(startPos, {1.0f, 10.0f});
-    PhysicsManager::getInstance().addObject(ledgeDetector, ledgeBodyInfo);
+    isFacingRight = false;
+    ledgeDetector = nullptr;
 }
-Koopa::~Koopa()
-{
-	
-    if (ledgeDetector) {
-        PhysicsManager::getInstance().markForDeletion(std::move(ledgeDetector));
-    }
+Koopa::~Koopa() {	
     
-
 }
-Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size), ledgeDetector(std::make_shared<LedgeDetector>(10.0f))
+
+Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size)
 {
     stompedAnimation = false;
-    isFacingRight = velocity.x >= 0;
-    ledgeDetector = std::make_shared<LedgeDetector>(10.0f);
-    // Create physics body for ledge detector using trigger body
-    auto ledgeBodyInfo = PhysicsFactory::createTriggerBody(startPos, {1.0f, 10.0f});
-    PhysicsManager::getInstance().addObject(ledgeDetector, ledgeBodyInfo);
+    isFacingRight = false;
+    ledgeDetector = nullptr;
 }
 
-void Koopa::onCollision(std::shared_ptr<Object> other) {
-
-    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        this->changeState(&KoopaStompedState::GetInstance());
+void Koopa::onCollision(std::shared_ptr<Object> other, Direction dir) {
+    switch (other->getObjectCategory()) {
+    case ObjectCategory::CHARACTER:
+        if (dir == Direction::UP) {
+            this->changeState(&KoopaStompedState::GetInstance());
+        }
+    case ObjectCategory::ENEMY:
+    case ObjectCategory::INTERACTIVE:
+    case ObjectCategory::BLOCK:
+        handleEnvironmentCollision(other, dir);
+        break;
+    case ObjectCategory::PROJECTILE:
+        this->changeState(&KoopaKnockState::GetInstance());
+        break;
     }
 }
+
 void Koopa::draw() {
-
-
     Rectangle source = spritebox;
     Rectangle dest = hitbox;
     if (knockAnimation && velocity.y > 0) {
@@ -70,99 +66,58 @@ void Koopa::draw() {
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
 }
 
-void Koopa::checkCollision(const std::vector<std::shared_ptr<Object>>& candidates)
-{
-    // Physics system now handles collision detection through ContactListener
-    // This method can be simplified or used for additional game logic
-    for (auto candidate : candidates) {
-        switch (candidate->getObjectCategory()) {
-        case ObjectCategory::BLOCK:
-            // Environment collision is handled by physics system
-            break;
-        case ObjectCategory::PROJECTILE:
-            // Projectile collision is handled by physics system
-            this->changeState(&KoopaKnockState::GetInstance());
-            break;
-        case ObjectCategory::CHARACTER:
-            // Character collision is handled by physics system
-            break;
-        }
+void Koopa::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction dir) {
+    b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+    switch (dir) {
+    case Direction::LEFT:
+        isFacingRight = true;
+        this->physicsBody->SetLinearVelocity(b2Vec2(abs(currentVel.x), currentVel.y));
+        break;
+    case Direction::RIGHT:
+        this->physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
+        isFacingRight = false;
+        break;
     }
 }
-void Koopa::handleCharacterCollision(std::shared_ptr<Object> other) {
-    // Character collision is now handled by the ContactListener in the physics system
-    // This method can be used for additional game logic if needed
-    // The actual collision response (stomping, damage, etc.) is handled in ContactListener
-}
 
-void Koopa::handleEnvironmentCollision(std::shared_ptr<Object> other) {
-    // Environment collision is now handled by the physics system
-    // The physics system will automatically handle:
-    // - Collision detection and response
-    // - Position correction
-    // - Velocity changes for bouncing off walls
-    // - Ground detection
-    
-    // If you need custom behavior, you can check collision normals from the ContactListener
-    // or add game-specific logic here that doesn't interfere with physics
-}
 void Koopa::die()   
 {
 }
-void Koopa::takeDamage(int amount) {
 
+void Koopa::takeDamage(int amount) {
+    HP -= amount;
+    this->changeState(&KoopaStompedState::GetInstance());
+    if (HP <= 0) {
+        die();
+    }
 }
 
 void Koopa::update(float deltaTime) {
-
-    if (!ledgeDetector->isNearLedge())
-    {
-        isFacingRight ^= 1;
-        velocity.x *= -1;
-        setVelocity(velocity); // Update physics body velocity
+    if (ledgeDetector) {
+        if (!ledgeDetector->isNearLedge())
+        {
+            isFacingRight ^= 1;
+            b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+            physicsBody->SetLinearVelocity(b2Vec2(-currentVel.x, currentVel.y));
+        }
+        ledgeDetector->update(this, deltaTime);
     }
-    ledgeDetector->update(this, deltaTime);
 
     Enemy::update(deltaTime);
-    
-    // Gravity is now handled by the physics system, so we don't need to apply it manually
-    // unless the object is stomped and should be static
-    if (!stompedAnimation) {
-        // Let physics handle gravity
-    }
-    
-    if (currentState)
-    {
+
+    if (currentState) {
         currentState->update(this, deltaTime);
         currentState->checkCondition(this);
-    }
-    
-    // Position is now updated by the physics system in Enemy::update()
-    // Boundary checking should ideally be handled by world boundaries in physics system
-    // But we can keep this as a fallback
-    if (position.x < 0)
-    {
-        position.x = 0;
-        velocity.x *= -1;
-        isFacingRight = true;
-        setVelocity(velocity); // Update physics body
-    }
-    if (position.x > 1920 - hitbox.width)
-    {
-        position.x = 1920 - hitbox.width;
-        velocity.x *= -1;
-        isFacingRight = false;
-        setVelocity(velocity); // Update physics body
     }
 }
 
 GreenKoopa::GreenKoopa(Vector2 startPos, Vector2 size) : Koopa(startPos, size) {
     changeState(&KoopaWanderingState::GetInstance());
-
+    spritebox = TextureManager::Enemy_sprite_boxes[45];
  }
 GreenKoopa::GreenKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Koopa(startPos, velocity, accelleration) {
     changeState(&KoopaWanderingState::GetInstance());
-
+    spritebox = TextureManager::Enemy_sprite_boxes[45];
 }
 EnemyType GreenKoopa::getType() const {
     return EnemyType::GREEN_KOOPA;
@@ -170,11 +125,11 @@ EnemyType GreenKoopa::getType() const {
 
 RedKoopa::RedKoopa(Vector2 startPos, Vector2 size) : Koopa(startPos, size) {
     changeState(&KoopaWanderingState::GetInstance());
-
+    spritebox = TextureManager::Enemy_sprite_boxes[53];
 }
 RedKoopa::RedKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Koopa(startPos, velocity, accelleration) {
     changeState(&KoopaWanderingState::GetInstance());
-
+    spritebox = TextureManager::Enemy_sprite_boxes[53];
 }
 EnemyType RedKoopa::getType() const {
     return EnemyType::RED_KOOPA;

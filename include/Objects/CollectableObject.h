@@ -13,15 +13,16 @@ public:
     CollectableObject(Vector2 pos, Vector2 sz, Texture2D texture);
     virtual ~CollectableObject();
 
-    virtual void onCollect(Character* player) = 0;
+    virtual void onCollect(Character* 
+    ) = 0;
 
     virtual void update(float deltaTime) override;
     virtual void draw() override;
 
-    Rectangle getHitBox() const override;
+    std::vector<Rectangle> getHitBox() const override;
     virtual ObjectCategory getObjectCategory() const override;
     virtual std::vector<ObjectCategory> getCollisionTargets() const override;
-    virtual void checkCollision(const std::vector<std::shared_ptr<Object>>&) override;
+    virtual void onCollision(std::shared_ptr<Object> other, Direction direction);
     void applyGravity(float deltaTime);
 
     void setActive(bool val) override;
@@ -32,11 +33,16 @@ public:
 
     Vector2 getPosition() const override;
     void setPosition(Vector2 newPos) override;  
-
+	void setCollectable(bool c);
+	bool isCollectable() const;
     ObjectType getObjectType() const;
+    //virtual void onRelease() {} 
 protected:
+	bool canbeCollected = true; 
     Texture2D texture;   
     ItemType type = ItemType::COIN;
 	Rectangle hitBox;
-    std::unique_ptr<TriggerZone> triggerZone = nullptr;
+    std::shared_ptr<TriggerZone> triggerZone = nullptr;
 };
+
+

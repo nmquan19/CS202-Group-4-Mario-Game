@@ -1,53 +1,72 @@
-#pragma once
+#pragma once  
 
-#include <vector>
-#include <memory>
-#include "../System/Interface.h"
-#include <raylib.h>
-class Block;
-class Character;
-struct CharacterStats;
-class Enemy; 
-class KoopaShell;
-class Object : public ICollidable, public IDrawable {
-public:
-	virtual ~Object() = default;
-	virtual bool isActive() const = 0;
-	virtual void setActive(bool) = 0;
-	virtual bool isCollided() const = 0;
-	virtual void setCollided(bool) = 0;
-	virtual Vector2 getPosition() const = 0;
-	virtual void setPosition(Vector2 newPos) = 0;
-	virtual Vector2 getSize() const = 0;
+#include <vector>  
+#include <memory>  
+#include "../System/Interface.h"  
+#include "../System/Constant.h"
+#include <raylib.h>  
+#include "box2d/box2d.h"
+#include "../System/Grid.h"
 
-	virtual void draw() override = 0;
+class Item;  
+class Block;  
+class Character;  
+struct CharacterStats;  
+class Enemy;  
+class KoopaShell;  
+class Projectile;
 
-	virtual Rectangle getHitBox() const override = 0;
-	virtual ObjectCategory getObjectCategory() const override = 0;
-	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;
-	virtual void checkCollision(const std::vector<std::shared_ptr<Object>>& candidates) override = 0;
-	void onCollision(std::shared_ptr<Object> other) override = 0;
-	int getCollidedPart(const Object& other);
-	virtual ObjectType getObjectType() const = 0;
-	
-protected:
+class Object : public ICollidable, public IDrawable {  
+public: 
+	virtual ~Object();  
+	virtual bool isActive() const = 0;  
+	virtual void setActive(bool) = 0;  
+	virtual bool isCollided() const = 0;  
+	virtual void setCollided(bool) = 0;  
+	virtual Vector2 getPosition() const {
+		return position;
+	}
+	virtual void setPosition(Vector2 newPos) = 0;  
+	virtual Vector2 getSize() const = 0;  
+
+	virtual void draw() override = 0;  
+
+	virtual std::vector<Rectangle> getHitBox() const override = 0;  
+	virtual ObjectCategory getObjectCategory() const override = 0;  
+	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;  
+	virtual void onCollision(std::shared_ptr<Object> other, Direction direction) override = 0;   
+	virtual ObjectType getObjectType() const = 0;  
+
+	b2Body* getPhysicsBody() const {return physicsBody;}
+	Vector2 getGridPos() const { return gridPosition; }
+	void setGridPos(Vector2 gridPos) { gridPosition = gridPos; }
+protected:  
 	Vector2 position;
+	Vector2 centerPosition; // Center position for circular movement
 	Vector2 size;
 	bool active = true;
 	bool collided = false;
-};
+	b2Body* physicsBody;
+	Vector2 gridPosition = { 0, 0 };
+};  
 
 class ObjectFactory {
 public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
-	static std::unique_ptr<Object> createCharacter(CharacterType type, Vector2 startPosition, float scale = 4.0f);
+	static std::unique_ptr<Object> createCharacter(CharacterType type, PlayerID id, Vector2 startPosition);
+	static std::unique_ptr<Object> createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size = Constants::Projectile::STANDARD_SIZE);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
+	static std::unique_ptr<Object> createSpring(Vector2 position, Vector2 size = Constants::Spring::STANDARD_SIZE);
+	static std::unique_ptr<Object> createItem(ItemType type, Vector2 startPos, Vector2 size);
+	static std::unique_ptr<Object> createTorch(Vector2 position, Vector2 size = Constants::Torch::STANDARD_SIZE, float brightness = Constants::Torch::STANDARD_BRIGHTNESS, float radius = Constants::Torch::STANDARD_LIGHT_RADIUS, Color innerColor = { 48,252,244,255 }, Color outerColor = { 0,171,254,255 });
+
 private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
-	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, Vector2 startPosition, float scale);
-	static std::unique_ptr<KoopaShell> createSpecificKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
+	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size);
+	static std::unique_ptr<Item> createSpecificItem(ItemType type, Vector2 startPos, Vector2 size);
+	static std::unique_ptr<Projectile> createSpecificProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size);
 	static CharacterStats getStats(CharacterType type);
     static std::vector<std::vector<Rectangle>> getFrameData(CharacterType type);
 };

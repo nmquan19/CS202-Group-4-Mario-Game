@@ -2,51 +2,67 @@
 #include "..\..\include\Characters\MovingState.h"
 #include "..\..\include\Characters\JumpingState.h"
 #include "..\..\include\Characters\Character.h"
+#include "../../include/System/Box2DWorldManager.h"
+#include "../../include/Characters/AttackState.h"
+#include "../../include/Characters/SmallTransformState.h"
 
 void JumpingState::enter(Character* character){
     character->setAniTime(0);
-    character->setAniSpeed(0.2f);
+    character->setAniSpeed(0.3f);
     character->setCurrentStateRow(2);
-
-    character->jump();
 }
 
-void JumpingState::update(Character* character, float deltaTime){
-    Vector2 currentVel = character->getVelocity();
-    float airSpeed = character->getSpeed() * 0.7f; // reduce air control
+void JumpingState::update(Character* character, float deltaTime) {
 
-    if(IsKeyDown(KEY_A)){
-        character->setVelocity({-airSpeed, currentVel.y});
+}
+
+void JumpingState::exit(Character* character){
+
+}
+
+void JumpingState::handleInput(Character* character, const InputState& input) {
+    if (character->powerState == PowerState::FIRE) {
+        if (input.attack) {
+            character->changeState(AttackState::getInstance());
+        }
+        if (character->projectilesLeft <= 0 && character->attackTimer < 0) {
+            character->changeState(SmallTransformState::getInstance());
+        }
+    }
+
+    b2Vec2 currentVel = character->physicsBody->GetLinearVelocity();
+    float speed = character->getSpeed();
+    float airControlFactor = 0.8f;
+
+    if (input.moveLeft) {
+        character->physicsBody->SetLinearVelocity(b2Vec2(-speed * airControlFactor, currentVel.y));
         character->setFacingRight(false);
     }
-    else if(IsKeyDown(KEY_D)){
-        character->setVelocity({airSpeed, currentVel.y});
+    else if (input.moveRight) {
+        character->physicsBody->SetLinearVelocity(b2Vec2(speed * airControlFactor, currentVel.y));
         character->setFacingRight(true);
     }
-    else{
-        // if the player press a button and then dont press anymore the horizontal velocity is gradually reduced.
-        character->setVelocity({currentVel.x * 0.95f, currentVel.y});
+    else {
+        character->physicsBody->SetLinearVelocity(b2Vec2(currentVel.x * 0.95f, currentVel.y));
     }
 
-    // if the user hold the space for long time -> long jump, else -> short jump
-    if (IsKeyReleased(KEY_SPACE) && currentVel.y < 0) {
-        Vector2 vel = character->getVelocity();
-        vel.y *= 0.5f; // Cut jump short
-        character->setVelocity(vel);
-    }
-
-    // Check landing
-    if (character->isOnGround() && currentVel.y >= 0) {
-        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) {
-            character->changeState(MovingState::getInstance());
-        } else {
-            character->changeState(IdleState::getInstance());
-        }
-        return;
+    if (input.jumpReleased && currentVel.y < 0) {
+        b2Vec2 newVel = character->physicsBody->GetLinearVelocity();
+        newVel.y *= 0.5f;
+        character->physicsBody->SetLinearVelocity(newVel);
     }
 }
 
-void JumpingState::exit(Character* character){}
+void JumpingState::checkTransitions(Character* character, const InputState& input) {
+    if (character->isOnGround()) {
+        if (input.moveLeft || input.moveRight) {
+            character->changeState(MovingState::getInstance());
+        }
+        else {
+            character->changeState(IdleState::getInstance());
+        }
+    }
+}
 
 JumpingState& JumpingState::getInstance() {
     static JumpingState instance;

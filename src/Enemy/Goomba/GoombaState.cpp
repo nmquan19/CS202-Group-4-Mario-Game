@@ -5,28 +5,34 @@
 #include "../../../include/System/TextureManager.h"
 #include "../../../include/Game/GameContext.h"
 #include "../../../include/System/Constant.h"
+#include "../../../include/System/Box2DWorldManager.h"
 #include <raylib.h>
 
 void GoombaWanderingState::checkCondition(Enemy* enemy)
 {
 
 }
+
 void GoombaWanderingState::enter(Enemy* enemy)
 {
-
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
 
-    goomba->velocity.x = Constants::Goomba::WANDERING_SPEED;
+    if (goomba->physicsBody) {
+        b2Vec2 currentVel = goomba->physicsBody->GetLinearVelocity();
+        goomba->physicsBody->SetLinearVelocity(b2Vec2(-Box2DWorldManager::raylibToB2(Constants::Goomba::WANDERING_SPEED), currentVel.y));
+    }
     goomba->curFrame = 0;
-    //    std::cout<<goomba->getSpriteData()[0].first<<"\n";
+
     goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->getSpriteData()[0].first];
 }
+
 void GoombaWanderingState::exit(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
     goomba->curFrame = (goomba->getSpriteData()[Idle].second - goomba->getSpriteData()[Idle].first) ;
     goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->getSpriteData()[0].first + goomba->curFrame];
 }
+
 void GoombaWanderingState::update(Enemy* enemy, float deltaTime)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
@@ -43,12 +49,15 @@ GoombaWanderingState& GoombaWanderingState::GetInstance() {
 void GoombaStompedState::enter(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    goomba->velocity = { 0,0 };
+    goomba->physicsBody->SetLinearVelocity(b2Vec2(0, 0));
     goomba->curFrame = 0;
     goomba->active = false;
     goomba->stompedAnimation = true;
+    goomba->stompedTime = 0.0f;
     goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->getSpriteData()[2].first];
+
 }
+
 void GoombaStompedState::checkCondition(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
@@ -59,12 +68,15 @@ void GoombaStompedState::checkCondition(Enemy* enemy)
         goomba->changeState(nullptr);
     }
 }
+
 void GoombaStompedState::exit(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
     goomba->isalive = false;
+    //std::cout << goomba->stompedTime << std::endl;
     GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(goomba));
 }
+
 void GoombaStompedState::update(Enemy* enemy, float deltaTime)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
@@ -73,6 +85,7 @@ void GoombaStompedState::update(Enemy* enemy, float deltaTime)
     goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->getSpriteData()[2].first + goomba->curFrame];
     goomba->stompedTime += deltaTime;
 }
+
 GoombaStompedState& GoombaStompedState::GetInstance() {
     static GoombaStompedState instance;
     return instance;
@@ -86,25 +99,28 @@ void GoombaKnockState::enter(Enemy* enemy)
     goomba->active = false;
 	goomba->knockAnimation = true;
     goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->getSpriteData()[2].first];
+
+    for (b2Fixture* fixture = goomba->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+        b2Filter filter = fixture->GetFilterData();
+        filter.maskBits = 0;
+        fixture->SetFilterData(filter);
+    }
 }
 void GoombaKnockState::checkCondition(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
-    if (goomba->position.y >= GetScreenHeight())
-    {
-
-        goomba->knockAnimation = false;
-        //goomba->velocity = { 0, 0 };
-        goomba->active = false;
-        goomba->changeState(nullptr);
+    if (goomba->position.y >= GetScreenHeight()) {
+        exit(enemy);
     }
 }
+
 void GoombaKnockState::exit(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
     goomba->isalive = false;
 	GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(goomba));
 }
+
 void GoombaKnockState::update(Enemy* enemy, float deltaTime)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);

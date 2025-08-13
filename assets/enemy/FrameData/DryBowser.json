@@ -1,0 +1,252 @@
+{
+  "Idle": [
+    {
+      "frame": 2,
+      "events": [
+        {
+          "eventType": "PlaySound",
+          "eventPayload": "drybowser_idle.wav"
+        }
+      ],
+      "hitboxes": []
+    },
+    {
+      "frame": 4,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+      "hitboxes": []
+    }
+  ],
+  "Walk": [
+    {
+      "frame": 24,
+      "events": [
+        {
+          "eventType": "PlaySound",
+          "eventPayload": "step.wav"
+        }
+      ],
+      "hitboxes": []
+    }
+  ],
+  "MeleeAttack1": [
+    {
+      "frame": 72,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "700,0"
+        }
+      ],
+      "hitboxes": []
+    },
+    {
+      "frame": 73,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+      "hitboxes": []
+    },
+     {
+      "frame": 80,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "500,0"
+        }
+      ],
+      "hitboxes": []
+    },
+    {
+      "frame": 81,
+      "events": [
+         {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+      "hitboxes": []
+    }
+  ],
+  
+  "Run": [
+  ],
+  "WalkTurn":[
+    {
+       "frame": 26,
+      "events": [
+        {
+          "eventType": "None",
+          "eventPayload": ""
+        }
+      ],
+      "hitboxes": []
+    }
+  ],
+    "SpinAttack": [
+    {
+      "frame": 389,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "250,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+      {
+      "frame": 390,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "250,0"
+        }
+      ],
+
+      "hitboxes": []
+    }
+  ],
+   "SpinAttackWinddown": [
+    {
+      "frame": 397,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "250,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+     {
+      "frame": 398,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "150,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+     {
+      "frame": 398,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+
+      "hitboxes": []
+    }
+  ],
+  "SpinAttackWindup": [
+    {
+      "frame": 385,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+     {
+      "frame": 386,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+    {
+      "frame": 388,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+
+      "hitboxes": []
+    }
+
+  ],
+  "Jump":[
+  ],
+  "WallJump":[
+    {
+      "frame": 67,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "300,0"
+        }
+      ],
+      "hitboxes": []
+    },
+    {
+      "frame": 69,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "-300,0"
+        }
+      ],
+      "hitboxes": []
+    }
+  ],
+  "AerialAttack": [
+    {
+      "frame": 94,
+      "events": [
+         {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        },
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "750,0"
+        }
+      ],
+
+      "hitboxes": []
+    },
+    {
+      "frame": 100,
+      "events": [
+        {
+          "eventType": "IncrementVelocity",
+          "eventPayload": "500,0"
+        }
+      ],
+
+      "hitboxes": []
+    }
+    ,
+    {
+      "frame": 107,
+      "events": [
+        {
+          "eventType": "ChangeVelocity",
+          "eventPayload": "0,0"
+        }
+      ],
+      
+      "hitboxes": []
+    }
+    ]
+}

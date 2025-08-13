@@ -1,0 +1,55 @@
+{
+     "gridSize": 64,
+     "objects": [
+          {
+               "gridX": 5,
+               "gridY": 5,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_14_15"
+          },
+          {
+               "gridX": 5,
+               "gridY": 6,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_14_16"
+          },
+          {
+               "gridX": 6,
+               "gridY": 5,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_15_12"
+          },
+          {
+               "gridX": 6,
+               "gridY": 6,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_15_12"
+          },
+          {
+               "gridX": 16,
+               "gridY": 0,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 18,
+               "gridY": 0,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 20,
+               "gridY": 0,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          }
+     ],
+     "version": "1.0"
+}

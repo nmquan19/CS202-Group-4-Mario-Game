@@ -1,57 +1,67 @@
-#include "../../include/Game/GameContext.h"
 #include <raylib.h>
 #include <memory>
+#include <type_traits>
+#include <variant>
+#include <algorithm>
+#include <functional>
+#include <cmath>
+#include "../../include/Game/GameContext.h"
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
-#include "../../include/System/PhysicsManager.h"
-#include "../../include/System/PhysicsBody.h"
-#include "../../include/System/PhysicsFactory.h"
+#include "../../include/System/Box2DWorldManager.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/System/LevelEditor.h"
 #include "../../include/Game/GameStates.h"
 #include "../../include/System/Constant.h"
-#include <type_traits>
-#include <variant>
-#include <algorithm>
+#include "../../include/Enemy/TriggerZone.h"
 #include "../../include/System/Grid.h"
-#include <functional>
-#include <cmath>
+
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
+    camera.rotation = 0.0f;
+	camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f }; 
+    camera.zoom = 1.0f;
 }
 
 GameContext::~GameContext() {
     if (previousState) {
         LevelEditor::getInstance().cleanup();
-        PhysicsManager::getInstance().cleanup();
+        Box2DWorldManager::getInstance().cleanup();
     }
     TextureManager::getInstance().unloadTextures();
 }
+
 GameContext& GameContext::getInstance() {
     static GameContext instance;
     return instance;
 }
+
 void GameContext::setState(GameState* newState) {
     if (currentState != newState) {
-        if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState && newState != editorState)) {
+        if ((currentState == gamePlayState || currentState == editorState) && (newState != gamePlayState || currentState != editorState)) {
             LevelEditor::getInstance().cleanup();
-            PhysicsManager::getInstance().cleanup();
-            character.reset();
+            clearGame(); // Delete remaining objects in GameContext
+            Box2DWorldManager::getInstance().cleanup();
+            ParticleSystem::getInstance().cleanup();
+            character01.reset();
+            character02.reset();
         }
 
         previousState = currentState;
         currentState = newState;
 
         if (newState == gamePlayState) {
-            PhysicsManager::getInstance().initializeWorld({0.0f, 980.0f}); // Mario-style gravity
-            PhysicsManager::getInstance().setWorldBounds({ 0, 0, (float)GetScreenWidth(), (float)GetScreenHeight() });
+            Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
             LevelEditor::getInstance().setEditMode(false);
-            LevelEditor::getInstance().loadLevel("testlevel");
-            character = ObjectFactory::createCharacter(CharacterType::MARIO, Vector2{ 500, 500 });
             
-            // Add character to physics world using factory
-            BodyCreateInfo charInfo = PhysicsFactory::createCharacterBody({500, 500}, {32, 32});
-            PhysicsManager::getInstance().addObject(character, charInfo);
+            LevelEditor::getInstance().loadLevel("testlevel.json");
+            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+            // CAMERA NEEDS CHANGING
+            if (character01) {
+                camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
+                camera.target = character01->getPosition();
+            }
         }
     }
 }
@@ -63,6 +73,20 @@ void GameContext::handleInput() {
 }
 
 void GameContext::update(float deltaTime) {
+    if (currentState == gamePlayState) {
+        AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue());
+        AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue());
+        if (!AudioManager::getInstance().isPlaying()) {
+            AudioManager::getInstance().PlayBackgroundMusic("theme1");
+        }
+        AudioManager::getInstance().UpdateBackgroundMusic("theme1");
+    }
+    else {
+        if (AudioManager::getInstance().isPlaying()) {
+            AudioManager::getInstance().StopBackgroundMusic("theme1");
+        }
+    }
+
     if (currentState) {
         currentState->update(*this, deltaTime);
     }
@@ -74,10 +98,14 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* game, GameState* editor, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* character, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
     menuState = menu;
+    redirectState = redirect;
+    characterSelectingState = character;
+    informationState = information;
     gamePlayState = game;
     editorState = editor;
+    editorSelectingState = editorSelecting;
     gameOverState = gameOver;
     currentState = menuState;
 }
@@ -85,8 +113,8 @@ void GameContext::addObject(ObjectType type, Vector2 worldPos, Vector2 size, std
 { 
 	//pass the middle point of the object x and the end point(feet) of the object y
     Vector2 topLeft = {
-     std::floor(worldPos.x - size.x*Constants::TILE_SIZE / 2),
-     std::floor(worldPos.y - size.y*Constants::TILE_SIZE)
+        std::floor(worldPos.x - size.x * Constants::TILE_SIZE / 2),
+        std::floor(worldPos.y - size.y * Constants::TILE_SIZE)
     };
 
     ToSpawnObjects.push_back({ type, topLeft, size, onSpawn});
@@ -96,38 +124,31 @@ void GameContext::spawnObject() {
     for (const auto& request : ToSpawnObjects) {
         
         std::shared_ptr<Object> object = nullptr;
-        BodyCreateInfo bodyInfo;
 
         std::visit([&](auto&& actualType) {
             using T = std::decay_t<decltype(actualType)>;
 
             if constexpr (std::is_same_v<T, BlockType>) {
                 object = ObjectFactory::createBlock(actualType, GridSystem::getGridCoord(request.worldpos));
-                
-                // Create static physics body for blocks using factory
-                bodyInfo = PhysicsFactory::createGroundBody(
-                    request.worldpos,
-                    {request.size.x * Constants::TILE_SIZE, request.size.y * Constants::TILE_SIZE}
-                );
             }
             else if constexpr (std::is_same_v<T, EnemyType>) {
-                object = ObjectFactory::createEnemy(actualType, request.worldpos, request.size);
-                
-                // Create dynamic physics body for enemies using factory
-                bodyInfo = PhysicsFactory::createEnemyBody(
-                    request.worldpos,
-                    {request.size.x * Constants::TILE_SIZE, request.size.y * Constants::TILE_SIZE},
-                    actualType
-                );
+                if (actualType == EnemyType::DRY_BOWSER) object = ObjectFactory::createEnemy(actualType, request.worldpos, {2, 2});
+                else object = ObjectFactory::createEnemy(actualType, request.worldpos, request.size);
             }
             else if constexpr (std::is_same_v<T, KoopaShellType>) {
                 object = ObjectFactory::createKoopaShell(actualType, request.worldpos, request.size);
-                
-                // Create dynamic physics body for shells using factory
-                bodyInfo = PhysicsFactory::createKoopaShellBody(
-                    request.worldpos,
-                    {request.size.x * Constants::TILE_SIZE, request.size.y * Constants::TILE_SIZE}
-                );
+            }
+            else if constexpr (std::is_same_v<T, InteractiveType>) {
+                object = ObjectFactory::createSpring(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
+            }
+            else if constexpr (std::is_same_v<T, ProjectileType>) {
+                object = ObjectFactory::createProjectile(actualType, request.worldpos, std::dynamic_pointer_cast<Character>((playerCallsRequest == 1 ? character01 : character02))->isFacingRight() ? 1 : -1,  request.size);
+            }
+            else if constexpr (std::is_same_v<T, ItemType>) {
+				object = ObjectFactory::createItem(actualType, request.worldpos, request.size);
+            }
+            else if constexpr (std::is_same_v<T, BackGroundObjectType>) {
+                object = ObjectFactory::createTorch(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
             }
             }, request.type);
 
@@ -136,29 +157,28 @@ void GameContext::spawnObject() {
             if (request.onSpawn) {
                 request.onSpawn(object);
             }
-            
-            // Add to physics world
-            PhysicsManager::getInstance().addObject(object, bodyInfo);
         }
     }
     ToSpawnObjects.clear();
 }
 
-
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
         ToDeleteObjects.push_back(object);
+        LevelEditor::getInstance().removeObject(object->getGridPos());
     }
 }
-void GameContext::deleteObjects(){
+
+void GameContext::deleteObjects() {
     for (const auto& obj : ToDeleteObjects)
     {
-       if(std::find(Objects.begin(), Objects.end(), obj) != Objects.end()) {
-            Objects.erase(std::remove(Objects.begin(), Objects.end(), obj), Objects.end());
-            std::cout << "Deleted an object\n";
-	   }
+        if (std::find(Objects.begin(), Objects.end(), obj) != Objects.end()) {
+            Objects.erase(std::remove_if(Objects.begin(), Objects.end(), [&](const std::shared_ptr<Object>& o) {
+                return o == obj;
+            }), Objects.end());
+        }
+        ToDeleteObjects.clear();
     }
-	ToDeleteObjects.clear();
 }
 
 std::shared_ptr<Object> GameContext::getSharedPtrFromRaw(Object* rawPtr) {
@@ -168,4 +188,12 @@ std::shared_ptr<Object> GameContext::getSharedPtrFromRaw(Object* rawPtr) {
         }
     }
     return nullptr;
+}
+
+void GameContext::clearGame() {
+    for (auto obj : Objects) {
+        mark_for_deletion_Object(obj);
+    }
+    deleteObjects();
+    Objects.clear();
 }
