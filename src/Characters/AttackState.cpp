@@ -24,7 +24,7 @@ void AttackState::exit(Character* character) {
 	Vector2 centerPosition = Box2DWorldManager::b2ToRaylib(character->physicsBody->GetPosition());
 	int direction = (character->isFacingRight() ? 1 : -1);
 	Vector2 spawnPosition = {
-		centerPosition.x + direction * (character->size.x * Constants::TILE_SIZE * 0.5f + 20.0f),
+		centerPosition.x + direction * (character->size.x * Constants::TILE_SIZE * 0.5f + 15.0f),
 		centerPosition.y
 	};
 	GameContext::getInstance().setPlayerCallsRequest(character->id == PlayerID::PLAYER_01 ? 1 : 2);

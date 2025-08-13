@@ -16,7 +16,7 @@ public:
     static Texture2D  torch_texture; 
     static std::vector<Rectangle> torch_sprite_boxes;
     static std::vector<Rectangle> Enemy_sprite_boxes;
-    static Texture2D DryBowser_texture;
+	static Texture2D DryBowser_texture;   
     static std::vector<Rectangle> DryBowser_sprite_boxes;
     static Texture2D blocksTexture;
 
@@ -35,10 +35,10 @@ public:
     static std::unordered_map<char, Rectangle> fontSprites;
 
     static Texture2D background_lv1;
-
+    
     Texture2D getCharacterTexture() const;
     Texture2D getItemTexture() const;
-    void loadTextures();
+    void loadTextures(); 
     void unloadTextures();
 
     TextureManager(const TextureManager&) = delete;
@@ -52,7 +52,7 @@ private:
     Texture2D characterTextures;
 
     bool texturesLoaded = false;
-    bool itemTexturesLoaded = false;
+	bool itemTexturesLoaded = false;
 };
 
 class ObjectPalette {
@@ -72,7 +72,7 @@ public:
     ItemType getItemType() const { return std::get<ItemType>(selected); }
 
     Rectangle getPaletteRect() const { return paletteRect; }
-    ObjectType getSelectedType() const { return selected; }
+	ObjectType getSelectedType() const { return selected; }
 
 
 private:

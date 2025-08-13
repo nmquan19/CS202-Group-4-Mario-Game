@@ -60,4 +60,6 @@ public:
     void setPlayerCallsRequest(int id) { playerCallsRequest = id; }
     std::shared_ptr<Object> getCharacter() { return character01; }
     Camera2D camera;
+
+    ParticleSystem* testParticle;
 };

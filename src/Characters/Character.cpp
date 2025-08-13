@@ -10,7 +10,6 @@
 #include "../../include/Enemy/Enemy.h"
 #include "../../include//Item/Item.h"
 #include "../../include/System/Box2DWorldManager.h"
-#include "../../include/Game/GameContext.h"
 #include <iostream>
 #include <string>
 #include <algorithm>

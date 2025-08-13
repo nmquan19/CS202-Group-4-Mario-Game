@@ -34,12 +34,26 @@ public:
 	virtual std::vector<Rectangle> getHitBox() const override = 0;  
 	virtual ObjectCategory getObjectCategory() const override = 0;  
 	virtual std::vector<ObjectCategory> getCollisionTargets() const override = 0;  
-	virtual void onCollision(std::shared_ptr<Object> other, Direction direction) override = 0;   
+	virtual void onCollision(std::shared_ptr<Object> other, Direction direction) override = 0;  
+	int getCollidedPart(const Object& other);  
 	virtual ObjectType getObjectType() const = 0;  
 
-	b2Body* getPhysicsBody() const {return physicsBody;}
-	Vector2 getGridPos() const { return gridPosition; }
-	void setGridPos(Vector2 gridPos) { gridPosition = gridPos; }
+	b2Body* getPhysicsBody() const {
+		return physicsBody;
+	}
+
+	Rectangle getHitbox() {
+		float x = position.x;
+		float y = position.y;
+		float width = size.x;
+		float height = size.y;
+		return { x, y, width, height };
+	}
+
+	void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
+	void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
+	void StarShapeMove(Vector2 center, float deltaTime, float frequency);
+
 protected:  
 	Vector2 position;
 	Vector2 centerPosition; // Center position for circular movement
@@ -47,13 +61,19 @@ protected:
 	bool active = true;
 	bool collided = false;
 	b2Body* physicsBody;
-	Vector2 gridPosition = { 0, 0 };
+
+
+	float totalTime = 0.0f; // for oscillation and circular movement
+	float radius; // Radius for circular movement
+	float Amplitude; // Amplitude for oscillation
+	float frequency; // Frequency for oscillation
+	
 };  
 
 class ObjectFactory {
 public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
-	static std::unique_ptr<Object> createCharacter(CharacterType type, PlayerID id, Vector2 startPosition);
+	static std::unique_ptr<Object> createCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size = Constants::Character::SMALL_STANDARD_SIZE);
 	static std::unique_ptr<Object> createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size = Constants::Projectile::STANDARD_SIZE);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);

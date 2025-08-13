@@ -18,7 +18,7 @@ FireBall::FireBall(Vector2 position, int direction, Vector2 size) : Projectile(p
 				static_cast<uint16>(ObjectCategory::SHELL) | static_cast<uint16>(ObjectCategory::PROJECTILE);
 			fixture->SetFilterData(filter);
 		}
-		physicsBody->SetLinearVelocity(b2Vec2(Constants::Projectile::FireBall::INITIAL_VELOCITY.x * direction, Constants::Projectile::FireBall::INITIAL_VELOCITY.y));
+		physicsBody->SetLinearVelocity(b2Vec2(5 * direction, 0));
 	}
 }
 

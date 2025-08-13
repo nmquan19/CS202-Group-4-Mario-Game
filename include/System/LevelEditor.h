@@ -27,7 +27,6 @@ public:
     void draw();
     void handleMouseInput();
     void placeObject(ObjectType type, Vector2 gridCoord);
-    void removeObject(Vector2 gridCoord, std::shared_ptr<Object>& target);
     void removeObject(Vector2 gridCoord);
     void setEditMode(bool flag);
     bool isInEditMode() const;
