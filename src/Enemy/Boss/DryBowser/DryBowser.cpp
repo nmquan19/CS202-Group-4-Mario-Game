@@ -54,7 +54,11 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
 #include <iostream>
 void DryBowser::update(float dt) {
     // First, sync with Box2D physics body if available
-    setTarget(GameContext::getInstance().getCharacter()->getPosition());
+  /*  auto character = std::dynamic_pointer_cast<Character>(GameContext::getInstance().getCharacter());
+    if (character) {
+        setTarget(character->getCenterPos());
+    }*/
+    setTarget({ 500,300 });
     if (physicsBody) {
         // Get position and velocity from Box2D
         b2Vec2 b2Pos = physicsBody->GetPosition();
@@ -66,24 +70,6 @@ void DryBowser::update(float dt) {
         velocity = Box2DWorldManager::b2ToRaylib(b2Vel);
     }
     // Handle screen boundaries
-    if (position.x < 0) {
-        position.x = 0;
-        if (isInSpinAttack()) {
-            direction = { -direction.x, direction.y };
-            if (physicsBody) {
-                physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2({-velocity.x, velocity.y}));
-            }
-        }
-    }
-    if (position.x > 1920 - hitbox.width) {
-        position.x = 1920 - hitbox.width;
-        if (isInSpinAttack()) {
-            direction = { -direction.x, direction.y };
-            if (physicsBody) {
-                physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2({-velocity.x, velocity.y}));
-            }
-        }
-    }
     if (velocityController.isActiveAtFrame(curFrame)) {
         Vector2 multiplier = velocityController.getVelocityAtFrame(curFrame);
         Vector2 newVelocity = { direction.x * multiplier.x, direction.y * multiplier.y };
@@ -102,9 +88,6 @@ void DryBowser::update(float dt) {
     {
         this->onGround = false; 
     }  
-    // Apply frame-based velocity
-    DrawText(TextFormat("Drybowser Velocity: x = %f, y = %f", velocity.x, velocity.y), 200, 250, 20, BLACK);
-    DrawText(TextFormat("Drybowser Direction: x = %f, y = %f", direction.x, direction.y), 200, 270, 20, BLACK);
 
     spritebox = TextureManager::DryBowser_sprite_boxes[curFrame];
     
@@ -126,10 +109,6 @@ void DryBowser::update(float dt) {
             lastTriggerFrame = curFrame;
         }
     }
-
-    
-
-
 }
 
 void DryBowser::draw() {

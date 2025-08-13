@@ -136,7 +136,6 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     auto& cam = GameCameraSystem::getInstance(); 
     cam.update(deltaTime);
     NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
-
     //GameCameraSystem::getInstance().shakeCurrentCamera(10.0f, 0.1f);
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
     {
@@ -169,7 +168,7 @@ void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
     DrawBackGround(TextureManager::getInstance().background_lv1);
-    //NavGraph::getInstance().draw();
+    NavGraph::getInstance().draw();
     NavGraph::getInstance().clear();
     DrawText("Press Enter", 500, 100, 20, BLACK);
     
@@ -188,8 +187,8 @@ void GamePlayState::draw(GameContext& context) {
         obj->draw();
     }
 
-    if (context.character) {
-        context.character->draw();
+    if (context.character01) {
+        context.character01->draw();
     }
     if (context.character02) {
         context.character02->draw();
@@ -258,7 +257,7 @@ void EditorState::update(GameContext& context, float deltaTime) {
 // GameStates.cpp
 void EditorState::draw(GameContext& context) {
     BeginDrawing();
-    ClearBackground(BLACK); // Clear main buffer
+    ClearBackground(WHITE); // Clear main buffer
 
     LightingManager& lm = LightingManager::getInstance();
 
@@ -287,27 +286,6 @@ void EditorState::draw(GameContext& context) {
         EndShaderMode();
 
     DrawFPS(20, 50);
-    EndDrawing();
-}
-
-
-void EditorSelectingState::handleInput(GameContext& context) {
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        Vector2 mousePos = GetMousePosition();
-        if (context.menuManager.day_groundBoard.checkCollision(mousePos)) {
-            context.setState(context.editorState);
-        }
-    }
-}
-
-void EditorSelectingState::update(GameContext& context, float deltaTime) {
-    context.menuManager.UpdateEditorSelecting(deltaTime);
-}
-
-void EditorSelectingState::draw(GameContext& context) {
-    BeginDrawing();
-    ClearBackground(SKYBLUE);
-    context.menuManager.DrawEditorSelecting();
     EndDrawing();
 }
 

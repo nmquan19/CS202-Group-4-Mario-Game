@@ -34,7 +34,7 @@ AudioManager::~AudioManager() {
         UnloadMusicStream(music.second);
     }
 }
-
+    
 void AudioManager::LoadSoundEffect(const std::string& key, const std::string& filePath) {
     Sound sound = LoadSound(filePath.c_str());
     sounds[key] = sound;

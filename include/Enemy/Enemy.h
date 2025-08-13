@@ -29,7 +29,7 @@ public:
 	bool isActive() const override;
 	void changeState(EnemyState* other);
 	int curFrame; 	
-
+	
 public :  
 	void setActive(bool flag) override ;
 	void setPosition(Vector2 newPosition) ;
@@ -48,6 +48,7 @@ public :
 	float getCenterY() const;
 	bool FacingRight() const;  
 	Vector2 getCenter() const;
+	void setTarget(Vector2 pos);
 	virtual ObjectType getObjectType() const override = 0 ;
 	virtual EnemyType getType() const =0;
 	Vector2 getSize() const override;
@@ -74,7 +75,9 @@ public :
 		if (!physicsBody) return 0;
 		return physicsBody->GetGravityScale();
 	}
+	virtual NodeType getTraverseType() { return NodeType::Ground; };
 public: 
+	virtual bool isInChaseRange() { return false; }
 	virtual bool checkWallContact()  { return false; } ;
 	Vector2 getTargetPos() const { return targetPosition;  }
 	virtual void jump(){}
@@ -88,16 +91,22 @@ public:
 	virtual void attack() {}; 
 	virtual bool isAttacking() { return false; }	
 	virtual void patrol() {}; 
+	virtual bool isPatrolling(){ return false;  }
 	virtual void idle() {};
 	virtual bool isTurning() const { return false; }
 	virtual void walkTurn(){}
 	virtual float jumpTo(Vector2 position, bool apply); 
+	std::string getCurAnimation() const { return curAniName; }
 	virtual void executeTraversal(const Edge& edge);
-	virtual void avoidDanger() {};
+	virtual void retreat() {};
+	virtual bool isRetreating() {
+		return false;
+	};
 	virtual bool isNearTarget() const { return false; }
 	virtual bool isInWallJump() const { return false; }
 	virtual bool isJumping() const { return false;  }
 	virtual bool isBelowWall() const { return false; } 
+	virtual bool canUseBasicAttack() const{ return false; }
 protected://pathfinding
 	std::shared_ptr<NavGraphNode> currentNode = nullptr;
 	std::shared_ptr<NavGraphNode> lastTargetNode = nullptr;

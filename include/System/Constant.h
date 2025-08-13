@@ -92,6 +92,20 @@ namespace Constants {
             constexpr float DURATION = 5.0f;
         }
     }
+    namespace Boo
+    {
+        constexpr float chaseRange = 400.0f;
+        constexpr float patrolRange = 600.0f;
+
+        constexpr float flySpeed = 300.f;
+        constexpr float waitForAttackTime = 0.25f; 
+        constexpr float attackDuration = 0.5f; 
+        constexpr float retreatDuration = 0.75f;
+        constexpr float patrolDuration = 1.f;
+        constexpr float dieDuration = 0.25f;
+
+        constexpr float attackRange = 200;
+    }
     namespace DryBowser{
 		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;
         constexpr float WalkTurnDuration = 0.25f;  

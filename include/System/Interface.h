@@ -280,7 +280,8 @@ enum class EnemyType {
 	RED_KOOPA,
 	PIRANHA_PLANT,
 	HAMMER_BRO,
-	DRY_BOWSER
+	DRY_BOWSER,
+	BOO
 };
 
 enum class ItemType {

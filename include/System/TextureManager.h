@@ -3,13 +3,16 @@
 #include <map>
 #include "raylib.h"
 #include "Interface.h"
-#include "UI/UI.h"
+#include "../UI/UI.h"
 #include <variant>
 #include <vector>
 #include <unordered_map>
 class TextureManager {
 public:
     static TextureManager& getInstance();
+
+    static Texture2D  boo_texture;
+    static std::vector<Rectangle> boo_sprite_boxes;
     static Texture2D  torch_texture; 
     static std::vector<Rectangle> torch_sprite_boxes;
     static std::vector<Rectangle> Enemy_sprite_boxes;

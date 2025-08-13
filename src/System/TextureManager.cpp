@@ -26,6 +26,10 @@ Texture2D TextureManager::background_lv1;
 
 std::vector<Rectangle> TextureManager::torch_sprite_boxes;
 Texture2D TextureManager::torch_texture;
+
+
+std::vector<Rectangle> TextureManager::boo_sprite_boxes;
+Texture2D TextureManager::boo_texture;
 std::unordered_map<char, Rectangle> TextureManager::fontSprites = {
     {'0', {90, 3, 6, 7}}, {'1', {97, 3, 4, 7}}, {'2', {102, 3, 6, 7}}, {'3', {109, 3, 6, 7}}, {'4', {116, 3, 6, 7}},
     {'5', {1, 16, 6, 7}}, {'6', {8, 16, 6, 7}}, {'7', {15, 16, 6, 7}}, {'8', {22, 16, 6, 7}}, {'9', {29, 16, 6, 7}}, 
@@ -123,6 +127,17 @@ void TextureManager::loadTextures() {
     }
       torch_texture = Texture2D(LoadTexture("assets/object/torch/Torch_Sheet.png"));
     torch_in.close();
+    texturesLoaded = true;
+
+    //boo texures
+    std::ifstream  boo_in;
+    boo_in.open("assets/enemy/boo_output.txt");
+    while (boo_in >> id >> x >> y >> w >> h)
+    {
+        boo_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
+    }
+    boo_texture = Texture2D(LoadTexture("assets/enemy/boo.png"));
+    boo_in.close();
     texturesLoaded = true;
 
 }

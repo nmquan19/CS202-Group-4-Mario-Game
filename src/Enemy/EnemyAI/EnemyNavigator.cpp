@@ -66,18 +66,16 @@ void NavGraphNode::draw(Color color)
         {
         case EdgeDirection::Horizontal:
             eColor = BLUE;
-            continue;
+            ;
             break;
         case EdgeDirection::Jumping: 
             eColor = RED;
             break;
         case EdgeDirection::Falling:
             eColor = GREEN; 
-            continue;
             break;
         case EdgeDirection::Flying:
             eColor = YELLOW;
-            continue;
             break;
         };
 
