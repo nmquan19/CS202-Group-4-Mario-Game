@@ -209,6 +209,10 @@ void Boo::update(float dt) {
     {
         GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
     }
+    if (curAniName == "Die")
+    {
+        velocity = { 0,0 };
+    }
     if (physicsBody) {
         physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(velocity));
     }

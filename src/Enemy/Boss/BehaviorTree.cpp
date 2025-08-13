@@ -492,7 +492,7 @@ NodeStatus IsTakingDamageNode::tick(Enemy* boss, float dt) {
 NodeStatus IsInIntroNode::tick(Enemy* boss, float dt) {
     DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
     if (!dryBowser) return NodeStatus::Failure;
-    if (dryBowser->getCurAnimation() == "Intro"&& !dryBowser->getAnimController().isFinished()) {
+    if ((dryBowser->getCurAnimation() == "Intro")||((dryBowser->getCurAnimation() == "Taunt")&& !dryBowser->getAnimController().isFinished())){
         return NodeStatus::Running;
     }
 	return NodeStatus::Success;

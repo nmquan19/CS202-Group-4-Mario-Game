@@ -105,7 +105,7 @@ void LightingManager::prepareShader(Camera2D cam) {
         SHADER_UNIFORM_VEC3);
 
     sendLightsToShader(cam);
-    sendDistortionsToShader();
+    sendDistortionsToShader(cam);
 }
 
 void LightingManager::sendLightsToShader(Camera2D cam) {
@@ -142,27 +142,75 @@ void LightingManager::sendLightsToShader(Camera2D cam) {
     SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "outerColors"), outerColors, SHADER_UNIFORM_VEC3, count);
     SetShaderValue(lightingShader, GetShaderLocation(lightingShader, "ambientColor"), &ambient, SHADER_UNIFORM_VEC3);
 }
-
-void LightingManager::sendDistortionsToShader() {
+#include <iostream>
+void LightingManager::sendDistortionsToShader(Camera2D cam) {
     Vector2 centers[MAX_DISTORTIONS];
     float times[MAX_DISTORTIONS];
+    float timers[MAX_DISTORTIONS];
     float strengths[MAX_DISTORTIONS];
     float radii[MAX_DISTORTIONS];
     int types[MAX_DISTORTIONS];
 
-    for (size_t i = 0; i < distortions.size(); i++) {
-        centers[i] = distortions[i]->center;
-        times[i] = distortions[i]->time;
-        strengths[i] = distortions[i]->strength;
-        radii[i] = distortions[i]->radius;
-        types[i] = distortions[i]->type;
-    }
+    Vector2 screenSize = { (float)GetScreenWidth(), (float)GetScreenHeight() };
 
+    for (size_t i = 0; i < distortions.size(); i++) {
+        // Convert pixel position to UV space for shader
+        centers[i] = GetWorldToScreen2D(distortions[i]->center, cam);
+        centers[i].y = GetScreenHeight() - centers[i].y;
+        times[i] = distortions[i]->time;      // total duration
+        timers[i] = distortions[i]->timer;    // elapsed time
+        strengths[i] = distortions[i]->strength;
+        radii[i] = distortions[i]->radius;    // max radius
+        types[i] = distortions[i]->type;
+        
+    }
+    std::cout << "Sending distortions:\n";
+    for (size_t i = 0; i < distortions.size(); i++) {
+        std::cout << "  Distortion " << i << ": "
+            << "Center(" << centers[i].x << ", " << centers[i].y << ") "
+            << "Timer: " << timers[i] << " "
+            << "Lifetime: " << times[i] << " "
+            << "Strength: " << strengths[i] << " "
+            << "Radius: " << radii[i] << " "
+            << "Type: " << types[i] << "\n";    
+    }
     int count = static_cast<int>(distortions.size());
     SetShaderValue(lightingShader, GetShaderLocation(lightingShader, "numDistortions"), &count, SHADER_UNIFORM_INT);
-    SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionCenter"), centers, SHADER_UNIFORM_VEC2, count);
-    SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionTime"), times, SHADER_UNIFORM_FLOAT, count);
-    SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionStrength"), strengths, SHADER_UNIFORM_FLOAT, count);
+    SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionCenters"), centers, SHADER_UNIFORM_VEC2, count);
+    SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionTimes"), times, SHADER_UNIFORM_FLOAT, count);
+    SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionTimers"), timers, SHADER_UNIFORM_FLOAT, count);
+    SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionStrengths"), strengths, SHADER_UNIFORM_FLOAT, count);
     SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionRadius"), radii, SHADER_UNIFORM_FLOAT, count);
-    SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionType"), types, SHADER_UNIFORM_INT, count);
+    SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionTypes"), types, SHADER_UNIFORM_INT, count);
+}
+
+void LightingManager::update(float deltaTime)
+{
+    for (auto& dist : distortions)
+    {
+        if (!dist->isActive)
+            continue;
+
+        // Advance time since creation
+        dist->timer += deltaTime;
+
+     
+        // Deactivate when done
+        if (dist->timer >= dist->time || dist->strength <= 0.01f)
+        {
+            dist->isActive = false;
+        }
+    }
+
+    // Remove inactive distortions from the list
+    distortions.erase(
+        std::remove_if(distortions.begin(), distortions.end(),
+            [](std::shared_ptr<DistortionEffect> d) { return !d->isActive; }),
+        distortions.end()
+    );
+    lights.erase(
+        std::remove_if(lights.begin(), lights.end(),
+            [](std::shared_ptr<LightSource> d) { return !d->isActive; }),
+        lights.end()
+    );
 }
