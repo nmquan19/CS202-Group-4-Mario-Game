@@ -31,10 +31,11 @@ public:
     void setCollided(bool) override;
     Vector2 getSize() const override;
     virtual ObjectType getObjectType() const override;
-
+    void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
+    void StarShapeMove(Vector2 center, float deltaTime, float frequency); 
     virtual void Move(double dt);
 
-
+    void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
 protected:
     Vector2 position;
     Vector2 velocity;
@@ -52,7 +53,7 @@ protected:
     const float groundY = 400.0f;
     Anima* animation;
     ItemType type;
-
+    float totalTime;
 };
 
 

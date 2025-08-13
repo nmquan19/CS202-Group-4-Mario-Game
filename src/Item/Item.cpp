@@ -5,6 +5,7 @@
 #include "../../include/System/Box2DWorldManager.h"
 #include <raymath.h>
 #include <memory> 
+#include <numbers>
 
 Item::Item() {}
 
@@ -134,5 +135,59 @@ ObjectType Item::getObjectType() const {
 
 void Item::Move(double dt) {
 
+}
+
+
+void Item::CircleMove(Vector2 center, float radius, float speed, float deltaTime) {
+    totalTime += deltaTime;
+    position.x = center.x + radius * cos(speed * totalTime);
+    position.y = center.y + radius * sin(speed * totalTime);
+    if (physicsBody) {
+        physicsBody->SetTransform(b2Vec2(position.x / GridSystem::GRID_SIZE, position.y / GridSystem::GRID_SIZE),
+            physicsBody->GetAngle());
+    }
+}
+
+void Item::HarmonicOscillationMove(float amplitude, float frequency, float deltaTime) {
+    totalTime += deltaTime;
+
+    // Tần số góc ω = 2πf
+    float omega = 2.0f * std::numbers::pi_v<float> *frequency;
+
+    // Tính vị trí offset (pixel)
+    float offsetX = amplitude * cos(omega * totalTime);
+
+    // Tính vận tốc theo pixel/s
+    float vxPixelsPerSecond = -omega * amplitude * sin(omega * totalTime);
+
+    std::cout << "Amplitude: " << amplitude << ", Frequency: " << frequency
+        << ", DeltaTime: " << deltaTime << ", OffsetX: " << offsetX
+        << ", VxPixelsPerSecond: " << vxPixelsPerSecond << std::endl;
+    std::cout << "centerPosition: " << centerPosition.x << ", " << centerPosition.y << std::endl;
+
+    // Đổi vận tốc sang mét/s cho Box2D
+    float vxMetersPerSecond = Box2DWorldManager::raylibToB2(vxPixelsPerSecond);
+
+    if (physicsBody) {
+        b2Vec2 vel(vxMetersPerSecond, physicsBody->GetLinearVelocity().y);
+        physicsBody->SetLinearVelocity(vel);
+    }
+
+    // Cập nhật vị trí hiển thị từ physics body
+    Vector2 renderPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
+    position.x = renderPos.x - Constants::TILE_SIZE / 2;
+    position.y = renderPos.y - Constants::TILE_SIZE / 2;
+
+}
+
+void Item::StarShapeMove(Vector2 center, float deltaTime, float frequency) {
+    totalTime += deltaTime;
+    position.x = center.x - 0.25 * (3 * cos(0.4 * totalTime) + 2 * sin(0.6 * totalTime));
+    position.y = center.y - 0.25 * (3 * sin(0.4 * totalTime) + 2 * cos(0.6 * totalTime));
+
+    if (physicsBody) {
+        physicsBody->SetTransform(b2Vec2(position.x / GridSystem::GRID_SIZE, position.y / GridSystem::GRID_SIZE),
+            physicsBody->GetAngle());
+    }
 }
 
