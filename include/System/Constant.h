@@ -138,8 +138,6 @@ namespace Constants {
         constexpr float STANDARD_BRIGHTNESS = 0.5f;
     }
     namespace PaletteResources {
-        constexpr Rectangle BRICK = { 12, 111, 128, 86 };
-        constexpr Rectangle GROUND = { 786, 111, 128, 86 };
 
         constexpr Rectangle BLOCK_1_1_2 = { 18, 1, 16, 16 };
         constexpr Rectangle BLOCK_1_1_3 = { 35, 1, 16, 16 };

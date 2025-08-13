@@ -30,8 +30,6 @@ enum class PowerState {
 };
 
 enum class BlockType {
-	GROUND,
-	BRICK,
 	PIPE,
 	QUESTION,
 	INVISIBLE,
