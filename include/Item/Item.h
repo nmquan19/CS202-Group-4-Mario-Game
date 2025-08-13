@@ -33,7 +33,6 @@ public:
     virtual ObjectType getObjectType() const override;
     void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
     void StarShapeMove(Vector2 center, float deltaTime, float frequency); 
-    virtual void Move(double dt);
 
     void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
 protected:
@@ -42,7 +41,6 @@ protected:
     Vector2 accelleration;
 
     bool active;
-    //Texture2D texture;
     Rectangle spritebox;
     Rectangle hitbox;
     float scale;
