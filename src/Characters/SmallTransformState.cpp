@@ -33,11 +33,28 @@ void SmallTransformState::exit(Character* character) {
 	}
 
 	Vector2 centerPos = Box2DWorldManager::b2ToRaylib(character->physicsBody->GetPosition());
+	
 	Vector2 transformPos = { centerPos.x - character->size.x * Constants::TILE_SIZE * 0.5f, centerPos.y - character->size.y * Constants::TILE_SIZE };
-	Box2DWorldManager::getInstance().attachCapsuleFixtures(character->physicsBody,
-		transformPos,
-		Vector2{ Constants::Character::SMALL_STANDARD_SIZE.x * Constants::TILE_SIZE, Constants::Character::SMALL_STANDARD_SIZE.y * Constants::TILE_SIZE });
-	Box2DWorldManager::getInstance().attachSensors(character->physicsBody, Vector2{ Constants::Character::SMALL_STANDARD_SIZE.x * Constants::TILE_SIZE, Constants::Character::SMALL_STANDARD_SIZE.y * Constants::TILE_SIZE });
+	
+	Vector2 ssize;
+	switch (character->characterType) {
+	case CharacterType::MARIO:
+		ssize = Constants::Character::Mario::SMALL_SIZE;
+		break;
+	case CharacterType::LUIGI:
+		ssize = Constants::Character::Luigi::SMALL_SIZE;
+		break;
+	case CharacterType::TOAD:
+		ssize = Constants::Character::Toad::SMALL_SIZE;
+		break;
+	case CharacterType::TOADETTE:
+		ssize = Constants::Character::Toadette::SMALL_SIZE;
+		break;
+	}
+	
+	Box2DWorldManager::getInstance().attachCapsuleFixtures(character->physicsBody, transformPos, Vector2{ ssize.x * Constants::TILE_SIZE, ssize.y * Constants::TILE_SIZE });
+	
+	Box2DWorldManager::getInstance().attachSensors(character->physicsBody, Vector2{ ssize.x * Constants::TILE_SIZE, ssize.y * Constants::TILE_SIZE });
 
 	for (b2Fixture* fixture = character->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
 		b2Filter filter = fixture->GetFilterData();
@@ -49,8 +66,25 @@ void SmallTransformState::exit(Character* character) {
 		fixture->SetFilterData(filter);
 	}
 
-	character->stateFrameData = Constants::Character::SMALL_MARIO_FRAME_DATA;
-	character->size = Constants::Character::SMALL_STANDARD_SIZE;
+	switch (character->characterType) {
+	case CharacterType::MARIO:
+		character->stateFrameData = Constants::Character::Mario::SMALL_FRAME_DATA;
+		character->size = Constants::Character::Mario::SMALL_SIZE;
+		break;
+	case CharacterType::LUIGI:
+		character->stateFrameData = Constants::Character::Luigi::SMALL_FRAME_DATA;
+		character->size = Constants::Character::Luigi::SMALL_SIZE;
+		break;
+	case CharacterType::TOAD:
+		character->stateFrameData = Constants::Character::Toad::SMALL_FRAME_DATA;
+		character->size = Constants::Character::Toad::SMALL_SIZE;
+		break;
+	case CharacterType::TOADETTE:
+		character->stateFrameData = Constants::Character::Toadette::SMALL_FRAME_DATA;
+		character->size = Constants::Character::Toadette::SMALL_SIZE;
+		break;
+	}
+
 	character->powerState = PowerState::SMALL;
 	character->hp = 1;
 	character->invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_TRANSFORM;

@@ -153,6 +153,138 @@ std::unique_ptr<Block> ObjectFactory::createSpecificBlock(BlockType type, Vector
             return std::make_unique<Block_1_7_15Block>(gridPos);
         case BlockType::BLOCK_1_7_16:
             return std::make_unique<Block_1_7_16Block>(gridPos);
+        case BlockType::BLOCK_1_13_1:
+            return std::make_unique<Block_1_13_1Block>(gridPos);
+        case BlockType::BLOCK_1_13_2:
+            return std::make_unique<Block_1_13_2Block>(gridPos);
+        case BlockType::BLOCK_1_13_3:
+            return std::make_unique<Block_1_13_3Block>(gridPos);
+        case BlockType::BLOCK_1_13_4:
+            return std::make_unique<Block_1_13_4Block>(gridPos);
+        case BlockType::BLOCK_1_13_5:
+            return std::make_unique<Block_1_13_5Block>(gridPos);
+        case BlockType::BLOCK_1_13_6:
+            return std::make_unique<Block_1_13_6Block>(gridPos);
+        case BlockType::BLOCK_1_13_7:
+            return std::make_unique<Block_1_13_7Block>(gridPos);
+        case BlockType::BLOCK_1_13_8:
+            return std::make_unique<Block_1_13_8Block>(gridPos);
+        case BlockType::BLOCK_1_13_9:
+            return std::make_unique<Block_1_13_9Block>(gridPos);
+        case BlockType::BLOCK_1_13_10:
+            return std::make_unique<Block_1_13_10Block>(gridPos);
+        case BlockType::BLOCK_1_13_11:
+            return std::make_unique<Block_1_13_11Block>(gridPos);
+        case BlockType::BLOCK_1_13_12:
+            return std::make_unique<Block_1_13_12Block>(gridPos);
+        case BlockType::BLOCK_1_13_13:
+            return std::make_unique<Block_1_13_13Block>(gridPos);
+        case BlockType::BLOCK_1_13_14:
+            return std::make_unique<Block_1_13_14Block>(gridPos);
+        case BlockType::BLOCK_1_13_15:
+            return std::make_unique<Block_1_13_15Block>(gridPos);
+        case BlockType::BLOCK_1_13_16:
+            return std::make_unique<Block_1_13_16Block>(gridPos);
+        case BlockType::BLOCK_1_14_1:
+            return std::make_unique<Block_1_14_1Block>(gridPos);
+        case BlockType::BLOCK_1_14_2:
+            return std::make_unique<Block_1_14_2Block>(gridPos);
+        case BlockType::BLOCK_1_14_3:
+            return std::make_unique<Block_1_14_3Block>(gridPos);
+        case BlockType::BLOCK_1_14_4:
+            return std::make_unique<Block_1_14_4Block>(gridPos);
+        case BlockType::BLOCK_1_14_5:
+            return std::make_unique<Block_1_14_5Block>(gridPos);
+        case BlockType::BLOCK_1_14_6:
+            return std::make_unique<Block_1_14_6Block>(gridPos);
+        case BlockType::BLOCK_1_14_7:
+            return std::make_unique<Block_1_14_7Block>(gridPos);
+        case BlockType::BLOCK_1_14_8:
+            return std::make_unique<Block_1_14_8Block>(gridPos);
+        case BlockType::BLOCK_1_14_9:
+            return std::make_unique<Block_1_14_9Block>(gridPos);
+        case BlockType::BLOCK_1_14_10:
+            return std::make_unique<Block_1_14_10Block>(gridPos);
+        case BlockType::BLOCK_1_14_11:
+            return std::make_unique<Block_1_14_11Block>(gridPos);
+        case BlockType::BLOCK_1_14_12:
+            return std::make_unique<Block_1_14_12Block>(gridPos);
+        case BlockType::BLOCK_1_14_13:
+            return std::make_unique<Block_1_14_13Block>(gridPos);
+        case BlockType::BLOCK_1_14_14:
+            return std::make_unique<Block_1_14_14Block>(gridPos);
+        case BlockType::BLOCK_1_14_15:
+            return std::make_unique<Block_1_14_15Block>(gridPos);
+        case BlockType::BLOCK_1_14_16:
+            return std::make_unique<Block_1_14_16Block>(gridPos);
+        case BlockType::BLOCK_1_15_1:
+            return std::make_unique<Block_1_15_1Block>(gridPos);
+        case BlockType::BLOCK_1_15_2:
+            return std::make_unique<Block_1_15_2Block>(gridPos);
+        case BlockType::BLOCK_1_15_3:
+            return std::make_unique<Block_1_15_3Block>(gridPos);
+        case BlockType::BLOCK_1_15_4:
+            return std::make_unique<Block_1_15_4Block>(gridPos);
+        case BlockType::BLOCK_1_15_5:
+            return std::make_unique<Block_1_15_5Block>(gridPos);
+        case BlockType::BLOCK_1_15_6:
+            return std::make_unique<Block_1_15_6Block>(gridPos);
+        case BlockType::BLOCK_1_15_7:
+            return std::make_unique<Block_1_15_7Block>(gridPos);
+        case BlockType::BLOCK_1_15_8:
+            return std::make_unique<Block_1_15_8Block>(gridPos);
+        case BlockType::BLOCK_1_15_9:
+            return std::make_unique<Block_1_15_9Block>(gridPos);
+        case BlockType::BLOCK_1_15_10:
+            return std::make_unique<Block_1_15_10Block>(gridPos);
+        case BlockType::BLOCK_1_15_11:
+            return std::make_unique<Block_1_15_11Block>(gridPos);
+        case BlockType::BLOCK_1_15_12:
+            return std::make_unique<Block_1_15_12Block>(gridPos);
+        case BlockType::BLOCK_1_15_13:
+            return std::make_unique<Block_1_15_13Block>(gridPos);
+        case BlockType::BLOCK_1_15_14:
+            return std::make_unique<Block_1_15_14Block>(gridPos);
+        case BlockType::BLOCK_1_15_15:
+            return std::make_unique<Block_1_15_15Block>(gridPos);
+        case BlockType::BLOCK_1_15_16:
+            return std::make_unique<Block_1_15_16Block>(gridPos);
+        case BlockType::BLOCK_1_16_1:
+            return std::make_unique<Block_1_16_1Block>(gridPos);
+        case BlockType::BLOCK_1_16_2:
+            return std::make_unique<Block_1_16_2Block>(gridPos);
+        case BlockType::BLOCK_1_16_3:
+            return std::make_unique<Block_1_16_3Block>(gridPos);
+        case BlockType::BLOCK_1_16_4:
+            return std::make_unique<Block_1_16_4Block>(gridPos);
+        case BlockType::BLOCK_1_16_5:
+            return std::make_unique<Block_1_16_5Block>(gridPos);
+        case BlockType::BLOCK_1_16_6:
+            return std::make_unique<Block_1_16_6Block>(gridPos);
+        case BlockType::BLOCK_1_16_7:
+            return std::make_unique<Block_1_16_7Block>(gridPos);
+        case BlockType::BLOCK_1_16_8:
+            return std::make_unique<Block_1_16_8Block>(gridPos);
+        case BlockType::BLOCK_1_16_9:
+            return std::make_unique<Block_1_16_9Block>(gridPos);
+        case BlockType::BLOCK_1_16_10:
+            return std::make_unique<Block_1_16_10Block>(gridPos);
+        case BlockType::BLOCK_1_16_11:
+            return std::make_unique<Block_1_16_11Block>(gridPos);
+        case BlockType::BLOCK_1_16_12:
+            return std::make_unique<Block_1_16_12Block>(gridPos);
+        case BlockType::BLOCK_1_16_13:
+            return std::make_unique<Block_1_16_13Block>(gridPos);
+        case BlockType::BLOCK_1_16_14:
+            return std::make_unique<Block_1_16_14Block>(gridPos);
+        case BlockType::BLOCK_1_16_15:
+            return std::make_unique<Block_1_16_15Block>(gridPos);
+        case BlockType::BLOCK_1_16_16:
+
+
+
+
+
 
         case BlockType::BLOCK_2_1_2:
             return std::make_unique<Block_2_1_2Block>(gridPos);
@@ -270,6 +402,139 @@ std::unique_ptr<Block> ObjectFactory::createSpecificBlock(BlockType type, Vector
             return std::make_unique<Block_2_7_15Block>(gridPos);
         case BlockType::BLOCK_2_7_16:
             return std::make_unique<Block_2_7_16Block>(gridPos);
+        case BlockType::BLOCK_2_13_1:
+            return std::make_unique<Block_2_13_1Block>(gridPos);
+        case BlockType::BLOCK_2_13_2:
+            return std::make_unique<Block_2_13_2Block>(gridPos);
+        case BlockType::BLOCK_2_13_3:
+            return std::make_unique<Block_2_13_3Block>(gridPos);
+        case BlockType::BLOCK_2_13_4:
+            return std::make_unique<Block_2_13_4Block>(gridPos);
+        case BlockType::BLOCK_2_13_5:
+            return std::make_unique<Block_2_13_5Block>(gridPos);
+        case BlockType::BLOCK_2_13_6:
+            return std::make_unique<Block_2_13_6Block>(gridPos);
+        case BlockType::BLOCK_2_13_7:
+            return std::make_unique<Block_2_13_7Block>(gridPos);
+        case BlockType::BLOCK_2_13_8:
+            return std::make_unique<Block_2_13_8Block>(gridPos);
+        case BlockType::BLOCK_2_13_9:
+            return std::make_unique<Block_2_13_9Block>(gridPos);
+        case BlockType::BLOCK_2_13_10:
+            return std::make_unique<Block_2_13_10Block>(gridPos);
+        case BlockType::BLOCK_2_13_11:
+            return std::make_unique<Block_2_13_11Block>(gridPos);
+        case BlockType::BLOCK_2_13_12:
+            return std::make_unique<Block_2_13_12Block>(gridPos);
+        case BlockType::BLOCK_2_13_13:
+            return std::make_unique<Block_2_13_13Block>(gridPos);
+        case BlockType::BLOCK_2_13_14:
+            return std::make_unique<Block_2_13_14Block>(gridPos);
+        case BlockType::BLOCK_2_13_15:
+            return std::make_unique<Block_2_13_15Block>(gridPos);
+        case BlockType::BLOCK_2_13_16:
+            return std::make_unique<Block_2_13_16Block>(gridPos);
+        case BlockType::BLOCK_2_14_1:
+            return std::make_unique<Block_2_14_1Block>(gridPos);
+        case BlockType::BLOCK_2_14_2:
+            return std::make_unique<Block_2_14_2Block>(gridPos);
+        case BlockType::BLOCK_2_14_3:
+            return std::make_unique<Block_2_14_3Block>(gridPos);
+        case BlockType::BLOCK_2_14_4:
+            return std::make_unique<Block_2_14_4Block>(gridPos);
+        case BlockType::BLOCK_2_14_5:
+            return std::make_unique<Block_2_14_5Block>(gridPos);
+        case BlockType::BLOCK_2_14_6:
+            return std::make_unique<Block_2_14_6Block>(gridPos);
+        case BlockType::BLOCK_2_14_7:
+            return std::make_unique<Block_2_14_7Block>(gridPos);
+        case BlockType::BLOCK_2_14_8:
+            return std::make_unique<Block_2_14_8Block>(gridPos);
+        case BlockType::BLOCK_2_14_9:
+            return std::make_unique<Block_2_14_9Block>(gridPos);
+        case BlockType::BLOCK_2_14_10:
+            return std::make_unique<Block_2_14_10Block>(gridPos);
+        case BlockType::BLOCK_2_14_11:
+            return std::make_unique<Block_2_14_11Block>(gridPos);
+        case BlockType::BLOCK_2_14_12:
+            return std::make_unique<Block_2_14_12Block>(gridPos);
+        case BlockType::BLOCK_2_14_13:
+            return std::make_unique<Block_2_14_13Block>(gridPos);
+        case BlockType::BLOCK_2_14_14:
+            return std::make_unique<Block_2_14_14Block>(gridPos);
+        case BlockType::BLOCK_2_14_15:
+            return std::make_unique<Block_2_14_15Block>(gridPos);
+        case BlockType::BLOCK_2_14_16:
+            return std::make_unique<Block_2_14_16Block>(gridPos);
+        case BlockType::BLOCK_2_15_1:
+            return std::make_unique<Block_2_15_1Block>(gridPos);
+        case BlockType::BLOCK_2_15_2:
+            return std::make_unique<Block_2_15_2Block>(gridPos);
+        case BlockType::BLOCK_2_15_3:
+            return std::make_unique<Block_2_15_3Block>(gridPos);
+        case BlockType::BLOCK_2_15_4:
+            return std::make_unique<Block_2_15_4Block>(gridPos);
+        case BlockType::BLOCK_2_15_5:
+            return std::make_unique<Block_2_15_5Block>(gridPos);
+        case BlockType::BLOCK_2_15_6:
+            return std::make_unique<Block_2_15_6Block>(gridPos);
+        case BlockType::BLOCK_2_15_7:
+            return std::make_unique<Block_2_15_7Block>(gridPos);
+        case BlockType::BLOCK_2_15_8:
+            return std::make_unique<Block_2_15_8Block>(gridPos);
+        case BlockType::BLOCK_2_15_9:
+            return std::make_unique<Block_2_15_9Block>(gridPos);
+        case BlockType::BLOCK_2_15_10:
+            return std::make_unique<Block_2_15_10Block>(gridPos);
+        case BlockType::BLOCK_2_15_11:
+            return std::make_unique<Block_2_15_11Block>(gridPos);
+        case BlockType::BLOCK_2_15_12:
+            return std::make_unique<Block_2_15_12Block>(gridPos);
+        case BlockType::BLOCK_2_15_13:
+            return std::make_unique<Block_2_15_13Block>(gridPos);
+        case BlockType::BLOCK_2_15_14:
+            return std::make_unique<Block_2_15_14Block>(gridPos);
+        case BlockType::BLOCK_2_15_15:
+            return std::make_unique<Block_2_15_15Block>(gridPos);
+        case BlockType::BLOCK_2_15_16:
+            return std::make_unique<Block_2_15_16Block>(gridPos);
+        case BlockType::BLOCK_2_16_1:
+            return std::make_unique<Block_2_16_1Block>(gridPos);
+        case BlockType::BLOCK_2_16_2:
+            return std::make_unique<Block_2_16_2Block>(gridPos);
+        case BlockType::BLOCK_2_16_3:
+            return std::make_unique<Block_2_16_3Block>(gridPos);
+        case BlockType::BLOCK_2_16_4:
+            return std::make_unique<Block_2_16_4Block>(gridPos);
+        case BlockType::BLOCK_2_16_5:
+            return std::make_unique<Block_2_16_5Block>(gridPos);
+        case BlockType::BLOCK_2_16_6:
+            return std::make_unique<Block_2_16_6Block>(gridPos);
+        case BlockType::BLOCK_2_16_7:
+            return std::make_unique<Block_2_16_7Block>(gridPos);
+        case BlockType::BLOCK_2_16_8:
+            return std::make_unique<Block_2_16_8Block>(gridPos);
+        case BlockType::BLOCK_2_16_9:
+            return std::make_unique<Block_2_16_9Block>(gridPos);
+        case BlockType::BLOCK_2_16_10:
+            return std::make_unique<Block_2_16_10Block>(gridPos);
+        case BlockType::BLOCK_2_16_11:
+            return std::make_unique<Block_2_16_11Block>(gridPos);
+        case BlockType::BLOCK_2_16_12:
+            return std::make_unique<Block_2_16_12Block>(gridPos);
+        case BlockType::BLOCK_2_16_13:
+            return std::make_unique<Block_2_16_13Block>(gridPos);
+        case BlockType::BLOCK_2_16_14:
+            return std::make_unique<Block_2_16_14Block>(gridPos);
+        case BlockType::BLOCK_2_16_15:
+            return std::make_unique<Block_2_16_15Block>(gridPos);
+        case BlockType::BLOCK_2_16_16:
+            return std::make_unique<Block_2_16_16Block>(gridPos);
+
+
+
+
+
 
         case BlockType::BLOCK_3_1_2:
             return std::make_unique<Block_3_1_2Block>(gridPos);
@@ -387,6 +652,139 @@ std::unique_ptr<Block> ObjectFactory::createSpecificBlock(BlockType type, Vector
             return std::make_unique<Block_3_7_15Block>(gridPos);
         case BlockType::BLOCK_3_7_16:
             return std::make_unique<Block_3_7_16Block>(gridPos);
+        case BlockType::BLOCK_3_13_1:
+            return std::make_unique<Block_3_13_1Block>(gridPos);
+        case BlockType::BLOCK_3_13_2:
+            return std::make_unique<Block_3_13_2Block>(gridPos);
+        case BlockType::BLOCK_3_13_3:
+            return std::make_unique<Block_3_13_3Block>(gridPos);
+        case BlockType::BLOCK_3_13_4:
+            return std::make_unique<Block_3_13_4Block>(gridPos);
+        case BlockType::BLOCK_3_13_5:
+            return std::make_unique<Block_3_13_5Block>(gridPos);
+        case BlockType::BLOCK_3_13_6:
+            return std::make_unique<Block_3_13_6Block>(gridPos);
+        case BlockType::BLOCK_3_13_7:
+            return std::make_unique<Block_3_13_7Block>(gridPos);
+        case BlockType::BLOCK_3_13_8:
+            return std::make_unique<Block_3_13_8Block>(gridPos);
+        case BlockType::BLOCK_3_13_9:
+            return std::make_unique<Block_3_13_9Block>(gridPos);
+        case BlockType::BLOCK_3_13_10:
+            return std::make_unique<Block_3_13_10Block>(gridPos);
+        case BlockType::BLOCK_3_13_11:
+            return std::make_unique<Block_3_13_11Block>(gridPos);
+        case BlockType::BLOCK_3_13_12:
+            return std::make_unique<Block_3_13_12Block>(gridPos);
+        case BlockType::BLOCK_3_13_13:
+            return std::make_unique<Block_3_13_13Block>(gridPos);
+        case BlockType::BLOCK_3_13_14:
+            return std::make_unique<Block_3_13_14Block>(gridPos);
+        case BlockType::BLOCK_3_13_15:
+            return std::make_unique<Block_3_13_15Block>(gridPos);
+        case BlockType::BLOCK_3_13_16:
+            return std::make_unique<Block_3_13_16Block>(gridPos);
+        case BlockType::BLOCK_3_14_1:
+            return std::make_unique<Block_3_14_1Block>(gridPos);
+        case BlockType::BLOCK_3_14_2:
+            return std::make_unique<Block_3_14_2Block>(gridPos);
+        case BlockType::BLOCK_3_14_3:
+            return std::make_unique<Block_3_14_3Block>(gridPos);
+        case BlockType::BLOCK_3_14_4:
+            return std::make_unique<Block_3_14_4Block>(gridPos);
+        case BlockType::BLOCK_3_14_5:
+            return std::make_unique<Block_3_14_5Block>(gridPos);
+        case BlockType::BLOCK_3_14_6:
+            return std::make_unique<Block_3_14_6Block>(gridPos);
+        case BlockType::BLOCK_3_14_7:
+            return std::make_unique<Block_3_14_7Block>(gridPos);
+        case BlockType::BLOCK_3_14_8:
+            return std::make_unique<Block_3_14_8Block>(gridPos);
+        case BlockType::BLOCK_3_14_9:
+            return std::make_unique<Block_3_14_9Block>(gridPos);
+        case BlockType::BLOCK_3_14_10:
+            return std::make_unique<Block_3_14_10Block>(gridPos);
+        case BlockType::BLOCK_3_14_11:
+            return std::make_unique<Block_3_14_11Block>(gridPos);
+        case BlockType::BLOCK_3_14_12:
+            return std::make_unique<Block_3_14_12Block>(gridPos);
+        case BlockType::BLOCK_3_14_13:
+            return std::make_unique<Block_3_14_13Block>(gridPos);
+        case BlockType::BLOCK_3_14_14:
+            return std::make_unique<Block_3_14_14Block>(gridPos);
+        case BlockType::BLOCK_3_14_15:
+            return std::make_unique<Block_3_14_15Block>(gridPos);
+        case BlockType::BLOCK_3_14_16:
+            return std::make_unique<Block_3_14_16Block>(gridPos);
+        case BlockType::BLOCK_3_15_1:
+            return std::make_unique<Block_3_15_1Block>(gridPos);
+        case BlockType::BLOCK_3_15_2:
+            return std::make_unique<Block_3_15_2Block>(gridPos);
+        case BlockType::BLOCK_3_15_3:
+            return std::make_unique<Block_3_15_3Block>(gridPos);
+        case BlockType::BLOCK_3_15_4:
+            return std::make_unique<Block_3_15_4Block>(gridPos);
+        case BlockType::BLOCK_3_15_5:
+            return std::make_unique<Block_3_15_5Block>(gridPos);
+        case BlockType::BLOCK_3_15_6:
+            return std::make_unique<Block_3_15_6Block>(gridPos);
+        case BlockType::BLOCK_3_15_7:
+            return std::make_unique<Block_3_15_7Block>(gridPos);
+        case BlockType::BLOCK_3_15_8:
+            return std::make_unique<Block_3_15_8Block>(gridPos);
+        case BlockType::BLOCK_3_15_9:
+            return std::make_unique<Block_3_15_9Block>(gridPos);
+        case BlockType::BLOCK_3_15_10:
+            return std::make_unique<Block_3_15_10Block>(gridPos);
+        case BlockType::BLOCK_3_15_11:
+            return std::make_unique<Block_3_15_11Block>(gridPos);
+        case BlockType::BLOCK_3_15_12:
+            return std::make_unique<Block_3_15_12Block>(gridPos);
+        case BlockType::BLOCK_3_15_13:
+            return std::make_unique<Block_3_15_13Block>(gridPos);
+        case BlockType::BLOCK_3_15_14:
+            return std::make_unique<Block_3_15_14Block>(gridPos);
+        case BlockType::BLOCK_3_15_15:
+            return std::make_unique<Block_3_15_15Block>(gridPos);
+        case BlockType::BLOCK_3_15_16:
+            return std::make_unique<Block_3_15_16Block>(gridPos);
+        case BlockType::BLOCK_3_16_1:
+            return std::make_unique<Block_3_16_1Block>(gridPos);
+        case BlockType::BLOCK_3_16_2:
+            return std::make_unique<Block_3_16_2Block>(gridPos);
+        case BlockType::BLOCK_3_16_3:
+            return std::make_unique<Block_3_16_3Block>(gridPos);
+        case BlockType::BLOCK_3_16_4:
+            return std::make_unique<Block_3_16_4Block>(gridPos);
+        case BlockType::BLOCK_3_16_5:
+            return std::make_unique<Block_3_16_5Block>(gridPos);
+        case BlockType::BLOCK_3_16_6:
+            return std::make_unique<Block_3_16_6Block>(gridPos);
+        case BlockType::BLOCK_3_16_7:
+            return std::make_unique<Block_3_16_7Block>(gridPos);
+        case BlockType::BLOCK_3_16_8:
+            return std::make_unique<Block_3_16_8Block>(gridPos);
+        case BlockType::BLOCK_3_16_9:
+            return std::make_unique<Block_3_16_9Block>(gridPos);
+        case BlockType::BLOCK_3_16_10:
+            return std::make_unique<Block_3_16_10Block>(gridPos);
+        case BlockType::BLOCK_3_16_11:
+            return std::make_unique<Block_3_16_11Block>(gridPos);
+        case BlockType::BLOCK_3_16_12:
+            return std::make_unique<Block_3_16_12Block>(gridPos);
+        case BlockType::BLOCK_3_16_13:
+            return std::make_unique<Block_3_16_13Block>(gridPos);
+        case BlockType::BLOCK_3_16_14:
+            return std::make_unique<Block_3_16_14Block>(gridPos);
+        case BlockType::BLOCK_3_16_15:
+            return std::make_unique<Block_3_16_15Block>(gridPos);
+        case BlockType::BLOCK_3_16_16:
+            return std::make_unique<Block_3_16_16Block>(gridPos);
+
+
+
+
+
 
         case BlockType::BLOCK_4_1_2:
             return std::make_unique<Block_4_1_2Block>(gridPos);
@@ -504,15 +902,147 @@ std::unique_ptr<Block> ObjectFactory::createSpecificBlock(BlockType type, Vector
             return std::make_unique<Block_4_7_15Block>(gridPos);
         case BlockType::BLOCK_4_7_16:
             return std::make_unique<Block_4_7_16Block>(gridPos);
+        case BlockType::BLOCK_4_13_1:
+            return std::make_unique<Block_4_13_1Block>(gridPos);
+        case BlockType::BLOCK_4_13_2:
+            return std::make_unique<Block_4_13_2Block>(gridPos);
+        case BlockType::BLOCK_4_13_3:
+            return std::make_unique<Block_4_13_3Block>(gridPos);
+        case BlockType::BLOCK_4_13_4:
+            return std::make_unique<Block_4_13_4Block>(gridPos);
+        case BlockType::BLOCK_4_13_5:
+            return std::make_unique<Block_4_13_5Block>(gridPos);
+        case BlockType::BLOCK_4_13_6:
+            return std::make_unique<Block_4_13_6Block>(gridPos);
+        case BlockType::BLOCK_4_13_7:
+            return std::make_unique<Block_4_13_7Block>(gridPos);
+        case BlockType::BLOCK_4_13_8:
+            return std::make_unique<Block_4_13_8Block>(gridPos);
+        case BlockType::BLOCK_4_13_9:
+            return std::make_unique<Block_4_13_9Block>(gridPos);
+        case BlockType::BLOCK_4_13_10:
+            return std::make_unique<Block_4_13_10Block>(gridPos);
+        case BlockType::BLOCK_4_13_11:
+            return std::make_unique<Block_4_13_11Block>(gridPos);
+        case BlockType::BLOCK_4_13_12:
+            return std::make_unique<Block_4_13_12Block>(gridPos);
+        case BlockType::BLOCK_4_13_13:
+            return std::make_unique<Block_4_13_13Block>(gridPos);
+        case BlockType::BLOCK_4_13_14:
+            return std::make_unique<Block_4_13_14Block>(gridPos);
+        case BlockType::BLOCK_4_13_15:
+            return std::make_unique<Block_4_13_15Block>(gridPos);
+        case BlockType::BLOCK_4_13_16:
+            return std::make_unique<Block_4_13_16Block>(gridPos);
+        case BlockType::BLOCK_4_14_1:
+            return std::make_unique<Block_4_14_1Block>(gridPos);
+        case BlockType::BLOCK_4_14_2:
+            return std::make_unique<Block_4_14_2Block>(gridPos);
+        case BlockType::BLOCK_4_14_3:
+            return std::make_unique<Block_4_14_3Block>(gridPos);
+        case BlockType::BLOCK_4_14_4:
+            return std::make_unique<Block_4_14_4Block>(gridPos);
+        case BlockType::BLOCK_4_14_5:
+            return std::make_unique<Block_4_14_5Block>(gridPos);
+        case BlockType::BLOCK_4_14_6:
+            return std::make_unique<Block_4_14_6Block>(gridPos);
+        case BlockType::BLOCK_4_14_7:
+            return std::make_unique<Block_4_14_7Block>(gridPos);
+        case BlockType::BLOCK_4_14_8:
+            return std::make_unique<Block_4_14_8Block>(gridPos);
+        case BlockType::BLOCK_4_14_9:
+            return std::make_unique<Block_4_14_9Block>(gridPos);
+        case BlockType::BLOCK_4_14_10:
+            return std::make_unique<Block_4_14_10Block>(gridPos);
+        case BlockType::BLOCK_4_14_11:
+            return std::make_unique<Block_4_14_11Block>(gridPos);
+        case BlockType::BLOCK_4_14_12:
+            return std::make_unique<Block_4_14_12Block>(gridPos);
+        case BlockType::BLOCK_4_14_13:
+            return std::make_unique<Block_4_14_13Block>(gridPos);
+        case BlockType::BLOCK_4_14_14:
+            return std::make_unique<Block_4_14_14Block>(gridPos);
+        case BlockType::BLOCK_4_14_15:
+            return std::make_unique<Block_4_14_15Block>(gridPos);
+        case BlockType::BLOCK_4_14_16:
+            return std::make_unique<Block_4_14_16Block>(gridPos);
+        case BlockType::BLOCK_4_15_1:
+            return std::make_unique<Block_4_15_1Block>(gridPos);
+        case BlockType::BLOCK_4_15_2:
+            return std::make_unique<Block_4_15_2Block>(gridPos);
+        case BlockType::BLOCK_4_15_3:
+            return std::make_unique<Block_4_15_3Block>(gridPos);
+        case BlockType::BLOCK_4_15_4:
+            return std::make_unique<Block_4_15_4Block>(gridPos);
+        case BlockType::BLOCK_4_15_5:
+            return std::make_unique<Block_4_15_5Block>(gridPos);
+        case BlockType::BLOCK_4_15_6:
+            return std::make_unique<Block_4_15_6Block>(gridPos);
+        case BlockType::BLOCK_4_15_7:
+            return std::make_unique<Block_4_15_7Block>(gridPos);
+        case BlockType::BLOCK_4_15_8:
+            return std::make_unique<Block_4_15_8Block>(gridPos);
+        case BlockType::BLOCK_4_15_9:
+            return std::make_unique<Block_4_15_9Block>(gridPos);
+        case BlockType::BLOCK_4_15_10:
+            return std::make_unique<Block_4_15_10Block>(gridPos);
+        case BlockType::BLOCK_4_15_11:
+            return std::make_unique<Block_4_15_11Block>(gridPos);
+        case BlockType::BLOCK_4_15_12:
+            return std::make_unique<Block_4_15_12Block>(gridPos);
+        case BlockType::BLOCK_4_15_13:
+            return std::make_unique<Block_4_15_13Block>(gridPos);
+        case BlockType::BLOCK_4_15_14:
+            return std::make_unique<Block_4_15_14Block>(gridPos);
+        case BlockType::BLOCK_4_15_15:
+            return std::make_unique<Block_4_15_15Block>(gridPos);
+        case BlockType::BLOCK_4_15_16:
+            return std::make_unique<Block_4_15_16Block>(gridPos);
+        case BlockType::BLOCK_4_16_1:
+            return std::make_unique<Block_4_16_1Block>(gridPos);
+        case BlockType::BLOCK_4_16_2:
+            return std::make_unique<Block_4_16_2Block>(gridPos);
+        case BlockType::BLOCK_4_16_3:
+            return std::make_unique<Block_4_16_3Block>(gridPos);
+        case BlockType::BLOCK_4_16_4:
+            return std::make_unique<Block_4_16_4Block>(gridPos);
+        case BlockType::BLOCK_4_16_5:
+            return std::make_unique<Block_4_16_5Block>(gridPos);
+        case BlockType::BLOCK_4_16_6:
+            return std::make_unique<Block_4_16_6Block>(gridPos);
+        case BlockType::BLOCK_4_16_7:
+            return std::make_unique<Block_4_16_7Block>(gridPos);
+        case BlockType::BLOCK_4_16_8:
+            return std::make_unique<Block_4_16_8Block>(gridPos);
+        case BlockType::BLOCK_4_16_9:
+            return std::make_unique<Block_4_16_9Block>(gridPos);
+        case BlockType::BLOCK_4_16_10:
+            return std::make_unique<Block_4_16_10Block>(gridPos);
+        case BlockType::BLOCK_4_16_11:
+            return std::make_unique<Block_4_16_11Block>(gridPos);
+        case BlockType::BLOCK_4_16_12:
+            return std::make_unique<Block_4_16_12Block>(gridPos);
+        case BlockType::BLOCK_4_16_13:
+            return std::make_unique<Block_4_16_13Block>(gridPos);
+        case BlockType::BLOCK_4_16_14:
+            return std::make_unique<Block_4_16_14Block>(gridPos);
+        case BlockType::BLOCK_4_16_15:
+            return std::make_unique<Block_4_16_15Block>(gridPos);
+        case BlockType::BLOCK_4_16_16:
+            return std::make_unique<Block_4_16_16Block>(gridPos);
     }
 }
 
-std::unique_ptr<Object> ObjectFactory::createCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size) {
+std::unique_ptr<Object> ObjectFactory::createCharacter(CharacterType type, PlayerID id, Vector2 startPosition) {
     switch(type) {
         case CharacterType::MARIO:
-            return createSpecificCharacter(CharacterType::MARIO, id, startPosition, size);
+            return createSpecificCharacter(CharacterType::MARIO, id, startPosition, Constants::Character::Mario::SMALL_SIZE);
         case CharacterType::LUIGI:
-            return createSpecificCharacter(CharacterType::LUIGI, id, startPosition, size);
+            return createSpecificCharacter(CharacterType::LUIGI, id, startPosition, Constants::Character::Luigi::SMALL_SIZE);
+        case CharacterType::TOAD:
+            return createSpecificCharacter(CharacterType::TOAD, id, startPosition, Constants::Character::Toad::SMALL_SIZE);
+        case CharacterType::TOADETTE:
+            return createSpecificCharacter(CharacterType::TOADETTE, id, startPosition, Constants::Character::Toadette::SMALL_SIZE);
         default: 
             return nullptr;
     }
@@ -527,10 +1057,14 @@ std::unique_ptr<Character> ObjectFactory::createSpecificCharacter(CharacterType 
 
 CharacterStats ObjectFactory::getStats(CharacterType type) {
     switch (type) {
-        case CharacterType::MARIO:
-            return Constants::Character::MARIO_STATS;
-        case CharacterType::LUIGI:  
-            return Constants::Character::LUIGI_STATS;
+    case CharacterType::MARIO:
+        return Constants::Character::Mario::STATS;
+    case CharacterType::LUIGI:  
+        return Constants::Character::Luigi::STATS;
+    case CharacterType::TOAD:
+        return Constants::Character::Toad::STATS;
+    case CharacterType::TOADETTE:
+        return Constants::Character::Toadette::STATS;
     }
 }
 std::unique_ptr<Object> ObjectFactory::createEnemy(EnemyType type, Vector2 gridPos, Vector2 size) {
@@ -583,12 +1117,17 @@ std::unique_ptr<Item> ObjectFactory::createSpecificItem(ItemType type, Vector2 s
 
 std::vector<std::vector<Rectangle>> ObjectFactory::getFrameData(CharacterType type) {
     switch (type) {
-        case CharacterType::MARIO: 
-            return Constants::Character::SMALL_MARIO_FRAME_DATA;
-        case CharacterType::LUIGI:
-            return Constants::Character::LUIGI_FRAME_DATA;
+    case CharacterType::MARIO: 
+        return Constants::Character::Mario::SMALL_FRAME_DATA;
+    case CharacterType::LUIGI:
+        return Constants::Character::Luigi::SMALL_FRAME_DATA;
+    case CharacterType::TOAD:
+        return Constants::Character::Toad::SMALL_FRAME_DATA;
+    case CharacterType::TOADETTE:
+        return Constants::Character::Toadette::SMALL_FRAME_DATA;
     }
 }
+
 std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vector2 gridPos, Vector2 size) {
     return std::make_unique<KoopaShell>(type, gridPos, size);
 }

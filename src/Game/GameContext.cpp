@@ -21,7 +21,6 @@ GameContext::GameContext() {
     camera.rotation = 0.0f;
 	camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f }; 
     camera.zoom = 1.0f;
-    testParticle = new ParticleSystem({ 500, 500 }, { 100, 100 }, { 0, 100 }, 5.0f, 0.1f, 0.0f, "assets/item_coin.png");
 }
 
 GameContext::~GameContext() {
@@ -30,7 +29,6 @@ GameContext::~GameContext() {
         Box2DWorldManager::getInstance().cleanup();
     }
     TextureManager::getInstance().unloadTextures();
-    delete testParticle;
 }
 
 GameContext& GameContext::getInstance() {
@@ -44,6 +42,7 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().cleanup();
             clearGame(); // Delete remaining objects in GameContext
             Box2DWorldManager::getInstance().cleanup();
+            ParticleSystem::getInstance().cleanup();
             character01.reset();
             character02.reset();
         }
@@ -55,12 +54,9 @@ void GameContext::setState(GameState* newState) {
             Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
             LevelEditor::getInstance().setEditMode(false);
             
-            // Create test blocks for Box2D physics testing
-            createTestBlocks();
-            
-            ////LevelEditor::getInstance().loadLevel("testlevel.json");
-            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 500, 400 });
-            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 400, 400 });
+            LevelEditor::getInstance().loadLevel("testlevel.json");
+            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
@@ -84,8 +80,6 @@ void GameContext::update(float deltaTime) {
             AudioManager::getInstance().PlayBackgroundMusic("theme1");
         }
         AudioManager::getInstance().UpdateBackgroundMusic("theme1");
-        testParticle->update(deltaTime);
-
     }
     else {
         if (AudioManager::getInstance().isPlaying()) {
@@ -171,6 +165,7 @@ void GameContext::spawnObject() {
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
         ToDeleteObjects.push_back(object);
+        LevelEditor::getInstance().removeObject(object->getGridPos());
     }
 }
 
@@ -201,18 +196,4 @@ void GameContext::clearGame() {
     }
     deleteObjects();
     Objects.clear();
-}
-
-void GameContext::createTestBlocks() {
-	//addObject(ItemType::COIN, GridSystem::getWorldPosition({ 19.0f, 9.0f }), { 1, 1 });
-	addObject(ItemType::MUSHROOM, GridSystem::getWorldPosition({ 20.0f, 9.0f }), { 1, 1 });
-	//addObject(ItemType::FIRE_FLOWER, GridSystem::getWorldPosition({ 21.0f, 9.0f }), { 1, 1 });
-	addObject(ItemType::STAR, GridSystem::getWorldPosition({ 15.0f, 5.0f }), { 1, 1 });
-	//addObject(ItemType::ONE_UP, GridSystem::getWorldPosition({ 23.0f, 9.0f }), { 1, 1 });
-    //addObject(EnemyType::GOOMBA, GridSystem::getWorldPosition({ 20.0f, 10.0f }), { 0.75f, 0.75f });
-    //addObject(InteractiveType::SPRING, GridSystem::getWorldPosition({ 13.0f, 14.0f }), {1, 1});
-    //addObject(EnemyType::RED_KOOPA, GridSystem::getWorldPosition({15.0f, 10.0f}), {0.75f, 0.75f});
-    //addObject(EnemyType::DRY_BOWSER, GridSystem::getWorldPosition({20.0f, 10.0f}), {1,1});
-    
-    spawnObject();
 }
