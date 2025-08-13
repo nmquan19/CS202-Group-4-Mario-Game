@@ -939,6 +939,24 @@ void ObjectPalette::drawPalette() {
         Rectangle ffSource = { 0, 200, 100, 100 };
         DrawTexturePro(tm.getItemTexture(), ffSource, ffRect, { 0, 0 }, 0.0f, WHITE);
         DrawRectangleLinesEx(ffRect, 2, (isItem() && getItemType() == ItemType::FIRE_FLOWER) ? RED : BLACK);
+
+        // Mushroom
+        Rectangle mushRoomRect = { startX + 2 * spacingX, startY, iconSize, iconSize };
+        Rectangle mushRoomSrc = {0, 100, 100, 100};
+        DrawTexturePro(tm.getItemTexture(), mushRoomSrc, mushRoomRect, { 0, 0 }, 0.0f, WHITE);
+        DrawRectangleLinesEx(mushRoomRect, 2, (isItem() && getItemType() == ItemType::MUSHROOM) ? RED : BLACK);
+
+        // Star
+        Rectangle starRect = { startX + 3 * spacingX, startY, iconSize, iconSize };
+        Rectangle starSrc = {0, 300, 100, 100};
+        DrawTexturePro(tm.getItemTexture(), starSrc, starRect, { 0, 0 }, 0.0f, WHITE);
+        DrawRectangleLinesEx(starRect, 2, (isItem() && getItemType() == ItemType::STAR) ? RED : BLACK);
+
+        // One up 
+        Rectangle oneUpRect = { startX, startY + spacingY, iconSize, iconSize };
+        Rectangle oneUpSrc = {0, 400, 100, 100};
+        DrawTexturePro(tm.getItemTexture(), oneUpSrc, oneUpRect, { 0, 0 }, 0.0f, WHITE);
+        DrawRectangleLinesEx(oneUpRect, 2, (isItem() && getItemType() == ItemType::ONE_UP) ? RED : BLACK);
     }
 
 }
@@ -986,6 +1004,9 @@ void ObjectPalette::handleSelection() {
 
     Rectangle coinRect = { startX, startY, iconSize, iconSize };
     Rectangle ffRect = { startX + spacingX, startY, iconSize, iconSize };
+    Rectangle mushRoomRect = { startX + 2 * spacingX, startY, iconSize, iconSize };
+    Rectangle starRect = { startX + 3 * spacingX, startY, iconSize, iconSize };
+    Rectangle oneUpRect = { startX, startY + spacingY, iconSize, iconSize };
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         int traverse = 1;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_1_2; traverse++;
@@ -1485,8 +1506,11 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, rkoopaRect) && selectRect == 2) selected = EnemyType::RED_KOOPA;
         if (CheckCollisionPointRec(mousePos, dryBRect) && selectRect == 2) selected = EnemyType::DRY_BOWSER;
         if (CheckCollisionPointRec(mousePos, springRect) && selectRect == 3) selected = InteractiveType::SPRING;
-        // 
+        
         if (CheckCollisionPointRec(mousePos, coinRect) && selectRect == 4) selected = ItemType::COIN;
         if (CheckCollisionPointRec(mousePos, ffRect) && selectRect == 4) selected = ItemType::FIRE_FLOWER;
+        if (CheckCollisionPointRec(mousePos, mushRoomRect) && selectRect == 4) selected = ItemType::MUSHROOM;
+        if (CheckCollisionPointRec(mousePos, starRect) && selectRect == 4) selected = ItemType::STAR;
+        if (CheckCollisionPointRec(mousePos, oneUpRect) && selectRect == 4) selected = ItemType::ONE_UP;
     }
 }
