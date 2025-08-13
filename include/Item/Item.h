@@ -30,11 +30,9 @@ public:
     bool isCollided() const override;
     void setCollided(bool) override;
     Vector2 getSize() const override;
-    virtual ObjectType getObjectType() const override;
+    ObjectType getObjectType() const override;
     void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
     void StarShapeMove(Vector2 center, float deltaTime, float frequency); 
-    virtual void Move(double dt);
-
     void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
 protected:
     Vector2 position;
@@ -42,7 +40,6 @@ protected:
     Vector2 accelleration;
 
     bool active;
-    //Texture2D texture;
     Rectangle spritebox;
     Rectangle hitbox;
     float scale;
