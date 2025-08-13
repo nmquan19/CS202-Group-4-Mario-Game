@@ -19,7 +19,7 @@
 #include "../include/System/CameraSystem.h"
 #include "../include/Objects/Block.h"
 #include "../include/System/Box2DWorldManager.h"
-
+#include "../include/System/LightingSystem.h"
 int main() {
     InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
     InitAudioDevice();
@@ -37,7 +37,9 @@ int main() {
     GameCameraSystem::getInstance().init();
 
     context->setGameStates(&menuState, &redirectState, &characterSelectingState, &informationState, &gamePlayState, &editorState, &editorSelectingState, &gameOverState);
-
+    LightingManager::getInstance().loadShader("assets/shaders/lightsource.fs");
+    LightingManager::getInstance().setAmbientColor(WHITE); // Dark blue 
+    GameContext::getInstance().addObject(EnemyType::BOO, { 300,500 }, { 1,1 });
     while (!WindowShouldClose()) {
         Box2DWorldManager::getInstance().setDebugDraw(true);
 
