@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -18,446 +18,10 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_api.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_block_allocator.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_body.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_broad_phase.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_chain_shape.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_circle_shape.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_collision.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_common.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_contact.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_contact_manager.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_distance_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_draw.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_dynamic_tree.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_edge_shape.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_fixture.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_friction_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_gear_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_growable_stack.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_math.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_motor_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_mouse_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_polygon_shape.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_prismatic_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_pulley_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_revolute_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_settings.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_shape.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_stack_allocator.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_timer.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_time_step.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_types.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_weld_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_wheel_joint.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_world.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\b2_world_callbacks.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\box2d\box2d.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\raylib.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\raymath.h" />
-    <ClInclude Include="..\..\vcpkg\installed\x64-windows\include\rlgl.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\winapifamily.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\winpackagefamily.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\assert.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_malloc.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math_defines.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_memcpy_s.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_memory.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_search.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_share.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_stdio_config.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_terminate.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wconio.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wctype.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wdirect.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wio.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wprocess.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wstdio.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wstdlib.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wstring.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wtime.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\crtdbg.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\ctype.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\errno.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\float.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\locale.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\malloc.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\math.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\share.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stddef.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdio.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdlib.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\string.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\sys\stat.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\sys\types.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\time.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\wchar.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\gl\GL.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\softintrin.h" />
-    <ClInclude Include="C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\widemath.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\ammintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\arm64intr.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\arm64_neon.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\armintr.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\arm_neon.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\CodeAnalysis\sourceannotations.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\concurrencysal.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\crtdefs.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\eh.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\emmintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\immintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\intrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\intrin0.inl.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\limits.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\mm3dnow.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\mmintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\nmmintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\pmmintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\sal.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\setjmp.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\setjmpex.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\smmintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdarg.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdbool.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdint.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\tmmintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\use_ansi.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vadefs.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime_exception.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime_new.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime_new_debug.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime_string.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime_typeinfo.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\wmmintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xatomic.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xatomic_wait.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xbit_ops.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xcall_once.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xcharconv.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xcharconv_ryu.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xcharconv_ryu_tables.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xcharconv_tables.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xerrc.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xfilesystem_abi.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xkeycheck.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmmintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xnode_handle.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xpolymorphic_allocator.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xsmf_control.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xthreads.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xtimec.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\yvals.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\yvals_core.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\zmmintrin.h" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_bit_utils.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_chrono.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_filebuf.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_formatter.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_format_ucd_tables.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_heap_algorithms.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_int128.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_iter_core.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_minmax.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_ostream.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_print.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_ranges_to.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_ranges_tuple_formatter.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_sanitizer_annotate_container.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_system_error_abi.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_threads_core.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_tzdb.hpp" />
-    <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_xlocinfo_types.hpp" />
-    <ClInclude Include="include\Characters\AttackState.h" />
-    <ClInclude Include="include\Characters\FireTransformState.h" />
-    <ClInclude Include="include\Characters\SuperTransformState.h" />
-    <ClInclude Include="include\Characters\Character.h" />
-    <ClInclude Include="include\Characters\ICharacterState.h" />
-    <ClInclude Include="include\Characters\IdleState.h" />
-    <ClInclude Include="include\Characters\JumpingState.h" />
-    <ClInclude Include="include\Characters\KnockedState.h" />
-    <ClInclude Include="include\Characters\MovingState.h" />
-    <ClInclude Include="include\Characters\StunnedState.h" />
-    <ClInclude Include="include\Enemy\Boo\Boo.h" />
-    <ClInclude Include="include\Enemy\Boss\BehaviorTree.h" />
-    <ClInclude Include="include\Enemy\Boss\Boss.h" />
-    <ClInclude Include="include\Enemy\Boss\BossAction.h" />
-    <ClInclude Include="include\Enemy\Boss\BossMoveState.h" />
-    <ClInclude Include="include\Enemy\Boss\BossPhaseState.h" />
-    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowser.h" />
-    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserMoveState.h" />
-    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserPhase.h" />
-    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserSimState.h" />
-    <ClInclude Include="include\Enemy\Boss\GOAPPlanner.h" />
-    <ClInclude Include="include\Enemy\Boss\SimulateState.h" />
-    <ClInclude Include="include\Enemy\Boss\WorldState.h" />
-    <ClInclude Include="include\Enemy\Enemy.h" />
-    <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
-    <ClInclude Include="include\Enemy\EnemyState.h" />
-    <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
-    <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
-    <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
-    <ClInclude Include="include\Enemy\Koopa\KoopaShell.h" />
-    <ClInclude Include="include\Enemy\Koopa\KoopaShellState..h" />
-    <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h" />
-    <ClInclude Include="include\Enemy\LedgeDetector.h" />
-    <ClInclude Include="include\Enemy\Koopa\Koopa.h" />
-    <ClInclude Include="include\Enemy\Koopa\KoopaState.h" />
-    <ClInclude Include="include\Enemy\TriggerZone.h" />
-    <ClInclude Include="include\Game\GameContext.h" />
-    <ClInclude Include="include\Game\GameStates.h" />
-    <ClInclude Include="include\Item\Anima.h" />
-    <ClInclude Include="include\Item\Coin\Coin.h" />
-    <ClInclude Include="include\Item\Fire_Flower\Fire_Flower.h" />
-    <ClInclude Include="include\Item\Item.h" />
-    <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
-    <ClInclude Include="include\Item\One_Up\One_Up.h" />
-    <ClInclude Include="include\Item\Star\Star.h" />
-    <ClInclude Include="include\Objects\Block.h" />
-    <ClInclude Include="include\Objects\CollectableObject.h" />
-    <ClInclude Include="include\Objects\MovingPlatform.h" />
-    <ClInclude Include="include\Objects\Projectile\FireBall.h" />
-    <ClInclude Include="include\Objects\InteractiveObject.h" />
-    <ClInclude Include="include\Objects\LightPole.h" />
-    <ClInclude Include="include\Objects\ObjectFactory.h" />
-    <ClInclude Include="include\Objects\Projectile\Projectile.h" />
-    <ClInclude Include="include\Objects\Spring.h" />
-    <ClInclude Include="include\Objects\SpringState.h" />
-    <ClInclude Include="include\Objects\Torch.h" />
-    <ClInclude Include="include\System\CameraSystem.h" />
-    <ClInclude Include="include\System\Constant.h" />
-    <ClInclude Include="include\System\FrameData.h" />
-    <ClInclude Include="include\System\Grid.h" />
-    <ClInclude Include="include\System\Interface.h" />
-    <ClInclude Include="include\System\InterpolationController.h" />
-    <ClInclude Include="include\System\json.hpp" />
-    <ClInclude Include="include\System\LevelEditor.h" />
-    <ClInclude Include="include\System\LightingSystem.h" />
-    <ClInclude Include="include\System\ParticleSystem.h" />
-    <ClInclude Include="include\System\TextureManager.h" />
-    <ClInclude Include="include\UI\Button.h" />
-    <ClInclude Include="include\UI\Menu.h" />
-    <ClInclude Include="include\UI\SlideBar.h" />
-    <ClInclude Include="include\UI\SoundEffect.h" />
-    <ClInclude Include="include\UI\UI.h" />
-    <ClInclude Include="src\Enemy\Boss\Boss.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="include\Characters\SmallTransformState.h" />
-    <ClCompile Include="include\Enemy\Boss\BT_Factory.h" />
-    <ClCompile Include="include\System\Box2DWorldManager.h" />
-    <ClCompile Include="src\Characters\AttackState.cpp" />
-    <ClCompile Include="src\Characters\FireTransformState.cpp" />
-    <ClCompile Include="src\Characters\SmallTransformState.cpp" />
-    <ClCompile Include="src\Characters\SuperTransformState.cpp" />
-    <ClCompile Include="src\Characters\Character.cpp" />
-    <ClCompile Include="src\Characters\IdleState.cpp" />
-    <ClCompile Include="src\Characters\JumpingState.cpp" />
-    <ClCompile Include="src\Characters\KnockedState.cpp" />
-    <ClCompile Include="src\Characters\MovingState.cpp" />
-    <ClCompile Include="src\Characters\StunnedState.cpp" />
-    <ClCompile Include="src\Enemy\Boo\Boo.cpp" />
-    <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
-    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
-    <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
-    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
-    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
-    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
-    <ClCompile Include="src\Enemy\Enemy.cpp" />
-    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
-    <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
-    <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
-    <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
-    <ClCompile Include="src\Enemy\Koopa\KoopaShellState.cpp" />
-    <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp" />
-    <ClCompile Include="src\Enemy\Koopa\Koopa.cpp" />
-    <ClCompile Include="src\Enemy\LedgeDetector.cpp" />
-    <ClCompile Include="src\Enemy\TriggerZone.cpp" />
-    <ClCompile Include="src\Game\GameContext.cpp" />
-    <ClCompile Include="src\Game\GameStates.cpp" />
-    <ClCompile Include="src\Item\Coin\Coin.cpp" />
-    <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
-    <ClCompile Include="src\Item\Item.cpp" />
-    <ClCompile Include="src\Item\Mushroom\Mushroom.cpp" />
-    <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
-    <ClCompile Include="src\Item\Star\Star.cpp" />
-    <ClCompile Include="src\Objects\Block.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Objects\CollectableObject.cpp" />
-    <ClCompile Include="src\Objects\MovingPlatform.cpp" />
-    <ClCompile Include="src\Objects\Projectile\FireBall.cpp" />
-    <ClCompile Include="src\Objects\InteractiveObject.cpp" />
-    <ClCompile Include="src\Objects\ObjectFactory.cpp" />
-    <ClCompile Include="src\Objects\Projectile\Projectile.cpp" />
-    <ClCompile Include="src\Objects\Spring.cpp" />
-    <ClCompile Include="src\Objects\Torch.cpp" />
-    <ClCompile Include="src\Scenes\Scene.cpp" />
-    <ClCompile Include="src\System\Box2DWorldManager.cpp" />
-    <ClCompile Include="src\System\CameraSystem.cpp" />
-    <ClCompile Include="src\System\FrameData.cpp" />
-    <ClCompile Include="src\System\InterpolationController.cpp" />
-    <ClCompile Include="src\System\LevelEditor.cpp" />
-    <ClCompile Include="src\System\LightSystem.cpp" />
-    <ClCompile Include="src\System\ParticleSystem.cpp" />
-    <ClCompile Include="src\System\Resources.cpp" />
-    <ClCompile Include="src\System\TextureManager.cpp" />
-    <ClCompile Include="src\UI\Button.cpp" />
-    <ClCompile Include="src\UI\Menu.cpp" />
-    <ClCompile Include="src\UI\SlideBar.cpp" />
-    <ClCompile Include="src\UI\SoundEffect.cpp" />
-    <ClCompile Include="src\UI\UI.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\button\back.png" />
-    <Image Include="assets\button\back_selected.png" />
-    <Image Include="assets\button\board1.png" />
-    <Image Include="assets\button\check.png" />
-    <Image Include="assets\button\check_selected.png" />
-    <Image Include="assets\button\cross.png" />
-    <Image Include="assets\button\cross_selected.png" />
-    <Image Include="assets\button\home.png" />
-    <Image Include="assets\button\home_selected.png" />
-    <Image Include="assets\button\option.png" />
-    <Image Include="assets\button\option_selected.png" />
-    <Image Include="assets\button\small_board.png" />
-    <Image Include="assets\button\small_board_selected.png" />
-    <Image Include="assets\button\thin_board.png" />
-    <Image Include="assets\button\thin_board_selected.png" />
-    <Image Include="assets\character_spritesheet.png" />
-    <Image Include="assets\coin_sprite.png" />
-    <Image Include="assets\day_ground.png" />
-    <Image Include="assets\day_underground.png" />
-    <Image Include="assets\Fireball_sprites.png" />
-    <Image Include="assets\font_sprites.png" />
-    <Image Include="assets\interactive_sprites.png" />
-    <Image Include="assets\level_map1.png" />
-    <Image Include="assets\level_map2.png" />
-    <Image Include="assets\level_map3.png" />
-    <Image Include="assets\Luigi.png" />
-    <Image Include="assets\Mario.png" />
-    <Image Include="assets\menu background.jpg" />
-    <Image Include="assets\night_airship.png" />
-    <Image Include="assets\night_snow.png" />
-    <Image Include="assets\Super Mario Bros.png" />
-    <Image Include="assets\Toad.png" />
-    <Image Include="assets\Toadette.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="assets\sound\2-108080.wav" />
-    <Media Include="assets\sound\click.wav" />
-    <Media Include="assets\sound\gain2.wav" />
-    <Media Include="assets\sound\jsyd_mario_slide-93009.wav" />
-    <Media Include="assets\sound\jump.wav" />
-    <Media Include="assets\sound\jump2.wav" />
-    <Media Include="assets\sound\level up.wav" />
-    <Media Include="assets\sound\movement1.wav" />
-    <Media Include="assets\sound\movement2.wav" />
-    <Media Include="assets\sound\next1.wav" />
-    <Media Include="assets\sound\next2.wav" />
-    <Media Include="assets\sound\next3.wav" />
-    <Media Include="assets\sound\notice1.wav" />
-    <Media Include="assets\sound\notice2.wav" />
-    <Media Include="assets\sound\point.wav" />
-    <Media Include="assets\sound\strike.wav" />
-    <Media Include="assets\sound\theme1.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\algorithm" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\any" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\array" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\atomic" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\bit" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cassert" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cctype" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cerrno" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cfloat" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\charconv" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\chrono" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\climits" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\clocale" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cmath" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\codecvt" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\compare" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\concepts" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cstddef" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cstdint" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cstdio" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cstdlib" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cstring" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\ctime" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cwchar" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\deque" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\exception" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\experimental\filesystem" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\filesystem" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\format" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\forward_list" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\fstream" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\functional" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\initializer_list" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\iomanip" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\ios" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\iosfwd" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\iostream" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\istream" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\iterator" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\limits" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\list" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\locale" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\map" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\new" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\numeric" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\optional" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\ostream" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\queue" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\ranges" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\ratio" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\set" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\span" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\sstream" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stack" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\streambuf" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\string" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\string_view" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\system_error" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\tuple" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\typeinfo" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\type_traits" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\unordered_map" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\unordered_set" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\valarray" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\variant" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vector" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\version" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xfacet" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xhash" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xiosbase" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xlocale" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xlocbuf" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xlocinfo" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xlocmes" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xlocmon" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xlocnum" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xloctime" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xtr1common" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xtree" />
-    <None Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xutility" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{2c71ba2f-b849-41e8-b02e-e9c73ea8b180}</ProjectGuid>
+    <ProjectGuid>{2C71BA2F-B849-41E8-B02E-E9C73EA8B180}</ProjectGuid>
     <RootNamespace>CS202Group4MarioGame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -512,12 +76,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>F:\vcpkg\installed\x64-windows\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\vcpkg\installed\x64-windows\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -528,12 +90,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>F:\vcpkg\installed\x64-windows\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\vcpkg\installed\x64-windows\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -543,13 +103,10 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>F:\vcpkg\installed\x64-windows\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\vcpkg\installed\x64-windows\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -560,16 +117,149 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>F:\vcpkg\installed\x64-windows\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\vcpkg\installed\x64-windows\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Characters\AttackState.cpp" />
+    <ClCompile Include="src\Characters\Character.cpp" />
+    <ClCompile Include="src\Characters\FireTransformState.cpp" />
+    <ClCompile Include="src\Characters\IdleState.cpp" />
+    <ClCompile Include="src\Characters\JumpingState.cpp" />
+    <ClCompile Include="src\Characters\KnockedState.cpp" />
+    <ClCompile Include="src\Characters\MovingState.cpp" />
+    <ClCompile Include="src\Characters\SmallTransformState.cpp" />
+    <ClCompile Include="src\Characters\StunnedState.cpp" />
+    <ClCompile Include="src\Characters\SuperTransformState.cpp" />
+    <ClCompile Include="src\Enemy\Boo\Boo.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
+    <ClCompile Include="src\Enemy\Boss\Boss.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
+    <ClCompile Include="src\Enemy\Enemy.cpp" />
+    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
+    <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
+    <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\Koopa.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\KoopaShellState.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp" />
+    <ClCompile Include="src\Enemy\LedgeDetector.cpp" />
+    <ClCompile Include="src\Enemy\TriggerZone.cpp" />
+    <ClCompile Include="src\Game\GameContext.cpp" />
+    <ClCompile Include="src\Game\GameStates.cpp" />
+    <ClCompile Include="src\Item\Coin\Coin.cpp" />
+    <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
+    <ClCompile Include="src\Item\Item.cpp" />
+    <ClCompile Include="src\Item\Mushroom\Mushroom.cpp" />
+    <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
+    <ClCompile Include="src\Item\Star\Star.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Objects\Block.cpp" />
+    <ClCompile Include="src\Objects\CollectableObject.cpp" />
+    <ClCompile Include="src\Objects\InteractiveObject.cpp" />
+    <ClCompile Include="src\Objects\MovingPlatform.cpp" />
+    <ClCompile Include="src\Objects\ObjectFactory.cpp" />
+    <ClCompile Include="src\Objects\Projectile\FireBall.cpp" />
+    <ClCompile Include="src\Objects\Projectile\Projectile.cpp" />
+    <ClCompile Include="src\Objects\Spring.cpp" />
+    <ClCompile Include="src\Objects\Torch.cpp" />
+    <ClCompile Include="src\Scenes\Scene.cpp" />
+    <ClCompile Include="src\System\Box2DWorldManager.cpp" />
+    <ClCompile Include="src\System\CameraSystem.cpp" />
+    <ClCompile Include="src\System\FrameData.cpp" />
+    <ClCompile Include="src\System\InterpolationController.cpp" />
+    <ClCompile Include="src\System\LevelEditor.cpp" />
+    <ClCompile Include="src\System\LightSystem.cpp" />
+    <ClCompile Include="src\System\ParticleSystem.cpp" />
+    <ClCompile Include="src\System\Resources.cpp" />
+    <ClCompile Include="src\System\TextureManager.cpp" />
+    <ClCompile Include="src\UI\Button.cpp" />
+    <ClCompile Include="src\UI\Menu.cpp" />
+    <ClCompile Include="src\UI\SlideBar.cpp" />
+    <ClCompile Include="src\UI\SoundEffect.cpp" />
+    <ClCompile Include="src\UI\UI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Characters\AttackState.h" />
+    <ClInclude Include="include\Characters\Character.h" />
+    <ClInclude Include="include\Characters\FireTransformState.h" />
+    <ClInclude Include="include\Characters\ICharacterState.h" />
+    <ClInclude Include="include\Characters\IdleState.h" />
+    <ClInclude Include="include\Characters\JumpingState.h" />
+    <ClInclude Include="include\Characters\KnockedState.h" />
+    <ClInclude Include="include\Characters\MovingState.h" />
+    <ClInclude Include="include\Characters\SmallTransformState.h" />
+    <ClInclude Include="include\Characters\StunnedState.h" />
+    <ClInclude Include="include\Characters\SuperTransformState.h" />
+    <ClInclude Include="include\Enemy\Boo\Boo.h" />
+    <ClInclude Include="include\Enemy\Boss\BehaviorTree.h" />
+    <ClInclude Include="include\Enemy\Boss\Boss.h" />
+    <ClInclude Include="include\Enemy\Boss\BossAction.h" />
+    <ClInclude Include="include\Enemy\Boss\BossMoveState.h" />
+    <ClInclude Include="include\Enemy\Boss\BossPhaseState.h" />
+    <ClInclude Include="include\Enemy\Boss\BT_Factory.h" />
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowser.h" />
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserMoveState.h" />
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserPhase.h" />
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserSimState.h" />
+    <ClInclude Include="include\Enemy\Boss\GOAPPlanner.h" />
+    <ClInclude Include="include\Enemy\Boss\SimulateState.h" />
+    <ClInclude Include="include\Enemy\Boss\WorldState.h" />
+    <ClInclude Include="include\Enemy\Enemy.h" />
+    <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
+    <ClInclude Include="include\Enemy\EnemyState.h" />
+    <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
+    <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
+    <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
+    <ClInclude Include="include\Enemy\Koopa\Koopa.h" />
+    <ClInclude Include="include\Enemy\Koopa\KoopaShell.h" />
+    <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h" />
+    <ClInclude Include="include\Enemy\Koopa\KoopaState.h" />
+    <ClInclude Include="include\Enemy\LedgeDetector.h" />
+    <ClInclude Include="include\Enemy\TriggerZone.h" />
+    <ClInclude Include="include\Game\GameContext.h" />
+    <ClInclude Include="include\Game\GameStates.h" />
+    <ClInclude Include="include\Item\Anima.h" />
+    <ClInclude Include="include\Item\Coin\Coin.h" />
+    <ClInclude Include="include\Item\Fire_Flower\Fire_Flower.h" />
+    <ClInclude Include="include\Item\Item.h" />
+    <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
+    <ClInclude Include="include\Item\One_Up\One_Up.h" />
+    <ClInclude Include="include\Item\Star\Star.h" />
+    <ClInclude Include="include\Objects\Block.h" />
+    <ClInclude Include="include\Objects\CollectableObject.h" />
+    <ClInclude Include="include\Objects\InteractiveObject.h" />
+    <ClInclude Include="include\Objects\MovingPlatform.h" />
+    <ClInclude Include="include\Objects\ObjectFactory.h" />
+    <ClInclude Include="include\Objects\Projectile\FireBall.h" />
+    <ClInclude Include="include\Objects\Projectile\Projectile.h" />
+    <ClInclude Include="include\Objects\Spring.h" />
+    <ClInclude Include="include\Objects\Torch.h" />
+    <ClInclude Include="include\System\Box2DWorldManager.h" />
+    <ClInclude Include="include\System\CameraSystem.h" />
+    <ClInclude Include="include\System\Constant.h" />
+    <ClInclude Include="include\System\FrameData.h" />
+    <ClInclude Include="include\System\Grid.h" />
+    <ClInclude Include="include\System\Interface.h" />
+    <ClInclude Include="include\System\InterpolationController.h" />
+    <ClInclude Include="include\System\json.hpp" />
+    <ClInclude Include="include\System\LevelEditor.h" />
+    <ClInclude Include="include\System\LightingSystem.h" />
+    <ClInclude Include="include\System\ParticleSystem.h" />
+    <ClInclude Include="include\System\TextureManager.h" />
+    <ClInclude Include="include\UI\Button.h" />
+    <ClInclude Include="include\UI\Menu.h" />
+    <ClInclude Include="include\UI\SlideBar.h" />
+    <ClInclude Include="include\UI\SoundEffect.h" />
+    <ClInclude Include="include\UI\UI.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
