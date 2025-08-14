@@ -4,6 +4,7 @@
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
 #include "../Objects/Spring.h"
+#include "../Objects/MovingPlatform.h"
 
 struct PlayerInputMapping {
 	int moveLeft;
@@ -68,6 +69,7 @@ public:
 	void setAniTime(float newTime);
 	void setAniSpeed(float newSpeed);
 
+	bool isOnPlatform() const;
 	bool isOnGround() const;
 	void jump();
 
@@ -111,12 +113,14 @@ public:
 
 	void addGroundContact();
 	void removeGroundContact();
+	void setPlatform(std::shared_ptr<MovingPlatform> platform);
 
 private:
 	void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction);
 	void handleEnemyCollision(std::shared_ptr<Object> other, Direction direction);
 	void handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction);
-	void handleSpringCollision(std::shared_ptr<Object> other, Direction direction);
+	void handleSpringCollision(std::shared_ptr<Spring> other, Direction direction);
+	void handleMovingPlatformCollision(std::shared_ptr<MovingPlatform> other, Direction direction);
 
 private:
 	ICharacterState* currentState;
@@ -149,5 +153,6 @@ private:
 
 	int projectilesLeft = 0;
 
+	MovingPlatform* platform;
 	int groundContactCount = 0;
 };

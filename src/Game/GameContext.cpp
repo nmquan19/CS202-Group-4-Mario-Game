@@ -55,8 +55,8 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().setEditMode(false);
             
             LevelEditor::getInstance().loadLevel("testlevel.json");
-            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
-            character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+            character01 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
@@ -139,7 +139,7 @@ void GameContext::spawnObject() {
                 object = ObjectFactory::createKoopaShell(actualType, request.worldpos, request.size);
             }
             else if constexpr (std::is_same_v<T, InteractiveType>) {
-                object = ObjectFactory::createSpring(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
+                object = ObjectFactory::createInteractiveObject(actualType, GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)));
             }
             else if constexpr (std::is_same_v<T, ProjectileType>) {
                 object = ObjectFactory::createProjectile(actualType, request.worldpos, std::dynamic_pointer_cast<Character>((playerCallsRequest == 1 ? character01 : character02))->isFacingRight() ? 1 : -1,  request.size);
