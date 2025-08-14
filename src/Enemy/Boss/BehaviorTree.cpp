@@ -363,11 +363,15 @@ NodeStatus WalkToTargetNode::tick(Enemy* boss, float dt) {
 }
 NodeStatus AttackNode::tick(Enemy* boss, float dt) {
     if (!boss) return NodeStatus::Failure;
-    boss->attack();
     if( boss->isAttacking()) {
         return NodeStatus::Running;
 	}
-    return NodeStatus::Success;
+    if (boss->getCurAnimation() == "Attack" && boss->getAnimController().isFinished())
+    {
+        return NodeStatus::Success;
+    }
+    boss->attack();
+    return NodeStatus::Running; 
 }
 NodeStatus IdleNode::tick(Enemy* boss, float dt) {
     boss->idle();
@@ -488,7 +492,7 @@ NodeStatus IsTakingDamageNode::tick(Enemy* boss, float dt) {
 NodeStatus IsInIntroNode::tick(Enemy* boss, float dt) {
     DryBowser* dryBowser = dynamic_cast<DryBowser*>(boss);
     if (!dryBowser) return NodeStatus::Failure;
-    if (dryBowser->getCurAnimation() == "Intro"&& !dryBowser->getAnimController().isFinished()) {
+    if ((dryBowser->getCurAnimation() == "Intro")||((dryBowser->getCurAnimation() == "Taunt")&& !dryBowser->getAnimController().isFinished())){
         return NodeStatus::Running;
     }
 	return NodeStatus::Success;
@@ -620,6 +624,46 @@ NodeStatus MoveToTargetNode::tick(Enemy* boss, float dt)
     if (!boss) return NodeStatus::Failure; 
     if (boss->moveToTarget())
     {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Failure;
+}
+
+NodeStatus CanUseBasicAttackNode::tick(Enemy* boss, float dt) {
+ 
+    if (boss->canUseBasicAttack()) {
+        return NodeStatus::Success;
+    }
+    return NodeStatus::Failure;
+}
+
+NodeStatus RetreatNode::tick(Enemy* boss, float dt) {
+    if (!boss) return NodeStatus::Failure;
+    if (boss->isRetreating()) {
+        return NodeStatus::Running;
+    }
+    if (boss->getCurAnimation() == "Retreat" && boss->getAnimController().isFinished())
+    {
+        return NodeStatus::Success;
+    }
+    boss->retreat();
+    return NodeStatus::Running;
+}
+
+
+NodeStatus PatrolNode::tick(Enemy* boss, float dt) {
+    if (!boss) return NodeStatus::Failure;
+    if (boss->isPatrolling()) {
+        return NodeStatus::Running;
+    }
+    boss->patrol();
+    return NodeStatus::Running;
+}
+
+
+NodeStatus IsInChaseRangeNode::tick(Enemy* boss, float dt) {
+
+    if (boss->isInChaseRange()) {
         return NodeStatus::Success;
     }
     return NodeStatus::Failure;

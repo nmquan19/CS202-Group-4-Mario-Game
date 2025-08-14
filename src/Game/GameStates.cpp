@@ -11,6 +11,8 @@
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
+
+#include "../../include/System/LightingSystem.h"
 #include <raymath.h>
 void handleCamera();
 
@@ -134,8 +136,14 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     auto& cam = GameCameraSystem::getInstance(); 
     cam.update(deltaTime);
     NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
+    LightingManager::getInstance().update(deltaTime);
+    //GameCameraSystem::getInstance().shakeCurrentCamera(100.0f, 0.1f);
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), cam.getCamera());
+        GameContext::getInstance().addObject(BackGroundObjectType::TORCH, mousePos, { 1,1});
 
-    //GameCameraSystem::getInstance().shakeCurrentCamera(10.0f, 0.1f);
+    }
 
     if (context.character01) {
         std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
@@ -161,13 +169,22 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
-    BeginMode2D(GameCameraSystem::getInstance().getCamera());
-    //DrawBackGround(TextureManager::getInstance().background_lv1);
-    //NavGraph::getInstance().draw();
-    //NavGraph::getInstance().clear();
+    DrawBackGround(TextureManager::getInstance().background_lv1);
+    NavGraph::getInstance().draw();
+    NavGraph::getInstance().clear();
     DrawText("Press Enter", 500, 100, 20, BLACK);
     
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
+
+    LightingManager& lm = LightingManager::getInstance();
+
+    // 1. Render scene to lightmap (world-space)
+    BeginTextureMode(lm.getLightMap());
+    {
+        ClearBackground(BLANK); // Transparent clear for light accumulation
+    }
+    BeginMode2D(GameCameraSystem::getInstance().getCamera());
+
     for (auto obj : context.Objects) {
         obj->draw();
     }
@@ -175,13 +192,28 @@ void GamePlayState::draw(GameContext& context) {
     if (context.character01) {
         context.character01->draw();
     }
-
     if (context.character02) {
         context.character02->draw();
     }
     ParticleSystem::getInstance().draw();
     Box2DWorldManager::getInstance().drawDebugBodies();
     EndMode2D();
+    EndTextureMode();
+    lm.prepareShader(GameCameraSystem::getInstance().getCamera());
+
+    BeginShaderMode(lm.getShader());
+    SetShaderValueTexture(lm.getShader(),
+        GetShaderLocation(lm.getShader(), "sceneTexture"),
+        lm.getLightMap().texture);
+
+    // Draw fullscreen quad to apply shader
+    DrawTextureRec(lm.getLightMap().texture,
+        { 0, 0, (float)lm.getLightMap().texture.width, (float)-lm.getLightMap().texture.height },
+        { 0, 0 },
+        WHITE);
+    EndShaderMode();
+    //GameContext::getInstance().testParticle->draw();
+
     DrawFPS(20, 50); 
 
     if (Box2DWorldManager::getInstance().isDebugDrawEnabled()) {
@@ -225,17 +257,38 @@ void EditorState::update(GameContext& context, float deltaTime) {
     NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
 }
 
+// GameStates.cpp
 void EditorState::draw(GameContext& context) {
     BeginDrawing();
-    ClearBackground(WHITE);
-    DrawText("Editor Mode", 500, 100, 20, BLACK);
-    BeginMode2D(GameContext::getInstance().camera);
-    NavGraph::getInstance().draw();
-    EndMode2D();
-    LevelEditor::getInstance().draw();
-    NavGraph::getInstance().clear();
-    DrawFPS(20, 50);
+    ClearBackground(WHITE); // Clear main buffer
 
+    LightingManager& lm = LightingManager::getInstance();
+
+    // 1. Render scene to lightmap (world-space)
+    BeginTextureMode(lm.getLightMap());
+    {
+        ClearBackground(BLANK); // Transparent clear for light accumulation
+        LevelEditor::getInstance().draw(); 
+    }
+    EndTextureMode();
+
+    // 2. Apply lighting shader (screen-space)
+    lm.prepareShader(context.camera);
+    BeginShaderMode(lm.getShader());
+
+        // Important: Set texture slot 0 for sceneTexture
+        SetShaderValueTexture(lm.getShader(),
+            GetShaderLocation(lm.getShader(), "sceneTexture"),
+            lm.getLightMap().texture);
+
+        // Draw fullscreen quad to apply shader
+        DrawTextureRec(lm.getLightMap().texture,
+            { 0, 0, (float)lm.getLightMap().texture.width, (float)-lm.getLightMap().texture.height },
+            { 0, 0 },
+            WHITE);
+        EndShaderMode();
+
+    DrawFPS(20, 50);
     EndDrawing();
 }
 

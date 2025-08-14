@@ -534,7 +534,8 @@ enum class EnemyType {
 	RED_KOOPA,
 	PIRANHA_PLANT,
 	HAMMER_BRO,
-	DRY_BOWSER
+	DRY_BOWSER,
+	BOO
 };
 
 enum class ItemType {
@@ -568,7 +569,9 @@ enum class InteractiveType {
 	MOVING_PLATFORM,
 	SPRING
 };
-
+enum class BackGroundObjectType {
+	TORCH
+};
 enum class ProjectileType {
 	FIRE_BALL,
 	BLAST
@@ -618,4 +621,4 @@ public:
 	virtual Vector2 getVelocity() = 0;
 };
 
-using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType, InteractiveType, ProjectileType>;
+using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType, InteractiveType, BackGroundObjectType, ProjectileType>;

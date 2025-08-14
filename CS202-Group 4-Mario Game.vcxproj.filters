@@ -61,6 +61,9 @@
     <ClCompile Include="src\Characters\AttackState.cpp" />
     <ClCompile Include="src\Characters\FireTransformState.cpp" />
     <ClCompile Include="src\Objects\MovingPlatform.cpp" />
+    <ClCompile Include="src\System\LightSystem.cpp" />
+    <ClCompile Include="src\Objects\Torch.cpp" />
+    <ClCompile Include="src\Enemy\Boo\Boo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -125,6 +128,9 @@
     <ClInclude Include="include\System\ParticleSystem.h" />
     <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
     <ClInclude Include="include\System\CameraSystem.h" />
+    <ClInclude Include="include\System\LightingSystem.h" />
+    <ClInclude Include="include\Objects\LightPole.h" />
+    <ClInclude Include="include\Objects\Torch.h" />
     <ClInclude Include="include\Characters\SuperTransformState.h" />
     <ClInclude Include="include\Objects\Projectile\FireBall.h" />
     <ClInclude Include="include\Objects\Projectile\Projectile.h" />
@@ -286,6 +292,8 @@
     <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\yvals.h" />
     <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\yvals_core.h" />
     <ClInclude Include="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\zmmintrin.h" />
+    <ClInclude Include="include\Objects\SpringState.h" />
+    <ClInclude Include="include\Enemy\Boo\Boo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

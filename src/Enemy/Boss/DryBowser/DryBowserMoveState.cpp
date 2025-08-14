@@ -3,6 +3,7 @@
 #include "../../../../include/Enemy/Boss/Boss.h"
 #include "../../../../include/System/Constant.h"
 #include "../../../../include/Enemy/Boss/DryBowser/DryBowser.h" 
+#include <memory>
 // ----------------------------
 // BowserStandingState
 // ----------------------------
@@ -193,6 +194,7 @@ void DryBowserTakeDamageState::update(Boss* boss, float dt) {
 }
 
 void DryBowserTakeDamageState::exit(Boss* boss) {
+    
 }
 
 bool DryBowserTakeDamageState::isFinished() const {
@@ -240,6 +242,14 @@ void DryBowserIntroState::enter(Boss* boss) {
 
 void DryBowserIntroState::update(Boss* boss, float dt) {
     timer += dt;
+    DryBowser* d = dynamic_cast<DryBowser*>(boss);
+    if (isFinished())
+    {
+        if (boss->getCurAnimation() == "Intro")
+        {
+            d->taunt();
+        }
+    }
 }
 
 void DryBowserIntroState::exit(Boss* boss) {
