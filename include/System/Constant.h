@@ -1,4 +1,4 @@
-#pragma once// Constants.h
+#pragma once // Constants.h
 #include "Interface.h"
 #include <raylib.h>
 #include <vector>
@@ -202,6 +202,20 @@ namespace Constants {
         const float PERIOD = 7.0f;
     }
 
+    namespace Boo
+    {
+        constexpr float chaseRange = 400.0f;
+        constexpr float patrolRange = 600.0f;
+
+        constexpr float flySpeed = 300.f;
+        constexpr float waitForAttackTime = 0.25f; 
+        constexpr float attackDuration = 0.5f; 
+        constexpr float retreatDuration = 0.75f;
+        constexpr float patrolDuration = 1.f;
+        constexpr float dieDuration = 0.25f;
+
+        constexpr float attackRange = 200;
+    }
     namespace DryBowser{
 		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;
         constexpr float WalkTurnDuration = 0.25f;  
@@ -222,6 +236,11 @@ namespace Constants {
 		constexpr float AERIAL_ATTACK_DURATION = 1.5f;
         constexpr float AERIAL_ATTACK_RANGE = 500;
         constexpr float AERIAL_ATTACK_COOLDOWN = 10.0f; 
+    }
+    namespace Torch {
+        constexpr Vector2 STANDARD_SIZE = { 1, 1 };
+        constexpr float STANDARD_LIGHT_RADIUS = 0.2f;
+        constexpr float STANDARD_BRIGHTNESS = 0.5f;
     }
     namespace PaletteResources {
         constexpr Rectangle BLOCK_1_1_2 = { 18, 1, 16, 16 };

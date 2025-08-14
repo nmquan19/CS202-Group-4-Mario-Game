@@ -340,3 +340,31 @@ public:
     MoveToTargetNode() : ActionNode(){}
     NodeStatus tick(Enemy* boss, float dt) override;
 };
+
+class CanUseBasicAttackNode : public ActionNode
+{
+public:
+    CanUseBasicAttackNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+
+class  RetreatNode : public ActionNode
+{
+public:
+      RetreatNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+
+class  PatrolNode : public ActionNode
+{
+public:
+    PatrolNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};
+
+class  IsInChaseRangeNode : public ActionNode
+{
+public:
+    IsInChaseRangeNode() : ActionNode() {}
+    NodeStatus tick(Enemy* boss, float dt) override;
+};

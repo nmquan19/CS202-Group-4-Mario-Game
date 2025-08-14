@@ -221,7 +221,11 @@ void Character::setPosition(Vector2 newPosition){
 Vector2 Character::getPosition() const {
 	return position;
 }
-
+Vector2 Character::getCenterPos()const
+{
+	return Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
+	
+}
 bool Character::isFacingRight() const {
 	return facingRight;
 }

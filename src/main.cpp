@@ -1,4 +1,4 @@
-#include <raylib.h>
+﻿#include <raylib.h>
 #include <memory>
 #include <string>
 #include "../include/UI/SoundEffect.h"
@@ -17,13 +17,15 @@
 #include "../include/Item/Star/Star.h"
 #include "../include/Item/One_Up/One_Up.h"
 #include "../include/System/CameraSystem.h"
-
+#include "../include/Objects/Block.h"
+#include "../include/System/Box2DWorldManager.h"
+#include "../include/System/LightingSystem.h"
 int main() {
     InitWindow(GetScreenWidth(), GetScreenHeight(), "Mario Game Demo");
     InitAudioDevice();
     SetTargetFPS(60);
 
-    GameContext* context = &GameContext::getInstance(); 
+    GameContext* context = &GameContext::getInstance();
     MenuState menuState;
     RedirectState redirectState;
     CharacterSelectingState characterSelectingState;
@@ -33,9 +35,14 @@ int main() {
     EditorSelectingState editorSelectingState;
     GameOverState gameOverState;
     GameCameraSystem::getInstance().init();
-    context->setGameStates(&menuState, &redirectState, &characterSelectingState, &informationState, &gamePlayState, &editorState, &editorSelectingState, &gameOverState);
 
+    context->setGameStates(&menuState, &redirectState, &characterSelectingState, &informationState, &gamePlayState, &editorState, &editorSelectingState, &gameOverState);
+    LightingManager::getInstance().loadShader("assets/shaders/lightsource.fs");
+    LightingManager::getInstance().setAmbientColor(WHITE); // Dark blue 
+    GameContext::getInstance().addObject(EnemyType::BOO, { 300,500 }, { 1,1 });
     while (!WindowShouldClose()) {
+        Box2DWorldManager::getInstance().setDebugDraw(true);
+
         float deltaTime = GetFrameTime();
         context->handleInput();
         context->update(deltaTime);
@@ -46,3 +53,4 @@ int main() {
     CloseWindow();
     return 0;
 }
+

@@ -24,6 +24,12 @@ Texture2D TextureManager::fontTexture;
 Texture2D TextureManager::interactiveTextures;
 Texture2D TextureManager::background_lv1;
 
+std::vector<Rectangle> TextureManager::torch_sprite_boxes;
+Texture2D TextureManager::torch_texture;
+
+
+std::vector<Rectangle> TextureManager::boo_sprite_boxes;
+Texture2D TextureManager::boo_texture;
 std::unordered_map<char, Rectangle> TextureManager::fontSprites = {
     {'0', {90, 3, 6, 7}}, {'1', {97, 3, 4, 7}}, {'2', {102, 3, 6, 7}}, {'3', {109, 3, 6, 7}}, {'4', {116, 3, 6, 7}},
     {'5', {1, 16, 6, 7}}, {'6', {8, 16, 6, 7}}, {'7', {15, 16, 6, 7}}, {'8', {22, 16, 6, 7}}, {'9', {29, 16, 6, 7}},
@@ -110,6 +116,30 @@ void TextureManager::loadTextures() {
     item_in.close();
 
     itemTexturesLoaded = true;
+
+    //torch textures 
+    std::ifstream  torch_in;
+    torch_in.open("assets/object/torch/torch_output.txt");
+
+    while (torch_in >> id >> x >> y >> w >> h)
+    {
+        torch_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
+    }
+      torch_texture = Texture2D(LoadTexture("assets/object/torch/Torch_Sheet.png"));
+    torch_in.close();
+    texturesLoaded = true;
+
+    //boo texures
+    std::ifstream  boo_in;
+    boo_in.open("assets/enemy/boo_output.txt");
+    while (boo_in >> id >> x >> y >> w >> h)
+    {
+        boo_sprite_boxes.push_back({ (float)x,(float)y,(float)w, (float)h });
+    }
+    boo_texture = Texture2D(LoadTexture("assets/enemy/boo.png"));
+    boo_in.close();
+    texturesLoaded = true;
+
 }
 
 void TextureManager::unloadTextures() {
@@ -914,6 +944,24 @@ void ObjectPalette::drawPalette() {
         Rectangle ffSource = { 0, 200, 100, 100 };
         DrawTexturePro(tm.getItemTexture(), ffSource, ffRect, { 0, 0 }, 0.0f, WHITE);
         DrawRectangleLinesEx(ffRect, 2, (isItem() && getItemType() == ItemType::FIRE_FLOWER) ? RED : BLACK);
+
+        // Mushroom
+        Rectangle mushRoomRect = { startX + 2 * spacingX, startY, iconSize, iconSize };
+        Rectangle mushRoomSrc = {0, 100, 100, 100};
+        DrawTexturePro(tm.getItemTexture(), mushRoomSrc, mushRoomRect, { 0, 0 }, 0.0f, WHITE);
+        DrawRectangleLinesEx(mushRoomRect, 2, (isItem() && getItemType() == ItemType::MUSHROOM) ? RED : BLACK);
+
+        // Star
+        Rectangle starRect = { startX + 3 * spacingX, startY, iconSize, iconSize };
+        Rectangle starSrc = {0, 300, 100, 100};
+        DrawTexturePro(tm.getItemTexture(), starSrc, starRect, { 0, 0 }, 0.0f, WHITE);
+        DrawRectangleLinesEx(starRect, 2, (isItem() && getItemType() == ItemType::STAR) ? RED : BLACK);
+
+        // One up 
+        Rectangle oneUpRect = { startX, startY + spacingY, iconSize, iconSize };
+        Rectangle oneUpSrc = {0, 400, 100, 100};
+        DrawTexturePro(tm.getItemTexture(), oneUpSrc, oneUpRect, { 0, 0 }, 0.0f, WHITE);
+        DrawRectangleLinesEx(oneUpRect, 2, (isItem() && getItemType() == ItemType::ONE_UP) ? RED : BLACK);
     }
 
 }
@@ -962,6 +1010,9 @@ void ObjectPalette::handleSelection() {
 
     Rectangle coinRect = { startX, startY, iconSize, iconSize };
     Rectangle ffRect = { startX + spacingX, startY, iconSize, iconSize };
+    Rectangle mushRoomRect = { startX + 2 * spacingX, startY, iconSize, iconSize };
+    Rectangle starRect = { startX + 3 * spacingX, startY, iconSize, iconSize };
+    Rectangle oneUpRect = { startX, startY + spacingY, iconSize, iconSize };
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         int traverse = 1;
         if (CheckCollisionPointRec(mousePos, ordinalRect(traverse)) && selectRect == 1 && map == 1) selected = BlockType::BLOCK_1_1_2; traverse++;
@@ -1464,5 +1515,8 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, movingPlatformRect) && selectRect == 3) selected = InteractiveType::MOVING_PLATFORM;
         if (CheckCollisionPointRec(mousePos, coinRect) && selectRect == 4) selected = ItemType::COIN;
         if (CheckCollisionPointRec(mousePos, ffRect) && selectRect == 4) selected = ItemType::FIRE_FLOWER;
+        if (CheckCollisionPointRec(mousePos, mushRoomRect) && selectRect == 4) selected = ItemType::MUSHROOM;
+        if (CheckCollisionPointRec(mousePos, starRect) && selectRect == 4) selected = ItemType::STAR;
+        if (CheckCollisionPointRec(mousePos, oneUpRect) && selectRect == 4) selected = ItemType::ONE_UP;
     }
 }

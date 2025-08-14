@@ -147,6 +147,9 @@ void GameContext::spawnObject() {
             else if constexpr (std::is_same_v<T, ItemType>) {
 				object = ObjectFactory::createItem(actualType, request.worldpos, request.size);
             }
+            else if constexpr (std::is_same_v<T, BackGroundObjectType>) {
+                object = ObjectFactory::createTorch(GridSystem::getWorldPosition(GridSystem::getGridCoord(request.worldpos)), request.size);
+            }
             }, request.type);
 
         if (object) {

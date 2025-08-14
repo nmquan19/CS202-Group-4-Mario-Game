@@ -31,24 +31,27 @@ public:
     void setCollided(bool) override;
     Vector2 getSize() const override;
     virtual ObjectType getObjectType() const override;
+    void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
+    void StarShapeMove(Vector2 center, float deltaTime, float frequency); 
 
+    void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
 protected:
     Vector2 position;
     Vector2 velocity;
     Vector2 accelleration;
 
     bool active;
-    //Texture2D texture;
     Rectangle spritebox;
     Rectangle hitbox;
     float scale;
     float aniTimer, aniSpeed;
     int curFrame;
 
-    const float gravity = 600.0f;
-    const float groundY = 300.0f;
+    float gravity = 600.0f;
+    const float groundY = 400.0f;
     Anima* animation;
     ItemType type;
+    float totalTime;
 };
 
 

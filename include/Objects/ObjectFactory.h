@@ -6,6 +6,7 @@
 #include "../System/Constant.h"
 #include <raylib.h>  
 #include "box2d/box2d.h"
+#include "../System/Grid.h"
 
 class Item;  
 class Block;  
@@ -17,13 +18,15 @@ class Projectile;
 class InteractiveObject;
 
 class Object : public ICollidable, public IDrawable {  
-public:  
+public: 
 	virtual ~Object();  
 	virtual bool isActive() const = 0;  
 	virtual void setActive(bool) = 0;  
 	virtual bool isCollided() const = 0;  
 	virtual void setCollided(bool) = 0;  
-	virtual Vector2 getPosition() const = 0;  
+	virtual Vector2 getPosition() const {
+		return position;
+	}
 	virtual void setPosition(Vector2 newPos) = 0;  
 	virtual Vector2 getSize() const = 0;  
 
@@ -39,10 +42,11 @@ public:
 	Vector2 getGridPos() const { return gridPosition; }
 	void setGridPos(Vector2 gridPos) { gridPosition = gridPos; }
 protected:  
-	Vector2 position;  
-	Vector2 size;  
-	bool active = true;  
-	bool collided = false;  
+	Vector2 position;
+	Vector2 centerPosition; // Center position for circular movement
+	Vector2 size;
+	bool active = true;
+	bool collided = false;
 	b2Body* physicsBody;
 	Vector2 gridPosition = { 0, 0 };
 };  
@@ -56,6 +60,8 @@ public:
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
 	static std::unique_ptr<Object> createItem(ItemType type, Vector2 startPos, Vector2 size);
+	static std::unique_ptr<Object> createTorch(Vector2 position, Vector2 size = Constants::Torch::STANDARD_SIZE, float brightness = Constants::Torch::STANDARD_BRIGHTNESS, float radius = Constants::Torch::STANDARD_LIGHT_RADIUS, Color innerColor = { 48,252,244,255 }, Color outerColor = { 0,171,254,255 });
+
 private:
 	static std::unique_ptr<Block> createSpecificBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Enemy> createSpecificEnemy(EnemyType type, Vector2 startPosition, Vector2 size);

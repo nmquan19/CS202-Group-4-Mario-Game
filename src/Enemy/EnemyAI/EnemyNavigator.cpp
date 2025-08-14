@@ -66,18 +66,16 @@ void NavGraphNode::draw(Color color)
         {
         case EdgeDirection::Horizontal:
             eColor = BLUE;
-            continue;
+            ;
             break;
         case EdgeDirection::Jumping: 
             eColor = RED;
             break;
         case EdgeDirection::Falling:
             eColor = GREEN; 
-            continue;
             break;
         case EdgeDirection::Flying:
             eColor = YELLOW;
-            continue;
             break;
         };
 
@@ -364,7 +362,7 @@ std::vector<std::shared_ptr<NavGraphNode>> NavGraph::getShortestPath(Enemy* enem
             if (!costSoFar.count(next) || newCost < costSoFar[next]) {
                 costSoFar[next] = newCost;
 
-                float heuristic = Vector2Distance(next->getPosition(), goal->getPosition())/Constants::TILE_SIZE + edge.manhattan_distance;
+                float heuristic = Vector2Distance(next->getPosition(), goal->getPosition())/Constants::TILE_SIZE*0.3 + edge.manhattan_distance;
                 float priority = newCost + heuristic;
 
                 frontier.emplace(next, priority);

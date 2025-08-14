@@ -15,6 +15,7 @@
 #include <fstream>
 #include <stack>
 #include <vector>
+#include "../../include/System/LightingSystem.h"
 LevelEditor* LevelEditor::instance = nullptr;
 LevelEditor& LevelEditor::getInstance() {
     if (!instance) {
@@ -50,6 +51,8 @@ void LevelEditor::update(float deltaTime) {
 
 void LevelEditor::draw() {
     BeginMode2D(GameContext::getInstance().camera);
+
+
     if (!clearing) {    
         for (auto& it : gridBlocks) {
             Object* obj = it.second.top().get();
@@ -1383,6 +1386,12 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
                 break;
             case ItemType::FIRE_FLOWER: return "FIRE_FLOWER";
                 break;
+            case ItemType::MUSHROOM: return "MUSHROOM";
+                break;
+            case ItemType::ONE_UP: return "ONE_UP";
+                break;
+            case ItemType::STAR: return "STAR";
+                break;
             default: return "COIN";
                 break;
         }
@@ -1900,14 +1909,20 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "PIPE") return BlockType::PIPE;
     if (typeStr == "PLATFORM") return BlockType::PLATFORM;
     if (typeStr == "QUESTION") return BlockType::QUESTION;
+
 	if (typeStr == "GREEN_KOOPA") return EnemyType::GREEN_KOOPA;
 	if (typeStr == "RED_KOOPA") return EnemyType::RED_KOOPA;
     if (typeStr == "GOOMBA") return EnemyType::GOOMBA;
     if (typeStr == "DRY_BOWSER") return EnemyType::DRY_BOWSER;
+
     if (typeStr == "SPRING") return InteractiveType::SPRING;
     if (typeStr == "MOVING_PLATFORM") return InteractiveType::MOVING_PLATFORM;
     if (typeStr == "COIN") return ItemType::COIN;
     if (typeStr == "FIRE_FLOWER") return ItemType::FIRE_FLOWER;
+    if (typeStr == "MUSHROOM") return ItemType::MUSHROOM;
+    if (typeStr == "ONE_UP") return ItemType::ONE_UP;
+    if (typeStr == "STAR") return ItemType::STAR;
+
     return BlockType::BLOCK_1_1_2;
 }
 bool LevelEditor::isBlock(std::pair<int, int> coord)

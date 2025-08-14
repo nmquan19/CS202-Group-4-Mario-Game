@@ -137,6 +137,18 @@ std::shared_ptr<BehaviorTreeNode> BTFactory::buildTree(const json& nodeData) {
     else if (type == "MoveToTarget") {
             return std::make_shared<MoveToTargetNode>();
             }
+    else if (type == "Retreat") {
+        return std::make_shared<RetreatNode>();
+            }
+    else if (type == "CanUseBasicAttack") {
+                return std::make_shared<CanUseBasicAttackNode>();
+                }
+    else if (type == "IsInChaseRange") {
+        return std::make_shared<IsInChaseRangeNode>();
+    }
+    else if (type == "Patrol") {
+        return std::make_shared<PatrolNode>();
+        }
     throw std::runtime_error("Unknown node type: " + type);
 }
 std::string GetEnemyName(EnemyType type) {
@@ -145,6 +157,7 @@ std::string GetEnemyName(EnemyType type) {
     case EnemyType::RED_KOOPA: return "Red_Koopa";
     case EnemyType::GREEN_KOOPA: return "Green_Koopa";
     case EnemyType::DRY_BOWSER: return "DryBowser";
+    case EnemyType::BOO: return "Boo";
     default: throw std::runtime_error("Unknown enemy type");
     }
 }
@@ -152,7 +165,7 @@ std::string GetEnemyName(EnemyType type) {
 std::shared_ptr<BehaviorTreeNode> BTFactory::createTree(EnemyType type) {
     std::string filename;
 
-	filename = "assets/enemy/BT/" + GetEnemyName(type)+"P2" + ".json";
+	filename = "assets/enemy/BT/" + GetEnemyName(type)+ ".json";
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Failed to open BT JSON file: " + filename);
@@ -281,6 +294,19 @@ nlohmann::json BTFactory::to_json(const std::shared_ptr<BehaviorTreeNode>& node)
     else if (std::dynamic_pointer_cast<MoveToTargetNode>(node)) {
         j["type"] = "MoveToTarget";
         }
+    else if (std::dynamic_pointer_cast<RetreatNode>(node)) {
+        j["type"] = "Retreat";
+        }
+    else if (std::dynamic_pointer_cast<CanUseBasicAttackNode>(node)) {
+        j["type"] = "CanUseBasicAttack";
+        }
+    else if (std::dynamic_pointer_cast<PatrolNode>(node)) {
+            j["type"] = "Patrol";
+            }
+    else if (std::dynamic_pointer_cast<IsInChaseRangeNode>(node)) {
+        j["type"] = "IsInChaseRange";
+            }
+
     else {
         throw std::runtime_error("Unknown node type during serialization");
     }

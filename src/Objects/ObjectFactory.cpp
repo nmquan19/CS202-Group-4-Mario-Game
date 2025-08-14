@@ -1,8 +1,9 @@
-#include "../../include/Objects/ObjectFactory.h"
+﻿#include "../../include/Objects/ObjectFactory.h"
 #include "../../include/Objects/Block.h"
 #include "../../include/Characters/Character.h"
 #include "../../include/Enemy/Enemy.h"
 #include "../../include/Enemy/Goomba/Goomba.h"
+#include "../../include/Enemy/Boo/Boo.h"
 #include "../../include/Enemy/Koopa/Koopa.h"
 #include "../../include/Item/Item.h"
 #include "../../include/Item/Coin/Coin.h"
@@ -22,7 +23,8 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
-
+#include <numbers>
+#include "../../include/Objects/Torch.h"
 Object::~Object() {
     if (physicsBody) {
         Box2DWorldManager::getInstance().destroyBody(physicsBody);
@@ -1078,8 +1080,10 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         return std::make_unique<GreenKoopa>(startPosition, size);
     case EnemyType::RED_KOOPA:
         return std::make_unique<RedKoopa>(startPosition, size);
-    case EnemyType::DRY_BOWSER:
+    case EnemyType::DRY_BOWSER: 
         return std::make_unique<DryBowser>(startPosition, size);
+    case EnemyType::BOO:
+        return std::make_unique<Boo>(startPosition, size);
     default:
         return nullptr; 
     }
@@ -1152,4 +1156,8 @@ std::unique_ptr<InteractiveObject> ObjectFactory::createSpecificInteractiveObjec
     case InteractiveType::MOVING_PLATFORM:
         return std::make_unique<MovingPlatform>(position, Vector2{2.0f, 0.25f});
     }
+}
+
+std::unique_ptr<Object> ObjectFactory::createTorch(Vector2 position, Vector2 size, float brightness, float radius, Color innerColor, Color outerColor) {
+    return std::make_unique<Torch>(position,size,radius,brightness,innerColor,outerColor);
 }

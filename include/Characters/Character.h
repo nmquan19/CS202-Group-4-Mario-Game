@@ -84,7 +84,7 @@ public:
 
 	bool isFacingRight() const;
 	void setFacingRight(bool flag);
-
+	Vector2 getCenterPos() const ;
 	std::vector<Rectangle> getHitBox() const override;
 	ObjectCategory getObjectCategory() const override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
