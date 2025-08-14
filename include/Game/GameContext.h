@@ -11,7 +11,13 @@
 #include "../System/ParticleSystem.h"
 #include <functional>
 #include <raylib.h>
+#include <fstream>
+#include "../System/json.hpp"
+
+using json = nlohmann::json;
+
 class GameState;
+
 struct ObjectInfo
 {
     ObjectType type;
@@ -56,8 +62,12 @@ public:
 	void deleteObjects();
     std::shared_ptr<Object> getSharedPtrFromRaw(Object* rawPtr);
     void clearGame();
-    void createTestBlocks(); // Add test blocks for Box2D testing
+
     void setPlayerCallsRequest(int id) { playerCallsRequest = id; }
     std::shared_ptr<Object> getCharacter() { return character01; }
+    
+    void saveGameState(const std::string& filename);
+    void loadGameState(const std::string& filename);
+    
     Camera2D camera;
 };

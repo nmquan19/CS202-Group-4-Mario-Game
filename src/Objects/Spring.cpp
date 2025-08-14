@@ -25,6 +25,7 @@ Spring::Spring(Vector2 position, Vector2 size) : InteractiveObject(position, siz
 			fixture->SetFilterData(filter);
 		}
 	}
+	interactiveType = InteractiveType::SPRING;
 }
 
 Spring::~Spring() {

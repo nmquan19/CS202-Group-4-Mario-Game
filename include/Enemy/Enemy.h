@@ -13,7 +13,7 @@
 
 class EnemyState; 
 
-class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable {
+class Enemy : public Object, public IUpdatable, public IMovable, public IDamageable, public ISavable {
 public:
 	Enemy(Vector2 startPos, Texture2D texture, Vector2 size);
 	Enemy(Vector2 startPos, Vector2 velocity, Vector2 accelleration, Texture2D texture);
@@ -107,6 +107,11 @@ public:
 	virtual bool isJumping() const { return false;  }
 	virtual bool isBelowWall() const { return false; } 
 	virtual bool canUseBasicAttack() const{ return false; }
+
+	virtual json toJson() const override;
+	virtual void fromJson(const json& data) override;
+	virtual std::string getSaveType() const override;
+	
 protected://pathfinding
 	std::shared_ptr<NavGraphNode> currentNode = nullptr;
 	std::shared_ptr<NavGraphNode> lastTargetNode = nullptr;

@@ -114,6 +114,14 @@ void GamePlayState::handleInput(GameContext& context) {
         context.setState(context.gameOverState);
     }
     
+    if (IsKeyPressed(KEY_F5)) {
+        context.saveGameState("saved_game.json");
+    }
+    
+    if (IsKeyPressed(KEY_F6)) {
+        context.loadGameState("saved_game.json");
+    }
+    
     if (IsKeyPressed(KEY_F10)) {
         Box2DWorldManager::getInstance().setDebugDraw(!Box2DWorldManager::getInstance().isDebugDrawEnabled());
     }
@@ -173,6 +181,8 @@ void GamePlayState::draw(GameContext& context) {
     NavGraph::getInstance().draw();
     NavGraph::getInstance().clear();
     DrawText("Press Enter", 500, 100, 20, BLACK);
+    DrawText("F5 - Save game", 1200, 500, 50, BLACK);
+    DrawText("F6 - Load current game", 1200, 600, 50, BLACK);
     
     // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
 

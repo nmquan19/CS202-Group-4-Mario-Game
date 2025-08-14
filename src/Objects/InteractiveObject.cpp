@@ -1,5 +1,6 @@
 #include "../../include/Objects/InteractiveObject.h"
 #include "../../include/System/Constant.h"
+#include "../../include/System/Box2DWorldManager.h"
 
 InteractiveObject::InteractiveObject(Vector2 position, Vector2 size) {
     this->hitBox = {position.x, position.y, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE };
@@ -44,4 +45,20 @@ Vector2 InteractiveObject::getPosition() const {
 
 void InteractiveObject::setPosition(Vector2 newPos) {
     position = newPos;
+}
+
+json InteractiveObject::toJson() const {
+    json data;
+    data["saveType"] = getSaveType();
+    data["gridPosition"] = { gridPosition.x, gridPosition.y };
+    data["interactiveType"]  = interactiveType;
+    return data;
+}
+
+void InteractiveObject::fromJson(const json& data) {
+    gridPosition = { data["gridPosition"][0], data["gridPosition"][1] };
+}
+
+std::string InteractiveObject::getSaveType() const {
+    return "Interactive";
 }
