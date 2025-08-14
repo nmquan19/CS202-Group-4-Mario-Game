@@ -179,7 +179,7 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
 
         }
         else if constexpr (std::is_same_v<T, InteractiveType>) {
-            std::shared_ptr<Object> newInter = ObjectFactory::createSpring(GridSystem::getWorldPosition(gridCoord));
+            std::shared_ptr<Object> newInter = ObjectFactory::createInteractiveObject(actualType, GridSystem::getWorldPosition(gridCoord));
             if (newInter) {
                 gridBlocks[key].push(newInter);
                 newInter->setGridPos(gridCoord);
@@ -1370,21 +1370,12 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
                 break;
         }
     }
-    else if (std::holds_alternative<CharacterType>(type)) {
-        CharacterType charType = std::get<CharacterType>(type);
-        switch (charType) {
-            case CharacterType::LUIGI: return "LUIGI";
-                break;
-            default: return "MARIO";
-                break;
-        }
-    }
     else if (std::holds_alternative<InteractiveType>(type)) {
         InteractiveType inter = std::get<InteractiveType>(type);
         switch (inter) {
             case InteractiveType::SPRING: return "SPRING";
                 break;
-            default: return "SPRING";
+            case InteractiveType::MOVING_PLATFORM: return "MOVING_PLATFORM";
                 break;
         }
     }
@@ -1925,7 +1916,7 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "DRY_BOWSER") return EnemyType::DRY_BOWSER;
 
     if (typeStr == "SPRING") return InteractiveType::SPRING;
-
+    if (typeStr == "MOVING_PLATFORM") return InteractiveType::MOVING_PLATFORM;
     if (typeStr == "COIN") return ItemType::COIN;
     if (typeStr == "FIRE_FLOWER") return ItemType::FIRE_FLOWER;
     if (typeStr == "MUSHROOM") return ItemType::MUSHROOM;

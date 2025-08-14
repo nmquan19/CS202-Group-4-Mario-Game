@@ -18,7 +18,7 @@
 #include <memory>
 
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, PlayerID id, Vector2 size) 
-	: characterType(type), id(id), hp(1), invincibleTimer(0), 
+	: characterType(type), id(id), hp(1), invincibleTimer(0), platform(nullptr),
 	reviveTimer(0), facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
 
 	this->stateFrameData = stateFrameData;
@@ -82,6 +82,14 @@ void Character::update(float deltaTime) {
 
 	if(invincibleTimer > 0) {
 		invincibleTimer -= deltaTime;		
+	}
+
+	if (isOnPlatform()) {
+		b2Vec2 platformVel = platform->getPhysicsBody()->GetLinearVelocity();
+		b2Vec2 characterVel = physicsBody->GetLinearVelocity();
+		if (currentState == &IdleState::getInstance()) {
+			physicsBody->SetLinearVelocity(b2Vec2(platformVel.x, characterVel.y));
+		}
 	}
 }
 
@@ -156,6 +164,10 @@ bool Character::isOnGround() const{
 	return groundContactCount > 0;
 }
 
+bool Character::isOnPlatform() const {
+	return platform;
+}
+
 void Character::jump(){
 	if (isOnGround()) {
 		b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
@@ -171,6 +183,10 @@ void Character::addGroundContact() {
 
 void Character::removeGroundContact() {
 	groundContactCount--;
+}
+
+void Character::setPlatform(std::shared_ptr<MovingPlatform> platform) {
+	this->platform = platform.get();
 }
 
 void Character::setVelocity(Vector2 newVelocity){
@@ -323,15 +339,26 @@ void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direct
         switch (*interactiveType) {
 		case InteractiveType::SPRING:	
 			handleSpringCollision(std::dynamic_pointer_cast<Spring>(other), direction);
+			break;
+		case InteractiveType::MOVING_PLATFORM:
+			handleMovingPlatformCollision(std::dynamic_pointer_cast<MovingPlatform>(other), direction);
+			break;
         }
     }
 }
 
-void Character::handleSpringCollision(std::shared_ptr<Object> other, Direction direction) {
+void Character::handleSpringCollision(std::shared_ptr<Spring> other, Direction direction) {
 	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
 	if (direction == Direction::DOWN) {
 		float mass = this->physicsBody->GetMass();
 		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Spring::BOUNCE_VELOCITY - currentVel.y)), true);
 		changeState(JumpingState::getInstance());
+	}
+}
+
+void Character::handleMovingPlatformCollision(std::shared_ptr<MovingPlatform> other, Direction direction) {
+	if (direction == Direction::DOWN) {
+		addGroundContact();
+		setPlatform(other);
 	}
 }
