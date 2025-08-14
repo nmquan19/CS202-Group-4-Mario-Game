@@ -136,7 +136,8 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     auto& cam = GameCameraSystem::getInstance(); 
     cam.update(deltaTime);
     NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
-    //GameCameraSystem::getInstance().shakeCurrentCamera(10.0f, 0.1f);
+    LightingManager::getInstance().update(deltaTime);
+    //GameCameraSystem::getInstance().shakeCurrentCamera(100.0f, 0.1f);
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
     {
         Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), cam.getCamera());

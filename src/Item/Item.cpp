@@ -1,11 +1,11 @@
-﻿#include <raymath.h>
-#include <memory> 
-#include <numbers>
-#include "../../include/Item/Item.h"
+﻿#include "../../include/Item/Item.h"
 #include "../../include/System/Grid.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/Game/GameContext.h"
 #include "../../include/System/Box2DWorldManager.h"
+#include <raymath.h>
+#include <memory> 
+#include <numbers>
 
 Item::Item() {}
 
@@ -17,7 +17,6 @@ Item::Item(Vector2 startPos)
     this->spritebox = { 0, 0, 32, 32 };
     this->size = { 1, 1 };
     this->hitbox = { position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
-
 	centerPosition = position; // Center position for circular movement
 }
 
@@ -67,7 +66,7 @@ void Item::draw(Texture2D texture) {
 }
 
 std::vector<Rectangle> Item::getHitBox() const {
-    return { hitbox }; 
+    return { hitbox }; // Đưa Rectangle đơn vào trong vector
 }
 
 ObjectCategory Item::getObjectCategory() const {
@@ -79,21 +78,20 @@ std::vector<ObjectCategory> Item::getCollisionTargets() const {
 }
 
 void Item::onCollision(std::shared_ptr<Object> other, Direction direction) {
-    // if (type == ItemType::ONE_UP || type == ItemType::MUSHROOM) {
-    //     if(physicsBody) {
-    //         b2Vec2 currentVel = physicsBody->GetLinearVelocity();
-    //         if (direction == Direction::LEFT) { 
-    //             physicsBody->SetLinearVelocity(b2Vec2(abs(currentVel.x), currentVel.y));
-    //         }
-    //         else if (direction == Direction::RIGHT) {
-    //             physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
-    //         }
-    //     }
-    // }
     if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
         setActive(false);
         GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
-        // add effect for character
+    } 
+    else if (type == ItemType::ONE_UP || type == ItemType::MUSHROOM) {
+        b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+        if (direction == Direction::LEFT) {
+            physicsBody->SetLinearVelocity(b2Vec2(abs(currentVel.x), currentVel.y));
+            std::cout << "left\n";
+        }
+        else if (direction == Direction::RIGHT) {
+            physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
+            std::cout << "right\n";
+        }
     }
 }
 
@@ -132,33 +130,40 @@ ObjectType Item::getObjectType() const {
 }
 
 void Item::CircleMove(Vector2 center, float radius, float speed, float deltaTime) {
-    /*totalTime += deltaTime;
+    totalTime += deltaTime;
     position.x = center.x + radius * cos(speed * totalTime);
     position.y = center.y + radius * sin(speed * totalTime);
     if (physicsBody) {
         physicsBody->SetTransform(b2Vec2(position.x / GridSystem::GRID_SIZE, position.y / GridSystem::GRID_SIZE),
             physicsBody->GetAngle());
-    }*/
+    }
 }
 
 void Item::HarmonicOscillationMove(float amplitude, float frequency, float deltaTime) {
-    //totalTime += deltaTime;
+    totalTime += deltaTime;
 
-    //float omega = 2.0f;
+    // Tần số góc ω = 2πf
+    float omega = 2.0f * 1; //std::numbers::pi_v<float> *frequency;
 
-    //// Tính vị trí offset (pixel)
-    //float offsetX = amplitude * cos(omega * totalTime);
+    // Tính vị trí offset (pixel)
+    float offsetX = amplitude * cos(omega * totalTime);
 
-    //// Tính vận tốc theo pixel/s
-    //float vxPixelsPerSecond = -omega * amplitude * sin(omega * totalTime);
+    // Tính vận tốc theo pixel/s
+    float vxPixelsPerSecond = -omega * amplitude * sin(omega * totalTime);
 
-    //// Đổi vận tốc sang mét/s cho Box2D
-    //float vxMetersPerSecond = Box2DWorldManager::raylibToB2(vxPixelsPerSecond);
+    // Đổi vận tốc sang mét/s cho Box2D
+    float vxMetersPerSecond = Box2DWorldManager::raylibToB2(vxPixelsPerSecond);
 
-    //if (physicsBody) {
-    //    b2Vec2 vel(vxMetersPerSecond, physicsBody->GetLinearVelocity().y);
-    //    physicsBody->SetLinearVelocity(vel);
-    //}
+    if (physicsBody) {
+        b2Vec2 vel(vxMetersPerSecond, physicsBody->GetLinearVelocity().y);
+        physicsBody->SetLinearVelocity(vel);
+    }
+
+    // Cập nhật vị trí hiển thị từ physics body
+    Vector2 renderPos = Box2DWorldManager::b2ToRaylib(physicsBody->GetPosition());
+    position.x = renderPos.x - Constants::TILE_SIZE / 2;
+    position.y = renderPos.y - Constants::TILE_SIZE / 2;
+
 }
 
 void Item::StarShapeMove(Vector2 center, float deltaTime, float frequency) {

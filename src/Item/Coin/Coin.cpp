@@ -1,14 +1,12 @@
 #pragma once
-#include <iostream>
 #include "../../../include/Item/Coin/Coin.h"
 #include "../../../include/Game/GameContext.h"
 #include "../../../include/System/Box2DWorldManager.h"
 
 Coin::Coin(Vector2 position) : Item(position) {
 	animation->SetType(ItemType::COIN);
-	// Dont delete the physicBody!
 	type = ItemType::COIN;
-	
+
 	physicsBody = Box2DWorldManager::getInstance().createItemStaticBody(position, { hitbox.width, hitbox.height });
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
@@ -23,7 +21,3 @@ Coin::Coin(Vector2 position) : Item(position) {
 }
 
 Coin::~Coin() {}
-
-void Coin::update(float deltaTime) {
-    Item::update(deltaTime);
-}

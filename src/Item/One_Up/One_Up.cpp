@@ -2,7 +2,6 @@
 #include "../../../include/Game/GameContext.h"
 #include "../../../include/System/Box2DWorldManager.h"
 #include "../../../include/System/Grid.h"
-#include "../../../include/System/Constant.h"
 #include <raylib.h>
 
 One_Up::One_Up(Vector2 startPos) : Item(startPos) {
@@ -12,6 +11,7 @@ One_Up::One_Up(Vector2 startPos) : Item(startPos) {
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+            //std::cout << "Item1\n";
             b2Filter filter = fixture->GetFilterData();
             filter.maskBits = static_cast<uint16>(ObjectCategory::ITEM);
             filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::ENEMY) |
@@ -26,10 +26,12 @@ One_Up::~One_Up() {}
 void One_Up::update(float deltaTime) {
     Item::update(deltaTime);
 
-    if (physicsBody) {
-        b2Vec2 currentVel = physicsBody->GetLinearVelocity();
-        physicsBody->SetLinearVelocity(b2Vec2(-Box2DWorldManager::raylibToB2(2 * Constants::Goomba::WANDERING_SPEED), currentVel.y));
+    b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+    if (currentVel.x >= 0) {
+        physicsBody->SetLinearVelocity(b2Vec2(Box2DWorldManager::raylibToB2(2*Constants::Goomba::WANDERING_SPEED), currentVel.y));
+    }
+    else {
+        physicsBody->SetLinearVelocity(b2Vec2(-Box2DWorldManager::raylibToB2(2*Constants::Goomba::WANDERING_SPEED), currentVel.y));
     }
 }
-
 

@@ -21,13 +21,18 @@ Mushroom::Mushroom(Vector2 position) : Item(position) {
     }
 }
 
-Mushroom::~Mushroom() {}
+Mushroom::~Mushroom() {
+	// Destructor logic if needed
+}
 
 void Mushroom::update(float deltaTime) {
     Item::update(deltaTime);
 
-    if (physicsBody) {
-        b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+    b2Vec2 currentVel = physicsBody->GetLinearVelocity();
+    if (currentVel.x >= 0) {
+        physicsBody->SetLinearVelocity(b2Vec2(Box2DWorldManager::raylibToB2(2*Constants::Goomba::WANDERING_SPEED), currentVel.y));
+    }
+    else {
         physicsBody->SetLinearVelocity(b2Vec2(-Box2DWorldManager::raylibToB2(2*Constants::Goomba::WANDERING_SPEED), currentVel.y));
     }
 }

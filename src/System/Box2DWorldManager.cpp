@@ -347,7 +347,7 @@ b2Body* Box2DWorldManager::createItemDynamicBody(Vector2 pos, Vector2 hitboxSize
 
 	b2Body* body = world->CreateBody(&bodyDef);
 
-	attachRectangleFixtures(body, pos, hitboxSize);
+	attachCapsuleFixtures(body, pos, hitboxSize);
 	attachSensors(body, hitboxSize);
 
 	return body;

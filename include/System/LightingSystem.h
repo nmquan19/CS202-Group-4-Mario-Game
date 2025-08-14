@@ -12,13 +12,16 @@ struct LightSource {
     float brightness;
     Color innerColor;
     Color outerColor;
+    bool isActive =true; 
 };
 struct DistortionEffect {
     Vector2 center;
-    float time;
+    float time = 0;
+    float timer = 0; 
     float strength;
     float radius;
     int type;
+    bool isActive =true;
 };
 
 class LightingManager {
@@ -26,7 +29,7 @@ public:
     static LightingManager& getInstance();
 
     ~LightingManager();
-
+    void update(float deltaTime);
     // Light source management
     int addLight(std::shared_ptr<LightSource> light);
     void updateLight(std::shared_ptr<LightSource> light);
@@ -56,5 +59,5 @@ private:
     Color ambientColor;
 
     void sendLightsToShader(Camera2D cam);
-    void sendDistortionsToShader();
+    void sendDistortionsToShader(Camera2D cam);
 };

@@ -30,9 +30,10 @@ public:
     bool isCollided() const override;
     void setCollided(bool) override;
     Vector2 getSize() const override;
-    ObjectType getObjectType() const override;
+    virtual ObjectType getObjectType() const override;
     void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
     void StarShapeMove(Vector2 center, float deltaTime, float frequency); 
+
     void CircleMove(Vector2 center, float radius, float speed, float deltaTime);
 protected:
     Vector2 position;

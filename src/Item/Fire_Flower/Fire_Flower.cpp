@@ -10,6 +10,7 @@ Fire_Flower::Fire_Flower(Vector2 position) : Item(position) {
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+            //std::cout << "Item1\n";
             b2Filter filter = fixture->GetFilterData();
             filter.maskBits = static_cast<uint16>(ObjectCategory::ITEM);
             filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::ENEMY) |
@@ -19,7 +20,9 @@ Fire_Flower::Fire_Flower(Vector2 position) : Item(position) {
     }
 }
 
-Fire_Flower::~Fire_Flower() {}
+Fire_Flower::~Fire_Flower() {
+	// Destructor logic if needed
+}
 
 void Fire_Flower::update(float deltaTime) {
 	Item::update(deltaTime);

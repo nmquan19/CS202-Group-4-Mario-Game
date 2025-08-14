@@ -26,7 +26,7 @@ void GameCamera::shake(float strength, float decay) {
 void PlayerCenteredCamera::update(float dt) { 
     
 	std::shared_ptr<Character> character =std::dynamic_pointer_cast<Character>(GameContext::getInstance().getCharacter()); 
-    Vector2 desired = GameContext::getInstance().getCharacter()->getPosition();
+    Vector2 desired = character->getCenterPos();
     desired.x += character->isFacingRight() ? horizontalBias : -horizontalBias;
 	Vector2 velocity = character->getVelocity(); 
     // Interpolated Y
