@@ -19,45 +19,21 @@
                       "type": "IsInAir"
                     },
                     {
-                      "type": "Selector",
+
                       "children": [
                         {
-                          "type": "Sequence",
-                          "children": [
-                            {
-                              "type": "IsPlayerHigher"
-                            },
-                            {
-                              "type": "IsInWallJump"
-                            },
-                            {
-                              "type": "WallJump"
-                            }
-                          ]
+                          "child":
+                          {"type": "IsPlayerHigher"},
+                           "type":"Inverter"
                         },
                         {
-                          "children": [
-                            {
-                              "type": "CanUseAerialAttack"
-                            },
-                            {
-                              "type": "AerialAttack"
-                            }
-                          ],
-                          "type": "Sequence"
+                          "type": "CanUseAerialAttack"
+                        },
+                        {
+                          "type": "AerialAttack"
                         }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "ReactiveSequence",
-                  "children": [
-                    {
-                      "type": "IsPlayerHigher"
-                    },
-                    {
-                      "type": "Jump"
+                      ],
+                      "type": "Sequence"
                     }
                   ]
                 },
@@ -119,7 +95,7 @@
                   "type": "Sequence"
                 },
                 {
-                  "type": "WalkToTarget"
+                  "type": "MoveToTarget"
                 }
               ],
               "type": "Selector"

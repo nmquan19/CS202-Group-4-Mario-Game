@@ -7,6 +7,8 @@ public:
 
 	~Fire_Flower();
 
+	void update(float deltaTime) override;
+
 private:
 
 };

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "ObjectFactory.h"
 #include "../System/Interface.h"
 #include <string>
@@ -43,8 +42,8 @@ protected:
 
     bool pendingImpulse;
     float impulseForce;
-
 };
+
 
 class Block_1_1_2Block : public Block {
 public:

@@ -46,6 +46,7 @@ public:
     void die() override;
     bool isAlive() const override;
 	void setWallSticking(bool flag) { isWallSticking = flag; } 
+    void taunt();
     // Planning / AI interface
     void changePhase(std::unique_ptr<BossPhaseState> newPhase) override;
     const WorldState& getWorldState() const override;
@@ -85,6 +86,7 @@ public:
     bool canReachPlayerHeight();
     bool canUseAerialAttack() const;
     float jumpTo(Vector2 position, bool apply) override;
+    void drawHealthBar();
 private:
 
     int lastTriggerFrame; 

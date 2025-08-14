@@ -18,7 +18,8 @@ public:
 	b2Body* createProjectileBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createBlockBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createEnemyBody(Vector2 pos, Vector2 hitboxSize);
-	b2Body* createItemBody(Vector2 pos, Vector2 hitboxSize);
+	b2Body* createItemStaticBody(Vector2 pos, Vector2 hitboxSize);
+	b2Body* createItemDynamicBody(Vector2 pos, Vector2 hitboxSize);
 
 	void BeginContact(b2Contact* contact) override;
 	void EndContact(b2Contact* contact) override;
@@ -37,6 +38,8 @@ public:
 	static float raylibToB2(const float value);
 
 	void attachRectangleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
+	b2Body* createRectangleBody(Vector2 pos, Vector2 hitboxSize);
+	b2Body* createDynamicRectangleBody(Vector2 pos, Vector2 hitboxSize);
 	void attachCapsuleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachSphericalFixture(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachSensors(b2Body* body, Vector2 hitboxSize);

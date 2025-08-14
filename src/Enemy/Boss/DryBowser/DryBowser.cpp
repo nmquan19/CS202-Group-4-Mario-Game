@@ -23,6 +23,8 @@
 #include "../../../../include/Game/GameContext.h"
 #include "../../../../include/System/Box2DWorldManager.h"
 #include "../../../../include/Enemy/EnemyAI/EnemyNavigator.h"
+#include "../../../../include/System/LightingSystem.h"
+#include "../../../../include/System/CameraSystem.h"
 DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,size,TextureManager::DryBowser_texture){
     HP = 100;
     alive = true;
@@ -53,8 +55,10 @@ DryBowser::DryBowser(Vector2 spawnPosition, Vector2 size) :Boss(spawnPosition,si
 }
 #include <iostream>
 void DryBowser::update(float dt) {
-    // First, sync with Box2D physics body if available
-    setTarget(GameContext::getInstance().getCharacter()->getPosition());
+    auto character = std::dynamic_pointer_cast<Character>(GameContext::getInstance().getCharacter());
+    if (character) {
+        setTarget(character->getCenterPos());
+    }
     if (physicsBody) {
         // Get position and velocity from Box2D
         b2Vec2 b2Pos = physicsBody->GetPosition();
@@ -66,24 +70,6 @@ void DryBowser::update(float dt) {
         velocity = Box2DWorldManager::b2ToRaylib(b2Vel);
     }
     // Handle screen boundaries
-    if (position.x < 0) {
-        position.x = 0;
-        if (isInSpinAttack()) {
-            direction = { -direction.x, direction.y };
-            if (physicsBody) {
-                physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2({-velocity.x, velocity.y}));
-            }
-        }
-    }
-    if (position.x > 1920 - hitbox.width) {
-        position.x = 1920 - hitbox.width;
-        if (isInSpinAttack()) {
-            direction = { -direction.x, direction.y };
-            if (physicsBody) {
-                physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2({-velocity.x, velocity.y}));
-            }
-        }
-    }
     if (velocityController.isActiveAtFrame(curFrame)) {
         Vector2 multiplier = velocityController.getVelocityAtFrame(curFrame);
         Vector2 newVelocity = { direction.x * multiplier.x, direction.y * multiplier.y };
@@ -102,15 +88,20 @@ void DryBowser::update(float dt) {
     {
         this->onGround = false; 
     }  
-    // Apply frame-based velocity
-    DrawText(TextFormat("Drybowser Velocity: x = %f, y = %f", velocity.x, velocity.y), 200, 250, 20, BLACK);
-    DrawText(TextFormat("Drybowser Direction: x = %f, y = %f", direction.x, direction.y), 200, 270, 20, BLACK);
 
     spritebox = TextureManager::DryBowser_sprite_boxes[curFrame];
     
 
     updateCooldowns(dt);
     if (currentPhase) currentPhase->update(this, dt);
+    if (curAniName == "Die" && animController.isFinished())
+    {
+        GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
+    }
+    if (curAniName == "Die")
+    {
+        velocity = { 0,0 };
+    }
     if (physicsBody) {
         physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(velocity));
     }
@@ -129,23 +120,10 @@ void DryBowser::update(float dt) {
 }
 
 void DryBowser::draw() {
-  	//DrawRectangle(targetPosition.x, targetPosition.y, 50,50, RED);
-    DrawCircleLines(hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2, Constants::DryBowser::AERIAL_ATTACK_RANGE, BLUE);
+
     float selfBottomY = position.y + hitbox.height;
     float targetBottomY = targetPosition.y+targetHitboxes.height+5.0f;
-    if (!currentPath.empty())
-    {
-        for (const auto& node : currentPath)
-        {
-            node->draw(RED);
-        }
-    }
-    if(currentNode) currentNode->draw(BLACK);
-    DrawLine(0, selfBottomY, 1000, selfBottomY, RED);
-    DrawText("DryBowser Bottom", 10, selfBottomY - 15, 20, RED);
-
-    DrawLine(0, targetBottomY, 1000, targetBottomY, GREEN);
-    DrawText("Target Bottom + 10", 10, targetBottomY - 15, 20, GREEN);
+    
     Rectangle source = spritebox;
     Rectangle dest = hitbox;
     if (!isFacingRight)
@@ -153,10 +131,37 @@ void DryBowser::draw() {
         source.width *= -1;
     }
     Vector2 origin = { 0, 0 };
-	DrawText(TextFormat("DryBowser HP: %d", HP), 200, 300, 40, BLACK);
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
+    drawHealthBar();
 }
+void DryBowser::drawHealthBar()
+{
+    // --- Dark Souls style health bar ---
+    float screenWidth = (float)GetScreenWidth();
+    float screenHeight = (float)GetScreenHeight();
 
+    // Health bar size & position
+    float barWidth = screenWidth * 0.6f;   // 60% of screen width
+    float barHeight = 30.0f;               // Thickness of the bar
+    float barX = (screenWidth - barWidth) / 2.0f;
+    float barY = 0 + 50.0f;     // 50px above the bottom
+
+    float healthPercent = (float)HP / (float)100;
+    if (healthPercent < 0.0f) healthPercent = 0.0f;
+
+    // Background (dark gray)
+    DrawRectangle(barX, barY, barWidth, barHeight, DARKGRAY);
+
+    // Fill (red for boss HP)
+    DrawRectangle(barX, barY, barWidth * healthPercent, barHeight, RED);
+
+    DrawRectangleLines(barX, barY, barWidth, barHeight, BLACK);
+
+    const char* bossName = "Dry Bowser";
+    int fontSize = 20;
+    int textWidth = MeasureText(bossName, fontSize);
+    DrawText(bossName, (int)(screenWidth - textWidth) / 2, (int)(barY - fontSize - 5), fontSize, WHITE);
+}
 void DryBowser::handleCharacterCollision(std::shared_ptr<Object> other) {
     
     std::vector<Rectangle> bowserBoxes = getHitBox();
@@ -166,9 +171,8 @@ void DryBowser::handleCharacterCollision(std::shared_ptr<Object> other) {
 
     Rectangle bowserHead = bowserBoxes[1];
     
-    if (CheckCollisionRecs(bowserHead, otherBoxes[0]) && (getCurAnimation() != "TakeDamage") || (getCurAnimation() != "TakeDamage" && currentPhase->isMoveFinished())) {
+    if (CheckCollisionRecs(bowserHead, otherBoxes[0]) && (getCurAnimation() != "TakeDamage") || (getCurAnimation() == "TakeDamage" && currentPhase->isMoveFinished())) {
         takeDamage(25);
-        currentPhase->changeMoveState(this, std::make_shared<DryBowserTakeDamageState>());    
         return;
     }
     Rectangle bowserBox = bowserBoxes[0];
@@ -259,8 +263,14 @@ std::vector<Rectangle> DryBowser::getHitBox() const {
 
 void DryBowser::takeDamage(int amount) {
     HP -= amount;
-    simState.bossHP = HP;
-    //currentPhase->changeMoveState(this, std::make_shared<DryBowserTakeDamageState>());
+    if (HP <= 0)
+    {
+        die(); 
+    }
+    else
+    {
+        currentPhase->changeMoveState(this, std::make_shared<DryBowserTakeDamageState>());
+    }
     /*if (HP <= 50 && dynamic_cast<DryBowserPhase1BT*>(currentPhase.get())) {
         changePhase(std::make_unique<DryBowserPhase2GOAP>());
     }
@@ -271,6 +281,8 @@ void DryBowser::takeDamage(int amount) {
 
 void DryBowser::die() {
     alive = false;
+    velocity = { 0,0 };
+    setAnimation("Die");
 }
 
 bool DryBowser::isAlive() const {
@@ -372,6 +384,14 @@ void DryBowser::setAnimation(const std::string& aniName) {
     {
         animController.set(55, 57, 0.5f, Easing::linear, false, false);
     }
+    else if (aniName == "Die")
+    {
+        animController.set(656,643, 3.f, Easing::linear, true, false);
+    }
+    else if (aniName == "Taunt")
+    {
+        animController.set(659, 669, 1.5f, Easing::linear, false, false);
+    }
     else
     {
         std::cerr << "Unknown animation name: " << aniName << std::endl;
@@ -456,7 +476,7 @@ bool DryBowser::isTargetInRange(BowserAttackType type) const
 }
 bool DryBowser::canUseSpin() const
 {
-    std::cout << (onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack)) << "\n";
+    //std::cout << (onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack)) << "\n";
     return onGround && isMoveOnCooldown("SpinAttack") == false && currentPhase->getCurMove() != "SpinAttack" && isTargetInRange(BowserAttackType::SpinAttack); 
 }
 
@@ -471,6 +491,18 @@ void DryBowser::spinAttack() {
             currentPhase->changeMoveState(this, std::make_shared<DryBowserSpinAttackState>());
         }
     }
+}
+void DryBowser::taunt()
+{
+    setAnimation("Taunt");
+    DistortionEffect shockwave;
+    shockwave.center = getCenter(); 
+    shockwave.time = 1.5f;       
+    shockwave.strength = 1.f;          
+    shockwave.radius = 1.f;      
+    shockwave.type = DistortionType::ShockWave;
+    LightingManager::getInstance().addDistortion(std::make_shared<DistortionEffect>(shockwave));
+    GameCameraSystem::getInstance().shakeCurrentCamera(50, 0.9f);
 }
 void DryBowser::spinAttackWindup()
 {

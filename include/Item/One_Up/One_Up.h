@@ -8,6 +8,5 @@ public:
 
 	~One_Up();
 
-private:
-
+	void update(float deltaTime) override;
 };

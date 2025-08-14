@@ -1,0 +1,41 @@
+{
+  "children": [
+    {
+      "children": [
+        {
+          "type": "IsTargetInRange"
+        },
+        {
+          "children": [
+            {
+              "type": "Attack"
+            },
+            {
+              "type" :"Retreat"
+            }
+          ],
+
+          "type": "Sequence"
+        }
+      ],
+      "type": "Sequence"
+    },
+    {
+      "children":
+      [
+        {
+          "type": "IsInChaseRange"
+        },
+        {
+          
+          "type": "MoveToTarget"
+        }
+      ],
+      "type" :"Sequence"
+    },
+    {
+      "type": "Patrol"
+    }
+  ],
+  "type": "ReactiveFallBack"
+}

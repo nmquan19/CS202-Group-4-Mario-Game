@@ -40,6 +40,12 @@ void DryBowserPhase1BT::changeMoveState(Boss* boss, std::shared_ptr<BossMoveStat
         if (currentState) currentState->enter(boss);
 }
 void DryBowserPhase1BT::update(Boss* boss, float dt){
+           
+    if (boss->getCurAnimation() == "Die")
+    {
+        root = nullptr; 
+        changeMoveState(boss, nullptr);
+    }
         if (root)root->tick(boss, dt);
         if(currentState)currentState->update(boss,dt);
 }

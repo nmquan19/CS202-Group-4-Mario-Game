@@ -7,6 +7,5 @@ public:
 
 	~Star();
 
-private:
-
+	void update(float deltaTime) override;
 };

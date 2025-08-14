@@ -219,22 +219,21 @@ Vector2 Enemy::getSize() const {
             return {1, 1};
     }
 }
+void Enemy::setTarget(Vector2 targetPos)
+{
+    this->targetPosition = targetPos;
+}
 bool Enemy::moveToTarget() {
+    NodeType type = getTraverseType();
     auto& nav = NavGraph::getInstance();
     Vector2 centerPos = {
         this->getPosition().x + this->getHitBox()[0].width / 2,
         this->getPosition().y + this->getHitBox()[0].height / 2
     };
-    std::shared_ptr<NavGraphNode> curNode = nav.getNearestNode(centerPos, NodeType::Ground);
-    std::shared_ptr<NavGraphNode> targetNode = nav.getNearestNode(targetPosition, NodeType::Ground);
-    if (!curNode || !targetNode)
+    std::shared_ptr<NavGraphNode> curNode = nav.getNearestNode(centerPos, type);
+    std::shared_ptr<NavGraphNode> targetNode = nav.getNearestNode(targetPosition, type);
+    if (!curNode || !targetNode) 
         return false;
-  
-    DrawText(TextFormat("Current Pos: %.2f, %.2f", getPosition().x, getPosition().y), 200, 350, 20, WHITE);
-    if (!currentPath.empty() && pathIndex < currentPath.size()) {
-        DrawText(TextFormat("Target Node: %.2f, %.2f", currentPath[pathIndex]->getPosition().x, currentPath[pathIndex]->getPosition().y), 200, 370, 20, GREEN);
-    }
-
     bool containsCurrentNode = false;
     for (const auto& node : currentPath) {
         if (Vector2Distance(node->getPosition(), curNode->getPosition()) < 1.0f) {
@@ -244,13 +243,12 @@ bool Enemy::moveToTarget() {
     }
     bool shouldReplan = (!lastTargetNode||targetNode != lastTargetNode || !containsCurrentNode);
     if (true) {
-        currentPath = nav.getShortestPath(this, targetPosition, NodeType::Ground);
+        currentPath = nav.getShortestPath(this, targetPosition, type);
         pathIndex = 0;
         lastTargetNode = targetNode;
         if (currentPath.empty()) return false; 
         //isTraversing = false;
     }
-    DrawText(TextFormat("IsTraversing: %d", isTraversing), 300, 300, 20, RED);
     currentNode = curNode;
     if (!isTraversing &&  !currentPath.empty() && pathIndex < currentPath.size() - 1) {
         std::shared_ptr<NavGraphNode> nextNode = currentPath[pathIndex + 1];
@@ -282,8 +280,8 @@ void Enemy::executeTraversal(const Edge& edge) {
     Vector2 toPos = edge.toNode->getPosition();
     switch (edge.direction) {
     case EdgeDirection::Horizontal:
-    {
-       
+    { 
+        physicsBody->SetGravityScale(1);
         if(curAniName != "Run" || animController.isFinished()) setAnimation("Run");
         Vector2 dir = Vector2Normalize(Vector2Subtract(toPos, fromPos));
         this->direction = dir;
@@ -305,6 +303,30 @@ void Enemy::executeTraversal(const Edge& edge) {
         DrawText("Falling", 200, 400, 30, BLUE);
         break;
     }
+    case EdgeDirection::Flying:
+    {
+        if (curAniName != "Flying" || animController.isFinished())  setAnimation("Flying");
+        Vector2 dir = Vector2Subtract(toPos, fromPos);
+        float distanceToTarget = Vector2Length(dir);
+        if (distanceToTarget < 0.001f)
+        {
+            velocity = { 0, 0 };
+            break;
+        }
+        dir = Vector2Scale(dir, 1.0f / distanceToTarget); 
+        float baseSpeed = getWalkVelocity() / 2.0f;
+        float speedMultiplier = std::clamp(distanceToTarget / Constants::TILE_SIZE, 0.4f, 1.0f);
+        float moveSpeed = baseSpeed * speedMultiplier;
+        float moveStep = moveSpeed * GetFrameTime();
+        if (moveStep > distanceToTarget)
+            moveStep = distanceToTarget;
+        velocity = {
+            dir.x * moveSpeed,
+            dir.y * moveSpeed
+        };
+        break;
+    }
+
     default:
         break;
     }
