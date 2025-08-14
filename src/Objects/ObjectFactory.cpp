@@ -15,6 +15,7 @@
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Objects/Spring.h"
+#include "../../include/Objects/MovingPlatform.h"
 #include "../../include/Objects/Projectile/FireBall.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include <raylib.h>
@@ -1128,10 +1129,6 @@ std::unique_ptr<Object> ObjectFactory::createKoopaShell(KoopaShellType type, Vec
     return std::make_unique<KoopaShell>(type, gridPos, size);
 }
 
-std::unique_ptr<Object> ObjectFactory::createSpring(Vector2 position, Vector2 size) {
-    return std::make_unique<Spring>(position, size);
-}
-
 std::unique_ptr<Object> ObjectFactory::createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size) {
     return createSpecificProjectile(type, position, direction, size);
 }
@@ -1141,5 +1138,18 @@ std::unique_ptr<Projectile> ObjectFactory::createSpecificProjectile(ProjectileTy
     case ProjectileType::FIRE_BALL:
         return std::make_unique<FireBall>(position, direction, size);
       // case...
+    }
+}
+
+std::unique_ptr<Object> ObjectFactory::createInteractiveObject(InteractiveType type, Vector2 position) {
+    return createSpecificInteractiveObject(type, position);
+}
+
+std::unique_ptr<InteractiveObject> ObjectFactory::createSpecificInteractiveObject(InteractiveType type, Vector2 position) {
+    switch (type) {
+    case InteractiveType::SPRING:
+        return std::make_unique<Spring>(position, Vector2{1.0f, 1.0f});
+    case InteractiveType::MOVING_PLATFORM:
+        return std::make_unique<MovingPlatform>(position, Vector2{2.0f, 0.25f});
     }
 }

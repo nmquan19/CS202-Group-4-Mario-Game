@@ -190,6 +190,18 @@ namespace Constants {
             constexpr Vector2 INITIAL_VELOCITY = { 7.0f, 5.0f };
         }
     }
+
+    namespace Spring {
+        constexpr float BOUNCE_VELOCITY = 14.0f;
+        constexpr Vector2 STANDARD_SIZE = { 1, 1 };
+        constexpr float BOUNCE_DURATION = 0.8f;
+    }
+
+    namespace MovingPlatform {
+        const float AMPLITUDE = 1.5f * Constants::TILE_SIZE;
+        const float PERIOD = 7.0f;
+    }
+
     namespace DryBowser{
 		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;
         constexpr float WalkTurnDuration = 0.25f;  
@@ -210,11 +222,6 @@ namespace Constants {
 		constexpr float AERIAL_ATTACK_DURATION = 1.5f;
         constexpr float AERIAL_ATTACK_RANGE = 500;
         constexpr float AERIAL_ATTACK_COOLDOWN = 10.0f; 
-    } 
-    namespace Spring {
-        constexpr float BOUNCE_VELOCITY = 14.0f;
-        constexpr Vector2 STANDARD_SIZE = { 1, 1 };
-        constexpr float BOUNCE_DURATION = 0.8f;
     }
     namespace PaletteResources {
         constexpr Rectangle BLOCK_1_1_2 = { 18, 1, 16, 16 };

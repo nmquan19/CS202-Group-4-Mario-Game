@@ -369,16 +369,47 @@ void Box2DWorldManager::EndContact(b2Contact* contact) {
 
 	// Check if this is a bottom sensor leaving contact with a block
 	if (fixtureA->IsSensor() && sensorIdA == 1) { // Bottom sensor of objA
-		if (objB->getObjectCategory() == ObjectCategory::BLOCK) {
+		if (objB->getObjectCategory() == ObjectCategory::BLOCK || objB->getObjectCategory() == ObjectCategory::INTERACTIVE) {
 			if (auto character = dynamic_cast<Character*>(objA)) {
 				character->removeGroundContact();
 			}
 		}
 	}
 	else if (fixtureB->IsSensor() && sensorIdB == 1) { // Bottom sensor of objB
-		if (objA->getObjectCategory() == ObjectCategory::BLOCK) {
+		if (objA->getObjectCategory() == ObjectCategory::BLOCK || objA->getObjectCategory() == ObjectCategory::INTERACTIVE) {
 			if (auto character = dynamic_cast<Character*>(objB)) {
 				character->removeGroundContact();
+			}
+		}
+	}
+
+	if (fixtureA->IsSensor() && sensorIdA == 1) { // Bottom sensor of objA
+		if (objB->getObjectCategory() == ObjectCategory::INTERACTIVE) {
+			ObjectType objectType = objB->getObjectType();
+			if (auto* interactiveType = std::get_if<InteractiveType>(&objectType)) {
+				switch (*interactiveType) {
+				case InteractiveType::MOVING_PLATFORM:
+					if (auto character = dynamic_cast<Character*>(objA)) {
+						// character->removePlatformContact();
+						character->setPlatform(nullptr);
+					}
+					break;
+				}
+			}
+		}
+	}
+	else if (fixtureB->IsSensor() && sensorIdB == 1) { // Bottom sensor of objB
+		if (objA->getObjectCategory() == ObjectCategory::INTERACTIVE) {
+			ObjectType objectType = objA->getObjectType();
+			if (auto* interactiveType = std::get_if<InteractiveType>(&objectType)) {
+				switch (*interactiveType) {
+				case InteractiveType::MOVING_PLATFORM:
+					if (auto character = dynamic_cast<Character*>(objB)) {
+						// character->removePlatformContact();
+						character->setPlatform(nullptr);
+					}
+					break;
+				}
 			}
 		}
 	}

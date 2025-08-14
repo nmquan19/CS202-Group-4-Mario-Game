@@ -895,6 +895,11 @@ void ObjectPalette::drawPalette() {
         DrawTexturePro(TextureManager::interactiveTextures, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
         DrawRectangleLinesEx(springRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::SPRING) ? RED : BLACK);
 
+        Rectangle movingPlatformRect = { startX + spacingX, startY, iconSize * 3.0f, iconSize * 0.25f };
+        Rectangle movingPlatformSource = { 405, 467, 50, 10 };
+        DrawTexturePro(TextureManager::interactiveTextures, movingPlatformSource, movingPlatformRect, { 0, 0 }, 0.0f, WHITE);
+        DrawRectangleLinesEx(movingPlatformRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::MOVING_PLATFORM) ? RED : BLACK);
+
         // Moving platform
     }
     if (selectRect == 4) {
@@ -953,6 +958,7 @@ void ObjectPalette::handleSelection() {
     Rectangle dryBRect = { startX + 3 * spacingX, startY, iconSize, iconSize };
 
     Rectangle springRect = { startX, startY, iconSize, iconSize };
+    Rectangle movingPlatformRect = { startX + spacingX, startY, iconSize * 3.0f, iconSize * 0.25f };
 
     Rectangle coinRect = { startX, startY, iconSize, iconSize };
     Rectangle ffRect = { startX + spacingX, startY, iconSize, iconSize };
@@ -1455,7 +1461,7 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, rkoopaRect) && selectRect == 2) selected = EnemyType::RED_KOOPA;
         if (CheckCollisionPointRec(mousePos, dryBRect) && selectRect == 2) selected = EnemyType::DRY_BOWSER;
         if (CheckCollisionPointRec(mousePos, springRect) && selectRect == 3) selected = InteractiveType::SPRING;
-        // 
+        if (CheckCollisionPointRec(mousePos, movingPlatformRect) && selectRect == 3) selected = InteractiveType::MOVING_PLATFORM;
         if (CheckCollisionPointRec(mousePos, coinRect) && selectRect == 4) selected = ItemType::COIN;
         if (CheckCollisionPointRec(mousePos, ffRect) && selectRect == 4) selected = ItemType::FIRE_FLOWER;
     }
