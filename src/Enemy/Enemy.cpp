@@ -36,8 +36,7 @@ Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(star
             b2Filter filter = fixture->GetFilterData();
             filter.maskBits = static_cast<uint16>(ObjectCategory::ENEMY);
             filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
-                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE) |
-                static_cast<uint16>(ObjectCategory::ENEMY);
+                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
             fixture->SetFilterData(filter);
         }
     }
@@ -285,7 +284,7 @@ void Enemy::executeTraversal(const Edge& edge) {
         if(curAniName != "Run" || animController.isFinished()) setAnimation("Run");
         Vector2 dir = Vector2Normalize(Vector2Subtract(toPos, fromPos));
         this->direction = dir;
-        float moveSpeed = getWalkVelocity() / 2;
+        float moveSpeed = getWalkVelocity();
         float distanceToTarget = Vector2Distance(fromPos, toPos);
         float moveStep = std::min(moveSpeed * GetFrameTime(), distanceToTarget);
          velocity.x = moveStep * dir.x / GetFrameTime();
@@ -294,13 +293,11 @@ void Enemy::executeTraversal(const Edge& edge) {
     }
     case EdgeDirection::Jumping:
     {
-        DrawText("Jumping", 200, 400, 30, BLUE);
         jumpTo(toPos, true);
         break;
     }
     case EdgeDirection::Falling:
     {
-        DrawText("Falling", 200, 400, 30, BLUE);
         break;
     }
     case EdgeDirection::Flying:

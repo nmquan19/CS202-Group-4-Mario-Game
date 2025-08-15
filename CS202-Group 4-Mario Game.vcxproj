@@ -29,6 +29,7 @@
     <ClInclude Include="include\Characters\KnockedState.h" />
     <ClInclude Include="include\Characters\MovingState.h" />
     <ClInclude Include="include\Characters\StunnedState.h" />
+    <ClInclude Include="include\Enemy\Bob-ombs\Bob-ombs.h" />
     <ClInclude Include="include\Enemy\Boo\Boo.h" />
     <ClInclude Include="include\Enemy\Boss\BehaviorTree.h" />
     <ClInclude Include="include\Enemy\Boss\Boss.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="src\Characters\KnockedState.cpp" />
     <ClCompile Include="src\Characters\MovingState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
+    <ClCompile Include="src\Enemy\Bob-ombs\Bob-ombs.cpp" />
     <ClCompile Include="src\Enemy\Boo\Boo.cpp" />
     <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
     <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />

@@ -170,7 +170,6 @@ void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
     DrawBackGround(TextureManager::getInstance().background_lv1);
-    NavGraph::getInstance().draw();
     NavGraph::getInstance().clear();
     DrawText("Press Enter", 500, 100, 20, BLACK);
     

@@ -158,6 +158,7 @@ std::string GetEnemyName(EnemyType type) {
     case EnemyType::GREEN_KOOPA: return "Green_Koopa";
     case EnemyType::DRY_BOWSER: return "DryBowser";
     case EnemyType::BOO: return "Boo";
+    case EnemyType::BOB_OMBS: return "Bob_ombs";
     default: throw std::runtime_error("Unknown enemy type");
     }
 }

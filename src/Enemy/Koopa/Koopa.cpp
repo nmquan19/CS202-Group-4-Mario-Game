@@ -12,22 +12,22 @@
 #include "../../../include/Enemy/LedgeDetector.h"
 #include <memory>
 #include <utility>
-Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures)
+Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures), ledgeDetector(/*std::make_shared<LedgeDetector>(1000.f)*/nullptr)
 {
     HP = 1;
     stompedAnimation = false;
     isFacingRight = false;
-    ledgeDetector = nullptr;
+    //ledgeDetector = nullptr;
 }
 Koopa::~Koopa() {	
     
 }
 
-Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size)
+Koopa::Koopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size), ledgeDetector(/*std::make_shared<LedgeDetector>(1000.f)*/nullptr)
 {
     stompedAnimation = false;
     isFacingRight = false;
-    ledgeDetector = nullptr;
+    //ledgeDetector = nullptr;
 }
 
 void Koopa::onCollision(std::shared_ptr<Object> other, Direction dir) {

@@ -204,6 +204,19 @@ namespace Constants {
 
         constexpr float attackRange = 200;
     }
+    namespace Bob_ombs
+    {
+        constexpr float chaseRange = 400.0f;
+        constexpr float patrolRange = 300.0f;
+        constexpr float bombRange = 50.0f; 
+        constexpr float runSpeed = 200.f;
+        constexpr float attackDuration = 2.f;
+        constexpr float jumpVelocity = -600.f;
+        constexpr float patrolDuration = 1.f;
+        constexpr float dieDuration = 0.25f;
+        constexpr float chaseSpeed = 250.f;
+        constexpr float attackRange = 300.0f;
+    }
     namespace DryBowser{
 		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;
         constexpr float WalkTurnDuration = 0.25f;  

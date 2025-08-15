@@ -18,6 +18,7 @@
 #include "../../include/Objects/Spring.h"
 #include "../../include/Objects/Projectile/FireBall.h"
 #include "../../include/System/Box2DWorldManager.h"
+#include "../../include/Enemy/Bob-ombs/Bob-ombs.h"
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
@@ -1083,6 +1084,8 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         return std::make_unique<DryBowser>(startPosition, size);
     case EnemyType::BOO:
         return std::make_unique<Boo>(startPosition, size);
+    case EnemyType::BOB_OMBS:
+        return std::make_unique<Bob_ombs>(startPosition, size);
     default:
         return nullptr; 
     }

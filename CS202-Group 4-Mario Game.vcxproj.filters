@@ -63,6 +63,7 @@
     <ClCompile Include="src\System\LightSystem.cpp" />
     <ClCompile Include="src\Objects\Torch.cpp" />
     <ClCompile Include="src\Enemy\Boo\Boo.cpp" />
+    <ClCompile Include="src\Enemy\Bob-ombs\Bob-ombs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\Character.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="include\Characters\FireTransformState.h" />
     <ClInclude Include="include\Objects\SpringState.h" />
     <ClInclude Include="include\Enemy\Boo\Boo.h" />
+    <ClInclude Include="include\Enemy\Bob-ombs\Bob-ombs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\Character.cpp">

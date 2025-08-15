@@ -535,7 +535,8 @@ enum class EnemyType {
 	PIRANHA_PLANT,
 	HAMMER_BRO,
 	DRY_BOWSER,
-	BOO
+	BOO,
+	BOB_OMBS
 };
 
 enum class ItemType {
