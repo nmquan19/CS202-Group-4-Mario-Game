@@ -262,8 +262,8 @@ namespace Constants {
         constexpr float pausetime = 1.0f;
         constexpr float moveSpeed = 100.f;
         constexpr float dieDuration = 0.5f;
-        constexpr float attackDuration = 0.5f;
-        constexpr float attackCoolDown = 2.f;
+        constexpr float attackDuration = 1.f;
+        constexpr float attackCoolDown = 3.f;
     }
     namespace Torch {
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };

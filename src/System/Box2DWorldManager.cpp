@@ -685,3 +685,73 @@ void Box2DWorldManager::drawChainShape(b2Body* body, b2Fixture* fixture, b2Chain
 		DrawCircleV(worldVertex, 2, drawColor);
 	}
 }
+
+
+struct SimpleRayCastCallback : public b2RayCastCallback {
+	b2Vec2 hitPoint;
+	b2Body* hitBody = nullptr;
+	bool hit = false;
+
+	float ReportFixture(b2Fixture* fixture,
+		const b2Vec2& point,
+		const b2Vec2& normal,
+		float fraction) override {
+		hitPoint = point;
+		hitBody = fixture->GetBody();
+		hit = true;
+		return fraction; 
+	}
+};
+
+bool Box2DWorldManager::raycast(const Vector2& start,
+	const Vector2& end,
+	Vector2& outHitPoint,
+	b2Body** outBody) {
+	if (!world) return false;
+
+	SimpleRayCastCallback callback;
+	world->RayCast(&callback, raylibToB2(start), raylibToB2(end));
+
+	if (callback.hit) {
+		outHitPoint = b2ToRaylib(callback.hitPoint);
+		if (outBody) {
+			*outBody = callback.hitBody;
+		}
+		return true;
+	}
+	return false;
+}
+
+b2Body* Box2DWorldManager::createLaserBeamBody(Vector2 pos, float length, float thickness, float angle) {
+	if (!world) return nullptr;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_kinematicBody;
+	bodyDef.position = raylibToB2(pos);
+	bodyDef.angle = angle;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+
+	b2PolygonShape beamShape;
+	beamShape.SetAsBox(
+		raylibToB2(length * 0.5f),  // half length
+		raylibToB2(thickness * 0.5f),
+		b2Vec2(raylibToB2(length * 0.5f), 0.0f), // offset to match start point
+		0.0f
+	);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &beamShape;
+	fixtureDef.isSensor = true;
+
+	b2Filter filter;
+	filter.categoryBits = static_cast<uint16>(ObjectCategory::PROJECTILE);
+	filter.maskBits =
+		static_cast<uint16>(ObjectCategory::CHARACTER) |
+		static_cast<uint16>(ObjectCategory::BLOCK) |
+		static_cast<uint16>(ObjectCategory::INTERACTIVE);
+	fixtureDef.filter = filter;
+
+	body->CreateFixture(&fixtureDef);
+	return body;
+}

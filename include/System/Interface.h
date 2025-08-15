@@ -537,7 +537,8 @@ enum class EnemyType {
 	DRY_BOWSER,
 	BOO,
 	BOB_OMBS,
-	LASER_MECHA_KOOPA
+	LASER_MECHA_KOOPA,
+	
 };
 
 enum class ItemType {
@@ -576,7 +577,8 @@ enum class BackGroundObjectType {
 };
 enum class ProjectileType {
 	FIRE_BALL,
-	BLAST
+	BLAST,
+	LASER_BEAM
 };
 
 enum class Direction {

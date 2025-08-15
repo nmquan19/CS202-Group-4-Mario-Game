@@ -5,9 +5,12 @@
 class LaserMechaKoopa : public Enemy
 {
 private:
-    bool isReturning = false;
+    bool isChargingLaser = false;
+    bool isFiringLaser = false;
+
     float attackCoolDown = 0.0f;
     float attackTimer = 0.0f;
+    float laserTimer = 0.0f;
 public:
     LaserMechaKoopa(Vector2 startPos, Vector2 size);
     LaserMechaKoopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration);
