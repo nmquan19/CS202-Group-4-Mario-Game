@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-class Block : public Object, public IUpdatable {
+class Block : public Object, public IUpdatable, public ISavable {
 public:
     Block(Vector2 gridPos, BlockType type, Vector2);
     virtual ~Block();
@@ -26,6 +26,10 @@ public:
     void setPosition(Vector2 newPos) override;
     ObjectType getObjectType() const override;
     Vector2 getSize() const override;
+
+    json toJson() const override;
+    void fromJson(const json& data) override;
+    std::string getSaveType() const override;
 
     bool isSolid() const;
     BlockType getType() const;

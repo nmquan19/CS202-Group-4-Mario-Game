@@ -7,7 +7,7 @@
 #include "../System/InterpolationController.h"
 #include "Anima.h"
 
-class Item : public Object, public IUpdatable {
+class Item : public Object, public IUpdatable, public ISavable {
 public:
     Item();
     Item(Vector2 startPos);
@@ -31,6 +31,11 @@ public:
     void setCollided(bool) override;
     Vector2 getSize() const override;
     virtual ObjectType getObjectType() const override;
+    
+    json toJson() const override;
+    void fromJson(const json& data) override;
+    std::string getSaveType() const override;
+    
     void HarmonicOscillationMove(float amplitude, float frequency, float deltaTime);
     void StarShapeMove(Vector2 center, float deltaTime, float frequency); 
 

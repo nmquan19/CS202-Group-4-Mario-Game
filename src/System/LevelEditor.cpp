@@ -194,6 +194,14 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             }
             GameContext::getInstance().Objects.push_back(newItem);
         }
+        else if constexpr (std::is_same_v<T, KoopaShellType>) {
+            std::shared_ptr<Object> newShell = ObjectFactory::createKoopaShell(actualType, GridSystem::getWorldPosition(gridCoord), Constants::KoopaShell::standardSize);
+            if (newShell) {
+                gridBlocks[key].push(newShell);
+                newShell->setGridPos(gridCoord);
+            }
+            GameContext::getInstance().Objects.push_back(newShell);
+        }
     }, type);
 }
 

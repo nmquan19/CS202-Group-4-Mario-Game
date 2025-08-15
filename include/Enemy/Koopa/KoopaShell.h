@@ -9,7 +9,7 @@
 #include <climits>
 #include <utility>
 #include <memory>
-class KoopaShell : public CollectableObject, public IMovable{    
+class KoopaShell : public CollectableObject, public IMovable, public ISavable{    
     public:
      KoopaShell(KoopaShellType type, Vector2 pos, Vector2 sz);
      void onCollect(Character* player) override; 
@@ -36,6 +36,10 @@ class KoopaShell : public CollectableObject, public IMovable{
      std::vector<std::pair<int, int>> getSpriteData() const;   
      void onRelease() {}
      Vector2 getSize() const { return size; };
+
+     nlohmann::json toJson() const override;
+     void fromJson(const nlohmann::json& data) override;
+     std::string getSaveType() const override;
 
 private:
       float aniTimer;
