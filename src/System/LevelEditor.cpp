@@ -179,7 +179,7 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
 
         }
         else if constexpr (std::is_same_v<T, InteractiveType>) {
-            std::shared_ptr<Object> newInter = ObjectFactory::createSpring(GridSystem::getWorldPosition(gridCoord));
+            std::shared_ptr<Object> newInter = ObjectFactory::createInteractiveObject(actualType, GridSystem::getWorldPosition(gridCoord));
             if (newInter) {
                 gridBlocks[key].push(newInter);
                 newInter->setGridPos(gridCoord);
@@ -1370,21 +1370,12 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
                 break;
         }
     }
-    else if (std::holds_alternative<CharacterType>(type)) {
-        CharacterType charType = std::get<CharacterType>(type);
-        switch (charType) {
-            case CharacterType::LUIGI: return "LUIGI";
-                break;
-            default: return "MARIO";
-                break;
-        }
-    }
     else if (std::holds_alternative<InteractiveType>(type)) {
         InteractiveType inter = std::get<InteractiveType>(type);
         switch (inter) {
             case InteractiveType::SPRING: return "SPRING";
                 break;
-            default: return "SPRING";
+            case InteractiveType::MOVING_PLATFORM: return "MOVING_PLATFORM";
                 break;
         }
     }
@@ -1394,6 +1385,12 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
             case ItemType::COIN: return "COIN";
                 break;
             case ItemType::FIRE_FLOWER: return "FIRE_FLOWER";
+                break;
+            case ItemType::MUSHROOM: return "MUSHROOM";
+                break;
+            case ItemType::ONE_UP: return "ONE_UP";
+                break;
+            case ItemType::STAR: return "STAR";
                 break;
             default: return "COIN";
                 break;
@@ -1912,13 +1909,20 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "PIPE") return BlockType::PIPE;
     if (typeStr == "PLATFORM") return BlockType::PLATFORM;
     if (typeStr == "QUESTION") return BlockType::QUESTION;
+
 	if (typeStr == "GREEN_KOOPA") return EnemyType::GREEN_KOOPA;
 	if (typeStr == "RED_KOOPA") return EnemyType::RED_KOOPA;
     if (typeStr == "GOOMBA") return EnemyType::GOOMBA;
     if (typeStr == "DRY_BOWSER") return EnemyType::DRY_BOWSER;
+
     if (typeStr == "SPRING") return InteractiveType::SPRING;
+    if (typeStr == "MOVING_PLATFORM") return InteractiveType::MOVING_PLATFORM;
     if (typeStr == "COIN") return ItemType::COIN;
     if (typeStr == "FIRE_FLOWER") return ItemType::FIRE_FLOWER;
+    if (typeStr == "MUSHROOM") return ItemType::MUSHROOM;
+    if (typeStr == "ONE_UP") return ItemType::ONE_UP;
+    if (typeStr == "STAR") return ItemType::STAR;
+
     return BlockType::BLOCK_1_1_2;
 }
 bool LevelEditor::isBlock(std::pair<int, int> coord)

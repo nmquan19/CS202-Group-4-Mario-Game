@@ -1,174 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\Characters\Character.cpp" />
-    <ClCompile Include="src\Characters\IdleState.cpp" />
-    <ClCompile Include="src\Characters\JumpingState.cpp" />
-    <ClCompile Include="src\Characters\MovingState.cpp" />
-    <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
-    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
-    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
-    <ClCompile Include="src\Enemy\Enemy.cpp" />
-    <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
-    <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
-    <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
-    <ClCompile Include="src\Enemy\Koopa\KoopaShellState.cpp" />
-    <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp" />
-    <ClCompile Include="src\Enemy\Koopa\Koopa.cpp" />
-    <ClCompile Include="src\Enemy\LedgeDetector.cpp" />
-    <ClCompile Include="src\Enemy\TriggerZone.cpp" />
-    <ClCompile Include="src\Game\GameContext.cpp" />
-    <ClCompile Include="src\Game\GameStates.cpp" />
-    <ClCompile Include="src\Objects\Block.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Objects\CollectableObject.cpp" />
-    <ClCompile Include="src\Objects\ObjectFactory.cpp" />
-    <ClCompile Include="src\Scenes\Scene.cpp" />
-    <ClCompile Include="src\System\FrameData.cpp" />
-    <ClCompile Include="src\System\InterpolationController.cpp" />
-    <ClCompile Include="src\System\LevelEditor.cpp" />
-    <ClCompile Include="src\System\TextureManager.cpp" />
-    <ClCompile Include="src\UI\Menu.cpp" />
-    <ClCompile Include="src\UI\SoundEffect.cpp" />
-    <ClCompile Include="src\UI\UI.cpp" />
-    <ClCompile Include="include\Enemy\Boss\BT_Factory.h" />
-    <ClCompile Include="src\System\Resources.cpp" />
-    <ClCompile Include="src\Objects\InteractiveObject.cpp" />
-    <ClCompile Include="src\Objects\Spring.cpp" />
-    <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
-    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
-    <ClCompile Include="src\Item\Item.cpp" />
-    <ClCompile Include="src\UI\Button.cpp" />
-    <ClCompile Include="src\UI\SlideBar.cpp" />
-    <ClCompile Include="src\Item\Coin\Coin.cpp" />
-    <ClCompile Include="src\Item\Mushroom\Mushroom.cpp" />
-    <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
-    <ClCompile Include="src\Item\Star\Star.cpp" />
-    <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
-    <ClCompile Include="include\System\Box2DWorldManager.h" />
-    <ClCompile Include="src\System\Box2DWorldManager.cpp" />
-    <ClCompile Include="src\Characters\KnockedState.cpp" />
-    <ClCompile Include="src\Characters\StunnedState.cpp" />
-    <ClCompile Include="src\System\ParticleSystem.cpp" />
-    <ClCompile Include="src\System\CameraSystem.cpp" />
-    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
-    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
-    <ClCompile Include="src\Characters\SuperTransformState.cpp" />
-    <ClCompile Include="include\Characters\SmallTransformState.h" />
-    <ClCompile Include="src\Characters\SmallTransformState.cpp" />
-    <ClCompile Include="src\Objects\Projectile\FireBall.cpp" />
-    <ClCompile Include="src\Objects\Projectile\Projectile.cpp" />
-    <ClCompile Include="src\Characters\AttackState.cpp" />
-    <ClCompile Include="src\Characters\FireTransformState.cpp" />
-    <ClCompile Include="src\System\LightSystem.cpp" />
-    <ClCompile Include="src\Objects\Torch.cpp" />
-    <ClCompile Include="src\Enemy\Boo\Boo.cpp" />
-    <ClCompile Include="src\Enemy\Bob-ombs\Bob-ombs.cpp" />
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Characters\Character.h" />
-    <ClInclude Include="include\Characters\ICharacterState.h" />
-    <ClInclude Include="include\Characters\IdleState.h" />
-    <ClInclude Include="include\Characters\JumpingState.h" />
-    <ClInclude Include="include\Characters\MovingState.h" />
-    <ClInclude Include="include\Enemy\Boss\BehaviorTree.h" />
-    <ClInclude Include="include\Enemy\Boss\Boss.h" />
-    <ClInclude Include="include\Enemy\Boss\BossAction.h" />
-    <ClInclude Include="include\Enemy\Boss\BossMoveState.h" />
-    <ClInclude Include="include\Enemy\Boss\BossPhaseState.h" />
-    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowser.h" />
-    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserMoveState.h" />
-    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserPhase.h" />
-    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserSimState.h" />
-    <ClInclude Include="include\Enemy\Boss\GOAPPlanner.h" />
-    <ClInclude Include="include\Enemy\Boss\SimulateState.h" />
-    <ClInclude Include="include\Enemy\Boss\WorldState.h" />
-    <ClInclude Include="include\Enemy\Enemy.h" />
-    <ClInclude Include="include\Enemy\EnemyState.h" />
-    <ClInclude Include="include\Enemy\Goomba\Goomba.h" />
-    <ClInclude Include="include\Enemy\Goomba\GoombaState.h" />
-    <ClInclude Include="include\Enemy\Koopa\KoopaShell.h" />
-    <ClInclude Include="include\Enemy\Koopa\KoopaShellState..h" />
-    <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h" />
-    <ClInclude Include="include\Enemy\LedgeDetector.h" />
-    <ClInclude Include="include\Enemy\Koopa\Koopa.h" />
-    <ClInclude Include="include\Enemy\Koopa\KoopaState.h" />
-    <ClInclude Include="include\Enemy\TriggerZone.h" />
-    <ClInclude Include="include\Game\GameContext.h" />
-    <ClInclude Include="include\Game\GameStates.h" />
-    <ClInclude Include="include\Objects\Block.h" />
-    <ClInclude Include="include\Objects\CollectableObject.h" />
-    <ClInclude Include="include\Objects\ObjectFactory.h" />
-    <ClInclude Include="include\System\Constant.h" />
-    <ClInclude Include="include\System\FrameData.h" />
-    <ClInclude Include="include\System\Grid.h" />
-    <ClInclude Include="include\System\Interface.h" />
-    <ClInclude Include="include\System\json.hpp" />
-    <ClInclude Include="include\System\LevelEditor.h" />
-    <ClInclude Include="include\System\TextureManager.h" />
-    <ClInclude Include="include\UI\Menu.h" />
-    <ClInclude Include="include\UI\SoundEffect.h" />
-    <ClInclude Include="include\UI\UI.h" />
-    <ClInclude Include="src\Enemy\Boss\Boss.cpp" />
-    <ClInclude Include="include\System\InterpolationController.h" />
-    <ClInclude Include="include\Objects\InteractiveObject.h" />
-    <ClInclude Include="include\Objects\Spring.h" />
-    <ClInclude Include="include\Item\Anima.h" />
-    <ClInclude Include="include\Item\Item.h" />
-    <ClInclude Include="include\Item\Coin\Coin.h" />
-    <ClInclude Include="include\Item\Mushroom\Mushroom.h" />
-    <ClInclude Include="include\UI\SlideBar.h" />
-    <ClInclude Include="include\UI\Button.h" />
-    <ClInclude Include="include\Item\Fire_Flower\Fire_Flower.h" />
-    <ClInclude Include="include\Item\Star\Star.h" />
-    <ClInclude Include="include\Item\One_Up\One_Up.h" />
-    <ClInclude Include="include\Enemy\HammerBro\HammerBro.h" />
-    <ClInclude Include="include\Characters\KnockedState.h" />
-    <ClInclude Include="include\Characters\StunnedState.h" />
-    <ClInclude Include="include\System\ParticleSystem.h" />
-    <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h" />
-    <ClInclude Include="include\System\CameraSystem.h" />
-    <ClInclude Include="include\System\LightingSystem.h" />
-    <ClInclude Include="include\Objects\LightPole.h" />
-    <ClInclude Include="include\Objects\Torch.h" />
-    <ClInclude Include="include\Characters\SuperTransformState.h" />
-    <ClInclude Include="include\Objects\Projectile\FireBall.h" />
-    <ClInclude Include="include\Objects\Projectile\Projectile.h" />
-    <ClInclude Include="include\Characters\AttackState.h" />
-    <ClInclude Include="include\Characters\FireTransformState.h" />
-    <ClInclude Include="include\Objects\SpringState.h" />
-    <ClInclude Include="include\Enemy\Boo\Boo.h" />
-    <ClInclude Include="include\Enemy\Bob-ombs\Bob-ombs.h" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="src\Characters\AttackState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Characters\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Objects\Block.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scenes\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\Menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\SoundEffect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UI\UI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Objects\ObjectFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\System\TextureManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\System\LevelEditor.cpp">
+    <ClCompile Include="src\Characters\FireTransformState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Characters\IdleState.cpp">
@@ -177,7 +30,37 @@
     <ClCompile Include="src\Characters\JumpingState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Characters\KnockedState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Characters\MovingState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Characters\SmallTransformState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Characters\StunnedState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Characters\SuperTransformState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Boo\Boo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Boss\Boss.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Enemy\Goomba\Goomba.cpp">
@@ -186,28 +69,25 @@
     <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Enemy\Enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Enemy\Koopa\Koopa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Enemy\LedgeDetector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Enemy\TriggerZone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Objects\CollectableObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Enemy\Koopa\KoopaShellState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\LedgeDetector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\TriggerZone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\GameContext.cpp">
@@ -216,68 +96,331 @@
     <ClCompile Include="src\Game\GameStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Item\Coin\Coin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Item\Mushroom\Mushroom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Item\One_Up\One_Up.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Item\Star\Star.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Item\Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\CollectableObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\InteractiveObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\MovingPlatform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\ObjectFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Spring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Torch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Projectile\FireBall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Projectile\Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Box2DWorldManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\CameraSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\FrameData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\InterpolationController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\LevelEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\LightSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\ParticleSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Resources.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\TextureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\SlideBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\SoundEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy\Bob-ombs\Bob-ombs.cpp" />
+  <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\button\board1.png" />
-    <Image Include="assets\Super Mario Bros.png" />
-    <Image Include="assets\coin_sprite.png" />
-    <Image Include="assets\button\back.png" />
-    <Image Include="assets\button\back_selected.png" />
-    <Image Include="assets\button\check.png" />
-    <Image Include="assets\button\check_selected.png" />
-    <Image Include="assets\button\cross.png" />
-    <Image Include="assets\button\cross_selected.png" />
-    <Image Include="assets\button\home.png" />
-    <Image Include="assets\button\home_selected.png" />
-    <Image Include="assets\button\option.png" />
-    <Image Include="assets\button\option_selected.png" />
-    <Image Include="assets\button\small_board.png" />
-    <Image Include="assets\button\small_board_selected.png" />
-    <Image Include="assets\button\thin_board.png" />
-    <Image Include="assets\button\thin_board_selected.png" />
-    <Image Include="assets\Luigi.png" />
-    <Image Include="assets\Mario.png" />
-    <Image Include="assets\Toad.png" />
-    <Image Include="assets\Toadette.png" />
-    <Image Include="assets\day_ground.png" />
-    <Image Include="assets\day_underground.png" />
-    <Image Include="assets\level_map1.png" />
-    <Image Include="assets\level_map2.png" />
-    <Image Include="assets\level_map3.png" />
-    <Image Include="assets\menu background.jpg" />
-    <Image Include="assets\night_airship.png" />
-    <Image Include="assets\night_snow.png" />
-    <Image Include="assets\Fireball_sprites.png" />
-    <Image Include="assets\character_spritesheet.png" />
-    <Image Include="assets\interactive_sprites.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="assets\sound\2-108080.wav" />
-    <Media Include="assets\sound\click.wav" />
-    <Media Include="assets\sound\gain2.wav" />
-    <Media Include="assets\sound\jsyd_mario_slide-93009.wav" />
-    <Media Include="assets\sound\jump.wav" />
-    <Media Include="assets\sound\jump2.wav" />
-    <Media Include="assets\sound\level up.wav" />
-    <Media Include="assets\sound\movement1.wav" />
-    <Media Include="assets\sound\movement2.wav" />
-    <Media Include="assets\sound\next1.wav" />
-    <Media Include="assets\sound\next2.wav" />
-    <Media Include="assets\sound\next3.wav" />
-    <Media Include="assets\sound\notice1.wav" />
-    <Media Include="assets\sound\notice2.wav" />
-    <Media Include="assets\sound\point.wav" />
-    <Media Include="assets\sound\strike.wav" />
-    <Media Include="assets\sound\theme1.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\font_sprites.png" />
-    <Image Include="assets\Super Mario Bros.png" />
-    <Image Include="assets\button\check.png" />
-    <Image Include="assets\button\check_selected.png" />
-    <Image Include="assets\button\cross.png" />
-    <Image Include="assets\button\cross_selected.png" />
-    <Image Include="assets\button\home.png" />
-    <Image Include="assets\button\option.png" />
+    <ClInclude Include="include\Characters\AttackState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\FireTransformState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\ICharacterState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\IdleState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\JumpingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\KnockedState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\MovingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\SmallTransformState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\StunnedState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\SuperTransformState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boo\Boo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserMoveState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserPhase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\DryBowser\DryBowserSimState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\BehaviorTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\Boss.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\BossAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\BossMoveState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\BossPhaseState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\BT_Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\GOAPPlanner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\SimulateState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Boss\WorldState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\EnemyAI\EnemyNavigator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Goomba\Goomba.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Goomba\GoombaState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\HammerBro\HammerBro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Koopa\Koopa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Koopa\KoopaShell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Koopa\KoopaState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\EnemyState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\LedgeDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\TriggerZone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\GameContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\GameStates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item\Coin\Coin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item\Fire_Flower\Fire_Flower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item\Mushroom\Mushroom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item\One_Up\One_Up.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item\Star\Star.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item\Anima.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item\Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Objects\Projectile\FireBall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Objects\Projectile\Projectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Objects\Block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Objects\CollectableObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Objects\InteractiveObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Objects\MovingPlatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Objects\ObjectFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Objects\Spring.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Objects\Torch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\Box2DWorldManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\CameraSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\Constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\FrameData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\Grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\Interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\InterpolationController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\LevelEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\LightingSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\ParticleSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\SlideBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\SoundEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Enemy\Bob-ombs\Bob-ombs.h" />
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

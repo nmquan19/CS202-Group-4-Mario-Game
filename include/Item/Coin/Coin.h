@@ -5,7 +5,4 @@ class Coin : public Item {
 public:
 	Coin(Vector2 position); 
 	~Coin();
-
-private:
-
 };

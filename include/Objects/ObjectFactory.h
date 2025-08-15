@@ -15,6 +15,7 @@ struct CharacterStats;
 class Enemy;  
 class KoopaShell;  
 class Projectile;
+class InteractiveObject;
 
 class Object : public ICollidable, public IDrawable {  
 public: 
@@ -55,9 +56,9 @@ public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Object> createCharacter(CharacterType type, PlayerID id, Vector2 startPosition);
 	static std::unique_ptr<Object> createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size = Constants::Projectile::STANDARD_SIZE);
+	static std::unique_ptr<Object> createInteractiveObject(InteractiveType type, Vector2 position);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);
-	static std::unique_ptr<Object> createSpring(Vector2 position, Vector2 size = Constants::Spring::STANDARD_SIZE);
 	static std::unique_ptr<Object> createItem(ItemType type, Vector2 startPos, Vector2 size);
 	static std::unique_ptr<Object> createTorch(Vector2 position, Vector2 size = Constants::Torch::STANDARD_SIZE, float brightness = Constants::Torch::STANDARD_BRIGHTNESS, float radius = Constants::Torch::STANDARD_LIGHT_RADIUS, Color innerColor = { 48,252,244,255 }, Color outerColor = { 0,171,254,255 });
 
@@ -67,6 +68,7 @@ private:
 	static std::unique_ptr<Character> createSpecificCharacter(CharacterType type, PlayerID id, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Item> createSpecificItem(ItemType type, Vector2 startPos, Vector2 size);
 	static std::unique_ptr<Projectile> createSpecificProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size);
+	static std::unique_ptr<InteractiveObject> createSpecificInteractiveObject(InteractiveType type, Vector2 position);
 	static CharacterStats getStats(CharacterType type);
     static std::vector<std::vector<Rectangle>> getFrameData(CharacterType type);
 };
