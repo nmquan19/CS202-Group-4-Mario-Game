@@ -56,8 +56,6 @@ void Bob_ombs::draw() {
     Rectangle source = spritebox;
     Rectangle dest = hitbox;
     Vector2 origin = { 0, 0 };
-    DrawText(curAniName.c_str(), 100, 100, 20, RED);
-    DrawCircle(targetPosition.x, targetPosition.y, 200, YELLOW);
     if (!isFacingRight)
     {
         source.width *= -1;

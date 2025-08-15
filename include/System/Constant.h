@@ -250,6 +250,12 @@ namespace Constants {
         constexpr float AERIAL_ATTACK_RANGE = 500;
         constexpr float AERIAL_ATTACK_COOLDOWN = 10.0f; 
     }
+    namespace PiranhaPlant
+    {
+        constexpr float pausetime = 1.0f;
+        constexpr float moveSpeed= 100.f;
+        constexpr float dieDuration = 0.5f; 
+    }
     namespace Torch {
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };
         constexpr float STANDARD_LIGHT_RADIUS = 0.2f;
