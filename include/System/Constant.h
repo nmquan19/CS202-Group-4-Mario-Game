@@ -256,6 +256,15 @@ namespace Constants {
         constexpr float moveSpeed= 100.f;
         constexpr float dieDuration = 0.5f; 
     }
+    namespace LaserMechaKoopa
+    {
+        constexpr float attackRange = 1000.f;
+        constexpr float pausetime = 1.0f;
+        constexpr float moveSpeed = 100.f;
+        constexpr float dieDuration = 0.5f;
+        constexpr float attackDuration = 0.5f;
+        constexpr float attackCoolDown = 2.f;
+    }
     namespace Torch {
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };
         constexpr float STANDARD_LIGHT_RADIUS = 0.2f;

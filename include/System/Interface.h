@@ -536,7 +536,8 @@ enum class EnemyType {
 	HAMMER_BRO,
 	DRY_BOWSER,
 	BOO,
-	BOB_OMBS
+	BOB_OMBS,
+	LASER_MECHA_KOOPA
 };
 
 enum class ItemType {
