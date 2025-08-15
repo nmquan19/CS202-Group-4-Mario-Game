@@ -151,6 +151,7 @@
     <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
     <ClCompile Include="src\Enemy\Koopa\KoopaShellState.cpp" />
     <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp" />
+    <ClCompile Include="src\Enemy\LaserMechaKoopa\LaserMechaKoopa.cpp" />
     <ClCompile Include="src\Enemy\LedgeDetector.cpp" />
     <ClCompile Include="src\Enemy\PiranhaPlant\PiranhaPlant.cpp" />
     <ClCompile Include="src\Enemy\TriggerZone.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="include\Enemy\Koopa\KoopaShell.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaState.h" />
+    <ClInclude Include="include\Enemy\LaserMechaKoopa\LaserMechaKoopa.h" />
     <ClInclude Include="include\Enemy\LedgeDetector.h" />
     <ClInclude Include="include\Enemy\PiranhaPlant\PiranhaPlant.h" />
     <ClInclude Include="include\Enemy\TriggerZone.h" />
