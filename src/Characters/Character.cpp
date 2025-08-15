@@ -4,11 +4,13 @@
 #include "..\..\include\Characters\JumpingState.h"
 #include "../../include/Characters/StunnedState.h"
 #include "../../include/Characters/KnockedState.h"
+#include "../../include/Characters/SuperTransformState.h"
+#include "../../include/Characters/FireTransformState.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/Enemy.h"
-#include "../../include//Item/Item.h"
+#include "../../include/Item/Item.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/Game/GameContext.h"
 #include <iostream>
@@ -91,6 +93,8 @@ void Character::update(float deltaTime) {
 			physicsBody->SetLinearVelocity(b2Vec2(platformVel.x, characterVel.y));
 		}
 	}
+
+	gridPosition = GridSystem::getGridCoord(getPosition());	
 }
 
 void Character::draw() {
@@ -116,7 +120,7 @@ void Character::draw() {
 	Vector2 indicatorSize = MeasureTextEx(GetFontDefault(), id == PlayerID::PLAYER_01 ? "P1" : "P2", 20.0f, 1.5f);
 	DrawTextPro(GetFontDefault(),
 		id == PlayerID::PLAYER_01 ? "P1" : "P2",
-		Vector2(destRec.x + destRec.width * 0.5f - indicatorSize.x * 0.5f, destRec.y - indicatorSize.y * 0.5f - 10.0f),
+		Vector2{destRec.x + destRec.width * 0.5f - indicatorSize.x * 0.5f, destRec.y - indicatorSize.y * 0.5f - 10.0f},
 		Vector2{ 0, 0 },
 		0.0f,
 		20.0f,
@@ -219,13 +223,18 @@ void Character::setPosition(Vector2 newPosition){
 }
 
 Vector2 Character::getPosition() const {
-	return position;
+	Vector2 centerPosition = getCenterPos();
+	Vector2 topLeftPosition = {
+		centerPosition.x - size.x * Constants::TILE_SIZE * 0.5f,
+		centerPosition.y - size.y * Constants::TILE_SIZE * 0.5f
+	};
+	return topLeftPosition;
 }
 Vector2 Character::getCenterPos()const
 {
 	return Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
-	
 }
+
 bool Character::isFacingRight() const {
 	return facingRight;
 }
@@ -361,4 +370,53 @@ void Character::handleMovingPlatformCollision(std::shared_ptr<MovingPlatform> ot
 		addGroundContact();
 		setPlatform(other);
 	}
+}
+
+json Character::toJson() const {
+	json data;
+	data["saveType"] = getSaveType();
+
+	data["characterType"] = static_cast<int>(characterType);
+	data["playerID"] = static_cast<int>(id);
+
+	data["position"] = { position.x, position.y };
+	data["gridPosition"] = { gridPosition.x, gridPosition.y };
+
+	data["size"] = { size.x, size.y };
+	data["hp"] = hp;
+	data["projectilesLeft"] = projectilesLeft;
+	data["powerState"] = static_cast<int>(powerState);
+
+	return data;
+}
+
+void Character::fromJson(const json& data) {
+	characterType = static_cast<CharacterType>(data["characterType"]);
+	id = static_cast<PlayerID>(data["playerID"]);
+	powerState = static_cast<PowerState>(data["powerState"]);
+	position = { data["position"][0], data["position"][1] };
+	gridPosition = { data["gridPosition"][0], data["gridPosition"][1] };
+	size = { data["size"][0], data["size"][1] };
+	hp = data["hp"];
+	projectilesLeft = data["projectilesLeft"];
+
+	switch (powerState) {
+	case PowerState::SMALL:
+		break;
+	case PowerState::SUPER:
+		changeState(SuperTransformState::getInstance());
+		break;
+	case PowerState::FIRE:
+		changeState(FireTransformState::getInstance());
+		break;
+	}
+	changeState(IdleState::getInstance());
+}
+
+std::string Character::getSaveType() const {
+	return "Character";
+}
+
+PowerState Character::getPowerState() const {
+	return powerState;
 }

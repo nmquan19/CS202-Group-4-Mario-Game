@@ -7,6 +7,13 @@
 #include <cmath>
 #include "../../include/Game/GameContext.h"
 #include "../../include/Objects/ObjectFactory.h"
+#include "../../include/Objects/Block.h"
+#include "../../include/Objects/InteractiveObject.h"
+#include "../../include/Objects/Spring.h"
+#include "../../include/Objects/MovingPlatform.h"
+#include "../../include/Enemy/Enemy.h"
+#include "../../include/Item/Item.h"
+#include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Interface.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/System/TextureManager.h"
@@ -196,4 +203,182 @@ void GameContext::clearGame() {
     }
     deleteObjects();
     Objects.clear();
+}
+
+void GameContext::saveGameState(const std::string& filename) {
+    json gameData;
+    json objectsArray = json::array();
+    
+    // Save character01
+    if (character01) {
+        auto savableChar = std::dynamic_pointer_cast<ISavable>(character01);
+        if (savableChar) {
+            objectsArray.push_back(savableChar->toJson());
+        }
+    }
+    
+    // Save character02
+    if (character02) {
+        auto savableChar = std::dynamic_pointer_cast<ISavable>(character02);
+        if (savableChar) {
+            objectsArray.push_back(savableChar->toJson());
+        }
+    }
+    
+    // Save all other objects that implement ISavable
+    for (const auto& obj : Objects) {
+        auto savableObj = std::dynamic_pointer_cast<ISavable>(obj);
+        if (savableObj) {
+            objectsArray.push_back(savableObj->toJson());
+        }
+    }
+    
+    gameData["objects"] = objectsArray;
+    gameData["playerCallsRequest"] = playerCallsRequest;
+    
+    // Save camera state
+    gameData["camera"] = {
+        {"target", {camera.target.x, camera.target.y}},
+        {"offset", {camera.offset.x, camera.offset.y}},
+        {"rotation", camera.rotation},
+        {"zoom", camera.zoom}
+    };
+    
+    // Write to file
+    std::ofstream file(filename);
+    if (file.is_open()) {
+        file << gameData.dump(4);
+        file.close();
+        std::cout << "Game state saved to " << filename << std::endl;
+    } else {
+        std::cerr << "Failed to save game state to " << filename << std::endl;
+    }
+}
+
+void GameContext::loadGameState(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Failed to load game state from " << filename << std::endl;
+        return;
+    }
+    
+    json gameData;
+    file >> gameData;
+    file.close();
+    
+    // Clear existing objects
+    clearGame();
+    character01.reset();
+    character02.reset();
+    
+    // Load player calls request
+    if (gameData.contains("playerCallsRequest")) {
+        playerCallsRequest = gameData["playerCallsRequest"];
+    }
+    
+    // Load camera state
+    if (gameData.contains("camera")) {
+        const auto& cameraData = gameData["camera"];
+        camera.target = {cameraData["target"][0], cameraData["target"][1]};
+        camera.offset = {cameraData["offset"][0], cameraData["offset"][1]};
+        camera.rotation = cameraData["rotation"];
+        camera.zoom = cameraData["zoom"];
+    }
+    
+    // Load objects
+    if (gameData.contains("objects")) {
+        for (const auto& objData : gameData["objects"]) {
+            if (!objData.contains("saveType")) continue;
+            
+            std::string saveType = objData["saveType"];
+            
+            if (saveType == "Character") {
+                CharacterType charType = static_cast<CharacterType>(objData["characterType"]);
+                PlayerID playerID = static_cast<PlayerID>(objData["playerID"]);
+                Vector2 startPos = GridSystem::getWorldPosition({objData["gridPosition"][0], objData["gridPosition"][1]});
+                
+                auto characterUniquePtr = ObjectFactory::createCharacter(charType, playerID, startPos);
+                auto character = std::shared_ptr<Character>(
+                    static_cast<Character*>(characterUniquePtr.release())
+                );
+                
+                if (character) {
+                    character->fromJson(objData);
+                
+                    if (playerID == PlayerID::PLAYER_01) {
+                        character01 = character;
+                    } else if (playerID == PlayerID::PLAYER_02) {
+                        character02 = character;
+                    }
+                }
+            } else if (saveType == "Block") {
+                Vector2 gridPos = {objData["gridPosition"][0], objData["gridPosition"][1]};
+                BlockType blockType = static_cast<BlockType>(objData["blockType"]);
+                
+                LevelEditor::getInstance().placeObject(blockType, gridPos);
+                
+                if (!Objects.empty()) {
+                    auto lastObject = Objects.back();
+                    auto block = std::dynamic_pointer_cast<Block>(lastObject);
+                    if (block && block->getSaveType() == "Block") {
+                        block->fromJson(objData);
+                    }
+                }   
+            } else if (saveType == "Interactive") {
+                Vector2 gridPos = {objData["gridPosition"][0], objData["gridPosition"][1]};
+                InteractiveType interactiveType = static_cast<InteractiveType>(objData["interactiveType"]);
+                
+                LevelEditor::getInstance().placeObject(interactiveType, gridPos);
+
+                if (!Objects.empty()) {
+                    auto lastObject = Objects.back();
+                    auto interactive = std::dynamic_pointer_cast<InteractiveObject>(lastObject);
+                    if (interactive) {
+                        interactive->fromJson(objData);
+                    }
+                }
+            } else if (saveType == "Enemy") {
+                b2Vec2 pos = {objData["position"][0], objData["position"][1]};
+                EnemyType enemyType = static_cast<EnemyType>(objData["enemyType"]);
+
+                LevelEditor::getInstance().placeObject(enemyType, GridSystem::getGridCoord(Box2DWorldManager::b2ToRaylib(pos)));
+                
+                if (!Objects.empty()) {
+                    auto lastObject = Objects.back();
+                    auto enemy = std::dynamic_pointer_cast<Enemy>(lastObject);
+                    if (enemy) {
+                        enemy->fromJson(objData);
+                    }
+                }
+            } else if (saveType == "Item") {
+                b2Vec2 pos = {objData["position"][0], objData["position"][1]};
+                ItemType itemType = static_cast<ItemType>(objData["itemType"]);
+
+                LevelEditor::getInstance().placeObject(itemType, GridSystem::getGridCoord(Box2DWorldManager::b2ToRaylib(pos)));
+                
+                if (!Objects.empty()) {
+                    auto lastObject = Objects.back();
+                    auto item = std::dynamic_pointer_cast<Item>(lastObject);
+                    if (item) {
+                        item->fromJson(objData);
+                    }
+                }
+            } else if (saveType == "KoopaShell") {
+                b2Vec2 pos = {objData["position"][0], objData["position"][1]};
+                KoopaShellType shellType = static_cast<KoopaShellType>(objData["shellType"]);
+
+                LevelEditor::getInstance().placeObject(shellType, GridSystem::getGridCoord(Box2DWorldManager::b2ToRaylib(pos)));
+                
+                if (!Objects.empty()) {
+                    auto lastObject = Objects.back();
+                    auto koopaShell = std::dynamic_pointer_cast<KoopaShell>(lastObject);
+                    if (koopaShell) {
+                        koopaShell->fromJson(objData);
+                    }
+                }
+            }
+        }
+    }
+    
+    std::cout << "Game state loaded from " << filename << std::endl;
 }

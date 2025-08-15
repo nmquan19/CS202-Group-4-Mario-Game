@@ -48,7 +48,7 @@ protected:
 	bool active = true;
 	bool collided = false;
 	b2Body* physicsBody;
-	Vector2 gridPosition = { 0, 0 };
+	Vector2 gridPosition;
 };  
 
 class ObjectFactory {

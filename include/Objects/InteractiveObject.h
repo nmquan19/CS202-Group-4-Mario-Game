@@ -2,7 +2,7 @@
 #include "ObjectFactory.h"
 #include "../System/Interface.h"
 
-class InteractiveObject : public Object, public IUpdatable {
+class InteractiveObject : public Object, public IUpdatable, public ISavable {
 public:
     InteractiveObject(Vector2 position, Vector2 size);
     virtual ~InteractiveObject() = default;
@@ -26,6 +26,11 @@ public:
 
     virtual ObjectType getObjectType() const = 0;
 
+    virtual json toJson() const override;
+    virtual void fromJson(const json& data) override;
+    virtual std::string getSaveType() const override;
+
+    InteractiveType interactiveType;
 protected:
     Rectangle hitBox;
 };
