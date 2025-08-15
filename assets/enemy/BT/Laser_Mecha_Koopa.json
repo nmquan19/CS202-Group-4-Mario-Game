@@ -1,0 +1,14 @@
+{
+  "children": [
+    {
+      "type": "IsTargetInRange"
+    },
+    {
+      "type": "CanUseBasicAttack"
+    },
+    {
+      "type": "Attack"
+    }
+  ],
+  "type": "Sequence"
+} 

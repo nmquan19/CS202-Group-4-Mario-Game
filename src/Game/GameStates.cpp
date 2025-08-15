@@ -178,7 +178,6 @@ void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
     DrawBackGround(TextureManager::getInstance().background_lv1);
-    NavGraph::getInstance().draw();
     NavGraph::getInstance().clear();
     DrawText("Press Enter", 500, 100, 20, BLACK);
     DrawText("F5 - Save game", 1200, 500, 50, BLACK);
@@ -360,14 +359,14 @@ void handleCamera() {
     const float scrollSpeed = 1000.0f * GetFrameTime(); 
     Vector2 mouse = GetMousePosition();
 
-    if (mouse.x <= borderThreshold)
+    if (mouse.x <= borderThreshold|| IsKeyDown(KEY_A))
         cam.target.x -= scrollSpeed;
-    else if (mouse.x >= GetScreenWidth() - borderThreshold)
+    else if (mouse.x >= GetScreenWidth() - borderThreshold || IsKeyDown(KEY_D))
         cam.target.x += scrollSpeed;
 
-    if (mouse.y <= borderThreshold)
+    if (mouse.y <= borderThreshold || IsKeyDown(KEY_W))
         cam.target.y -= scrollSpeed;
-    else if (mouse.y >= GetScreenHeight() - borderThreshold)
+    else if (mouse.y >= GetScreenHeight() - borderThreshold || IsKeyDown(KEY_S))
         cam.target.y += scrollSpeed;
 
     Vector2 topLeft = GetScreenToWorld2D({ 0, 0 }, cam);

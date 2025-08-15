@@ -134,6 +134,7 @@
     <ClCompile Include="src\Characters\SmallTransformState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
     <ClCompile Include="src\Characters\SuperTransformState.cpp" />
+    <ClCompile Include="src\Enemy\Bob-ombs\Bob-ombs.cpp" />
     <ClCompile Include="src\Enemy\Boo\Boo.cpp" />
     <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
     <ClCompile Include="src\Enemy\Boss\Boss.cpp" />
@@ -150,7 +151,9 @@
     <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
     <ClCompile Include="src\Enemy\Koopa\KoopaShellState.cpp" />
     <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp" />
+    <ClCompile Include="src\Enemy\LaserMechaKoopa\LaserMechaKoopa.cpp" />
     <ClCompile Include="src\Enemy\LedgeDetector.cpp" />
+    <ClCompile Include="src\Enemy\PiranhaPlant\PiranhaPlant.cpp" />
     <ClCompile Include="src\Enemy\TriggerZone.cpp" />
     <ClCompile Include="src\Game\GameContext.cpp" />
     <ClCompile Include="src\Game\GameStates.cpp" />
@@ -198,6 +201,7 @@
     <ClInclude Include="include\Characters\SmallTransformState.h" />
     <ClInclude Include="include\Characters\StunnedState.h" />
     <ClInclude Include="include\Characters\SuperTransformState.h" />
+    <ClInclude Include="include\Enemy\Bob-ombs\Bob-ombs.h" />
     <ClInclude Include="include\Enemy\Boo\Boo.h" />
     <ClInclude Include="include\Enemy\Boss\BehaviorTree.h" />
     <ClInclude Include="include\Enemy\Boss\Boss.h" />
@@ -222,7 +226,9 @@
     <ClInclude Include="include\Enemy\Koopa\KoopaShell.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaState.h" />
+    <ClInclude Include="include\Enemy\LaserMechaKoopa\LaserMechaKoopa.h" />
     <ClInclude Include="include\Enemy\LedgeDetector.h" />
+    <ClInclude Include="include\Enemy\PiranhaPlant\PiranhaPlant.h" />
     <ClInclude Include="include\Enemy\TriggerZone.h" />
     <ClInclude Include="include\Game\GameContext.h" />
     <ClInclude Include="include\Game\GameStates.h" />
@@ -259,6 +265,9 @@
     <ClInclude Include="include\UI\SlideBar.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
     <ClInclude Include="include\UI\UI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="level1.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
