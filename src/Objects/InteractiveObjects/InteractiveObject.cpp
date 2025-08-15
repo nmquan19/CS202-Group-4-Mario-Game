@@ -1,5 +1,5 @@
-#include "../../include/Objects/InteractiveObject.h"
-#include "../../include/System/Constant.h"
+#include "../../../include/Objects/InteractiveObjects/InteractiveObject.h"
+#include "../../../include/System/Constant.h"
 
 InteractiveObject::InteractiveObject(Vector2 position, Vector2 size) {
     this->hitBox = {position.x, position.y, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE };

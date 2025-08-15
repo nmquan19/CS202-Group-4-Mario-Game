@@ -344,6 +344,14 @@ void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direct
 			handleMovingPlatformCollision(std::dynamic_pointer_cast<MovingPlatform>(other), direction);
 			break;
         }
+		if (*interactiveType == InteractiveType::FIRE_BAR) {
+			takeDamage(1);
+		}
+		if (*interactiveType == InteractiveType::FIRE_BAR_BASE) {
+			if (direction == Direction::DOWN) {
+				addGroundContact();
+			}
+		}
     }
 }
 

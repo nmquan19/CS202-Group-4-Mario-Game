@@ -3,8 +3,8 @@
 #include "raylib.h"
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
-#include "../Objects/Spring.h"
-#include "../Objects/MovingPlatform.h"
+#include "../Objects/InteractiveObjects/Spring.h"
+#include "../Objects/InteractiveObjects/MovingPlatform.h"
 
 struct PlayerInputMapping {
 	int moveLeft;

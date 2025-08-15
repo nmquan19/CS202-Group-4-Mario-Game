@@ -567,7 +567,9 @@ enum class TriggerType {
 
 enum class InteractiveType {
 	MOVING_PLATFORM,
-	SPRING
+	SPRING,
+	FIRE_BAR,
+	FIRE_BAR_BASE
 };
 enum class BackGroundObjectType {
 	TORCH
@@ -582,6 +584,8 @@ enum class Direction {
 	DOWN,
 	LEFT,
 	RIGHT,
+	IN,
+	OUT,
 	NONE
 };
 

@@ -1,6 +1,6 @@
-#include "../../include/Objects/MovingPlatform.h"
-#include "../../include/System/Box2DWorldManager.h"
-#include "../../include/System/TextureManager.h"
+#include "../../../include/Objects/InteractiveObjects/MovingPlatform.h"
+#include "../../../include/System/Box2DWorldManager.h"
+#include "../../../include/System/TextureManager.h"
 #include <cmath>
 
 MovingPlatform::MovingPlatform(Vector2 position, Vector2 size) : InteractiveObject(position, size) {
