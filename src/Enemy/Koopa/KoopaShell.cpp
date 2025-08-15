@@ -136,6 +136,50 @@ std::vector<std::pair<int, int>> KoopaShell::getSpriteData() const {
 	}
 }
 
+json KoopaShell::toJson() const {
+    json data;
+    data["saveType"] = getSaveType();
+    data["shellType"] = static_cast<int>(type);
+    data["position"] = { physicsBody->GetPosition().x, physicsBody->GetPosition().y};
+    data["velocity"] = { physicsBody->GetLinearVelocity().x, physicsBody->GetLinearVelocity().y };
+  
+    if (currentState == &KoopaShellIdleState::getInstance()) {
+        data["currentState"] = "Idle";
+    } else if (currentState == &KoopaShellMovingState::getInstance()) {
+        data["currentState"] = "Moving";
+    } else if (currentState == &KoopaShellRevivingState::getInstance()) {
+        data["currentState"] = "Reviving";
+    } else if (currentState == &KoopaShellKnockedState::getInstance()) {
+        data["currentState"] = "Knocked";
+    } else {
+        data["currentState"] = "Unknown";
+    }
+
+    return data;
+}
+
+void KoopaShell::fromJson(const json& data) {
+    type = static_cast<KoopaShellType>(data["shellType"]);
+    physicsBody->SetTransform(b2Vec2(data["position"][0], data["position"][1]), 0.0f);
+    physicsBody->SetLinearVelocity(b2Vec2(data["velocity"][0], data["velocity"][1]));
+    auto state = data["currentState"];
+    if (state == "Idle") {
+        changeState(&KoopaShellIdleState::getInstance());
+    } else if (state == "Moving") {
+        changeState(&KoopaShellMovingState::getInstance());
+    } else if (state == "Reviving") {
+        changeState(&KoopaShellRevivingState::getInstance());
+    } else if (state == "Knocked") {
+        changeState(&KoopaShellKnockedState::getInstance());
+    } else {
+        changeState(&KoopaShellIdleState::getInstance());
+    }
+}
+
+std::string KoopaShell::getSaveType() const {
+    return "KoopaShell";
+}
+
 //KoopaGreenShell::KoopaGreenShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
 //    changeState(&KoopaShellIdleState::getInstance());
 //}

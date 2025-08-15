@@ -2077,15 +2077,17 @@ std::vector<ObjectCategory> Block::getCollisionTargets() const {
 }
 
 void Block::onCollision(std::shared_ptr<Object> other, Direction direction) {
-    if (direction == Direction::DOWN && !isMoving && !isSolid()) {
+    if (other->getObjectCategory() == ObjectCategory::CHARACTER && direction == Direction::DOWN && !isMoving) {
         physicsBody->SetLinearVelocity(b2Vec2{ 0.0f, -2.0f });
         isMoving = true;
         resetTimer = 0.0f;
-        // if large character
-        Vector2 centerPos = { position.x + hitbox.width * 0.5f, position.y + hitbox.height * 0.5f };
-        BrokenBlockEffect* p = new BrokenBlockEffect(centerPos, {30, 30}, {-200, -400}, {200, -400}, {0, 1000}, 5.0f, 0.01f, TextureManager::day_groundTexture);
-        ParticleSystem::getInstance().addEffect(p);
-        GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
+        auto character = std::dynamic_pointer_cast<Character>(other);
+        if (character->getPowerState() != PowerState::SMALL && !isSolid()) {
+            Vector2 centerPos = { position.x + hitbox.width * 0.5f, position.y + hitbox.height * 0.5f };
+            BrokenBlockEffect* p = new BrokenBlockEffect(centerPos, {30, 30}, {-200, -400}, {200, -400}, {0, 1000}, 5.0f, 0.01f, TextureManager::day_groundTexture);
+            ParticleSystem::getInstance().addEffect(p);
+            GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
+        }
     }
 }
 
@@ -2657,3 +2659,26 @@ Block_4_16_13Block::Block_4_16_13Block(Vector2 gridPos) : Block(gridPos, BlockTy
 Block_4_16_14Block::Block_4_16_14Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_4_16_14, { 1,1 }) { solid = false; }
 Block_4_16_15Block::Block_4_16_15Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_4_16_15, { 1,1 }) { solid = false; }
 Block_4_16_16Block::Block_4_16_16Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_4_16_16, { 1,1 }) { solid = false; }
+
+json Block::toJson() const {
+    json data;
+    data["saveType"] = getSaveType();
+    data["blockType"] = static_cast<int>(blockType);
+    data["position"] = { position.x, position.y };
+    data["gridPosition"] = { gridPosition.x, gridPosition.y };
+    data["size"] = { size.x, size.y };
+    data["solid"] = solid;
+    return data;
+}
+
+void Block::fromJson(const json& data) {
+    blockType = static_cast<BlockType>(data["blockType"]);
+    position = { data["position"][0], data["position"][1] };
+    gridPosition = { data["gridPosition"][0], data["gridPosition"][1] };
+    size = { data["size"][0], data["size"][1] };
+    solid = data["solid"];
+}
+
+std::string Block::getSaveType() const {
+    return "Block";
+}

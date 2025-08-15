@@ -52,7 +52,7 @@ struct InputState {
 
 class ICharacterState;
 
-class Character : public Object, public IUpdatable, public IMovable, public IDamageable {
+class Character : public Object, public IUpdatable, public IMovable, public IDamageable, public ISavable {
 public:
 	Character(Vector2 startPosition,  const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, PlayerID id, Vector2 size);
 	~Character();
@@ -100,6 +100,12 @@ public:
 	void takeDamage(int amount) override;
 	bool isAlive() const override;
 	void die() override;
+
+	json toJson() const override;
+	void fromJson(const json& data) override;
+	std::string getSaveType() const override;
+
+	PowerState getPowerState() const;
 
 	friend class IdleState;
 	friend class MovingState;

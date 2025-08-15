@@ -375,3 +375,25 @@ float Enemy::jumpTo(Vector2 targetPos, bool apply) {
     
     return found ? bestT : _FMAX;
 }
+
+json Enemy::toJson() const {
+    json data;
+    data["saveType"] = getSaveType();
+    data["enemyType"] = static_cast<int>(getType());
+    data["position"] = { physicsBody->GetPosition().x, physicsBody->GetPosition().y };
+    data["HP"] = HP;
+    data["isFacingRight"] = isFacingRight;
+    data["velocity"] = {physicsBody->GetLinearVelocity().x, physicsBody->GetLinearVelocity().y};
+    return data;
+}
+
+void Enemy::fromJson(const json& data) {
+    physicsBody->SetTransform(b2Vec2(data["position"][0], data["position"][1]), 0.0f);
+    HP = data["HP"];
+    isFacingRight = data["isFacingRight"];
+    physicsBody->SetLinearVelocity(b2Vec2{data["velocity"][0], data["velocity"][1]});
+}
+
+std::string Enemy::getSaveType() const {
+    return "Enemy";
+}
