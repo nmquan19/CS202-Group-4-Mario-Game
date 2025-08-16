@@ -1,18 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="src\Characters\AttackState.cpp" />
+    <ClCompile Include="src\Characters\Character.cpp" />
+    <ClCompile Include="src\Characters\FireTransformState.cpp" />
+    <ClCompile Include="src\Characters\IdleState.cpp" />
+    <ClCompile Include="src\Characters\JumpingState.cpp" />
+    <ClCompile Include="src\Characters\KnockedState.cpp" />
+    <ClCompile Include="src\Characters\MovingState.cpp" />
+    <ClCompile Include="src\Characters\SmallTransformState.cpp" />
+    <ClCompile Include="src\Characters\StunnedState.cpp" />
+    <ClCompile Include="src\Characters\SuperTransformState.cpp" />
+    <ClCompile Include="src\Enemy\Bob-ombs\Bob-ombs.cpp" />
+    <ClCompile Include="src\Enemy\Boo\Boo.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BehaviorTree.cpp" />
+    <ClCompile Include="src\Enemy\Boss\Boss.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BossMoveState.cpp" />
+    <ClCompile Include="src\Enemy\Boss\BT_Factory.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowser.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserMoveState.cpp" />
+    <ClCompile Include="src\Enemy\Boss\DryBowser\DryBowserPhrase.cpp" />
+    <ClCompile Include="src\Enemy\Enemy.cpp" />
+    <ClCompile Include="src\Enemy\EnemyAI\EnemyNavigator.cpp" />
+    <ClCompile Include="src\Enemy\Goomba\Goomba.cpp" />
+    <ClCompile Include="src\Enemy\Goomba\GoombaState.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\Koopa.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\KoopaShell.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\KoopaShellState.cpp" />
+    <ClCompile Include="src\Enemy\Koopa\KoopaState.cpp" />
+    <ClCompile Include="src\Enemy\LaserMechaKoopa\LaserMechaKoopa.cpp" />
+    <ClCompile Include="src\Enemy\LedgeDetector.cpp" />
+    <ClCompile Include="src\Enemy\PiranhaPlant\PiranhaPlant.cpp" />
+    <ClCompile Include="src\Enemy\TriggerZone.cpp" />
+    <ClCompile Include="src\Game\GameContext.cpp" />
+    <ClCompile Include="src\Game\GameStates.cpp" />
+    <ClCompile Include="src\Item\Coin\Coin.cpp" />
+    <ClCompile Include="src\Item\Fire_Flower\Fire_Flower.cpp" />
+    <ClCompile Include="src\Item\Item.cpp" />
+    <ClCompile Include="src\Item\Mushroom\Mushroom.cpp" />
+    <ClCompile Include="src\Item\One_Up\One_Up.cpp" />
+    <ClCompile Include="src\Item\Star\Star.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Objects\Block.cpp" />
+    <ClCompile Include="src\Objects\CollectableObject.cpp" />
+    <ClCompile Include="src\Objects\InteractiveObject.cpp" />
+    <ClCompile Include="src\Objects\MovingPlatform.cpp" />
+    <ClCompile Include="src\Objects\ObjectFactory.cpp" />
+    <ClCompile Include="src\Objects\Projectile\FireBall.cpp" />
+    <ClCompile Include="src\Objects\Projectile\Projectile.cpp" />
+    <ClCompile Include="src\Objects\Spring.cpp" />
+    <ClCompile Include="src\Objects\Torch.cpp" />
+    <ClCompile Include="src\Scenes\Scene.cpp" />
+    <ClCompile Include="src\System\Box2DWorldManager.cpp" />
+    <ClCompile Include="src\System\CameraSystem.cpp" />
+    <ClCompile Include="src\System\FrameData.cpp" />
+    <ClCompile Include="src\System\InterpolationController.cpp" />
+    <ClCompile Include="src\System\LevelEditor.cpp" />
+    <ClCompile Include="src\System\LightSystem.cpp" />
+    <ClCompile Include="src\System\ParticleSystem.cpp" />
+    <ClCompile Include="src\System\Resources.cpp" />
+    <ClCompile Include="src\System\TextureManager.cpp" />
+    <ClCompile Include="src\UI\Button.cpp" />
+    <ClCompile Include="src\UI\Menu.cpp" />
+    <ClCompile Include="src\UI\SlideBar.cpp" />
+    <ClCompile Include="src\UI\SoundEffect.cpp" />
+    <ClCompile Include="src\UI\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\AttackState.cpp">

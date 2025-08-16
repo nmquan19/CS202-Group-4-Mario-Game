@@ -13,8 +13,8 @@ namespace Constants {
     constexpr float GRAVITY = 980.0f;
     constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
-    constexpr float WORLDBOUNDS_WIDTH = 50000.0f;
-    constexpr float WORLDBOUNDS_HEIGHT = 50000.0f;
+    constexpr float WORLDBOUNDS_WIDTH = 5000.0f;
+    constexpr float WORLDBOUNDS_HEIGHT = 5000.0f;
     constexpr float COYOTE_TIME_DURATION = 150.0f;
 
     namespace GreenKoopa {
@@ -245,6 +245,19 @@ namespace Constants {
 
         constexpr float attackRange = 200;
     }
+    namespace Bob_ombs
+    {
+        constexpr float chaseRange = 400.0f;
+        constexpr float patrolRange = 300.0f;
+        constexpr float bombRange = 50.0f; 
+        constexpr float runSpeed = 200.f;
+        constexpr float attackDuration = 2.f;
+        constexpr float jumpVelocity = -600.f;
+        constexpr float patrolDuration = 1.f;
+        constexpr float dieDuration = 0.25f;
+        constexpr float chaseSpeed = 250.f;
+        constexpr float attackRange = 300.0f;
+    }
     namespace DryBowser{
 		constexpr float BASIC_ATTACK_COOLDOWN = 2.f;
         constexpr float WalkTurnDuration = 0.25f;  
@@ -265,6 +278,21 @@ namespace Constants {
 		constexpr float AERIAL_ATTACK_DURATION = 1.5f;
         constexpr float AERIAL_ATTACK_RANGE = 500;
         constexpr float AERIAL_ATTACK_COOLDOWN = 10.0f; 
+    }
+    namespace PiranhaPlant
+    {
+        constexpr float pausetime = 1.0f;
+        constexpr float moveSpeed= 100.f;
+        constexpr float dieDuration = 0.5f; 
+    }
+    namespace LaserMechaKoopa
+    {
+        constexpr float attackRange = 1000.f;
+        constexpr float pausetime = 1.0f;
+        constexpr float moveSpeed = 100.f;
+        constexpr float dieDuration = 0.5f;
+        constexpr float attackDuration = 0.5f;
+        constexpr float attackCoolDown = 2.f;
     }
     namespace Torch {
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };

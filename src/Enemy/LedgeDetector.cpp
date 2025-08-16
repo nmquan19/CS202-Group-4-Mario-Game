@@ -4,9 +4,17 @@
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/System/Interface.h"
 #include "../../include/Enemy/Enemy.h"
+#include "../../include/System/Box2DWorldManager.h"
 LedgeDetector::LedgeDetector(float castLength)
     : nearLedge(false), castLength(castLength), hitBox({ 0,0,0,0 }){
-
+    physicsBody = Box2DWorldManager::getInstance().createRectangleBody(position, { hitBox.width, hitBox.height });
+    if (physicsBody) {
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext())
+        {
+            fixture->SetSensor(true);
+        }
+    }
 }
 
 void LedgeDetector::update(Enemy* enemy, float deltaTime) 
@@ -23,7 +31,15 @@ void LedgeDetector::update(Enemy* enemy, float deltaTime)
         1.0f,                   
         castLength              
     };
-    
+    physicsBody = Box2DWorldManager::getInstance().createRectangleBody(position, { hitBox.width, hitBox.height });
+    if (physicsBody) {
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext())
+        {
+            fixture->SetSensor(true);
+        }
+    }
+
 }
 
 bool LedgeDetector::isNearLedge() const

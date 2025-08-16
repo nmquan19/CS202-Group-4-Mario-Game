@@ -45,3 +45,19 @@ Vector2 InteractiveObject::getPosition() const {
 void InteractiveObject::setPosition(Vector2 newPos) {
     position = newPos;
 }
+
+json InteractiveObject::toJson() const {
+    json data;
+    data["saveType"] = getSaveType();
+    data["gridPosition"] = { gridPosition.x, gridPosition.y };
+    data["interactiveType"]  = interactiveType;
+    return data;
+}
+
+void InteractiveObject::fromJson(const json& data) {
+    gridPosition = { data["gridPosition"][0], data["gridPosition"][1] };
+}
+
+std::string InteractiveObject::getSaveType() const {
+    return "Interactive";
+}

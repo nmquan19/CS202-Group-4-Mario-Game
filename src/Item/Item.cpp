@@ -180,3 +180,21 @@ void Item::StarShapeMove(Vector2 center, float deltaTime, float frequency) {
     }
 }
 
+json Item::toJson() const {
+    json data;
+    data["saveType"] = getSaveType();
+    data["itemType"] = static_cast<int>(type);
+    data["position"] = { physicsBody->GetPosition().x, physicsBody->GetPosition().y };
+    data["velocity"] = { physicsBody->GetLinearVelocity().x, physicsBody->GetLinearVelocity().y };
+    return data;
+}
+
+void Item::fromJson(const json& data) {
+    type = static_cast<ItemType>(data["itemType"]);
+    physicsBody->SetTransform(b2Vec2(data["position"][0],data["position"][1]), 0.0f);
+    physicsBody->SetLinearVelocity(b2Vec2(data["velocity"][0], data["velocity"][1]));
+}
+
+std::string Item::getSaveType() const {
+    return "Item";
+}

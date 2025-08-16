@@ -6,7 +6,7 @@
 MovingPlatform::MovingPlatform(Vector2 position, Vector2 size) : InteractiveObject(position, size) {
 	spriteRec = { 405, 467, 50, 10 };
 	time = 0.0f;
-	physicsBody = Box2DWorldManager::getInstance().createBlockBody(position, Vector2(size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE));
+	physicsBody = Box2DWorldManager::getInstance().createBlockBody(position, Vector2{size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE});
 	if (physicsBody) {
 		physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
 		for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
@@ -17,6 +17,7 @@ MovingPlatform::MovingPlatform(Vector2 position, Vector2 size) : InteractiveObje
 			fixture->SetFilterData(filter);
 		}
 	}
+	interactiveType = InteractiveType::MOVING_PLATFORM;
 }
 
 MovingPlatform::~MovingPlatform() {

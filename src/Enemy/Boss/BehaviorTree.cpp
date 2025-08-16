@@ -366,7 +366,7 @@ NodeStatus AttackNode::tick(Enemy* boss, float dt) {
     if( boss->isAttacking()) {
         return NodeStatus::Running;
 	}
-    if (boss->getCurAnimation() == "Attack" && boss->getAnimController().isFinished())
+    if ((boss->getCurAnimation() == "Attack"|| (boss->getCurAnimation() == "MeleeAttack1") && boss->getAnimController().isFinished()))
     {
         return NodeStatus::Success;
     }

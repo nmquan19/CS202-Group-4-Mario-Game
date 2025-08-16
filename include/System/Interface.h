@@ -4,6 +4,7 @@
 #include <variant>
 #include <memory>
 #include <box2d/box2d.h>
+#include "json.hpp"
 
 class Object;
 enum class ObjectCategory : uint16 {
@@ -24,7 +25,7 @@ enum class PlayerID {
 };
 
 enum class PowerState {
-	SMALL,
+	SMALL = 0,
 	SUPER,
 	FIRE,
 	STAR
@@ -536,7 +537,9 @@ enum class EnemyType {
 	PIRANHA_PLANT,
 	HAMMER_BRO,
 	DRY_BOWSER,
-	BOO
+	BOO,
+	BOB_OMBS,
+	LASER_MECHA_KOOPA
 };
 
 enum class ItemType {
@@ -624,6 +627,16 @@ public:
 	virtual ~IMovable() = default;
 	virtual void setVelocity(Vector2 newVelocity) = 0;
 	virtual Vector2 getVelocity() = 0;
+};
+
+using json = nlohmann::json;
+
+class ISavable {
+public:
+	virtual ~ISavable() = default;
+	virtual json toJson() const = 0;
+	virtual void fromJson(const json& data) = 0;
+	virtual std::string getSaveType() const = 0;
 };
 
 using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType, InteractiveType, BackGroundObjectType, ProjectileType>;

@@ -76,22 +76,22 @@ public:
 
 
 private:
-    Vector2 A = { (float)GetScreenWidth() - 500 - 20, (float)GetScreenHeight() / 4.0f };
+    Vector2 A = { (float)GetScreenWidth() - 550 - 20 - 20, (float)GetScreenHeight() / 4.0f };
     Vector2 B = { (float)GetScreenWidth() - 20, (float)GetScreenHeight() / 4.0f };
     Vector2 target = A;
 
     bool isAtA = true;
     Rectangle rect = { A.x, (float)GetScreenHeight() / 4.0f, 20, (float)GetScreenHeight() / 2.0f };
-    Rectangle blockRect = { rect.x + 20, 0, 40, (float)GetScreenHeight() / 4.0f };
-    Rectangle enemyRect = { rect.x + 20, (float)GetScreenHeight() / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
-    Rectangle objectRect = { rect.x + 20, (float)GetScreenHeight() * 2.0f / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
-    Rectangle itemRect = { rect.x + 20, (float)GetScreenHeight() * 3.0f / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
+    Rectangle blockRect = { rect.x + 60, 0, 40, (float)GetScreenHeight() / 4.0f };
+    Rectangle enemyRect = { rect.x + 60, (float)GetScreenHeight() / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
+    Rectangle objectRect = { rect.x + 60, (float)GetScreenHeight() * 2.0f / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
+    Rectangle itemRect = { rect.x + 60, (float)GetScreenHeight() * 3.0f / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
 
     float mapWidth = ((float)GetScreenWidth() - rect.x - 60) / 4.0f;
-    Rectangle map1Rect = { rect.x + 60, 0, mapWidth, 40 };
-    Rectangle map2Rect = { rect.x + 60 + mapWidth, 0, mapWidth, 40 };
-    Rectangle map3Rect = { rect.x + 60 + 2 * mapWidth, 0, mapWidth, 40 };
-    Rectangle map4Rect = { rect.x + 60 + 3 * mapWidth, 0, mapWidth, 40 };
+    Rectangle map1Rect = { rect.x + 20, 0, 40, (float)GetScreenHeight() / 4.0f };
+    Rectangle map2Rect = { rect.x + 20, (float)GetScreenHeight() / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
+    Rectangle map3Rect = { rect.x + 20, (float)GetScreenHeight() * 2.0f / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
+    Rectangle map4Rect = { rect.x + 20, (float)GetScreenHeight() * 3.0f / 4.0f, 40, (float)GetScreenHeight() / 4.0f };
     int map = 1;
     int selectRect = 1;
     Rectangle paletteRect = { rect.x + 20, target.y - (float)GetScreenHeight() / 4.0f, (float)GetScreenWidth(), (float)GetScreenHeight() * 10.0f };

@@ -350,9 +350,6 @@ b2Body* Box2DWorldManager::createItemStaticBody(Vector2 pos, Vector2 hitboxSize)
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &mainShape;
 	fixtureDef.isSensor = true;
-	/*fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.0f;
-	fixtureDef.restitution = 0.0f;*/
 
 	body->CreateFixture(&fixtureDef);
 

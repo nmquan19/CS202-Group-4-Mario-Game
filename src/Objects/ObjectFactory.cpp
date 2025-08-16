@@ -21,12 +21,15 @@
 #include "../../include/Objects/InteractiveObjects/FireBarBase.h"
 #include "../../include/Objects/Projectile/FireBall.h"
 #include "../../include/System/Box2DWorldManager.h"
+#include "../../include/Enemy/Bob-ombs/Bob-ombs.h"
+#include "../../include/Enemy/LaserMechaKoopa/LaserMechaKoopa.h"
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
 #include <memory>
 #include <numbers>
 #include "../../include/Objects/Torch.h"
+#include "../../include/Enemy/PiranhaPlant/PiranhaPlant.h"
 Object::~Object() {
     if (physicsBody) {
         Box2DWorldManager::getInstance().destroyBody(physicsBody);
@@ -1086,6 +1089,12 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         return std::make_unique<DryBowser>(startPosition, size);
     case EnemyType::BOO:
         return std::make_unique<Boo>(startPosition, size);
+    case EnemyType::BOB_OMBS:
+        return std::make_unique<Bob_ombs>(startPosition, size);
+    case EnemyType::PIRANHA_PLANT:
+        return std::make_unique<PiranhaPlant>(startPosition, size);
+    case EnemyType::LASER_MECHA_KOOPA:
+        return std::make_unique<LaserMechaKoopa>(startPosition, size);
     default:
         return nullptr; 
     }

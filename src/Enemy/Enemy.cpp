@@ -36,8 +36,7 @@ Enemy::Enemy(Vector2 startPos,  Texture2D texture, Vector2 size) : position(star
             b2Filter filter = fixture->GetFilterData();
             filter.maskBits = static_cast<uint16>(ObjectCategory::ENEMY);
             filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
-                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE) |
-                static_cast<uint16>(ObjectCategory::ENEMY);
+                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
             fixture->SetFilterData(filter);
         }
     }
@@ -285,7 +284,7 @@ void Enemy::executeTraversal(const Edge& edge) {
         if(curAniName != "Run" || animController.isFinished()) setAnimation("Run");
         Vector2 dir = Vector2Normalize(Vector2Subtract(toPos, fromPos));
         this->direction = dir;
-        float moveSpeed = getWalkVelocity() / 2;
+        float moveSpeed = getWalkVelocity();
         float distanceToTarget = Vector2Distance(fromPos, toPos);
         float moveStep = std::min(moveSpeed * GetFrameTime(), distanceToTarget);
          velocity.x = moveStep * dir.x / GetFrameTime();
@@ -294,13 +293,11 @@ void Enemy::executeTraversal(const Edge& edge) {
     }
     case EdgeDirection::Jumping:
     {
-        DrawText("Jumping", 200, 400, 30, BLUE);
         jumpTo(toPos, true);
         break;
     }
     case EdgeDirection::Falling:
     {
-        DrawText("Falling", 200, 400, 30, BLUE);
         break;
     }
     case EdgeDirection::Flying:
@@ -377,4 +374,26 @@ float Enemy::jumpTo(Vector2 targetPos, bool apply) {
     }
     
     return found ? bestT : _FMAX;
+}
+
+json Enemy::toJson() const {
+    json data;
+    data["saveType"] = getSaveType();
+    data["enemyType"] = static_cast<int>(getType());
+    data["position"] = { physicsBody->GetPosition().x, physicsBody->GetPosition().y };
+    data["HP"] = HP;
+    data["isFacingRight"] = isFacingRight;
+    data["velocity"] = {physicsBody->GetLinearVelocity().x, physicsBody->GetLinearVelocity().y};
+    return data;
+}
+
+void Enemy::fromJson(const json& data) {
+    physicsBody->SetTransform(b2Vec2(data["position"][0], data["position"][1]), 0.0f);
+    HP = data["HP"];
+    isFacingRight = data["isFacingRight"];
+    physicsBody->SetLinearVelocity(b2Vec2{data["velocity"][0], data["velocity"][1]});
+}
+
+std::string Enemy::getSaveType() const {
+    return "Enemy";
 }
