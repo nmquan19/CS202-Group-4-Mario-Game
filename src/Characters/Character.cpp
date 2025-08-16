@@ -490,6 +490,7 @@ void Character::disableRainbowEffect() {
 
 bool Character::isRainbowEffectActive() const {
 	return rainbowEffect;
+}
 
 json Character::toJson() const {
 	json data;
@@ -527,6 +528,9 @@ void Character::fromJson(const json& data) {
 		break;
 	case PowerState::FIRE:
 		changeState(FireTransformState::getInstance());
+		break;
+	case PowerState::STAR:
+		changeState(StarTransformState::getInstance());
 		break;
 	}
 	changeState(IdleState::getInstance());

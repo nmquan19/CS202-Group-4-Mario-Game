@@ -91,7 +91,6 @@ public:
 	ObjectCategory getObjectCategory() const override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
 	void onCollision(std::shared_ptr<Object> other, Direction direction) override;
-	PowerState getPowerState() const;
 
 	bool isActive() const override;
 	void setActive(bool) override;
