@@ -52,20 +52,3 @@ private:
 
 	  int curFrame = 0;
 };
-
-//class KoopaGreenShell : public KoopaShell {
-//    public:
-//        KoopaGreenShell(Vector2 pos, Vector2 sz);
-//        ObjectType getObjectType() const override;
-//        std::shared_ptr<KoopaShell> clone() const override; 
-//        KoopaShellType getType() const ;
-//}; 
-//
-//class KoopaRedShell : public KoopaShell {
-//public:
-//
-//    KoopaRedShell(Vector2 pos, Vector2 sz);
-//    ObjectType getObjectType() const override;
-//    std::shared_ptr<KoopaShell> clone() const override;
-//    KoopaShellType getType() const ;
-//};

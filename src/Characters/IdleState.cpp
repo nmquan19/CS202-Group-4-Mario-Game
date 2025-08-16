@@ -5,6 +5,7 @@
 #include "../../include/Characters/SuperTransformState.h"
 #include "../../include/Characters/SmallTransformState.h"
 #include "../../include/Characters/FireTransformState.h"
+#include "../../include/Characters/StarTransformState.h"
 #include "../../include/Characters/AttackState.h"
 #include "../../include/Game/GameContext.h"
 
@@ -16,7 +17,9 @@ void IdleState::enter(Character* character) {
 }
 
 void IdleState::update(Character* character, float deltaTime) {
-	
+	if (character->starTimer > 0) {
+		character->starTimer -= deltaTime;
+	}
 }
 
 void IdleState::exit(Character* character) {
@@ -43,6 +46,7 @@ void IdleState::checkTransitions(Character* character, const InputState& input) 
 			character->changeState(AttackState::getInstance());
 		}
 		if (character->projectilesLeft <= 0 && character->attackTimer < 0) {
+			character->projectilesLeft = 0;
 			character->changeState(SmallTransformState::getInstance());
 		}
 	}
@@ -56,13 +60,26 @@ void IdleState::checkTransitions(Character* character, const InputState& input) 
 		}
 	}
 
-	if (input.fireTransform) {
+	/*if (input.fireTransform) {
 		if (character->powerState == PowerState::SMALL || character->powerState == PowerState::SUPER) {
 			character->changeState(FireTransformState::getInstance());
 		}
 		else if (character->powerState == PowerState::FIRE) {
 			character->changeState(SmallTransformState::getInstance());
 		}
+	}*/
+
+	if (input.starTransform) {
+		if (character->powerState == PowerState::SMALL) {
+			character->changeState(StarTransformState::getInstance());
+		}
+		else if (character->powerState == PowerState::STAR) {
+			character->changeState(SmallTransformState::getInstance());
+		}
+	}
+
+	if (character->powerState == PowerState::STAR && character->starTimer <= 0) {
+		character->changeState(SmallTransformState::getInstance());
 	}
 }
 

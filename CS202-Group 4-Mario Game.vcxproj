@@ -131,7 +131,9 @@
     <ClCompile Include="src\Characters\JumpingState.cpp" />
     <ClCompile Include="src\Characters\KnockedState.cpp" />
     <ClCompile Include="src\Characters\MovingState.cpp" />
+    <ClCompile Include="src\Characters\RefreshPowerState.cpp" />
     <ClCompile Include="src\Characters\SmallTransformState.cpp" />
+    <ClCompile Include="src\Characters\StarTransformState.cpp" />
     <ClCompile Include="src\Characters\StunnedState.cpp" />
     <ClCompile Include="src\Characters\SuperTransformState.cpp" />
     <ClCompile Include="src\Enemy\Boo\Boo.cpp" />
@@ -197,7 +199,9 @@
     <ClInclude Include="include\Characters\JumpingState.h" />
     <ClInclude Include="include\Characters\KnockedState.h" />
     <ClInclude Include="include\Characters\MovingState.h" />
+    <ClInclude Include="include\Characters\RefreshPowerState.h" />
     <ClInclude Include="include\Characters\SmallTransformState.h" />
+    <ClInclude Include="include\Characters\StarTransformState.h" />
     <ClInclude Include="include\Characters\StunnedState.h" />
     <ClInclude Include="include\Characters\SuperTransformState.h" />
     <ClInclude Include="include\Enemy\Boo\Boo.h" />

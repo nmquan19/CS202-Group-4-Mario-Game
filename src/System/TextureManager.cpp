@@ -935,7 +935,7 @@ void ObjectPalette::drawPalette() {
         Rectangle fireBarBaseRect = { startX, startY + spacingY, iconSize, iconSize };
         Rectangle fireBarBaseRectSource = { 239, 86, 16, 16 };
         DrawTexturePro(TextureManager::interactiveTextures, fireBarBaseRectSource, fireBarBaseRect, { 0, 0 }, 0.0f, WHITE);
-        DrawRectangleLinesEx(fireBarBaseRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::FIRE_BAR) ? RED : BLACK);
+        DrawRectangleLinesEx(fireBarBaseRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::FIRE_BAR_BASE) ? RED : BLACK);
     }
     if (selectRect == 4) {
         // Coin

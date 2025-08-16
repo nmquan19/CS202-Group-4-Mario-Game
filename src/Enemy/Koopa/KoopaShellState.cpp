@@ -41,6 +41,10 @@ void KoopaShellIdleState::onCollision(KoopaShell* shell, std::shared_ptr<Object>
     b2Vec2 currentVel = shell->physicsBody->GetLinearVelocity();
     switch (other->getObjectCategory()) {
     case ObjectCategory::CHARACTER:
+        if (std::dynamic_pointer_cast<Character>(other)->getPowerState() == PowerState::STAR) {
+            shell->changeState(&KoopaShellKnockedState::getInstance());
+            break;
+        }
         switch (dir) {
         case Direction::LEFT:
             shell->physicsBody->SetLinearVelocity(b2Vec2(Box2DWorldManager::raylibToB2(Constants::KoopaShell::MOVING_SPEED), currentVel.y));
@@ -101,6 +105,11 @@ void KoopaShellMovingState::onCollision(KoopaShell* shell, std::shared_ptr<Objec
         shell->physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
         break;
     }
+    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
+        if (std::dynamic_pointer_cast<Character>(other)->getPowerState() == PowerState::STAR) {
+            shell->changeState(&KoopaShellKnockedState::getInstance());
+        }
+    }
 }
 
 ObjectCategory KoopaShellMovingState::getObjectCategory() const {
@@ -152,7 +161,11 @@ void KoopaShellRevivingState::update(KoopaShell* shell, float deltaTime) {
 }
 
 void KoopaShellRevivingState::onCollision(KoopaShell* shell, std::shared_ptr<Object> other, Direction dir) {
-
+    if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
+        if (std::dynamic_pointer_cast<Character>(other)->getPowerState() == PowerState::STAR) {
+            shell->changeState(&KoopaShellKnockedState::getInstance());
+        }
+    }
 }
 
 ObjectCategory KoopaShellRevivingState::getObjectCategory() const {

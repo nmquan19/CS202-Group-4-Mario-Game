@@ -1,17 +1,19 @@
 #include  "../../../include/Enemy/Koopa/Koopa.h"
 #include "../../../include/System/TextureManager.h"
-#include <raymath.h>
 #include "../../../include/Enemy/Enemy.h"
 #include "../../../include/Enemy/Koopa/KoopaState.h"
 #include "../../../include/Objects/ObjectFactory.h"
 #include "../../../include/System/Interface.h"
 #include "../../../include/System/Constant.h"
+#include "../../../include/Characters/Character.h"
+#include "../../../include/Enemy/LedgeDetector.h"
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
-#include "../../../include/Enemy/LedgeDetector.h"
 #include <memory>
 #include <utility>
+#include <raymath.h>
+
 Koopa::Koopa(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(startPos, velocity, accelleration, TextureManager::enemyTextures)
 {
     HP = 1;
@@ -35,6 +37,9 @@ void Koopa::onCollision(std::shared_ptr<Object> other, Direction dir) {
     case ObjectCategory::CHARACTER:
         if (dir == Direction::UP) {
             this->changeState(&KoopaStompedState::GetInstance());
+        }
+        if (std::dynamic_pointer_cast<Character>(other)->getPowerState() == PowerState::STAR) {
+            changeState(&KoopaKnockState::GetInstance());
         }
     case ObjectCategory::ENEMY:
     case ObjectCategory::INTERACTIVE:

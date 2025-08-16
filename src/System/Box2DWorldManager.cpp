@@ -335,7 +335,7 @@ b2Body* Box2DWorldManager::createItemStaticBody(Vector2 pos, Vector2 hitboxSize)
 	b2_pos.y += b2_size.y / 2;
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_staticBody;
+	bodyDef.type = b2_kinematicBody;
 	bodyDef.position = b2_pos;
 	bodyDef.fixedRotation = true;
 	bodyDef.allowSleep = true;
@@ -349,9 +349,10 @@ b2Body* Box2DWorldManager::createItemStaticBody(Vector2 pos, Vector2 hitboxSize)
 	mainShape.SetAsBox(b2_size2.x / 2, b2_size2.y / 2);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &mainShape;
-	fixtureDef.density = 1.0f;
+	fixtureDef.isSensor = true;
+	/*fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.0f;
-	fixtureDef.restitution = 0.0f;
+	fixtureDef.restitution = 0.0f;*/
 
 	body->CreateFixture(&fixtureDef);
 

@@ -4,6 +4,11 @@
 #include "..\..\include\Characters\JumpingState.h"
 #include "../../include/Characters/StunnedState.h"
 #include "../../include/Characters/KnockedState.h"
+#include "../../include/Characters/FireTransformState.h"
+#include "../../include/Characters/SuperTransformState.h"
+#include "../../include/Characters/SmallTransformState.h"
+#include "../../include/Characters/StarTransformState.h"
+#include "../../include/Characters/RefreshPowerState.h"
 #include "../../include/System/TextureManager.h"
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
@@ -16,10 +21,44 @@
 #include <algorithm>
 #include <variant>
 #include <memory>
+#include <cmath>
+
+// Helper function to create rainbow colors
+Color getRainbowColor(float time, float speed = 1.0f, float saturation = 1.0f, float value = 1.0f) {
+	float hue = fmod(time * speed, 360.0f);
+	
+	// Convert HSV to RGB
+	float c = value * saturation;
+	float x = c * (1 - abs(fmod(hue / 60.0f, 2) - 1));
+	float m = value - c;
+	
+	float r, g, b;
+	if (hue >= 0 && hue < 60) {
+		r = c; g = x; b = 0;
+	} else if (hue >= 60 && hue < 120) {
+		r = x; g = c; b = 0;
+	} else if (hue >= 120 && hue < 180) {
+		r = 0; g = c; b = x;
+	} else if (hue >= 180 && hue < 240) {
+		r = 0; g = x; b = c;
+	} else if (hue >= 240 && hue < 300) {
+		r = x; g = 0; b = c;
+	} else {
+		r = c; g = 0; b = x;
+	}
+	
+	return Color{
+		(unsigned char)((r + m) * 255),
+		(unsigned char)((g + m) * 255),
+		(unsigned char)((b + m) * 255),
+		255
+	};
+}
 
 Character::Character(Vector2 startPosition, const CharacterStats& stats, const std::vector<std::vector<Rectangle>>& stateFrameData, CharacterType type, PlayerID id, Vector2 size) 
 	: characterType(type), id(id), hp(1), invincibleTimer(0), platform(nullptr),
-	reviveTimer(0), facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f) {
+	reviveTimer(0), facingRight(true), currentFrame(0), currentStateRow(0), aniTimer(0), aniSpeed(0.2f),
+	rainbowEffect(false), rainbowTimer(0.0f) {
 
 	this->stateFrameData = stateFrameData;
 	this->spriteSheet = TextureManager::getInstance().getCharacterTexture();
@@ -80,6 +119,13 @@ void Character::update(float deltaTime) {
 		aniTimer = 0;
 	}
 
+	if (rainbowEffect) {
+		rainbowTimer += deltaTime;
+	}
+	else {
+		rainbowTimer = 0.0f;
+	}
+
 	if(invincibleTimer > 0) {
 		invincibleTimer -= deltaTime;		
 	}
@@ -112,12 +158,21 @@ void Character::draw() {
 		spriteRec.height / reference.height * size.y * Constants::TILE_SIZE
 	};
 
-	DrawTexturePro(spriteSheet, sourceRec, destRec, { 0, 0 }, 0.0f, WHITE);
+	// Rainbow effect
+	Color tintColor = WHITE;
+	
+	if (rainbowEffect) {
+		tintColor = getRainbowColor(rainbowTimer * 60.0f, 3.0f); // Speed = 3.0f
+	}
+
+	DrawTexturePro(spriteSheet, sourceRec, destRec, { 0, 0 }, 0.0f, tintColor);
+	
 	Vector2 indicatorSize = MeasureTextEx(GetFontDefault(), id == PlayerID::PLAYER_01 ? "P1" : "P2", 20.0f, 1.5f);
+	Vector2 textPosition = { destRec.x + destRec.width * 0.5f - indicatorSize.x * 0.5f, destRec.y - indicatorSize.y * 0.5f - 10.0f };
 	DrawTextPro(GetFontDefault(),
 		id == PlayerID::PLAYER_01 ? "P1" : "P2",
-		Vector2(destRec.x + destRec.width * 0.5f - indicatorSize.x * 0.5f, destRec.y - indicatorSize.y * 0.5f - 10.0f),
-		Vector2{ 0, 0 },
+		textPosition,
+		{ 0, 0 },
 		0.0f,
 		20.0f,
 		1.5f,
@@ -293,16 +348,22 @@ void Character::onCollision(std::shared_ptr<Object> other, Direction direction) 
 		invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_STRIKE;
 		break;
 	case ObjectCategory::ITEM:
-		// implement 
+		handleItemCollision(other, direction);
 		break;
 	}
 }
 
+PowerState Character::getPowerState() const {
+	return powerState;
+}
+
 void Character::takeDamage(int amount) {
-	if (invincibleTimer > 0) {
+	if (invincibleTimer > 0 || powerState == PowerState::STAR) {
 		return;
 	}
-	hp -= amount;
+	if (powerState == PowerState::SMALL) {
+		hp -= amount;
+	}
 	changeState(StunnedState::getInstance());
 }
 
@@ -343,15 +404,15 @@ void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direct
 		case InteractiveType::MOVING_PLATFORM:
 			handleMovingPlatformCollision(std::dynamic_pointer_cast<MovingPlatform>(other), direction);
 			break;
-        }
-		if (*interactiveType == InteractiveType::FIRE_BAR) {
+		case InteractiveType::FIRE_BAR:
 			takeDamage(1);
-		}
-		if (*interactiveType == InteractiveType::FIRE_BAR_BASE) {
+			break;
+		case InteractiveType::FIRE_BAR_BASE:
 			if (direction == Direction::DOWN) {
 				addGroundContact();
 			}
-		}
+			break;
+        }
     }
 }
 
@@ -369,4 +430,57 @@ void Character::handleMovingPlatformCollision(std::shared_ptr<MovingPlatform> ot
 		addGroundContact();
 		setPlatform(other);
 	}
+}
+
+void Character::handleItemCollision(std::shared_ptr<Object> other, Direction direction) {
+	ObjectType objectType = other->getObjectType();
+	if (auto* itemType = std::get_if<ItemType>(&objectType)) {
+		switch (*itemType) {
+		case ItemType::COIN:
+			UIManager::getInstance().addCoin();
+			break;
+		case ItemType::FIRE_FLOWER:
+			if (powerState == PowerState::FIRE) {
+				changeState(RefreshPowerState::getInstance());
+			}
+			else if (powerState == PowerState::SMALL || powerState == PowerState::SUPER) {
+				changeState(FireTransformState::getInstance());
+			}
+			break;
+		case ItemType::MUSHROOM:
+			if (powerState == PowerState::SUPER) {
+				changeState(RefreshPowerState::getInstance());
+			}
+			else if (powerState == PowerState::SMALL) {
+				changeState(SuperTransformState::getInstance());
+			}
+			break;
+		case ItemType::ONE_UP:
+			hp += 1;
+			changeState(RefreshPowerState::getInstance());
+			break;
+		case ItemType::STAR:
+			if (powerState == PowerState::STAR) {
+				starTimer = 5.0f;
+				changeState(RefreshPowerState::getInstance());
+			}
+			else if (powerState == PowerState::SMALL || powerState == PowerState::SUPER || powerState == PowerState::FIRE) {
+				changeState(StarTransformState::getInstance());
+			}
+			break;
+		}
+	}
+}
+
+void Character::enableRainbowEffect() {
+	rainbowEffect = true;
+	rainbowTimer = 0.0f;
+}
+
+void Character::disableRainbowEffect() {
+	rainbowEffect = false;
+}
+
+bool Character::isRainbowEffectActive() const {
+	return rainbowEffect;
 }

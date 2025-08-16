@@ -33,7 +33,6 @@ void KoopaShell::onCollect(Character* player) {
 
 void KoopaShell::update(float deltaTime) {
     aniTimer += deltaTime; 
-    //CollectableObject::update(deltaTime); 
 
 	if(currentState)currentState->update(this, deltaTime);
 
@@ -135,32 +134,3 @@ std::vector<std::pair<int, int>> KoopaShell::getSpriteData() const {
             return { { 55,55},{57,60}, {55,56} };
 	}
 }
-
-//KoopaGreenShell::KoopaGreenShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
-//    changeState(&KoopaShellIdleState::getInstance());
-//}
-//KoopaShellType KoopaGreenShell::getType() const {
-//    return KoopaShellType::GREEN_KOOPA_SHELL;
-//}
-//KoopaRedShell::KoopaRedShell(Vector2 pos, Vector2 sz) : KoopaShell(pos, sz) {
-//    changeState(&KoopaShellIdleState::getInstance());
-//}
-//KoopaShellType KoopaRedShell::getType() const {
-//    return KoopaShellType::RED_KOOPA_SHELL;
-//}
-//ObjectType KoopaGreenShell::getObjectType() const {
-//    return KoopaShellType::GREEN_KOOPA_SHELL;
-//}
-//ObjectType KoopaRedShell::getObjectType() const {
-//    return KoopaShellType::RED_KOOPA_SHELL;
-//}
-//void KoopaShell::onRelease() {
-//    GameContext::getInstance().addObject(this->getType(), this->position, { 0.75,0.75 });
-//}   
-//
-//std::shared_ptr<KoopaShell> KoopaGreenShell::clone()const {
-//    return std::make_shared<KoopaGreenShell>(*this);  
-//}
-//std::shared_ptr<KoopaShell> KoopaRedShell::clone() const {
-//    return std::make_shared<KoopaRedShell>(*this); 
-//}

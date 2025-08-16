@@ -204,6 +204,12 @@
     <ClCompile Include="src\Objects\InteractiveObjects\FireBarBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Characters\RefreshPowerState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Characters\StarTransformState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Characters\AttackState.h">
@@ -426,6 +432,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Objects\InteractiveObjects\FireBarBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\RefreshPowerState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Characters\StarTransformState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
