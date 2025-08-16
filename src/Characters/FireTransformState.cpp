@@ -8,7 +8,7 @@ void FireTransformState::enter(Character* character) {
 	character->setAniSpeed(0.2f);
 	character->transformTimer = Constants::Character::TRANSFORM_DURATION;
 	character->setCurrentStateRow(6);
-	character->projectilesLeft = 1;
+	character->projectilesLeft += 1;
 	for (b2Fixture* fixture = character->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
 		b2Filter filter = fixture->GetFilterData();
 		filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);

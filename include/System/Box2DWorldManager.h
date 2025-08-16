@@ -26,6 +26,7 @@ public:
 	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override;
 
 	void destroyBody(b2Body* body);
+	void destroyJoint(b2Joint* joint);
 	
 	void drawDebugBodies();
 	void drawBody(b2Body* body);
@@ -37,9 +38,13 @@ public:
 	static float b2ToRaylib(const float value);
 	static float raylibToB2(const float value);
 
-	void attachRectangleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	b2Body* createRectangleBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createDynamicRectangleBody(Vector2 pos, Vector2 hitboxSize);
+
+	b2Body* createKinematicBody(b2Vec2 b2_pos);
+	b2Body* createDynamicBody(b2Vec2 b2_pos);
+
+	void attachRectangleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachCapsuleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachSphericalFixture(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachSensors(b2Body* body, Vector2 hitboxSize);

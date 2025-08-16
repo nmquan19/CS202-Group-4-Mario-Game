@@ -1381,10 +1381,12 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
     else if (std::holds_alternative<InteractiveType>(type)) {
         InteractiveType inter = std::get<InteractiveType>(type);
         switch (inter) {
-            case InteractiveType::SPRING: return "SPRING";
-                break;
-            case InteractiveType::MOVING_PLATFORM: return "MOVING_PLATFORM";
-                break;
+        case InteractiveType::SPRING: 
+            return "SPRING";
+        case InteractiveType::MOVING_PLATFORM:
+            return "MOVING_PLATFORM";
+        case InteractiveType::FIRE_BAR_BASE:
+            return "FIRE_BAR_BASE";
         }
     }
     else if (std::holds_alternative<ItemType>(type)) {
@@ -1925,6 +1927,7 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
 
     if (typeStr == "SPRING") return InteractiveType::SPRING;
     if (typeStr == "MOVING_PLATFORM") return InteractiveType::MOVING_PLATFORM;
+    if (typeStr == "FIRE_BAR_BASE") return InteractiveType::FIRE_BAR_BASE;
     if (typeStr == "COIN") return ItemType::COIN;
     if (typeStr == "FIRE_FLOWER") return ItemType::FIRE_FLOWER;
     if (typeStr == "MUSHROOM") return ItemType::MUSHROOM;

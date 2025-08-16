@@ -21,7 +21,6 @@ Item::Item(Vector2 startPos)
 }
 
 Item::~Item() {
-    delete animation;
     if (physicsBody) {
         Box2DWorldManager::getInstance().destroyBody(physicsBody);
         physicsBody = nullptr;
@@ -79,7 +78,11 @@ std::vector<ObjectCategory> Item::getCollisionTargets() const {
 
 void Item::onCollision(std::shared_ptr<Object> other, Direction direction) {
     if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
-        setActive(false);
+        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+            b2Filter filter = fixture->GetFilterData();
+            filter.maskBits = 0;
+            fixture->SetFilterData(filter);
+        }
         GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
     } 
     else if (type == ItemType::ONE_UP || type == ItemType::MUSHROOM) {
