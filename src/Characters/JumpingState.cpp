@@ -13,7 +13,9 @@ void JumpingState::enter(Character* character){
 }
 
 void JumpingState::update(Character* character, float deltaTime) {
-
+    if (character->starTimer > 0) {
+        character->starTimer -= deltaTime;
+    }
 }
 
 void JumpingState::exit(Character* character){
@@ -61,6 +63,9 @@ void JumpingState::checkTransitions(Character* character, const InputState& inpu
         else {
             character->changeState(IdleState::getInstance());
         }
+    }
+    if (character->powerState == PowerState::STAR && character->starTimer <= 0) {
+        character->changeState(SmallTransformState::getInstance());
     }
 }
 

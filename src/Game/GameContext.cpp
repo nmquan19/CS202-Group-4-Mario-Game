@@ -8,9 +8,11 @@
 #include "../../include/Game/GameContext.h"
 #include "../../include/Objects/ObjectFactory.h"
 #include "../../include/Objects/Block.h"
-#include "../../include/Objects/InteractiveObject.h"
-#include "../../include/Objects/Spring.h"
-#include "../../include/Objects/MovingPlatform.h"
+#include "../../include/Objects/InteractiveObjects/InteractiveObject.h"
+#include "../../include/Objects/InteractiveObjects/Spring.h"
+#include "../../include/Objects/InteractiveObjects/FireBar.h"
+#include "../../include/Objects/InteractiveObjects/FireBarBase.h"
+#include "../../include/Objects/InteractiveObjects/MovingPlatform.h"
 #include "../../include/Enemy/Enemy.h"
 #include "../../include/Item/Item.h"
 #include "../../include/Enemy/Koopa/KoopaShell.h"
@@ -64,6 +66,8 @@ void GameContext::setState(GameState* newState) {
             LevelEditor::getInstance().loadLevel("testlevel.json");
             character01 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_01, Vector2{ 400, 400 });
             character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+
+            //addObject(InteractiveType::FIRE_BAR, Vector2{ 700, 400 }, Vector2{});
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};

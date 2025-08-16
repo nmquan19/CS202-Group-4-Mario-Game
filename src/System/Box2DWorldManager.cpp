@@ -207,6 +207,38 @@ void Box2DWorldManager::destroyBody(b2Body* body) {
 	}
 }
 
+void Box2DWorldManager::destroyJoint(b2Joint* joint) {
+	if (world && joint) {
+		world->DestroyJoint(joint);
+	}
+}
+
+b2Body* Box2DWorldManager::createKinematicBody(b2Vec2 b2_pos) {
+	if (!world) return nullptr;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_kinematicBody;
+	bodyDef.position = b2_pos;
+	bodyDef.allowSleep = false;
+	bodyDef.awake = true;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+	return body;
+}
+
+b2Body* Box2DWorldManager::createDynamicBody(b2Vec2 b2_pos) {
+	if (!world) return nullptr;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = b2_pos;
+	/*bodyDef.allowSleep = true;
+	bodyDef.awake = true;*/
+
+	b2Body* body = world->CreateBody(&bodyDef);
+	return body;
+}
+
 b2Body* Box2DWorldManager::createCharacterBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
 
@@ -219,7 +251,7 @@ b2Body* Box2DWorldManager::createCharacterBody(Vector2 pos, Vector2 hitboxSize) 
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position = b2_pos;
 	bodyDef.fixedRotation = true;
-	bodyDef.allowSleep = true;
+	bodyDef.allowSleep = false;
 	bodyDef.awake = true;
 
 	b2Body* body = world->CreateBody(&bodyDef);
@@ -254,21 +286,16 @@ b2Body* Box2DWorldManager::createProjectileBody(Vector2 pos, Vector2 hitboxSize)
 }
 
 b2Body* Box2DWorldManager::createBlockBody(Vector2 pos, Vector2 hitboxSize) {
-	if (!world) return nullptr;
 
 	b2Vec2 b2_size = raylibToB2(hitboxSize);
 	b2Vec2 b2_pos = raylibToB2(pos);
 	b2_pos.x += b2_size.x / 2;
 	b2_pos.y += b2_size.y / 2;
 
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_kinematicBody;
-	bodyDef.position = b2_pos;
-	bodyDef.fixedRotation = true;
-	bodyDef.allowSleep = true;
-	bodyDef.awake = true;
-
-	b2Body* body = world->CreateBody(&bodyDef);
+	b2Body* body = createKinematicBody(b2_pos);
+	if (!body) {
+		return nullptr;
+	}
 
 	attachRectangleFixtures(body, pos, hitboxSize);
 	attachSensors(body, hitboxSize);
@@ -308,7 +335,7 @@ b2Body* Box2DWorldManager::createItemStaticBody(Vector2 pos, Vector2 hitboxSize)
 	b2_pos.y += b2_size.y / 2;
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_staticBody;
+	bodyDef.type = b2_kinematicBody;
 	bodyDef.position = b2_pos;
 	bodyDef.fixedRotation = true;
 	bodyDef.allowSleep = true;
@@ -322,9 +349,6 @@ b2Body* Box2DWorldManager::createItemStaticBody(Vector2 pos, Vector2 hitboxSize)
 	mainShape.SetAsBox(b2_size2.x / 2, b2_size2.y / 2);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &mainShape;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.0f;
-	fixtureDef.restitution = 0.0f;
 	fixtureDef.isSensor = true;
 
 	body->CreateFixture(&fixtureDef);
@@ -390,6 +414,10 @@ void Box2DWorldManager::BeginContact(b2Contact* contact) {
 			directAtoB = Direction::RIGHT;
 			directBtoA = Direction::LEFT;
 			break;
+		case 5:
+			directAtoB = Direction::IN;
+			directBtoA = Direction::OUT;
+			break;
 		}
 	}
 	else if (fixtureB->IsSensor() && sensorIdB > 0) {
@@ -409,6 +437,10 @@ void Box2DWorldManager::BeginContact(b2Contact* contact) {
 		case 4:
 			directBtoA = Direction::RIGHT;
 			directAtoB = Direction::LEFT;
+			break;
+		case 5:
+			directBtoA = Direction::IN;
+			directAtoB = Direction::OUT;
 			break;
 		}
 	}

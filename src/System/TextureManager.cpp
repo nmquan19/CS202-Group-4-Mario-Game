@@ -925,12 +925,17 @@ void ObjectPalette::drawPalette() {
         DrawTexturePro(TextureManager::interactiveTextures, springSource, springRect, { 0, 0 }, 0.0f, WHITE);
         DrawRectangleLinesEx(springRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::SPRING) ? RED : BLACK);
 
+        // Moving platform
         Rectangle movingPlatformRect = { startX + spacingX, startY, iconSize * 3.0f, iconSize * 0.25f };
         Rectangle movingPlatformSource = { 405, 467, 50, 10 };
         DrawTexturePro(TextureManager::interactiveTextures, movingPlatformSource, movingPlatformRect, { 0, 0 }, 0.0f, WHITE);
         DrawRectangleLinesEx(movingPlatformRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::MOVING_PLATFORM) ? RED : BLACK);
 
-        // Moving platform
+        // Fire bar base
+        Rectangle fireBarBaseRect = { startX, startY + spacingY, iconSize, iconSize };
+        Rectangle fireBarBaseRectSource = { 239, 86, 16, 16 };
+        DrawTexturePro(TextureManager::interactiveTextures, fireBarBaseRectSource, fireBarBaseRect, { 0, 0 }, 0.0f, WHITE);
+        DrawRectangleLinesEx(fireBarBaseRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::FIRE_BAR_BASE) ? RED : BLACK);
     }
     if (selectRect == 4) {
         // Coin
@@ -1007,6 +1012,7 @@ void ObjectPalette::handleSelection() {
 
     Rectangle springRect = { startX, startY, iconSize, iconSize };
     Rectangle movingPlatformRect = { startX + spacingX, startY, iconSize * 3.0f, iconSize * 0.25f };
+    Rectangle fireBarBaseRect = { startX, startY + spacingY, iconSize, iconSize };
 
     Rectangle coinRect = { startX, startY, iconSize, iconSize };
     Rectangle ffRect = { startX + spacingX, startY, iconSize, iconSize };
@@ -1513,6 +1519,7 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, dryBRect) && selectRect == 2) selected = EnemyType::DRY_BOWSER;
         if (CheckCollisionPointRec(mousePos, springRect) && selectRect == 3) selected = InteractiveType::SPRING;
         if (CheckCollisionPointRec(mousePos, movingPlatformRect) && selectRect == 3) selected = InteractiveType::MOVING_PLATFORM;
+        if (CheckCollisionPointRec(mousePos, fireBarBaseRect) && selectRect == 3) selected = InteractiveType::FIRE_BAR_BASE;
         if (CheckCollisionPointRec(mousePos, coinRect) && selectRect == 4) selected = ItemType::COIN;
         if (CheckCollisionPointRec(mousePos, ffRect) && selectRect == 4) selected = ItemType::FIRE_FLOWER;
         if (CheckCollisionPointRec(mousePos, mushRoomRect) && selectRect == 4) selected = ItemType::MUSHROOM;

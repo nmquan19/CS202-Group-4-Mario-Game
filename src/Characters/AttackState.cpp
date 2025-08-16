@@ -9,7 +9,7 @@ void AttackState::enter(Character* character) {
 	character->aniTimer = 0.0f;
 	character->attackTimer = 0.4f;
 	character->invincibleTimer = 0.5f;
-	character->setCurrentStateRow(6);
+	character->setCurrentStateRow(9);
 	character->projectilesLeft -= 1;
 }
 
@@ -44,4 +44,4 @@ void AttackState::checkTransitions(Character* character, const InputState& input
 AttackState& AttackState::getInstance() {
 	static AttackState instance;
 	return instance;
-}
+} 
