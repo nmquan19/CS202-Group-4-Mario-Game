@@ -10,6 +10,7 @@ MenuManager::MenuManager() {
 
     exit = false;
     board = LoadTexture("./assets/button/board1.png");
+    menuBackground = LoadTexture("./assets/menu background.jpg");
 
     check.load("./assets/button/check.png", "./assets/button/check_selected.png");
 
@@ -73,6 +74,7 @@ MenuManager::MenuManager() {
 MenuManager::~MenuManager() {
     UnloadTexture(logo);
     UnloadTexture(board);
+    UnloadTexture(menuBackground);
     UnloadTexture(mario);
     UnloadTexture(luigi);
     UnloadTexture(toad);
@@ -81,12 +83,13 @@ MenuManager::~MenuManager() {
 
 void MenuManager::DrawMenu() {
     ClearBackground(SKYBLUE);
+    
     const float width = static_cast<float>(UIManager::getInstance().screenWidth);
     const float height = static_cast<float>(UIManager::getInstance().screenHeight);
+    DrawTexturePro(menuBackground, { 0, 0, (float)menuBackground.width, (float)menuBackground.height }, {0, 0, width, height}, {0,0}, 0, WHITE);
     Rectangle recLogo; recLogo.x = 0; recLogo.y = 0; recLogo.width = 886; recLogo.height = 352;
     float scale = 0.75;
     DrawTextureEx(logo, { (width - recLogo.width * scale) / 2, height / 5 }, 0, scale, WHITE); // center
-
 
     Font currentMenuFont = UIManager::getInstance().menuFont;
     if (!settingDialog && !exitDialog) {

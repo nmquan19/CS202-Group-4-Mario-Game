@@ -276,6 +276,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="level1.json" />
+    <None Include="raylib.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\Airship_night_1.png" />
+    <Image Include="assets\Airship_night_2.png" />
+    <Image Include="assets\Airship_night_3.png" />
+    <Image Include="assets\Airship_night_4.png" />
+    <Image Include="assets\Airship_night_5.png" />
+    <Image Include="assets\Airship_night_6.png" />
+    <Image Include="assets\Forest_1.png" />
+    <Image Include="assets\Forest_2.png" />
+    <Image Include="assets\Ghost_house_1.png" />
+    <Image Include="assets\Ghost_house_2.png" />
+    <Image Include="assets\Ghost_house_3.png" />
+    <Image Include="assets\Snow_night_1.png" />
+    <Image Include="assets\Snow_night_2.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
