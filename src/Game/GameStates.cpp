@@ -242,48 +242,92 @@ void GamePlayState::DrawBackGround(Texture2D& texture) {
     }
 }
 
-void EditorState::handleInput(GameContext& context) {
-    context.menuManager.HandleSetting();
 
-    if (IsKeyPressed(KEY_ENTER)) {
-        context.setState(context.menuState);
+
+
+
+
+
+
+
+
+
+
+void EditorState::handleInput(GameContext& context) {
+    if (stateSelect == 1) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            Vector2 mousePos = GetMousePosition();
+            if (context.menuManager.day_groundBoard.checkCollision(mousePos)) {
+                mapSelect = 1; stateSelect = 2;
+            }
+            if (context.menuManager.day_undergroundBoard.checkCollision(mousePos)) {
+                mapSelect = 2; stateSelect = 2;
+            }
+            if (context.menuManager.night_airshipBoard.checkCollision(mousePos)) {
+                mapSelect = 3; stateSelect = 2;
+            }
+            if (context.menuManager.night_snowBoard.checkCollision(mousePos)) {
+                mapSelect = 4; stateSelect = 2;
+            }
+        }
     }
-    if (IsKeyPressed(KEY_F9) && LevelEditor::getInstance().isInEditMode()) {
-        LevelEditor::getInstance().clearLevel();
+    else if (stateSelect == 2) {
+        context.menuManager.HandleSetting();
+        if (IsKeyPressed(KEY_ENTER)) {
+            context.setState(context.menuState);
+            stateSelect = 1;
+        }
+        if (IsKeyPressed(KEY_F9) && LevelEditor::getInstance().isInEditMode()) {
+            LevelEditor::getInstance().clearLevel();
+        }
+        if (IsKeyPressed(KEY_F7) && LevelEditor::getInstance().isInEditMode()) {
+            LevelEditor::getInstance().saveLevel("testlevel.json");
+        }
+        if (IsKeyPressed(KEY_F8) && LevelEditor::getInstance().isInEditMode()) {
+            LevelEditor::getInstance().loadLevel("testlevel.json");
+        }
     }
-    if (IsKeyPressed(KEY_F7) && LevelEditor::getInstance().isInEditMode()) {
-        LevelEditor::getInstance().saveLevel("testlevel.json");
-    }
-    if (IsKeyPressed(KEY_F8) && LevelEditor::getInstance().isInEditMode()) {
-        LevelEditor::getInstance().loadLevel("testlevel.json");
-    }
+    
 }
 
 void EditorState::update(GameContext& context, float deltaTime) {
-    handleCamera();
-    LevelEditor::getInstance().update(deltaTime);
-    Box2DWorldManager::getInstance().step(deltaTime);
-    NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
+    if (stateSelect == 1) {
+        context.menuManager.UpdateEditorSelecting(deltaTime);
+    }
+    else if (stateSelect == 2) {
+        handleCamera();
+        LevelEditor::getInstance().update(deltaTime);
+        Box2DWorldManager::getInstance().step(deltaTime);
+        NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
+    }
 }
 
 // GameStates.cpp
 void EditorState::draw(GameContext& context) {
-    BeginDrawing();
-    ClearBackground(WHITE); // Clear main buffer
-
-    LightingManager& lm = LightingManager::getInstance();
-
-    // 1. Render scene to lightmap (world-space)
-    BeginTextureMode(lm.getLightMap());
-    {
-        ClearBackground(BLANK); // Transparent clear for light accumulation
-        LevelEditor::getInstance().draw(); 
+    if (stateSelect == 1) {
+        BeginDrawing();
+        ClearBackground(SKYBLUE);
+        context.menuManager.DrawEditorSelecting();
+        EndDrawing();
     }
-    EndTextureMode();
+    else if (stateSelect == 2) {
+        BeginDrawing();
+        ClearBackground(WHITE); // Clear main buffer
 
-    // 2. Apply lighting shader (screen-space)
-    lm.prepareShader(context.camera);
-    BeginShaderMode(lm.getShader());
+        LightingManager& lm = LightingManager::getInstance();
+
+        // 1. Render scene to lightmap (world-space)
+        BeginTextureMode(lm.getLightMap());
+        {
+            ClearBackground(BLANK); // Transparent clear for light accumulation
+            LevelEditor::getInstance().mapSelect = mapSelect;
+            LevelEditor::getInstance().draw();
+        }
+        EndTextureMode();
+
+        // 2. Apply lighting shader (screen-space)
+        lm.prepareShader(context.camera);
+        BeginShaderMode(lm.getShader());
 
         // Important: Set texture slot 0 for sceneTexture
         SetShaderValueTexture(lm.getShader(),
@@ -297,8 +341,10 @@ void EditorState::draw(GameContext& context) {
             WHITE);
         EndShaderMode();
 
-    DrawFPS(20, 50);
-    EndDrawing();
+        DrawFPS(20, 50);
+        EndDrawing();
+    }
+    
 }
 
 
