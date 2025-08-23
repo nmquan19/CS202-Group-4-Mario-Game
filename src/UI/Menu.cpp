@@ -38,6 +38,9 @@ MenuManager::MenuManager() {
     night_airshipBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
     night_snowBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
 
+    OnePlayer.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    TwoPlayers.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+
 
     mario = LoadTexture("./assets/Mario.png");
     luigi = LoadTexture("./assets/Luigi.png");
@@ -389,4 +392,43 @@ void MenuManager::DrawEditorSelecting() {
     day_undergroundBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Map 2", 1.5, 1.0);
     night_airshipBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Map 3", 1.5, 1.0);
     night_snowBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 13 / 20.0f }, "Map 4", 1.5, 1.0);
+}
+
+void MenuManager::DrawPlayer() {
+    Rectangle source1 = { 0, 0, (float)mario.width, (float)mario.height };
+    Rectangle dest1 = { UIManager::getInstance().screenWidth / 3.0f, UIManager::getInstance().screenHeight / 2.0f,
+                        (float)mario.width, (float)mario.height };
+    Vector2 origin = { (float)mario.width / 2, (float)mario.height / 2 };
+
+    DrawTexturePro(mario, source1, dest1, origin, 0.0f, WHITE);
+
+    // Texture 2: tâm tại (screen.x * 2/3, screen.y / 2)
+    Rectangle source2 = { 0,0,(float)mario.width * (-1), (float)mario.height };
+    Rectangle dest2 = { UIManager::getInstance().screenWidth * 2.0f / 3.0f, UIManager::getInstance().screenHeight / 2.0f,
+                        (float)mario.width, (float)mario.height };
+
+    Rectangle source3 = { 0,0,(float)luigi.width * (-1), (float)luigi.height };
+    Rectangle dest3 = { UIManager::getInstance().screenWidth * 2.0f / 3.0f + luigi.width / 2.0f, UIManager::getInstance().screenHeight / 2.0f,
+                        (float)luigi.width, (float)luigi.height };
+
+    DrawTexturePro(mario, source2, dest2, origin, 0.0f, WHITE);
+    DrawTexturePro(luigi, source3, dest3, origin, 0.0f, WHITE);
+    OnePlayer.draw({ dest1.x, dest1.y + mario.height }, "1 player", 1.5, 1.0);
+    TwoPlayers.draw({ (dest2.x + dest3.x) / 2.0f, (dest2.y + dest3.y) / 2.0f + mario.height}, "2 player", 1.5, 1.0);
+
+    /*
+    Vector2 Center1 = { UIManager::getInstance().screenWidth / 3.0f, UIManager::getInstance().screenHeight / 2.0f };
+    Vector2 Center2 = { UIManager::getInstance().screenWidth * 2 / 3.0f, UIManager::getInstance().screenHeight / 2.0f };
+    DrawTexturePro(mario, { 0, 0, (float)mario.width, (float)mario.height}, {Center1.x, Center1.y, (float)mario.width, (float)mario.height}, {1.5f * Center1.x, 1.5f * Center1.y}, 0.0f, WHITE);
+    DrawTexturePro(mario, { 0, 0, (float)mario.width * (-1), (float)mario.height }, { Center2.x, Center2.y, (float)mario.width, (float)mario.height }, { 1.5f * Center2.x, 1.5f * Center2.y }, 0.0f, WHITE);
+    */
+}
+
+void MenuManager::UpdatePlayer(float deltaTime) {
+    OnePlayer.update(deltaTime);
+    TwoPlayers.update(deltaTime);
+}
+
+void MenuManager::HandlePlayer() {
+
 }
