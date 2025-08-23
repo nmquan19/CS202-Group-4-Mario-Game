@@ -288,7 +288,6 @@
     <ClInclude Include="include\Enemy\Koopa\KoopaShellState.h" />
     <ClInclude Include="include\Enemy\Koopa\KoopaState.h" />
     <ClInclude Include="include\Enemy\LaserMechaKoopa\LaserMechaKoopa.h" />
-    <ClInclude Include="include\Enemy\LaserMechaKoopa\LaserBeam.h" />
     <ClInclude Include="include\Enemy\LedgeDetector.h" />
     <ClInclude Include="include\Enemy\PiranhaPlant\PiranhaPlant.h" />
     <ClInclude Include="include\Enemy\TriggerZone.h" />
@@ -329,9 +328,24 @@
     <ClInclude Include="include\UI\SlideBar.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
     <ClInclude Include="include\UI\UI.h" />
-    <ClInclude Include="include\Objects\InteractiveObjects\CameraTriggerZone.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="level1.json" />
+    <None Include="raylib.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\Airship_night_1.png" />
+    <Image Include="assets\Airship_night_2.png" />
+    <Image Include="assets\Airship_night_3.png" />
+    <Image Include="assets\Airship_night_4.png" />
+    <Image Include="assets\Airship_night_5.png" />
+    <Image Include="assets\Airship_night_6.png" />
+    <Image Include="assets\Forest_1.png" />
+    <Image Include="assets\Forest_2.png" />
+    <Image Include="assets\Ghost_house_1.png" />
+    <Image Include="assets\Ghost_house_2.png" />
+    <Image Include="assets\Ghost_house_3.png" />
+    <Image Include="assets\Snow_night_1.png" />
+    <Image Include="assets\Snow_night_2.png" />
   </ItemGroup>
 </Project>

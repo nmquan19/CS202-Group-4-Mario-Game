@@ -1,7 +1,7 @@
 #pragma once
 #include <raylib.h>
 #include <string>
-
+using namespace std;
 class UIManager;
 
 class ScoreDisplay {
@@ -183,3 +183,79 @@ public:
         DrawTextEx(menuFont, TextSubtext(text, 0, visibleChars), position, fontSize, spacing, color);
     }
 };
+/*
+class BackgroundManager {
+private:
+    Texture2D Airship_night_1;
+    Texture2D Airship_night_2;
+    Texture2D Airship_night_3;
+    Texture2D Airship_night_4;
+    Texture2D Airship_night_5;
+    Texture2D Airship_night_6;
+    Texture2D Forest_1;
+    Texture2D Forest_2;
+    Texture2D Ghost_house_1;
+    Texture2D Ghost_house_2;
+    Texture2D Ghost_house_3;
+    Texture2D Snow_night_1;
+    Texture2D Snow_night_2;
+
+    Vector2 position;
+public:
+    BackgroundManager() {
+        Airship_night_1 = LoadTexture("../../assets/Airship_night_1.png");
+        Airship_night_2 = LoadTexture("../../assets/Airship_night_2.png");
+        Airship_night_3 = LoadTexture("../../assets/Airship_night_3.png");
+        Airship_night_4 = LoadTexture("../../assets/Airship_night_4.png");
+        Airship_night_5 = LoadTexture("../../assets/Airship_night_5.png");
+        Airship_night_6 = LoadTexture("../../assets/Airship_night_6.png");
+        Forest_1 = LoadTexture("../../assets/Forest_1.png");
+        Forest_2 = LoadTexture("../../assets/Forest_2.png");
+        Ghost_house_1 = LoadTexture("../../assets/Ghost_house_1.png");
+        Ghost_house_2 = LoadTexture("../../assets/Ghost_house_2.png");
+        Ghost_house_3 = LoadTexture("../../assets/Ghost_house_3.png");
+        Snow_night_1 = LoadTexture("../../assets/Snow_night_1.png");
+        Snow_night_2 = LoadTexture("../../assets/Snow_night_2.png");
+    }
+    ~BackgroundManager() {
+        UnloadTexture(Airship_night_1);
+        UnloadTexture(Airship_night_2);
+        UnloadTexture(Airship_night_3);
+        UnloadTexture(Airship_night_4);
+        UnloadTexture(Airship_night_5);
+        UnloadTexture(Airship_night_6);
+        UnloadTexture(Forest_1);
+        UnloadTexture(Forest_2);
+        UnloadTexture(Ghost_house_1);
+        UnloadTexture(Ghost_house_2);
+        UnloadTexture(Ghost_house_3);
+        UnloadTexture(Snow_night_1);
+        UnloadTexture(Snow_night_2);
+    }
+    Texture2D findBackground(string s) {
+        if (s == "Airship_night_1") return Airship_night_1;
+        if (s == "Airship_night_2") return Airship_night_2;
+        if (s == "Airship_night_3") return Airship_night_3;
+        if (s == "Airship_night_4") return Airship_night_4;
+        if (s == "Airship_night_5") return Airship_night_5;
+        if (s == "Airship_night_6") return Airship_night_6;
+        if (s == "Forest_1") return Forest_1;
+        if (s == "Forest_2") return Forest_2;
+        if (s == "Ghost_house_1") return Ghost_house_1;
+        if (s == "Ghost_house_2") return Ghost_house_2;
+        if (s == "Ghost_house_3") return Ghost_house_3;
+        if (s == "Snow_night_1") return Snow_night_1;
+        return Snow_night_2;
+    }
+    void draw(Vector2 Position, string s, float scale) {
+        position = Position;
+        for (int i = 0; i < 100; i++) {
+            DrawTextureEx(findBackground(s), { position.x + findBackground(s).width * i, position.y }, 0, scale, WHITE);
+        }
+        
+    }
+    void update(float deltaTime) {
+        position.x -= deltaTime;
+    }
+};
+*/
