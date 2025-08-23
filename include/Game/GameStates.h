@@ -49,6 +49,9 @@ public:
 
 
 class EditorState : public GameState {
+private:
+    int stateSelect = 1;
+    int mapSelect = 1;
 public:
     void handleInput(GameContext& context) override;
     void update(GameContext& context, float deltaTime) override;

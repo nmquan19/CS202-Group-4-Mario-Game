@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <raylib.h>
 #include <rlgl.h>
@@ -11,6 +11,7 @@
 #include "SoundEffect.h"
 #include "Button.h"
 #include "SlideBar.h"
+#include "../System/LevelEditor.h"
 #define MARIO_COLOR CLITERAL(Color){239, 83, 80, 255}
 #define TOADETTE_COLOR CLITERAL(Color){255, 128, 171, 255}
 #define LUIGI_COLOR CLITERAL(Color){178, 255, 89, 255}
@@ -198,9 +199,10 @@ public:
 };
 
 
+
 class MenuManager {
 private:
-    Texture2D logo, board;
+    Texture2D logo, board, menuBackground;
     Button check, cross, setting, returnButton;
     Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition;
 

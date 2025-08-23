@@ -16,6 +16,15 @@
 #include <stack>
 #include <vector>
 #include "../../include/System/LightingSystem.h"
+#include "../../include/UI/Menu.h"
+Background* Background::instance = nullptr;
+Background& Background::getInstance() {
+    if (!instance) {
+        instance = new Background();
+    }
+    return *instance;
+}
+
 LevelEditor* LevelEditor::instance = nullptr;
 LevelEditor& LevelEditor::getInstance() {
     if (!instance) {
@@ -51,8 +60,27 @@ void LevelEditor::update(float deltaTime) {
 
 void LevelEditor::draw() {
     BeginMode2D(GameContext::getInstance().camera);
-
-
+    if (mapSelect == 1) {
+        for (int i = 0; i <= Constants::WORLDBOUNDS_HEIGHT / 512; i++) {
+            Background::getInstance().draw("Forest_2", { 0, 512.0f * i });
+        }
+    }
+    if (mapSelect == 2) {
+        for (int i = 0; i <= Constants::WORLDBOUNDS_HEIGHT / 512; i++) {
+            Background::getInstance().draw("Ghost_house_3", { 0, 512.0f * i });
+        }
+    }
+    if (mapSelect == 3) {
+        for (int i = 0; i <= Constants::WORLDBOUNDS_HEIGHT / 512; i++) {
+            Background::getInstance().draw("Airship_night_6", { 0, 512.0f * i });
+        }
+    }
+    if (mapSelect == 4) {
+        for (int i = 0; i <= Constants::WORLDBOUNDS_HEIGHT / 512; i++) {
+            Background::getInstance().draw("Snow_night_1", { 0, 512.0f * i });
+        }
+    }
+    
     if (!clearing) {    
         for (auto& it : gridBlocks) {
             Object* obj = it.second.top().get();

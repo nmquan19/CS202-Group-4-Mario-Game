@@ -23,6 +23,8 @@
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/Enemy/Bob-ombs/Bob-ombs.h"
 #include "../../include/Enemy/LaserMechaKoopa/LaserMechaKoopa.h"
+#include "../../include/Enemy/LaserMechaKoopa/LaserBeam.h"
+
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
@@ -1095,6 +1097,7 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         return std::make_unique<PiranhaPlant>(startPosition, size);
     case EnemyType::LASER_MECHA_KOOPA:
         return std::make_unique<LaserMechaKoopa>(startPosition, size);
+    
     default:
         return nullptr; 
     }
@@ -1152,6 +1155,8 @@ std::unique_ptr<Projectile> ObjectFactory::createSpecificProjectile(ProjectileTy
     switch (type) {
     case ProjectileType::FIRE_BALL:
         return std::make_unique<FireBall>(position, direction, size);
+    case ProjectileType::LASER_BEAM:
+        return std::make_unique<LaserBeam>(position, size);
     }
 }
 

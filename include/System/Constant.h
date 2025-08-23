@@ -13,8 +13,8 @@ namespace Constants {
     constexpr float GRAVITY = 980.0f;
     constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
-    constexpr float WORLDBOUNDS_WIDTH = 5000.0f;
-    constexpr float WORLDBOUNDS_HEIGHT = 5000.0f;
+    constexpr float WORLDBOUNDS_WIDTH = 15000.0f;
+    constexpr float WORLDBOUNDS_HEIGHT =15000.0f;
     constexpr float COYOTE_TIME_DURATION = 150.0f;
 
     namespace GreenKoopa {
@@ -291,8 +291,8 @@ namespace Constants {
         constexpr float pausetime = 1.0f;
         constexpr float moveSpeed = 100.f;
         constexpr float dieDuration = 0.5f;
-        constexpr float attackDuration = 0.5f;
-        constexpr float attackCoolDown = 2.f;
+        constexpr float attackDuration = 1.f;
+        constexpr float attackCoolDown = 3.f;
     }
     namespace Torch {
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };

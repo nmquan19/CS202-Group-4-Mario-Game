@@ -164,16 +164,6 @@ void LightingManager::sendDistortionsToShader(Camera2D cam) {
         types[i] = distortions[i]->type;
         
     }
-    std::cout << "Sending distortions:\n";
-    for (size_t i = 0; i < distortions.size(); i++) {
-        std::cout << "  Distortion " << i << ": "
-            << "Center(" << centers[i].x << ", " << centers[i].y << ") "
-            << "Timer: " << timers[i] << " "
-            << "Lifetime: " << times[i] << " "
-            << "Strength: " << strengths[i] << " "
-            << "Radius: " << radii[i] << " "
-            << "Type: " << types[i] << "\n";    
-    }
     int count = static_cast<int>(distortions.size());
     SetShaderValue(lightingShader, GetShaderLocation(lightingShader, "numDistortions"), &count, SHADER_UNIFORM_INT);
     SetShaderValueV(lightingShader, GetShaderLocation(lightingShader, "distortionCenters"), centers, SHADER_UNIFORM_VEC2, count);

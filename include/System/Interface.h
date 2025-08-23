@@ -539,7 +539,8 @@ enum class EnemyType {
 	DRY_BOWSER,
 	BOO,
 	BOB_OMBS,
-	LASER_MECHA_KOOPA
+	LASER_MECHA_KOOPA,
+	
 };
 
 enum class ItemType {
@@ -573,14 +574,17 @@ enum class InteractiveType {
 	MOVING_PLATFORM,
 	SPRING,
 	FIRE_BAR,
-	FIRE_BAR_BASE
+	FIRE_BAR_BASE,
+	SWITCH_CAMERA_TRIGGER_ZONE,
+	CHANGE_WORLD_BOUND_CAMERA_TRIGGER_ZONE,
 };
 enum class BackGroundObjectType {
 	TORCH
 };
 enum class ProjectileType {
 	FIRE_BALL,
-	BLAST
+	BLAST,
+	LASER_BEAM
 };
 
 enum class Direction {
@@ -638,5 +642,9 @@ public:
 	virtual void fromJson(const json& data) = 0;
 	virtual std::string getSaveType() const = 0;
 };
-
+class IOnCollisionExit {
+public:
+	virtual ~IOnCollisionExit() = default;
+	virtual void onCollisionExit(std::shared_ptr<Object> other, Direction direction) = 0;
+};
 using ObjectType = std::variant<CharacterType, BlockType, EnemyType, KoopaShellType, TriggerType, ItemType, InteractiveType, BackGroundObjectType, ProjectileType>;

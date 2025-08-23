@@ -48,6 +48,8 @@ public:
 	void attachCapsuleFixtures(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachSphericalFixture(b2Body* body, Vector2 pos, Vector2 hitboxSize);
 	void attachSensors(b2Body* body, Vector2 hitboxSize);
+	bool raycast(const Vector2& start, const Vector2& end, Vector2& outHitPoint, b2Body** outBody = nullptr);
+	b2Body* createLaserBeamBody(Vector2 pos, float length, float thickness, float angle);
 
 private:
 	Box2DWorldManager() = default;
@@ -64,3 +66,4 @@ private:
 	void drawEdgeShape(b2Body* body, b2Fixture* fixture, b2EdgeShape* edge, Color drawColor);
 	void drawChainShape(b2Body* body, b2Fixture* fixture, b2ChainShape* chain, Color drawColor);
 };
+

@@ -2,6 +2,8 @@
 #include <raylib.h>
 #include <vector> 
 #include <memory>
+
+#include "../../include/System/Constant.h"
 class GameCamera
 {
 protected: 
@@ -9,11 +11,13 @@ protected:
 	Vector2 shakeOffset; 
 	float shakeIntensity =0.0f; 
 	float shakeDecay = 0.9f;	  
+	Rectangle bounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT };
 public: 
 	virtual void update(float deltaTime) = 0; 
 	void shake(float strenght, float decay); 
 	const Camera2D& GetCamera() const { return cam; }
 	void setCamera(const Camera2D& camera) { cam = camera; } 
+	void setBounds(const Rectangle& newBounds) { bounds = newBounds;}
 };
 struct CameraTransition {
 	bool active = false;
@@ -27,7 +31,6 @@ class PlayerCenteredCamera:public GameCamera
 {
 private: 
 	float horizontalBias = 60.0f; 
-	Rectangle bounds = { 0, 0, 10000, 10000 };
 	float verticalLerpSpeed = 5.0f;
 	float fallEaseTimer = 0.0f;
 	const float fallEaseDuration = 0.15f;
@@ -37,7 +40,6 @@ private:
 public: 
 	PlayerCenteredCamera(); 
 	void update(float deltaTime) override;  
-	void setBounds(const Rectangle& newBounds) { bounds = newBounds; }    
 }; 
 class StaticGameCamera : public GameCamera
 {
@@ -66,16 +68,16 @@ public:
 	void switchCamera(int toIndex); 
 	void update(float deltaTime);
 	void shakeCurrentCamera(float strength, float decay);  
+	void setCamera(const Camera2D& camera) {
+		if (curIndex >= 0 && curIndex < cameras.size()) {
+			cameras[curIndex]->setCamera(camera);
+		}
+	}
+	void setCameraBounds(const Rectangle& bounds) {
+		if (curIndex >= 0 && curIndex < cameras.size()) {
+			cameras[curIndex]->setBounds(bounds);
+		}
+	}
 	const Camera2D& getCamera() const; 
 	GameCameraSystem& operator=(const GameCameraSystem&) = delete; 
 }; 
-
-
-class CameraChangeBoundTrigger
-{
-private: 
-	Vector2  hitbox;  
-	Vector2 position;  
-public: 
-	
-};

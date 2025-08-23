@@ -24,12 +24,42 @@
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/TriggerZone.h"
 #include "../../include/System/Grid.h"
-
+#include "../../include/System/CameraSystem.h"
+#include "../../include/System/LightingSystem.h"
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
     camera.rotation = 0.0f;
 	camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f }; 
     camera.zoom = 1.0f;
+    Color base = { 85, 57, 204, 255 };
+    float brightness = 2.5f;
+
+    Color brighter = {
+        (unsigned char)std::min(255.0f, base.r * brightness),
+        (unsigned char)std::min(255.0f, base.g * brightness),
+        (unsigned char)std::min(255.0f, base.b * brightness),
+        base.a
+    };
+    Camera2D ncamera = camera; 
+	ncamera.target = { 0,0 };
+   LeveLInfo info = {
+        .ambientColor = brighter,
+        .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, 6500},
+        .cameraTriggersData = {
+    {
+        Vector2{1000, 6300},     // position
+        Vector2{2,2},       // size
+        0,                       // fromIndex
+        1,                       // toIndex
+        Rectangle{ 0, 0, Constants::WORLDBOUNDS_WIDTH, 6500},   // inWorldBounds
+        Rectangle{1500, 1500, 500, 500},   // outWorldBounds
+        GameCameraSystem::getInstance().getCamera(), // cameraIn
+        ncamera                               // cameraOut
+    }
+    }
+
+   };
+    levelInfo.push_back(info);
 }
 
 GameContext::~GameContext() {
@@ -62,17 +92,21 @@ void GameContext::setState(GameState* newState) {
         if (newState == gamePlayState) {
             Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
             LevelEditor::getInstance().setEditMode(false);
-            
-            LevelEditor::getInstance().loadLevel("testlevel.json");
-            character01 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            LevelEditor::getInstance().loadLevel("snowmap.json");
+			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
+            character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
             character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
-
+            for(const auto& triggerData : levelInfo[0].cameraTriggersData) {
+                std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position,triggerData.size,triggerData);
+                Objects.push_back(cameraTrigger);
+			}
             //addObject(InteractiveType::FIRE_BAR, Vector2{ 700, 400 }, Vector2{});
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
                 camera.target = character01->getPosition();
             }
+            GameCameraSystem::getInstance().setCameraBounds(levelInfo[0].initialWorldBounds);
         }
     }
 }
@@ -97,7 +131,7 @@ void GameContext::update(float deltaTime) {
             AudioManager::getInstance().StopBackgroundMusic("theme1");
         }
     }
-
+    if(character01)std::cout << character01->getPosition().y << "\n";
     if (currentState) {
         currentState->update(*this, deltaTime);
     }

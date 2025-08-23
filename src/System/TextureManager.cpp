@@ -76,7 +76,7 @@ void TextureManager::loadTextures() {
 
     fontTexture = LoadTexture("assets/font_sprites.png");
 
-    background_lv1 = LoadTexture("assets/backgrounds/bg_lv1.png");
+    background_lv1 = LoadTexture("assets/backgrounds/snowtestBG.png");
 
     day_groundTexture = LoadTexture("assets/day_ground.png");
     day_undergroundTexture = LoadTexture("assets/day_underground.png");
