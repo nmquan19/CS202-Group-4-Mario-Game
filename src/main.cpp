@@ -39,8 +39,8 @@ int main() {
 
     context->setGameStates(&menuState, &redirectState, &playerSelectingState, &characterSelectingState, &informationState, &gamePlayState, &editorState, &editorSelectingState, &gameOverState);
     LightingManager::getInstance().loadShader("assets/shaders/lightsource.fs");
-    //LightingManager::getInstance().setAmbientColor(WHITE); // Dark blue 
-    //GameContext::getInstance().addObject(EnemyType::BOO, { 300,500 }, { 1,1 });
+    LightingManager::getInstance().setAmbientColor(WHITE); // Dark blue 
+    GameContext::getInstance().addObject(EnemyType::BOO, { 300,500 }, { 1,1 });
     while (!WindowShouldClose()) {
         Box2DWorldManager::getInstance().setDebugDraw(true);
 
