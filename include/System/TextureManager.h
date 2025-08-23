@@ -19,7 +19,7 @@ public:
     static Texture2D DryBowser_texture;
     static std::vector<Rectangle> DryBowser_sprite_boxes;
     static Texture2D blocksTexture;
-
+   
     static Texture2D day_groundTexture;
     static Texture2D day_undergroundTexture;
     static Texture2D night_airshipTexture;

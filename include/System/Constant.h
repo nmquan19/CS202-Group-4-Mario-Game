@@ -13,8 +13,8 @@ namespace Constants {
     constexpr float GRAVITY = 980.0f;
     constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
-    constexpr float WORLDBOUNDS_WIDTH = 5000.0f;
-    constexpr float WORLDBOUNDS_HEIGHT = 5000.0f;
+    constexpr float WORLDBOUNDS_WIDTH = 15000.0f;
+    constexpr float WORLDBOUNDS_HEIGHT =15000.0f;
     constexpr float COYOTE_TIME_DURATION = 150.0f;
 
     namespace GreenKoopa {

@@ -95,6 +95,7 @@ void PlayerCenteredCamera::update(float dt) {
 
 void GameCameraSystem::init() {
     cameras.emplace_back(std::make_unique<PlayerCenteredCamera>());
+	cameras.emplace_back(std::make_unique<StaticGameCamera>());
     curIndex = 0;
 }
 void GameCameraSystem::update(float dt) {
@@ -125,7 +126,7 @@ void GameCameraSystem::addCamera(std::unique_ptr<GameCamera> camera) {
     cameras.emplace_back(std::move(camera));
 } 
 void GameCameraSystem::switchCamera(int toIndex) {
-    if (toIndex < 0 || toIndex >= cameras.size()) return;
+    if (toIndex < 0 || toIndex >= cameras.size()||transition.timer!=0) return;
     transition.active = true;
     transition.timer = 0.0f;
     transition.duration = 0.5f; 

@@ -139,11 +139,24 @@ void GamePlayState::handleInput(GameContext& context) {
 		GameCameraSystem::getInstance().switchCamera(0);
     }
 }
+bool isInCameraBound(const Camera2D& cam, Vector2 pos, float padding = 0.0f) {
+    float worldX = cam.target.x - (cam.offset.x / cam.zoom);
+    float worldY = cam.target.y - (cam.offset.y / cam.zoom);
+
+    Rectangle camRect = {
+        worldX - padding,
+        worldY - padding,
+        (GetScreenWidth() / cam.zoom) + 2 * padding,
+        (GetScreenHeight() / cam.zoom) + 2 * padding
+    };
+
+    return CheckCollisionPointRec(pos, camRect);
+}
 
 void GamePlayState::update(GameContext& context, float deltaTime) {
     auto& cam = GameCameraSystem::getInstance(); 
     cam.update(deltaTime);
-    NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
+    //NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
     LightingManager::getInstance().update(deltaTime);
     //GameCameraSystem::getInstance().shakeCurrentCamera(100.0f, 0.1f);
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
@@ -161,10 +174,13 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
         std::shared_ptr<Character> character02 = std::dynamic_pointer_cast<Character>(context.character02);
         character02->update(deltaTime);
     }
-    for (auto obj :context.Objects)
+    for (auto& obj :context.Objects)
     {
 		IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
-        if(updatableObj)updatableObj->update(deltaTime); 
+        //if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
+        //    updatableObj->update(deltaTime);
+        updatableObj->update(deltaTime);
+
     }
     context.menuManager.UpdateSetting(deltaTime);
     context.spawnObject();  
@@ -173,18 +189,37 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     Box2DWorldManager::getInstance().step(deltaTime);
     ParticleSystem::getInstance().update(deltaTime);
 }
+void DrawParallaxBackground(Texture2D bg, Camera2D cam, float parallaxFactor) {
+    Vector2 camPos = {
+        cam.target.x - cam.offset.x,
+        cam.target.y - cam.offset.y
+    };
+
+    int tilesX = GetScreenWidth() / bg.width + 2;
+    int tilesY = GetScreenHeight() / bg.height + 2;
+
+    // Offset based on parallax
+    float offsetX = fmodf(camPos.x * parallaxFactor, (float)bg.width);
+    float offsetY = fmodf(camPos.y * parallaxFactor, (float)bg.height);
+
+    for (int y = -1; y < tilesY; y++) {
+        for (int x = -1; x < tilesX; x++) {
+            float drawX = x * bg.width - offsetX;
+            float drawY = y * bg.height - offsetY;
+            DrawTexture(bg, (int)drawX, (int)drawY, WHITE);
+        }
+    }
+}
 
 void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
-    DrawBackGround(TextureManager::getInstance().background_lv1);
     NavGraph::getInstance().clear();
     DrawText("Press Enter", 500, 100, 20, BLACK);
     DrawText("F5 - Save game", 1200, 500, 50, BLACK);
     DrawText("F6 - Load current game", 1200, 600, 50, BLACK);
+    Vector2 camPos = GameCameraSystem::getInstance().getCamera().target;
     
-    // Note: In GamePlayState, using draw of GameContext and Physics(for debug) instead of Level Editor!
-
     LightingManager& lm = LightingManager::getInstance();
 
     // 1. Render scene to lightmap (world-space)
@@ -192,9 +227,16 @@ void GamePlayState::draw(GameContext& context) {
     {
         ClearBackground(BLANK); // Transparent clear for light accumulation
     }
-    BeginMode2D(GameCameraSystem::getInstance().getCamera());
+    Texture2D bg = TextureManager::getInstance().background_lv1;
+    Camera2D cam = GameCameraSystem::getInstance().getCamera();
 
-    for (auto obj : context.Objects) {
+    DrawParallaxBackground(bg, cam, 0.5f);
+
+    BeginMode2D(GameCameraSystem::getInstance().getCamera());
+    for (auto& obj : context.Objects) {
+       /* if(isInCameraBound(GameCameraSystem::getInstance().getCamera(),obj->getPosition(),100.f)) {
+            obj->draw();
+		}*/
         obj->draw();
     }
 
@@ -205,6 +247,7 @@ void GamePlayState::draw(GameContext& context) {
         context.character02->draw();
     }
     ParticleSystem::getInstance().draw();
+
     Box2DWorldManager::getInstance().drawDebugBodies();
     EndMode2D();
     EndTextureMode();

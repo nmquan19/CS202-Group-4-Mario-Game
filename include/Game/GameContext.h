@@ -13,7 +13,7 @@
 #include <raylib.h>
 #include <fstream>
 #include "../System/json.hpp"
-
+#include "../../include/Objects/InteractiveObjects/CameraTriggerZone.h"
 using json = nlohmann::json;
 
 class GameState;
@@ -26,6 +26,12 @@ struct ObjectInfo
     std::function<void(std::shared_ptr<Object>)> onSpawn = nullptr;
 
 };
+struct LeveLInfo
+{
+	Color ambientColor; 
+	Rectangle initialWorldBounds;
+	std::vector<SwitchCameraTriggerZoneData> cameraTriggersData; 
+};
 class GameContext {
 public:
     //AudioManager audioManager;
@@ -36,7 +42,7 @@ public:
     std::vector<std::shared_ptr<Object>> Objects;
     std::vector<std::shared_ptr<Object>> ToDeleteObjects;
     std::vector<ObjectInfo> ToSpawnObjects;
-
+	std::vector<LeveLInfo> levelInfo;
     GameState* currentState = nullptr;
     GameState* previousState = nullptr;
     GameState* menuState = nullptr;

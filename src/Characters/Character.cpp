@@ -79,7 +79,7 @@ Character::Character(Vector2 startPosition, const CharacterStats& stats, const s
 			filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::CHARACTER) |
 				static_cast<uint16>(ObjectCategory::ENEMY) | static_cast<uint16>(ObjectCategory::INTERACTIVE) | 
 				static_cast<uint16>(ObjectCategory::ITEM) | static_cast<uint16>(ObjectCategory::SHELL) | 
-				static_cast<uint16>(ObjectCategory::PROJECTILE);
+				static_cast<uint16>(ObjectCategory::PROJECTILE)|static_cast<uint16>(ObjectCategory::TRIGGER);
 			fixture->SetFilterData(filter);
 		}
 	}
