@@ -213,7 +213,6 @@ private:
 public:
     Button playBoard, settingBoard, exitBoard, editingBoard;
     Button characterBoard, continueBoard, restartBoard, levelBoard, menuBoard;
-    Button OnePlayer, TwoPlayers;
     Button day_groundBoard, day_undergroundBoard, night_airshipBoard, night_snowBoard;
     SlideBar slideBarMusic, slideBarSound;
     Vector2 slideBarMusicPosition, slideBarSoundPosition;
@@ -248,10 +247,6 @@ public:
     void DrawSetting();
     void UpdateSetting(float deltaTime);
     void HandleSetting();
-
-    void DrawPlayer();
-    void UpdatePlayer(float deltaTime);
-    void HandlePlayer();
 
 };
 

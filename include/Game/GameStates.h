@@ -22,12 +22,6 @@ class RedirectState : public GameState {
     void draw(GameContext& context) override;
 };
 
-class PlayerSelectingState : public GameState {
-    void handleInput(GameContext& context) override;
-    void update(GameContext& context, float deltaTime) override;
-    void draw(GameContext& context) override;
-};
-
 class GamePlayState : public GameState {
 public:
     void handleInput(GameContext& context) override;

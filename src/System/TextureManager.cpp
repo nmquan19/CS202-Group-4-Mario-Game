@@ -917,28 +917,6 @@ void ObjectPalette::drawPalette() {
         }
         DrawRectangleLinesEx(dryBRect, 2, (isEnemy() && getEnemyType() == EnemyType::DRY_BOWSER) ? RED : BLACK);
 
-        // Boo
-        Rectangle booRect = { startX + 0 * spacingX, startY + 1 * spacingY, iconSize, iconSize };
-        if (true) {
-            //Rectangle booSource = tm.Boo_sprite_boxes[79];
-            //DrawTexturePro(tm.Boo_texture, booSource, booRect, { 0,0 }, 0.0f, WHITE);
-        }
-        DrawRectangleLinesEx(booRect, 2, (isEnemy() && getEnemyType() == EnemyType::BOO) ? RED : BLACK);
-
-        Rectangle bob_ombsRect = { startX + 1 * spacingX, startY + 1 * spacingY, iconSize, iconSize };
-        if (true) {
-            Rectangle bob_ombsSource = tm.Enemy_sprite_boxes[157];
-            DrawTexturePro(tm.enemyTextures, bob_ombsSource, bob_ombsRect, { 0,0 }, 0.0f, WHITE);
-        }
-        DrawRectangleLinesEx(bob_ombsRect, 2, (isEnemy() && getEnemyType() == EnemyType::BOB_OMBS) ? RED : BLACK);
-
-        Rectangle laserRect = { startX + 2 * spacingX, startY + 1 * spacingY, iconSize, iconSize };
-        if (true) {
-            Rectangle laserSource = tm.Enemy_sprite_boxes[379];
-            DrawTexturePro(tm.enemyTextures, laserSource, laserRect, { 0,0 }, 0.0f, WHITE);
-        }
-        DrawRectangleLinesEx(laserRect, 2, (isEnemy() && getEnemyType() == EnemyType::LASER_MECHA_KOOPA) ? RED : BLACK);
-
     }
     if (selectRect == 3) {
         // Spring
@@ -1031,9 +1009,6 @@ void ObjectPalette::handleSelection() {
     Rectangle gkoopaRect = { startX + spacingX, startY, iconSize, iconSize };
     Rectangle rkoopaRect = { startX + 2 * spacingX, startY, iconSize, iconSize };
     Rectangle dryBRect = { startX + 3 * spacingX, startY, iconSize, iconSize };
-    Rectangle booRect = { startX, startY + spacingY, iconSize, iconSize };
-    Rectangle bob_ombsRect = { startX + spacingX, startY + spacingY, iconSize, iconSize };
-    Rectangle laserRect = { startX + 2 * spacingX, startY + spacingY, iconSize, iconSize };
 
     Rectangle springRect = { startX, startY, iconSize, iconSize };
     Rectangle movingPlatformRect = { startX + spacingX, startY, iconSize * 3.0f, iconSize * 0.25f };
@@ -1542,9 +1517,6 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, gkoopaRect) && selectRect == 2) selected = EnemyType::GREEN_KOOPA;
         if (CheckCollisionPointRec(mousePos, rkoopaRect) && selectRect == 2) selected = EnemyType::RED_KOOPA;
         if (CheckCollisionPointRec(mousePos, dryBRect) && selectRect == 2) selected = EnemyType::DRY_BOWSER;
-        if (CheckCollisionPointRec(mousePos, booRect) && selectRect == 2) selected = EnemyType::BOO;
-        if (CheckCollisionPointRec(mousePos, bob_ombsRect) && selectRect == 2) selected = EnemyType::BOB_OMBS;
-        if (CheckCollisionPointRec(mousePos, laserRect) && selectRect == 2) selected = EnemyType::LASER_MECHA_KOOPA;
         if (CheckCollisionPointRec(mousePos, springRect) && selectRect == 3) selected = InteractiveType::SPRING;
         if (CheckCollisionPointRec(mousePos, movingPlatformRect) && selectRect == 3) selected = InteractiveType::MOVING_PLATFORM;
         if (CheckCollisionPointRec(mousePos, fireBarBaseRect) && selectRect == 3) selected = InteractiveType::FIRE_BAR_BASE;

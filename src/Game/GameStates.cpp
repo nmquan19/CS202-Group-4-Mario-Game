@@ -48,7 +48,7 @@ void MenuState::draw(GameContext& context) {
 void RedirectState::handleInput(GameContext& context) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
-        if (context.menuManager.characterBoard.checkCollision(mousePos)) context.setState(context.playerSelectingState);
+        if (context.menuManager.characterBoard.checkCollision(mousePos)) context.setState(context.characterSelectingState);
         if (context.menuManager.continueBoard.checkCollision(mousePos)) context.setState(context.informationState);
         if (context.menuManager.restartBoard.checkCollision(mousePos)) context.setState(context.informationState);
         if (context.menuManager.levelBoard.checkCollision(mousePos)) context.setState(context.informationState);
@@ -69,29 +69,6 @@ void RedirectState::update(GameContext& context, float deltaTime) {
     context.menuManager.restartBoard.update(deltaTime);
     context.menuManager.levelBoard.update(deltaTime);
     context.menuManager.menuBoard.update(deltaTime);
-}
-
-void PlayerSelectingState::handleInput(GameContext& context) {
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        Vector2 mousePos = GetMousePosition();
-        if (context.menuManager.OnePlayer.checkCollision(mousePos)) {
-            context.setState(context.characterSelectingState);
-        }
-        if (context.menuManager.TwoPlayers.checkCollision(mousePos)) {
-            context.setState(context.characterSelectingState);
-        }
-    }
-}
-
-void PlayerSelectingState::update(GameContext& context, float deltaTime) {
-    context.menuManager.UpdatePlayer(deltaTime);
-}
-
-void PlayerSelectingState::draw(GameContext& context) {
-	BeginDrawing();
-	ClearBackground(SKYBLUE);
-    context.menuManager.DrawPlayer();
-	EndDrawing();
 }
 
 void CharacterSelectingState::handleInput(GameContext& context) {
