@@ -207,17 +207,91 @@ private:
     Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition;
 
     Texture2D mario, luigi, toad, toadette;
+    Texture2D level_map1, level_map4;
     float scale = 0.2f;
     bool isActive;
+
+    float backgroundOffsetX = 0.0f;
 
 public:
     Button playBoard, settingBoard, exitBoard, editingBoard;
     Button characterBoard, continueBoard, restartBoard, levelBoard, menuBoard;
     Button day_groundBoard, day_undergroundBoard, night_airshipBoard, night_snowBoard;
+    Button OnePlayer, TwoPlayers;
     SlideBar slideBarMusic, slideBarSound;
     Vector2 slideBarMusicPosition, slideBarSoundPosition;
     int select, characterSelect;
     bool settingDialog, exitDialog, exit;
+
+    
+
+
+    struct MovingTexture {
+        Texture2D tex;
+        Vector2 pos;
+        int currentIndex = 0;
+        vector<int> path;
+        int movingIndex = -1;
+        float speed = 200.0f;
+    };
+
+    int GetClickedIndex(const vector<Vector2>& positions, Vector2 mouse) {
+        for (int i = 0; i < (int)positions.size(); i++) {
+            if (CheckCollisionPointCircle(mouse, positions[i], 50)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void UpdateMovingTexture(MovingTexture& mt, const vector<Vector2>& positions, float delta) {
+        if (mt.movingIndex >= 0) {
+            Vector2 target = positions[mt.movingIndex];
+            Vector2 dir = { target.x - mt.pos.x, target.y - mt.pos.y };
+            float dist = sqrtf(dir.x * dir.x + dir.y * dir.y);
+
+            if (dist < 2.0f) {
+                // đến nơi
+                mt.pos = target;
+                mt.currentIndex = mt.movingIndex;
+
+                if (!mt.path.empty()) {
+                    mt.movingIndex = mt.path.front();
+                    mt.path.erase(mt.path.begin());
+                }
+                else {
+                    mt.movingIndex = -1;
+                }
+            }
+            else {
+                dir.x /= dist;
+                dir.y /= dist;
+                mt.pos.x += dir.x * mt.speed * delta;
+                mt.pos.y += dir.y * mt.speed * delta;
+            }
+        }
+    }
+
+    void HandleClick(MovingTexture& mt, const vector<Vector2>& positions, Vector2 mouse) {
+        int clicked = GetClickedIndex(positions, mouse);
+        if (clicked >= 0 && clicked != mt.currentIndex) {
+            mt.path.clear();
+
+            if (clicked > mt.currentIndex) {
+                for (int i = mt.currentIndex + 1; i <= clicked; i++)
+                    mt.path.push_back(i);
+            }
+            else {
+                for (int i = mt.currentIndex - 1; i >= clicked; i--)
+                    mt.path.push_back(i);
+            }
+
+            // bắt đầu di chuyển
+            mt.movingIndex = mt.path.front();
+            mt.path.erase(mt.path.begin());
+        }
+    }
+
 
 
     ParallelogramHoverManager manager;
@@ -247,6 +321,14 @@ public:
     void DrawSetting();
     void UpdateSetting(float deltaTime);
     void HandleSetting();
+
+    void DrawPlayer();
+    void UpdatePlayer(float deltaTime);
+    void HandlePlayer();
+
+    void DrawLevel();
+    void UpdateLevel(float deltaiTime);
+    void HandleLevel();
 
 };
 

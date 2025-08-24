@@ -328,6 +328,8 @@
     <ClInclude Include="include\UI\SlideBar.h" />
     <ClInclude Include="include\UI\SoundEffect.h" />
     <ClInclude Include="include\UI\UI.h" />
+    <ClInclude Include="include\Enemy\LaserMechaKoopa\LaserBeam.h" />
+    <ClInclude Include="include\Objects\InteractiveObjects\CameraTriggerZone.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="level1.json" />
@@ -347,5 +349,6 @@
     <Image Include="assets\Ghost_house_3.png" />
     <Image Include="assets\Snow_night_1.png" />
     <Image Include="assets\Snow_night_2.png" />
+    <Image Include="assets\level_map4.png" />
   </ItemGroup>
 </Project>

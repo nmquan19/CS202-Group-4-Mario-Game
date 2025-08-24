@@ -28,7 +28,9 @@ int main() {
     GameContext* context = &GameContext::getInstance();
     MenuState menuState;
     RedirectState redirectState;
+    PlayerSelectingState playerSelectingState;
     CharacterSelectingState characterSelectingState;
+    LevelSelectingState levelSelectingState;
     InformationState informationState;
     GamePlayState gamePlayState;
     EditorState editorState;
@@ -36,7 +38,7 @@ int main() {
     GameOverState gameOverState;
     GameCameraSystem::getInstance().init();
 
-    context->setGameStates(&menuState, &redirectState, &characterSelectingState, &informationState, &gamePlayState, &editorState, &editorSelectingState, &gameOverState);
+    context->setGameStates(&menuState, &redirectState, &playerSelectingState, &characterSelectingState, &levelSelectingState, &informationState, &gamePlayState, &editorState, &editorSelectingState, &gameOverState);
     LightingManager::getInstance().loadShader("assets/shaders/lightsource.fs");
     LightingManager::getInstance().setAmbientColor(WHITE); // Dark blue 
     GameContext::getInstance().addObject(EnemyType::BOO, { 300,500 }, { 1,1 });
