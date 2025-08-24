@@ -33,6 +33,9 @@ public:
 
     bool isSolid() const;
     BlockType getType() const;
+    Rectangle getSrcRect() const;
+    Texture2D getTextureSprite() const;
+
 protected:
     Vector2 position;
     Rectangle hitbox;
