@@ -302,6 +302,7 @@ namespace Constants {
     namespace PaletteResources {
         constexpr Rectangle BLOCK_1_1_2 = { 18, 1, 16, 16 };
         constexpr Rectangle BLOCK_1_1_3 = { 35, 1, 16, 16 };
+        constexpr Rectangle BLOCK_1_1_4 = { 52, 1, 16, 16 };
         constexpr Rectangle BLOCK_1_1_12 = { 188, 1, 16, 16 };
         constexpr Rectangle BLOCK_1_1_13 = { 205, 1, 16, 16 };
         constexpr Rectangle BLOCK_1_1_14 = { 222, 1, 16, 16 };
