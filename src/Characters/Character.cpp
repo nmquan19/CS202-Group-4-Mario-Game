@@ -231,6 +231,12 @@ void Character::jump(){
 		float mass = this->physicsBody->GetMass();
 		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-jumpVel - currentVel.y)), true);
 		groundContactCount = 0;
+		if (powerState == PowerState::SMALL) {
+			AudioManager::getInstance().PlaySoundEffect("jump_small");
+		}
+		else {
+			AudioManager::getInstance().PlaySoundEffect("jump_super");
+		}
 	}
 }
 
@@ -391,6 +397,8 @@ void Character::handleEnvironmentCollision(std::shared_ptr<Object> other, Direct
 void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction direction) {
 	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
 	if (direction == Direction::DOWN) {
+		UIManager::getInstance().addScore();
+		AudioManager::getInstance().PlaySoundEffect("stomp");
 		float mass = physicsBody->GetMass();
 		physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY*1.2 - currentVel.y)), true);
 		changeState(JumpingState::getInstance());
@@ -444,7 +452,9 @@ void Character::handleItemCollision(std::shared_ptr<Object> other, Direction dir
 	if (auto* itemType = std::get_if<ItemType>(&objectType)) {
 		switch (*itemType) {
 		case ItemType::COIN:
+			AudioManager::getInstance().PlaySoundEffect("point");
 			UIManager::getInstance().addCoin();
+			UIManager::getInstance().addScore();
 			break;
 		case ItemType::FIRE_FLOWER:
 			if (powerState == PowerState::FIRE) {
@@ -463,6 +473,7 @@ void Character::handleItemCollision(std::shared_ptr<Object> other, Direction dir
 			}
 			break;
 		case ItemType::ONE_UP:
+			AudioManager::getInstance().PlaySoundEffect("one_up");
 			hp += 1;
 			changeState(RefreshPowerState::getInstance());
 			break;

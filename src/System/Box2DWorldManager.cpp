@@ -158,10 +158,11 @@ void Box2DWorldManager::attachSensors(b2Body* body, Vector2 hitboxSize) {
 	float sensorWidth = hitboxSize.x * 0.6f;
 	float sensorHeight = hitboxSize.y * 0.6f;
 
-	// Bottom
-	b2PolygonShape botSensor;
-	botSensor.SetAsBox(raylibToB2(sensorWidth * 0.5f), raylibToB2(sensorThickness * 0.5f),
-		b2Vec2(0, raylibToB2(hitboxSize.y * 0.5f + sensorThickness * 0.5f)), 0);
+	// Bottom sensor
+	b2CircleShape botSensor;
+	float botSensorRadius = raylibToB2(sensorWidth * 0.25f);
+	botSensor.m_radius = botSensorRadius;
+	botSensor.m_p.Set(0, raylibToB2(hitboxSize.y * 0.5f + botSensorRadius));
 	b2FixtureDef botFixture;
 	botFixture.shape = &botSensor;
 	botFixture.isSensor = true;
@@ -233,8 +234,6 @@ b2Body* Box2DWorldManager::createDynamicBody(b2Vec2 b2_pos) {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position = b2_pos;
-	/*bodyDef.allowSleep = true;
-	bodyDef.awake = true;*/
 
 	b2Body* body = world->CreateBody(&bodyDef);
 	return body;

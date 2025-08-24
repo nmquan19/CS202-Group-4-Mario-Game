@@ -91,6 +91,11 @@ void GameContext::setState(GameState* newState) {
 
         if (newState == gamePlayState) {
             Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
+            
+            UIManager::getInstance().resetCoin();
+            UIManager::getInstance().resetTimer();
+            UIManager::getInstance().resetScore();
+
             LevelEditor::getInstance().setEditMode(false);
             LevelEditor::getInstance().loadLevel("testlevel.json");
 			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
@@ -100,7 +105,6 @@ void GameContext::setState(GameState* newState) {
                 std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position,triggerData.size,triggerData);
                 Objects.push_back(cameraTrigger);
 			}
-            //addObject(InteractiveType::FIRE_BAR, Vector2{ 700, 400 }, Vector2{});
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
@@ -143,10 +147,12 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* character, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
     menuState = menu;
     redirectState = redirect;
+    playerSelectingState = player;
     characterSelectingState = character;
+    levelSelectingState = level;
     informationState = information;
     gamePlayState = game;
     editorState = editor;

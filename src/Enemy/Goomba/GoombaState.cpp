@@ -55,7 +55,12 @@ void GoombaStompedState::enter(Enemy* enemy)
     goomba->stompedAnimation = true;
     goomba->stompedTime = 0.0f;
     goomba->spritebox = TextureManager::Enemy_sprite_boxes[goomba->getSpriteData()[2].first];
-
+    
+    for (b2Fixture* f = goomba->physicsBody->GetFixtureList(); f; f = f->GetNext()) {
+        b2Filter filter = f->GetFilterData();
+        filter.categoryBits = static_cast<uint16> (ObjectCategory::BLOCK);
+        f->SetFilterData(filter);
+    }
 }
 
 void GoombaStompedState::checkCondition(Enemy* enemy)
@@ -73,7 +78,6 @@ void GoombaStompedState::exit(Enemy* enemy)
 {
     Goomba* goomba = dynamic_cast<Goomba*>(enemy);
     goomba->isalive = false;
-    //std::cout << goomba->stompedTime << std::endl;
     GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(goomba));
 }
 

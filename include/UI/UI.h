@@ -18,9 +18,9 @@ public:
     }
     void Draw(Font f, Color color) {
         font = f;
-        DrawTextEx(font, "MARIO", position, 40, 2, color);
+        DrawTextEx(font, "SCORE", position, 40, 2, color);
         const char* scoreStr = TextFormat("%06d", score);
-        Vector2 size = MeasureTextEx(font, "MARIO", 40, 2);
+        Vector2 size = MeasureTextEx(font, "SCORE", 40, 2);
         Vector2 scorePos = { position.x, position.y + size.y };
         DrawTextEx(font, scoreStr, scorePos, 40, 2, color);
     }
@@ -168,9 +168,16 @@ public:
     void DrawGameOver();
 
     void setScore(int s) { score.score = s; }
-    void addCoin() { coin.coinCount++; }
+    void addScore(int s = 100) { score.score += s; }
+    void resetScore() { score.score = 0; }
+
+    void setCoin(int c) { coin.coinCount = c; }
+    void addCoin(int c = 1) { coin.coinCount += c; }
+    void resetCoin() { coin.coinCount = 0; }
+
     void setWorld(const char* w) { world.worldStr = w; }
-    void resetTimer(float t) { timer.timeLeft = t; }
+    void setTime(float t) { timer.timeLeft = t; }
+    void resetTimer() { timer.timeLeft = 400; }
 
     void DrawTypewriterText(const char* text, Vector2 position, float fontSize, float spacing, Color color, float delay, float& timer, int& visibleChars) {
         timer += GetFrameTime();

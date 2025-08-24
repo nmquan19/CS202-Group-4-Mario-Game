@@ -1,8 +1,10 @@
 #include "../../include/Characters/RefreshPowerState.h"
 #include "../../include/Characters/IdleState.h"
 #include "../../include/Characters/Character.h"
+#include "../../include/UI/SoundEffect.h"
 
 void RefreshPowerState::enter(Character* character) {
+	AudioManager::getInstance().PlaySoundEffect("level_up");
 	character->aniTimer = 0.0f;
 	character->aniSpeed = 0.3f;
 	character->invincibleTimer = 0.5f;
