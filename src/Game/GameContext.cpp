@@ -98,8 +98,9 @@ void GameContext::setState(GameState* newState) {
 
             LevelEditor::getInstance().setEditMode(false);
             if (level == 1) LevelEditor::getInstance().loadLevel("level1.json");
-            else if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
-            else if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
+            if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
+            if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
+            if (level == 4) LevelEditor::getInstance().loadLevel("testlevel.json");
 			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
 
             switch (menuManager.character01Select) {
@@ -154,9 +155,9 @@ void GameContext::handleInput() {
 }
 
 void GameContext::update(float deltaTime) {
-    if (currentState == gamePlayState) {
-        AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue());
-        AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue());
+    if (currentState == gamePlayState && !menuManager.settingDialog) {
+        AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue() * menuManager.slideBarMaster.getValue());
+        AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue() * menuManager.slideBarMaster.getValue());
         if (!AudioManager::getInstance().isPlaying()) {
             AudioManager::getInstance().PlayBackgroundMusic("theme1");
         }
@@ -178,11 +179,12 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* levelRedirect, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
     menuState = menu;
     redirectState = redirect;
     playerSelectingState = player;
     characterSelectingState = character;
+    levelRedirectState = levelRedirect;
     levelSelectingState = level;
     informationState = information;
     gamePlayState = game;
@@ -247,7 +249,7 @@ void GameContext::spawnObject() {
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
         ToDeleteObjects.push_back(object);
-        LevelEditor::getInstance().removeObject(object->getGridPos());
+        LevelEditor::getInstance().removeObject(object->getGridPos(), object);
     }
 }
 

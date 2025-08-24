@@ -364,7 +364,7 @@ b2Body* Box2DWorldManager::createItemStaticBody(Vector2 pos, Vector2 hitboxSize)
 	b2_pos.y += b2_size.y / 2;
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_kinematicBody;
+	bodyDef.type = b2_staticBody;
 	bodyDef.position = b2_pos;
 	bodyDef.fixedRotation = true;
 	bodyDef.allowSleep = true;

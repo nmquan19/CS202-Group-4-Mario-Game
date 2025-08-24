@@ -111,6 +111,8 @@ public:
     ObjectPalette getObjectPalette() {
         return palette;
     }
+
+    std::shared_ptr<Object> findQuestionBlock(Vector2 gridPos);
 private:
     static LevelEditor* instance;
     std::map<std::pair<int, int>, std::stack<std::shared_ptr<Object>>> gridBlocks;
