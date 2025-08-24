@@ -57,6 +57,7 @@ void JumpingState::handleInput(Character* character, const InputState& input) {
 
 void JumpingState::checkTransitions(Character* character, const InputState& input) {
     if (character->isOnGround() || character->physicsBody->GetLinearVelocity().y == 0) {
+        character->addGroundContact();
         if (input.moveLeft || input.moveRight) {
             character->changeState(MovingState::getInstance());
         }

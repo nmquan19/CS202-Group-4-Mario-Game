@@ -27,6 +27,8 @@ Texture2D TextureManager::background_lv1;
 std::vector<Rectangle> TextureManager::torch_sprite_boxes;
 Texture2D TextureManager::torch_texture;
 
+Texture2D TextureManager::fireBallTexture;
+Texture2D TextureManager::fireOrbTexture;
 
 std::vector<Rectangle> TextureManager::boo_sprite_boxes;
 Texture2D TextureManager::boo_texture;
@@ -82,6 +84,9 @@ void TextureManager::loadTextures() {
     day_undergroundTexture = LoadTexture("assets/day_underground.png");
     night_airshipTexture = LoadTexture("assets/night_airship.png");
     night_snowTexture = LoadTexture("assets/night_snow.png");
+
+    fireBallTexture = LoadTexture("assets/Fireball_sprites.png");
+    fireOrbTexture = LoadTexture("assets/FireOrb_sprites.png");
 
     //Enemy textures 
     std::ifstream  enemy_in;
@@ -158,6 +163,8 @@ void TextureManager::unloadTextures() {
     UnloadTexture(DryBowser_texture);
     UnloadTexture(fontTexture);
     UnloadTexture(interactiveTextures);
+    UnloadTexture(fireBallTexture);
+    UnloadTexture(fireOrbTexture);
     texturesLoaded = false;
 
     UnloadTexture(itemTextures);

@@ -71,6 +71,8 @@
     <ClCompile Include="src\Objects\InteractiveObjects\MovingPlatform.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\Spring.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\CameraTriggerZone.cpp" />
+    <ClCompile Include="include\Objects\Projectile\FireOrb.h" />
+    <ClCompile Include="src\Objects\Projectile\FireOrb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\AttackState.cpp">

@@ -434,6 +434,7 @@ void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direct
 void Character::handleSpringCollision(std::shared_ptr<Spring> other, Direction direction) {
 	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
 	if (direction == Direction::DOWN) {
+		AudioManager::getInstance().PlaySoundEffect("spring_jump");
 		float mass = this->physicsBody->GetMass();
 		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Spring::BOUNCE_VELOCITY - currentVel.y)), true);
 		changeState(JumpingState::getInstance());
@@ -475,7 +476,6 @@ void Character::handleItemCollision(std::shared_ptr<Object> other, Direction dir
 		case ItemType::ONE_UP:
 			AudioManager::getInstance().PlaySoundEffect("one_up");
 			hp += 1;
-			changeState(RefreshPowerState::getInstance());
 			break;
 		case ItemType::STAR:
 			if (powerState == PowerState::STAR) {

@@ -27,6 +27,8 @@ public:
 
     static Texture2D enemyTextures;
     static Texture2D interactiveTextures;
+    static Texture2D fireBallTexture;
+    static Texture2D fireOrbTexture;
 
     static std::vector<Rectangle> Item_sprite_boxes;
     static Texture2D itemTextures;

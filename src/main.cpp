@@ -42,7 +42,7 @@ int main() {
     LightingManager::getInstance().loadShader("assets/shaders/lightsource.fs");
     LightingManager::getInstance().setAmbientColor(WHITE); // Dark blue 
     while (!WindowShouldClose()) {
-        Box2DWorldManager::getInstance().setDebugDraw(true);
+        //Box2DWorldManager::getInstance().setDebugDraw(true);
 
         float deltaTime = GetFrameTime();
         context->handleInput();
