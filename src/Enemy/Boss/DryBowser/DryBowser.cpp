@@ -132,7 +132,6 @@ void DryBowser::draw() {
     }
     Vector2 origin = { 0, 0 };
     DrawTexturePro(this->texture, source, dest, origin, 0.0f, WHITE);
-    drawHealthBar();
 }
 void DryBowser::drawHealthBar()
 {

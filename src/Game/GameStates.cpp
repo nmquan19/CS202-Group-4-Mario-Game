@@ -11,7 +11,7 @@
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
-
+#include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../include/System/LightingSystem.h"
 #include <raymath.h>
 void handleCamera();
@@ -300,10 +300,9 @@ void GamePlayState::draw(GameContext& context) {
     }
     BeginMode2D(GameCameraSystem::getInstance().getCamera());
     for (auto& obj : context.Objects) {
-       /* if(isInCameraBound(GameCameraSystem::getInstance().getCamera(),obj->getPosition(),100.f)) {
+        if(isInCameraBound(GameCameraSystem::getInstance().getCamera(),obj->getPosition(),100.f)) {
             obj->draw();
-		}*/
-        obj->draw();
+		}
     }
 
     if (context.character01) {
@@ -339,7 +338,13 @@ void GamePlayState::draw(GameContext& context) {
     } else {
         DrawText("Box2D Debug Mode: OFF (Key F10 to toggle)", 520, 80, 20, RED);
     }
-    
+    for (auto& obj : context.Objects) {
+        if (auto dry = dynamic_cast<DryBowser*>(obj.get())) {
+            if (isInCameraBound(GameCameraSystem::getInstance().getCamera(), dry->getPosition(), 100.f)) {
+                dry->drawHealthBar();
+            }
+        }
+    }
     context.menuManager.DrawSetting();
     UIManager::getInstance().drawInformationBoard(WHITE);
     EndDrawing();

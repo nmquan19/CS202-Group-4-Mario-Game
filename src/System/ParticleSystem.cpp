@@ -92,7 +92,7 @@ ParticleEffect::ParticleEffect(const ParticleEffect& p) {
 	this->particleBounds = p.particleBounds;
 	this->minVelocity = p.minVelocity;
 	this->maxVelocity = p.maxVelocity;
-	this->acceleration = p.acceleration;
+	this->acceleration = p.acceleration;	
 	this->lifeSpan = p.lifeSpan;
 	this->spawnSpeed = p.spawnSpeed;
 	this->active = true;

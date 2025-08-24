@@ -25,6 +25,7 @@ void GameCamera::shake(float strength, float decay) {
 }
 void PlayerCenteredCamera::update(float dt) { 
     
+    if (GameCameraSystem::getInstance().isInTransition()) return; 
 	std::shared_ptr<Character> character =std::dynamic_pointer_cast<Character>(GameContext::getInstance().getCharacter()); 
     Vector2 desired = character->getCenterPos();
     desired.x += character->isFacingRight() ? horizontalBias : -horizontalBias;
@@ -51,11 +52,11 @@ void PlayerCenteredCamera::update(float dt) {
         }
     }
     // Optional: ledge bias
-    bool wantLedgeBias = IsKeyDown(KEY_DOWN);
+    bool wantLedgeBias = IsKeyDown(KEY_S);
     float targetLedgeBias = wantLedgeBias ? 250.0f : 0.0f;
     currentLedgeBias = Lerp(currentLedgeBias, targetLedgeBias, dt * 5.0f);
-   if(curGroundIndex!=-1) //std::cout<<groundBounds[curGroundIndex]<<" "<< character->getPosition().y << "\n";
-
+    //std::cout<<groundBounds[curGroundIndex]<<" "<< character->getPosition().y << "\n";
+     curGroundIndex = -1;
     // Screen shake
     if (shakeIntensity > 0.01f) {
         shakeOffset = {
@@ -80,12 +81,16 @@ void PlayerCenteredCamera::update(float dt) {
     float minX = bounds.x + cameraWidth * 0.5f;
     float maxX = bounds.x + bounds.width - cameraWidth * 0.5f;
     float minY = bounds.y + cameraHeight * 0.5f;
-    float maxY =((curGroundIndex!=-1)? groundBounds[curGroundIndex]:(bounds.y +bounds.height)) +currentLedgeBias - cameraHeight * 0.5f;
+
+    float maxWorldY = bounds.y + bounds.height - cameraHeight * 0.5f;
+    float maxY = std::min(maxWorldY,
+        (curGroundIndex != -1 ? groundBounds[curGroundIndex] : maxWorldY)
+        + currentLedgeBias - cameraHeight * 0.5f);
     Vector2 topLeft = GetWorldToScreen2D({ 0, maxY }, cam);
     Vector2 bottomRight = GetWorldToScreen2D({ (float)GetScreenWidth(), maxY }, cam);
 
     DrawLine((int)topLeft.x, (int)topLeft.y, (int)bottomRight.x, (int)bottomRight.y, RED);
-
+   
     shaken.x = Clamp(shaken.x, minX, maxX);
     shaken.y = Clamp(shaken.y, minY, maxY);
 
@@ -106,7 +111,8 @@ void GameCameraSystem::update(float dt) {
         float t = transition.timer / transition.duration;
         if (t >= 1.0f) {
             t = 1.0f;
-            transition.active = false;
+            transition.active = false;  
+			transition.timer = 0.0f;
         }
         float easedT = t * t * (3 - 2 * t); 
         Camera2D cam;
@@ -126,14 +132,15 @@ void GameCameraSystem::addCamera(std::unique_ptr<GameCamera> camera) {
     cameras.emplace_back(std::move(camera));
 } 
 void GameCameraSystem::switchCamera(int toIndex) {
-    if (toIndex < 0 || toIndex >= cameras.size()||transition.timer!=0) return;
+    if (toIndex < 0 || toIndex >= cameras.size()||transition.timer!=0||curIndex == toIndex) return;
     transition.active = true;
     transition.timer = 0.0f;
-    transition.duration = 0.5f; 
+    transition.duration = 0.1f; 
 
     transition.from = cameras[curIndex]->GetCamera();
     transition.to = cameras[toIndex]->GetCamera();
     curIndex = toIndex; 
+
 } 
 void GameCameraSystem::shakeCurrentCamera(float strength, float decay) {
     if (curIndex < 0 || curIndex >= cameras.size()) return;
@@ -150,3 +157,25 @@ StaticGameCamera::StaticGameCamera():GameCamera() {
     cam.rotation = 0.0f;
 	cam.target = { 0, 0 };   
 } 
+void GameCameraSystem::applyBoundsOnSwitch() {
+    if (curIndex < 0 || curIndex >= cameras.size()) return;
+
+    auto& currentCam = cameras[curIndex];
+    Camera2D cam = currentCam->GetCamera();
+
+    float camWidth = (float)GetScreenWidth();
+    float camHeight = (float)GetScreenHeight();
+
+    Rectangle b = currentCam->getBounds();
+
+    float minX = b.x + camWidth * 0.5f;
+    float maxX = b.x + b.width - camWidth * 0.5f;
+    float minY = b.y + camHeight * 0.5f;
+    float maxY = b.y + b.height - camHeight * 0.5f;
+
+    cam.target.x = Clamp(cam.target.x, minX, maxX);
+    cam.target.y = Clamp(cam.target.y, minY, maxY);
+
+    currentCam->setCamera(cam);
+}
+

@@ -4,6 +4,7 @@
 InteractiveObject::InteractiveObject(Vector2 position, Vector2 size) {
     this->hitBox = {position.x, position.y, size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE };
     this->size = size;
+
 }
 
 std::vector<Rectangle> InteractiveObject::getHitBox() const {
