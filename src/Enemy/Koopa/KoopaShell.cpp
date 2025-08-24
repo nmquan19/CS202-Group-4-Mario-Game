@@ -22,6 +22,7 @@ KoopaShell::KoopaShell(KoopaShellType type, Vector2 pos, Vector2 sz): type(type)
     }
     currentState = &KoopaShellIdleState::getInstance();
     currentState->enter(this);
+    triggerZone = nullptr;
 }
 
 

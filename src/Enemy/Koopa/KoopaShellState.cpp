@@ -21,13 +21,11 @@ void KoopaShellIdleState::enter(KoopaShell* shell) {
             static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
         fixture->SetFilterData(filter);
     }
-    shell->triggerZone->setActive(true);
 
 }
 
 void KoopaShellIdleState::exit(KoopaShell* shell) {
     shell->curFrame = shell->getSpriteData()[0].second - shell->getSpriteData()[0].first;
-    shell->triggerZone->setActive(false);
 }
 
 void KoopaShellIdleState::update(KoopaShell* shell, float deltaTime) {
