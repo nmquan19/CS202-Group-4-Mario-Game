@@ -50,8 +50,6 @@ void RedirectState::handleInput(GameContext& context) {
         Vector2 mousePos = GetMousePosition();
         if (context.menuManager.characterBoard.checkCollision(mousePos)) context.setState(context.playerSelectingState);
         if (context.menuManager.continueBoard.checkCollision(mousePos)) context.setState(context.informationState);
-        if (context.menuManager.restartBoard.checkCollision(mousePos)) context.setState(context.informationState);
-        if (context.menuManager.levelBoard.checkCollision(mousePos)) context.setState(context.informationState);
         if (context.menuManager.menuBoard.checkCollision(mousePos)) context.setState(context.menuState);
     }
 }
@@ -114,6 +112,7 @@ void CharacterSelectingState::draw(GameContext& context) {
 }
 
 void LevelSelectingState::handleInput(GameContext& context) {
+    context.menuManager.HandleLevel();
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.informationState);
     }
@@ -170,6 +169,8 @@ void GamePlayState::handleInput(GameContext& context) {
         context.setState(context.gameOverState);
     }
     
+    context.gameOverState->setLevel(context);
+
     if (IsKeyPressed(KEY_F5)) {
         context.saveGameState("saved_game.json");
     }
@@ -212,9 +213,8 @@ bool isInCameraBound(const Camera2D& cam, Vector2 pos, float padding = 0.0f) {
 void GamePlayState::update(GameContext& context, float deltaTime) {
     auto& cam = GameCameraSystem::getInstance(); 
     cam.update(deltaTime);
-    //NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
     LightingManager::getInstance().update(deltaTime);
-    //GameCameraSystem::getInstance().shakeCurrentCamera(100.0f, 0.1f);
+    //GameCameraSystem::getInstance().shakeCurrentCamera(100.0f, 0.1xf);
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
     {
         Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), cam.getCamera());
@@ -233,9 +233,8 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     for (auto& obj :context.Objects)
     {
 		IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
-        //if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
-        //    updatableObj->update(deltaTime);
-        updatableObj->update(deltaTime);
+        if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
+            updatableObj->update(deltaTime);
 
     }
     context.menuManager.UpdateSetting(deltaTime);
@@ -270,7 +269,6 @@ void DrawParallaxBackground(Texture2D bg, Camera2D cam, float parallaxFactor) {
 void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
-    NavGraph::getInstance().clear();
     DrawText("Press Enter", 500, 100, 20, WHITE);
     DrawText("F5 - Save game", 1200, 500, 50, BLACK);
     DrawText("F6 - Load current game", 1200, 600, 50, BLACK);
@@ -286,7 +284,7 @@ void GamePlayState::draw(GameContext& context) {
     Texture2D bg = TextureManager::getInstance().background_lv1;
     Camera2D cam = GameCameraSystem::getInstance().getCamera();
 
-    DrawParallaxBackground(bg, cam, 0.5f);
+    //DrawParallaxBackground(bg, cam, 0.5f);
     if (level == 1) {
         Background::getInstance().draw("Forest_1", { 0,0 });
         Background::getInstance().draw("Forest_1", { 0, 512 });
@@ -425,33 +423,9 @@ void EditorState::draw(GameContext& context) {
         BeginDrawing();
         ClearBackground(WHITE); // Clear main buffer
 
-        LightingManager& lm = LightingManager::getInstance();
-
-        // 1. Render scene to lightmap (world-space)
-        BeginTextureMode(lm.getLightMap());
-        {
-            ClearBackground(BLANK); // Transparent clear for light accumulation
-            LevelEditor::getInstance().mapSelect = mapSelect;
-            LevelEditor::getInstance().draw();
-        }
-        EndTextureMode();
-
-        // 2. Apply lighting shader (screen-space)
-        lm.prepareShader(context.camera);
-        BeginShaderMode(lm.getShader());
-
-        // Important: Set texture slot 0 for sceneTexture
-        SetShaderValueTexture(lm.getShader(),
-            GetShaderLocation(lm.getShader(), "sceneTexture"),
-            lm.getLightMap().texture);
-
-        // Draw fullscreen quad to apply shader
-        DrawTextureRec(lm.getLightMap().texture,
-            { 0, 0, (float)lm.getLightMap().texture.width, (float)-lm.getLightMap().texture.height },
-            { 0, 0 },
-            WHITE);
-        EndShaderMode();
-
+         ClearBackground(BLANK); // Transparent clear for light accumulation
+         LevelEditor::getInstance().mapSelect = mapSelect;
+         LevelEditor::getInstance().draw();
         DrawFPS(20, 50);
         EndDrawing();
     }
@@ -483,6 +457,16 @@ void GameOverState::handleInput(GameContext& context) {
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.menuState);
     }
+    if (IsKeyPressed(KEY_ONE)) {
+        context.level = 2;
+        context.gamePlayState->setLevel(context);
+        context.setState(context.gamePlayState);
+    }
+    if (IsKeyPressed(KEY_THREE)) {
+        context.level = 3;
+        context.gamePlayState->setLevel(context);
+        context.setState(context.gamePlayState);
+    }
   
 }
 
@@ -493,8 +477,20 @@ void GameOverState::update(GameContext& context, float deltaTime) {
 
 void GameOverState::draw(GameContext& context) {
     BeginDrawing();
-    ClearBackground(BLACK);
+    if (level == 1) {
+        Background::getInstance().draw("Forest_1", { 0,0 });
+        Background::getInstance().draw("Forest_1", { 0, 512 });
+    }
+    if (level == 2) {
+        Background::getInstance().draw("Airship_night_3", { 0,0 });
+        Background::getInstance().draw("Airship_night_3", { 0,0 });
+    }
+    if (level == 3) {
+        Background::getInstance().draw("Snow_night_1", { 0,0 });
+        Background::getInstance().draw("Snow_night_1", { 0,0 });
+    }
     UIManager::getInstance().drawInformationBoard(WHITE);
+    
     EndDrawing();
 }
 

@@ -97,14 +97,16 @@ void GameContext::setState(GameState* newState) {
             UIManager::getInstance().resetScore();
 
             LevelEditor::getInstance().setEditMode(false);
-            LevelEditor::getInstance().loadLevel("snowmap.json");
+            if (level == 1) LevelEditor::getInstance().loadLevel("level1.json");
+            if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
+            if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
 			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
             character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
-            character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
-            /*for(const auto& triggerData : levelInfo[0].cameraTriggersData) {
+            //character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+            for(const auto& triggerData : levelInfo[0].cameraTriggersData) {
                 std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position,triggerData.size,triggerData);
                 Objects.push_back(cameraTrigger);
-			}*/
+			}
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
@@ -371,7 +373,7 @@ void GameContext::loadGameState(const std::string& filename) {
             } else if (saveType == "Interactive") {
                 Vector2 gridPos = {objData["gridPosition"][0], objData["gridPosition"][1]};
                 InteractiveType interactiveType = static_cast<InteractiveType>(objData["interactiveType"]);
-                
+                if (interactiveType == InteractiveType::SWITCH_CAMERA_TRIGGER_ZONE) continue;
                 LevelEditor::getInstance().placeObject(interactiveType, gridPos);
 
                 if (!Objects.empty()) {

@@ -107,6 +107,8 @@ public:
 
 
 class GameOverState : public GameState {
+private:
+    int level = 1;
 public:
     void handleInput(GameContext& context) override;
     void update(GameContext& context, float deltaTime) override;
