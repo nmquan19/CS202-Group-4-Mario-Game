@@ -50,8 +50,6 @@ void RedirectState::handleInput(GameContext& context) {
         Vector2 mousePos = GetMousePosition();
         if (context.menuManager.characterBoard.checkCollision(mousePos)) context.setState(context.playerSelectingState);
         if (context.menuManager.continueBoard.checkCollision(mousePos)) context.setState(context.informationState);
-        if (context.menuManager.restartBoard.checkCollision(mousePos)) context.setState(context.informationState);
-        if (context.menuManager.levelBoard.checkCollision(mousePos)) context.setState(context.informationState);
         if (context.menuManager.menuBoard.checkCollision(mousePos)) context.setState(context.menuState);
     }
 }
@@ -114,6 +112,7 @@ void CharacterSelectingState::draw(GameContext& context) {
 }
 
 void LevelSelectingState::handleInput(GameContext& context) {
+    context.menuManager.HandleLevel();
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.informationState);
     }
@@ -170,6 +169,8 @@ void GamePlayState::handleInput(GameContext& context) {
         context.setState(context.gameOverState);
     }
     
+    context.gameOverState->setLevel(context);
+
     if (IsKeyPressed(KEY_F5)) {
         context.saveGameState("saved_game.json");
     }
@@ -483,6 +484,16 @@ void GameOverState::handleInput(GameContext& context) {
     if (IsKeyPressed(KEY_ENTER)) {
         context.setState(context.menuState);
     }
+    if (IsKeyPressed(KEY_ONE)) {
+        context.level = 2;
+        context.gamePlayState->setLevel(context);
+        context.setState(context.gamePlayState);
+    }
+    if (IsKeyPressed(KEY_THREE)) {
+        context.level = 3;
+        context.gamePlayState->setLevel(context);
+        context.setState(context.gamePlayState);
+    }
   
 }
 
@@ -493,8 +504,20 @@ void GameOverState::update(GameContext& context, float deltaTime) {
 
 void GameOverState::draw(GameContext& context) {
     BeginDrawing();
-    ClearBackground(BLACK);
+    if (level == 1) {
+        Background::getInstance().draw("Forest_1", { 0,0 });
+        Background::getInstance().draw("Forest_1", { 0, 512 });
+    }
+    if (level == 2) {
+        Background::getInstance().draw("Airship_night_3", { 0,0 });
+        Background::getInstance().draw("Airship_night_3", { 0,0 });
+    }
+    if (level == 3) {
+        Background::getInstance().draw("Snow_night_1", { 0,0 });
+        Background::getInstance().draw("Snow_night_1", { 0,0 });
+    }
     UIManager::getInstance().drawInformationBoard(WHITE);
+    
     EndDrawing();
 }
 

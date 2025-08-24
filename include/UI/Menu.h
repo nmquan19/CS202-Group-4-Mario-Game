@@ -199,6 +199,72 @@ public:
 };
 
 
+class MovingTexture {
+public:
+    Texture2D tex;
+    Vector2 pos;
+    int currentIndex = 0;
+    vector<int> path;
+    int movingIndex = -1;
+    float speed = 300.0f;
+
+    int GetClickedIndex(const vector<Vector2>& positions, Vector2 mouse) {
+        for (int i = 0; i < (int)positions.size(); i++) {
+            if (CheckCollisionPointCircle(mouse, positions[i], 50)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void UpdateMovingTexture(const vector<Vector2>& positions, float delta) {
+        if (movingIndex >= 0) {
+            Vector2 target = positions[movingIndex];
+            Vector2 dir = { target.x - pos.x, target.y - pos.y };
+            float dist = sqrtf(dir.x * dir.x + dir.y * dir.y);
+
+            if (dist < 2.0f) {
+                pos = target;
+                currentIndex = movingIndex;
+
+                if (!path.empty()) {
+                    movingIndex = path.front();
+                    path.erase(path.begin());
+                }
+                else {
+                    movingIndex = -1;
+                }
+            }
+            else {
+                dir.x /= dist;
+                dir.y /= dist;
+                pos.x += dir.x * speed * delta;
+                pos.y += dir.y * speed * delta;
+            }
+        }
+    }
+
+    void HandleClick(const vector<Vector2>& positions, Vector2 mouse) {
+        int clicked = GetClickedIndex(positions, mouse);
+        if (clicked >= 0 && clicked != currentIndex) {
+            path.clear();
+
+            if (clicked > currentIndex) {
+                for (int i = currentIndex + 1; i <= clicked; i++)
+                    path.push_back(i);
+            }
+            else {
+                for (int i = currentIndex - 1; i >= clicked; i--)
+                    path.push_back(i);
+            }
+
+            movingIndex = path.front();
+            path.erase(path.begin());
+        }
+    }
+};
+
+
 
 class MenuManager {
 private:
@@ -211,8 +277,13 @@ private:
     float scale = 0.2f;
     bool isActive;
 
-    float backgroundOffsetX = 0.0f;
 
+    float scale1, newWidth1, scale2, newWidth2;
+    Rectangle src1, dst1, src2, dst2;
+    Vector2 origin1, origin2;
+    std::vector<Vector2> positionList;
+    float backgroundOffsetX = 0.0f;
+    MovingTexture mt;
 public:
     Button playBoard, settingBoard, exitBoard, editingBoard;
     Button characterBoard, continueBoard, restartBoard, levelBoard, menuBoard;
@@ -226,71 +297,7 @@ public:
     
 
 
-    struct MovingTexture {
-        Texture2D tex;
-        Vector2 pos;
-        int currentIndex = 0;
-        vector<int> path;
-        int movingIndex = -1;
-        float speed = 200.0f;
-    };
-
-    int GetClickedIndex(const vector<Vector2>& positions, Vector2 mouse) {
-        for (int i = 0; i < (int)positions.size(); i++) {
-            if (CheckCollisionPointCircle(mouse, positions[i], 50)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    void UpdateMovingTexture(MovingTexture& mt, const vector<Vector2>& positions, float delta) {
-        if (mt.movingIndex >= 0) {
-            Vector2 target = positions[mt.movingIndex];
-            Vector2 dir = { target.x - mt.pos.x, target.y - mt.pos.y };
-            float dist = sqrtf(dir.x * dir.x + dir.y * dir.y);
-
-            if (dist < 2.0f) {
-                // đến nơi
-                mt.pos = target;
-                mt.currentIndex = mt.movingIndex;
-
-                if (!mt.path.empty()) {
-                    mt.movingIndex = mt.path.front();
-                    mt.path.erase(mt.path.begin());
-                }
-                else {
-                    mt.movingIndex = -1;
-                }
-            }
-            else {
-                dir.x /= dist;
-                dir.y /= dist;
-                mt.pos.x += dir.x * mt.speed * delta;
-                mt.pos.y += dir.y * mt.speed * delta;
-            }
-        }
-    }
-
-    void HandleClick(MovingTexture& mt, const vector<Vector2>& positions, Vector2 mouse) {
-        int clicked = GetClickedIndex(positions, mouse);
-        if (clicked >= 0 && clicked != mt.currentIndex) {
-            mt.path.clear();
-
-            if (clicked > mt.currentIndex) {
-                for (int i = mt.currentIndex + 1; i <= clicked; i++)
-                    mt.path.push_back(i);
-            }
-            else {
-                for (int i = mt.currentIndex - 1; i >= clicked; i--)
-                    mt.path.push_back(i);
-            }
-
-            // bắt đầu di chuyển
-            mt.movingIndex = mt.path.front();
-            mt.path.erase(mt.path.begin());
-        }
-    }
+    
 
 
 

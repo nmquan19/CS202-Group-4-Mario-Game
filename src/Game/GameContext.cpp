@@ -97,7 +97,9 @@ void GameContext::setState(GameState* newState) {
             UIManager::getInstance().resetScore();
 
             LevelEditor::getInstance().setEditMode(false);
-            LevelEditor::getInstance().loadLevel("testlevel.json");
+            if (level == 1) LevelEditor::getInstance().loadLevel("level1.json");
+            if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
+            if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
 			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
             character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
             character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
