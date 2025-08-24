@@ -4,10 +4,10 @@
 
 AudioManager::AudioManager() {
     LoadSoundEffect("click", "./assets/sound/click.wav");
-    LoadSoundEffect("gain2", "./assets/sound/gain2.wav");
-    LoadSoundEffect("jump", "./assets/sound/jump.wav");
-    LoadSoundEffect("jump2", "./assets/sound/jump2.wav");
-    LoadSoundEffect("level up", "./assets/sound/level up.wav");
+    LoadSoundEffect("gain", "./assets/sound/gain2.wav");
+    LoadSoundEffect("jump_small", "./assets/sound/jump_small.wav");
+    LoadSoundEffect("jump_super", "assets/sound/jump_super.wav");
+    LoadSoundEffect("level_up", "./assets/sound/level_up.wav");
     LoadSoundEffect("movement1", "./assets/sound/movement1.wav");
     LoadSoundEffect("movement2", "./assets/sound/movement2.wav");
     LoadSoundEffect("next1", "./assets/sound/next1.wav");
@@ -16,7 +16,10 @@ AudioManager::AudioManager() {
     LoadSoundEffect("notice1", "./assets/sound/notice1.wav");
     LoadSoundEffect("notice2", "./assets/sound/notice2.wav");
     LoadSoundEffect("point", "./assets/sound/point.wav");
-    LoadSoundEffect("strike", "./assets/sound/strike.wav");
+    LoadSoundEffect("stomp", "./assets/sound/stomp.wav");
+    LoadSoundEffect("die", "assets/sound/die.wav");
+    LoadSoundEffect("one_up", "assets/sound/one_up.wav");
+    LoadSoundEffect("fireball", "assets/sound/fireball.wav");
     LoadBackgroundMusic("theme1", "./assets/sound/theme1.wav");
 }
 

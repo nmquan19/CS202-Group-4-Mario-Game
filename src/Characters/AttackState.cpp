@@ -3,6 +3,7 @@
 #include "../../include/Characters/IdleState.h"
 #include "../../include/Game/GameContext.h"
 #include "../../include/System/Box2DWorldManager.h"
+#include "../../include/UI/SoundEffect.h"
 
 void AttackState::enter(Character* character) {
 	character->aniSpeed = 0.2f;
@@ -20,7 +21,7 @@ void AttackState::update(Character* character, float deltaTime) {
 }
 
 void AttackState::exit(Character* character) {
-	std::cout << character->attackTimer << std::endl;
+	AudioManager::getInstance().PlaySoundEffect("fireball");
 	Vector2 centerPosition = Box2DWorldManager::b2ToRaylib(character->physicsBody->GetPosition());
 	int direction = (character->isFacingRight() ? 1 : -1);
 	Vector2 spawnPosition = {
