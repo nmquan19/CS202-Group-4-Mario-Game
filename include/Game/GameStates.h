@@ -38,6 +38,15 @@ class PlayerSelectingState : public GameState {
     }
 };
 
+class LevelRedirectState : public GameState {
+    void handleInput(GameContext& context) override;
+    void update(GameContext& context, float deltaTime) override;
+    void draw(GameContext& context) override;
+    void setLevel(GameContext& context) override {
+        return;
+    }
+};
+
 class GamePlayState : public GameState {
 private:
     int level = 1;
@@ -51,13 +60,14 @@ public:
 
 class InformationState : public GameState {
 private:
+    int level = 1;
     float animationTime = 0;
 public:
     void handleInput(GameContext& context) override;
     void update(GameContext& context, float deltaTime) override;
     void draw(GameContext& context) override;
     void setLevel(GameContext& context) override {
-		return;
+        level = context.level;
 	}
 };
 
@@ -71,7 +81,11 @@ public:
 	}
 };
 
+
+
 class LevelSelectingState : public GameState {
+private:
+    int stateSelect = 1;
 public:
     void handleInput(GameContext& context) override;
 	void update(GameContext& context, float deltaTime) override;

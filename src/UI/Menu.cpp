@@ -11,6 +11,7 @@ MenuManager::MenuManager() {
     exit = false;
     board = LoadTexture("./assets/button/board1.png");
     menuBackground = LoadTexture("./assets/menu background.jpg");
+    redirectBackground = LoadTexture("./assets/redirect background.jpg");
 
     check.load("./assets/button/check.png", "./assets/button/check_selected.png");
 
@@ -37,6 +38,9 @@ MenuManager::MenuManager() {
     day_undergroundBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
     night_airshipBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
     night_snowBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+
+    available.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    custom.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
 
     OnePlayer.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
     TwoPlayers.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
@@ -65,7 +69,7 @@ MenuManager::MenuManager() {
     settingPosition.y = screenHeight / 10.0f;
 
     returnButtonPosition.x = boardPosition.x + board.width * scale / 2.0f;
-    returnButtonPosition.y = boardPosition.y + board.height * scale * 3 / 4.0f;
+    returnButtonPosition.y = boardPosition.y + board.height * scale * 5 / 6.0f;
 
     slideBarMasterPosition.x = boardPosition.x + board.width * scale / 5.0f;
     slideBarMasterPosition.y = boardPosition.y + board.height * scale * 3 / 10.0f;
@@ -115,6 +119,7 @@ MenuManager::~MenuManager() {
     UnloadTexture(logo);
     UnloadTexture(board);
     UnloadTexture(menuBackground);
+    UnloadTexture(redirectBackground);
     UnloadTexture(mario);
     UnloadTexture(luigi);
     UnloadTexture(toad);
@@ -270,6 +275,7 @@ void MenuManager::UpdateSetting(float deltaTime) {
         slideBarMusic.HandleSlideBar();
         slideBarSound.HandleSlideBar();
     }
+    bg_timer += deltaTime;
 }
 
 void MenuManager::HandleSelecting() {
@@ -281,6 +287,7 @@ void MenuManager::HandleSelecting() {
         characterSelect++;
         AudioManager::getInstance().PlaySoundEffect("click");
     }
+
 }
 
 void MenuManager::DrawSelecting() {
@@ -299,8 +306,6 @@ void MenuManager::DrawSelecting() {
 
     if (p11.CheckCollisionPointParallelogram(mousePos)) DrawText("Collide", 100, 100, 50, WHITE);
     */
-
-
 
 
 
@@ -410,10 +415,40 @@ void MenuManager::UpdateRedirect(float deltaTime) {
 }
 
 void MenuManager::DrawRedirect() {
+    float scale = UIManager::getInstance().screenHeight / (float)redirectBackground.height;
+    float newWidth = redirectBackground.width * scale;
+    float newHeight = UIManager::getInstance().screenHeight;
+
+    // Vị trí để căn giữa theo trục dọc
+    float posX = (UIManager::getInstance().screenWidth - newWidth) / 2.0f;
+    float posY = 0;
+
+    Rectangle src = { 0, 0, (float)redirectBackground.width, (float)redirectBackground.height };
+    Rectangle dst = { posX, posY, newWidth, newHeight };
+    Vector2 origin = { 0, 0 };
+
+    DrawTexturePro(redirectBackground, src, dst, origin, 0.0f, WHITE);
+
     characterBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 7 / 20.0f }, "NewGame", 1.5, 1.0);
     continueBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Continue", 1.5, 1.0);
     menuBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Menu", 1.5, 1.0);
 }
+
+void MenuManager::HandleLevelRedirect() {
+    
+}
+
+void MenuManager::DrawLevelRedirect() {
+    available.draw({ UIManager::getInstance().screenWidth / 4.0f, UIManager::getInstance().screenHeight / 2.0f }, "Available", 1.5, 1.0);
+    custom.draw({ UIManager::getInstance().screenWidth * 3.0f / 4.0f, UIManager::getInstance().screenHeight / 2.0f }, "Custom", 1.5, 1.0);
+}
+
+void MenuManager::UpdateLevelRedirect(float deltaTime) {
+    available.update(deltaTime);
+    custom.update(deltaTime);
+}
+
+
 
 void MenuManager::HandleEditorSelecting() {
 
@@ -482,10 +517,10 @@ void MenuManager::DrawLevel() {
 
     //float screenCenterX = UIManager::getInstance().screenWidth / 2.0f;
     //float marioScreenX = (mt.pos.x < screenCenterX) ? mt.pos.x : screenCenterX;
-
-    DrawTexture(mt.tex,
-        mt.pos.x + backgroundOffsetX - mt.tex.width / 2,
-        mt.pos.y - mt.tex.height / 2,
+    
+    DrawTextureEx(mt.tex,
+        { mt.pos.x + backgroundOffsetX - mt.tex.width / 2 * 0.5f,
+        mt.pos.y - mt.tex.height / 2 * 0.5f }, 0.0f, 0.5f,
         WHITE);
     Vector2 instruction = MeasureTextEx(UIManager::getInstance().menuFont, "Select level and press Enter", 30, 1.0f);
     DrawTextEx(UIManager::getInstance().menuFont, "Select level and press Enter", {UIManager::getInstance().screenWidth / 2.0f - instruction.x / 2.0f, UIManager::getInstance().screenHeight * 4  /5.0f}, 30, 1.0f, BLACK);

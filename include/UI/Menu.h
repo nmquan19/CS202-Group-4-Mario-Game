@@ -272,7 +272,7 @@ public:
 
 class MenuManager {
 private:
-    Texture2D logo, board, menuBackground;
+    Texture2D logo, board, menuBackground, redirectBackground;
     Button check, cross, setting, returnButton;
     Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition;
 
@@ -287,12 +287,15 @@ private:
     Vector2 origin1, origin2;
     std::vector<Vector2> positionList;
     float backgroundOffsetX = 0.0f;
+
+    string bg = "Snow_night_1"; float bg_timer = 0.0f;
     
 public:
     MovingTexture mt;
     Button playBoard, settingBoard, exitBoard, editingBoard;
     Button characterBoard, continueBoard, restartBoard, levelBoard, menuBoard;
     Button day_groundBoard, day_undergroundBoard, night_airshipBoard, night_snowBoard;
+    Button available, custom;
     Button OnePlayer, TwoPlayers;
     SlideBar slideBarMaster, slideBarMusic, slideBarSound;
     Vector2 slideBarMasterPosition, slideBarMusicPosition, slideBarSoundPosition;
@@ -317,6 +320,10 @@ public:
     void HandleRedirect();
     void UpdateRedirect(float deltaTime);
     void DrawRedirect();
+
+    void HandleLevelRedirect();
+    void UpdateLevelRedirect(float deltaTime);
+    void DrawLevelRedirect();
 
     void HandleEditorSelecting();
     void UpdateEditorSelecting(float deltaTime);

@@ -296,6 +296,7 @@
     <Image Include="assets\Ghost_house_3.png" />
     <Image Include="assets\level_map4.png" />
     <Image Include="assets\level_map_0.png" />
+    <Image Include="assets\redirect background.jpg" />
     <Image Include="assets\Snow_night_1.png" />
     <Image Include="assets\Snow_night_2.png" />
   </ItemGroup>

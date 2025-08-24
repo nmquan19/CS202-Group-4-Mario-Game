@@ -100,6 +100,7 @@ void GameContext::setState(GameState* newState) {
             if (level == 1) LevelEditor::getInstance().loadLevel("level1.json");
             if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
             if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
+            if (level == 4) LevelEditor::getInstance().loadLevel("testlevel.json");
 			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
             character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
             //character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
@@ -149,11 +150,12 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* levelRedirect, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
     menuState = menu;
     redirectState = redirect;
     playerSelectingState = player;
     characterSelectingState = character;
+    levelRedirectState = levelRedirect;
     levelSelectingState = level;
     informationState = information;
     gamePlayState = game;

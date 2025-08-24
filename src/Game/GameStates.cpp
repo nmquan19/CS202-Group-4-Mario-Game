@@ -94,7 +94,7 @@ void PlayerSelectingState::draw(GameContext& context) {
 
 void CharacterSelectingState::handleInput(GameContext& context) {
     context.menuManager.HandleSelecting();
-    if (IsKeyPressed(KEY_ENTER)) context.setState(context.levelSelectingState);
+    if (IsKeyPressed(KEY_ENTER)) context.setState(context.levelRedirectState);
 }
 
 void CharacterSelectingState::update(GameContext& context, float deltaTime) {
@@ -104,10 +104,37 @@ void CharacterSelectingState::update(GameContext& context, float deltaTime) {
 void CharacterSelectingState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(SKYBLUE);
-    //int screenWidth = UIManager::getInstance().screenWidth;
-    //int screenHeight = UIManager::getInstance().screenHeight;
-    //DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 1.0f - 0.5f));
     context.menuManager.DrawSelecting();
+    EndDrawing();
+}
+
+
+void LevelRedirectState::handleInput(GameContext& context) {
+    if (IsKeyPressed(KEY_ENTER)) {
+        context.setState(context.levelSelectingState);
+    }
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        if (context.menuManager.available.checkCollision(GetMousePosition())) {
+            context.setState(context.levelSelectingState);
+        }
+        if (context.menuManager.custom.checkCollision(GetMousePosition())) {
+            context.level = 4;
+            context.informationState->setLevel(context);
+            context.gamePlayState->setLevel(context);
+            context.setState(context.informationState);
+        }
+    }
+    
+}
+
+void LevelRedirectState::update(GameContext& context, float deltaTime) {
+    context.menuManager.UpdateLevelRedirect(deltaTime);
+}
+
+void LevelRedirectState::draw(GameContext& context) {
+    BeginDrawing();
+    ClearBackground(SKYBLUE);
+    context.menuManager.DrawLevelRedirect();
     EndDrawing();
 }
 
@@ -115,6 +142,7 @@ void LevelSelectingState::handleInput(GameContext& context) {
     context.menuManager.HandleLevel();
     
     context.level = context.menuManager.mt.level;
+    context.informationState->setLevel(context);
     context.gamePlayState->setLevel(context);
     if (IsKeyPressed(KEY_ENTER)) context.setState(context.informationState);
     
@@ -146,6 +174,10 @@ void InformationState::update(GameContext& context, float deltaTime) {
 void InformationState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(BLACK);
+    if (level == 1) UIManager::getInstance().setWorld("1");
+    if (level == 2) UIManager::getInstance().setWorld("2");
+    if (level == 3) UIManager::getInstance().setWorld("3");
+    if (level == 4) UIManager::getInstance().setWorld("");
     UIManager::getInstance().drawInformationBoard(WHITE);
     EndDrawing();
 }
@@ -272,7 +304,7 @@ void GamePlayState::draw(GameContext& context) {
     Camera2D cam = GameCameraSystem::getInstance().getCamera();
 
     //DrawParallaxBackground(bg, cam, 0.5f);
-    if (level == 1) {
+    if (level == 1 || level == 4) {
         Background::getInstance().draw("Forest_1", { 0,0 });
         Background::getInstance().draw("Forest_1", { 0, 512 });
         Background::getInstance().draw("Ghost_house_1", { 0, 1024 });
@@ -285,6 +317,7 @@ void GamePlayState::draw(GameContext& context) {
         Background::getInstance().draw("Snow_night_1", { 0,0 });
         Background::getInstance().draw("Snow_night_1", { 0,512 });
     }
+    
     BeginMode2D(GameCameraSystem::getInstance().getCamera());
     for (auto& obj : context.Objects) {
        /* if(isInCameraBound(GameCameraSystem::getInstance().getCamera(),obj->getPosition(),100.f)) {
