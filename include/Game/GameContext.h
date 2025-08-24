@@ -34,11 +34,9 @@ struct LeveLInfo
 };
 class GameContext {
 public:
-    //AudioManager audioManager;
-    //UIManager uiManager;
     MenuManager menuManager;
-    std::shared_ptr<Object> character01;
-    std::shared_ptr<Object> character02;
+    std::shared_ptr<Object> character01 = nullptr;
+    std::shared_ptr<Object> character02 = nullptr;
     std::vector<std::shared_ptr<Object>> Objects;
     std::vector<std::shared_ptr<Object>> ToDeleteObjects;
     std::vector<ObjectInfo> ToSpawnObjects;

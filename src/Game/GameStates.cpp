@@ -11,7 +11,6 @@
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
-
 #include "../../include/System/LightingSystem.h"
 #include <raymath.h>
 void handleCamera();
@@ -23,13 +22,11 @@ void MenuState::handleInput(GameContext& context) {
         exit(0);
     }
 
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
-        && context.menuManager.playBoard.checkCollision(GetMousePosition())) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && context.menuManager.playBoard.checkCollision(GetMousePosition())) {
         context.setState(context.redirectState);
     }
 
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
-        && context.menuManager.editingBoard.checkCollision(GetMousePosition())) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && context.menuManager.editingBoard.checkCollision(GetMousePosition())) {
         context.setState(context.editorState);
     }
 }
@@ -48,9 +45,15 @@ void MenuState::draw(GameContext& context) {
 void RedirectState::handleInput(GameContext& context) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
-        if (context.menuManager.characterBoard.checkCollision(mousePos)) context.setState(context.playerSelectingState);
-        if (context.menuManager.continueBoard.checkCollision(mousePos)) context.setState(context.informationState);
-        if (context.menuManager.menuBoard.checkCollision(mousePos)) context.setState(context.menuState);
+        if (context.menuManager.characterBoard.checkCollision(mousePos)) {
+            context.setState(context.playerSelectingState);
+        }
+        else if (context.menuManager.continueBoard.checkCollision(mousePos)) {
+            context.setState(context.informationState);
+        }
+        else if (context.menuManager.menuBoard.checkCollision(mousePos)) {
+            context.setState(context.menuState);
+        }
     }
 }
 
@@ -64,8 +67,6 @@ void RedirectState::draw(GameContext& context) {
 void RedirectState::update(GameContext& context, float deltaTime) {
     context.menuManager.characterBoard.update(deltaTime);
     context.menuManager.continueBoard.update(deltaTime);
-    context.menuManager.restartBoard.update(deltaTime);
-    context.menuManager.levelBoard.update(deltaTime);
     context.menuManager.menuBoard.update(deltaTime);
 }
 
@@ -73,9 +74,11 @@ void PlayerSelectingState::handleInput(GameContext& context) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         if (context.menuManager.OnePlayer.checkCollision(mousePos)) {
+            context.menuManager.character02Select = -1;
             context.setState(context.characterSelectingState);
         }
-        if (context.menuManager.TwoPlayers.checkCollision(mousePos)) {
+        else if (context.menuManager.TwoPlayers.checkCollision(mousePos)) {
+            context.menuManager.character02Select = 0;
             context.setState(context.characterSelectingState);
         }
     }
@@ -94,7 +97,9 @@ void PlayerSelectingState::draw(GameContext& context) {
 
 void CharacterSelectingState::handleInput(GameContext& context) {
     context.menuManager.HandleSelecting();
-    if (IsKeyPressed(KEY_ENTER)) context.setState(context.levelSelectingState);
+    if (IsKeyPressed(KEY_ENTER)) {
+        context.setState(context.levelSelectingState);
+    }
 }
 
 void CharacterSelectingState::update(GameContext& context, float deltaTime) {
@@ -104,9 +109,6 @@ void CharacterSelectingState::update(GameContext& context, float deltaTime) {
 void CharacterSelectingState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(SKYBLUE);
-    //int screenWidth = UIManager::getInstance().screenWidth;
-    //int screenHeight = UIManager::getInstance().screenHeight;
-    //DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 1.0f - 0.5f));
     context.menuManager.DrawSelecting();
     EndDrawing();
 }
@@ -232,10 +234,11 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     }
     for (auto& obj :context.Objects)
     {
+       
 		IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
-        if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
-            updatableObj->update(deltaTime);
-
+        updatableObj->update(deltaTime);
+        //if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
+          
     }
     context.menuManager.UpdateSetting(deltaTime);
     context.spawnObject();  
@@ -306,12 +309,21 @@ void GamePlayState::draw(GameContext& context) {
         obj->draw();
     }
 
-    if (context.character01) {
+    if (context.character01 && context.character02) {
+        context.character01->draw();
+        std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
+        character01->drawIndicator();
+        context.character02->draw();
+        std::shared_ptr<Character> character02 = std::dynamic_pointer_cast<Character>(context.character02);
+        character02->drawIndicator();
+    }
+    else if (context.character01) {
         context.character01->draw();
     }
-    if (context.character02) {
+    else if (context.character02) {
         context.character02->draw();
     }
+
     ParticleSystem::getInstance().draw();
 
     Box2DWorldManager::getInstance().drawDebugBodies();

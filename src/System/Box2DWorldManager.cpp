@@ -522,22 +522,6 @@ void Box2DWorldManager::EndContact(b2Contact* contact) {
 	int sensorIdA = static_cast<int>(fixtureA->GetUserData().pointer);
 	int sensorIdB = static_cast<int>(fixtureB->GetUserData().pointer);
 
-	// Check if this is a bottom sensor leaving contact with a block
-	if (fixtureA->IsSensor() && sensorIdA == 1) { // Bottom sensor of objA
-		if (objB->getObjectCategory() == ObjectCategory::BLOCK || objB->getObjectCategory() == ObjectCategory::INTERACTIVE) {
-			if (auto character = dynamic_cast<Character*>(objA)) {
-				character->removeGroundContact();
-			}
-		}
-	}
-	else if (fixtureB->IsSensor() && sensorIdB == 1) { // Bottom sensor of objB
-		if (objA->getObjectCategory() == ObjectCategory::BLOCK || objA->getObjectCategory() == ObjectCategory::INTERACTIVE) {
-			if (auto character = dynamic_cast<Character*>(objB)) {
-				character->removeGroundContact();
-			}
-		}	
-	}
-
 	if (fixtureA->IsSensor() && sensorIdA == 1) { // Bottom sensor of objA
 		if (objB->getObjectCategory() == ObjectCategory::INTERACTIVE) {
 			ObjectType objectType = objB->getObjectType();
@@ -545,7 +529,6 @@ void Box2DWorldManager::EndContact(b2Contact* contact) {
 				switch (*interactiveType) {
 				case InteractiveType::MOVING_PLATFORM:
 					if (auto character = dynamic_cast<Character*>(objA)) {
-						// character->removePlatformContact();
 						character->setPlatform(nullptr);
 					}
 					break;
@@ -560,7 +543,6 @@ void Box2DWorldManager::EndContact(b2Contact* contact) {
 				switch (*interactiveType) {
 				case InteractiveType::MOVING_PLATFORM:
 					if (auto character = dynamic_cast<Character*>(objB)) {
-						// character->removePlatformContact();
 						character->setPlatform(nullptr);
 					}
 					break;

@@ -42,7 +42,7 @@ GameContext::GameContext() {
     };
     Camera2D ncamera = camera; 
 	ncamera.target = { 0,0 };
-   LeveLInfo info = {
+    LeveLInfo info = {
         .ambientColor = brighter,
         .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, 6500},
         .cameraTriggersData = {
@@ -98,16 +98,46 @@ void GameContext::setState(GameState* newState) {
 
             LevelEditor::getInstance().setEditMode(false);
             if (level == 1) LevelEditor::getInstance().loadLevel("level1.json");
-            if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
-            if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
+            else if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
+            else if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
 			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
-            character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
-            //character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+
+            switch (menuManager.character01Select) {
+            case 0:
+                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            case 1:
+                character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            case 2:
+                character01 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            case 3:
+                character01 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            default:
+                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            }
+
+            switch (menuManager.character02Select) {
+            case 0:
+                character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            case 1:
+                character02 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            case 2:
+                character02 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            case 3:
+                character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            }
+            
             for(const auto& triggerData : levelInfo[0].cameraTriggersData) {
                 std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position,triggerData.size,triggerData);
                 Objects.push_back(cameraTrigger);
 			}
-            // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
                 camera.target = character01->getPosition();
@@ -137,7 +167,6 @@ void GameContext::update(float deltaTime) {
             AudioManager::getInstance().StopBackgroundMusic("theme1");
         }
     }
-    if(character01)std::cout << character01->getPosition().y << "\n";
     if (currentState) {
         currentState->update(*this, deltaTime);
     }
