@@ -141,7 +141,7 @@ void KoopaKnockState::enter(Enemy* enemy)
         koopa->knockAnimation = true;
         koopa->spritebox = TextureManager::Enemy_sprite_boxes[koopa->getSpriteData()[0].first];
         Vector2 spawnPosition = { koopa->getPosition().x + (koopa->size.x * Constants::TILE_SIZE) / 2, koopa->getPosition().y + koopa->size.y * Constants::TILE_SIZE };
-        GameContext::getInstance().addObject(type, spawnPosition, { 0.75,0.75 }, [](std::shared_ptr<Object> obj) {
+        GameContext::getInstance().addObject(type, spawnPosition, Constants::KoopaShell::standardSize, [](std::shared_ptr<Object> obj) {
             auto shell = std::dynamic_pointer_cast<KoopaShell>(obj);
             if (shell) {
                 shell->changeState(&KoopaShellKnockedState::getInstance());

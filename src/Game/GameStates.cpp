@@ -177,9 +177,8 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
     for (auto& obj :context.Objects)
     {
 		IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
-        //if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
-        //    updatableObj->update(deltaTime);
-        updatableObj->update(deltaTime);
+        if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
+            updatableObj->update(deltaTime);
 
     }
     context.menuManager.UpdateSetting(deltaTime);
@@ -230,7 +229,7 @@ void GamePlayState::draw(GameContext& context) {
     Texture2D bg = TextureManager::getInstance().background_lv1;
     Camera2D cam = GameCameraSystem::getInstance().getCamera();
 
-    DrawParallaxBackground(bg, cam, 0.5f);
+    //DrawParallaxBackground(bg, cam, 0.5f);
 
     BeginMode2D(GameCameraSystem::getInstance().getCamera());
     for (auto& obj : context.Objects) {

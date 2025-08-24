@@ -392,7 +392,7 @@ void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction di
 	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
 	if (direction == Direction::DOWN) {
 		float mass = physicsBody->GetMass();
-		physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY - currentVel.y)), true);
+		physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Character::BOUNCE_AFTER_STRIKE_VELOCITY*1.2 - currentVel.y)), true);
 		changeState(JumpingState::getInstance());
 		invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_STRIKE;
 	}

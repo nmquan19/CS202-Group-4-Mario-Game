@@ -8,7 +8,8 @@
 #include "../../../include/System/TextureManager.h"
 #include "../../../include/System/Constant.h"
 #include "../../../include/System/Box2DWorldManager.h"
-
+#include "../../../include/System/CameraSystem.h"
+#include "../../../include/Enemy/TriggerZone.h"
 void KoopaShellIdleState::enter(KoopaShell* shell) {
     shell->timer = 0.0f; 
     shell->curFrame = 0;
@@ -20,10 +21,13 @@ void KoopaShellIdleState::enter(KoopaShell* shell) {
             static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
         fixture->SetFilterData(filter);
     }
+    shell->triggerZone->setActive(true);
+
 }
 
 void KoopaShellIdleState::exit(KoopaShell* shell) {
     shell->curFrame = shell->getSpriteData()[0].second - shell->getSpriteData()[0].first;
+    shell->triggerZone->setActive(false);
 }
 
 void KoopaShellIdleState::update(KoopaShell* shell, float deltaTime) {
@@ -35,6 +39,7 @@ void KoopaShellIdleState::update(KoopaShell* shell, float deltaTime) {
     }
     b2Vec2 currentVel = shell->physicsBody->GetLinearVelocity();
     shell->physicsBody->SetLinearVelocity(b2Vec2(0, currentVel.y));
+    if(shell->triggerZone)shell->triggerZone->update(deltaTime);
 }
 
 void KoopaShellIdleState::onCollision(KoopaShell* shell, std::shared_ptr<Object> other, Direction dir) {
@@ -45,16 +50,20 @@ void KoopaShellIdleState::onCollision(KoopaShell* shell, std::shared_ptr<Object>
             shell->changeState(&KoopaShellKnockedState::getInstance());
             break;
         }
-        switch (dir) {
-        case Direction::LEFT:
-            shell->physicsBody->SetLinearVelocity(b2Vec2(Box2DWorldManager::raylibToB2(Constants::KoopaShell::MOVING_SPEED), currentVel.y));
-            shell->changeState(&KoopaShellMovingState::getInstance());
-            break;
-        case Direction::RIGHT:
-            shell->physicsBody->SetLinearVelocity(b2Vec2(-Box2DWorldManager::raylibToB2(Constants::KoopaShell::MOVING_SPEED), currentVel.y));
-            shell->changeState(&KoopaShellMovingState::getInstance());
-            break;
+        float shellX = shell->getPosition().x+ shell->getHitBox()[0].width/2;
+		float referenceX = other->getPosition().x;
+		
+        if (shellX > referenceX) {
+            shell->physicsBody->SetLinearVelocity(
+                b2Vec2(Box2DWorldManager::raylibToB2(Constants::KoopaShell::MOVING_SPEED), currentVel.y)
+            );
         }
+        else {
+            shell->physicsBody->SetLinearVelocity(
+                b2Vec2(-Box2DWorldManager::raylibToB2(Constants::KoopaShell::MOVING_SPEED), currentVel.y)
+            );
+        }
+        shell->changeState(&KoopaShellMovingState::getInstance());
     }
 }
 
@@ -75,7 +84,7 @@ void KoopaShellMovingState::enter(KoopaShell* shell) {
         b2Filter filter = fixture->GetFilterData();
         filter.maskBits = static_cast<uint16>(ObjectCategory::PROJECTILE);
         filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
-            static_cast<uint16>(ObjectCategory::ENEMY) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
+            static_cast<uint16>(ObjectCategory::ENEMY) | static_cast<uint16>(ObjectCategory::INTERACTIVE)|static_cast<uint16>(ObjectCategory::PROJECTILE);
         fixture->SetFilterData(filter);
     }
 }
@@ -90,25 +99,32 @@ void KoopaShellMovingState::update(KoopaShell* shell, float deltaTime) {
     shell->curFrame %= shell->getSpriteData()[1].second - shell->getSpriteData()[1].first+1;
     shell->spritebox = TextureManager::Enemy_sprite_boxes[shell->getSpriteData()[1].first + shell->curFrame];
     shell->timer += deltaTime;
-    if (shell->timer > 10.0f) {
+  /*  if (shell->timer > 10.0f) {
         shell->changeState(&KoopaShellKnockedState::getInstance());
-    }
+    }*/
 }
 
 void KoopaShellMovingState::onCollision(KoopaShell* shell, std::shared_ptr<Object> other, Direction dir) {
     b2Vec2 currentVel = shell->physicsBody->GetLinearVelocity();
-    switch (dir) {
-    case Direction::LEFT:
-        shell->physicsBody->SetLinearVelocity(b2Vec2(abs(currentVel.x), currentVel.y));
-        break;
-    case Direction::RIGHT:
-        shell->physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
-        break;
-    }
+    if(other->getObjectCategory() == ObjectCategory::BLOCK) {
+        switch (dir) {
+        case Direction::LEFT:
+            shell->physicsBody->SetLinearVelocity(b2Vec2(abs(currentVel.x), currentVel.y));
+            break;
+        case Direction::RIGHT:
+            shell->physicsBody->SetLinearVelocity(b2Vec2(-abs(currentVel.x), currentVel.y));
+            break;
+        }
+	}
+    
     if (other->getObjectCategory() == ObjectCategory::CHARACTER) {
         if (std::dynamic_pointer_cast<Character>(other)->getPowerState() == PowerState::STAR) {
             shell->changeState(&KoopaShellKnockedState::getInstance());
         }
+        else{
+            shell->physicsBody->SetLinearVelocity(b2Vec2(0, currentVel.y));
+            shell->changeState(&KoopaShellIdleState::getInstance());
+		}
     }
 }
 
@@ -127,7 +143,7 @@ void KoopaShellRevivingState::enter(KoopaShell* shell) {
     for (b2Fixture* fixture = shell->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
         b2Filter filter = fixture->GetFilterData();
         filter.maskBits = static_cast<uint16>(ObjectCategory::BLOCK);
-        filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | 
+        filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
             static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::SHELL);
         fixture->SetFilterData(filter);
     }
@@ -135,28 +151,27 @@ void KoopaShellRevivingState::enter(KoopaShell* shell) {
 
 void KoopaShellRevivingState::exit(KoopaShell* shell) {
 	shell->timer = 0.0f; 
-    EnemyType type;
-    switch (shell->getType()) {
-    case KoopaShellType::GREEN_KOOPA_SHELL:
-        type = EnemyType::GREEN_KOOPA;
-        break;
-    case KoopaShellType::RED_KOOPA_SHELL:
-        type = EnemyType::RED_KOOPA;
-        break;
-    default:
-        type = EnemyType::GREEN_KOOPA;
-        break;
-    }
-    Vector2 spawnPosition = { shell->getPosition().x + (shell->size.x * Constants::TILE_SIZE) / 2, shell->getPosition().y + shell->size.y * Constants::TILE_SIZE };
 
-    GameContext::getInstance().addObject(type, spawnPosition, { 0.75, 0.75 });
-    GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(shell));
 }
 
 void KoopaShellRevivingState::update(KoopaShell* shell, float deltaTime) {
 	shell->timer += deltaTime;
     if(shell->timer > Constants::KoopaShell::REVIVE_DURATION) { 
-        exit(shell);
+        EnemyType type;
+        switch (shell->getType()) {
+        case KoopaShellType::GREEN_KOOPA_SHELL:
+            type = EnemyType::GREEN_KOOPA;
+            break;
+        case KoopaShellType::RED_KOOPA_SHELL:
+            type = EnemyType::RED_KOOPA;
+            break;
+        default:
+            type = EnemyType::GREEN_KOOPA;
+            break;
+        }
+        Vector2 spawnPosition = { shell->getPosition().x + (shell->size.x * Constants::TILE_SIZE) / 2, shell->getPosition().y + shell->size.y * Constants::TILE_SIZE };
+        GameContext::getInstance().addObject(type, spawnPosition, { Constants::GreenKoopa::standardSize });
+        GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(shell));
     }
 }
 
@@ -165,6 +180,16 @@ void KoopaShellRevivingState::onCollision(KoopaShell* shell, std::shared_ptr<Obj
         if (std::dynamic_pointer_cast<Character>(other)->getPowerState() == PowerState::STAR) {
             shell->changeState(&KoopaShellKnockedState::getInstance());
         }
+        if(dir== Direction::UP)
+        {
+            b2Vec2 currentVel = shell->physicsBody->GetLinearVelocity();
+            shell->physicsBody->SetLinearVelocity(b2Vec2(0, currentVel.y));
+            shell->changeState(&KoopaShellIdleState::getInstance());
+		}
+    }
+    if (other->getObjectCategory() == ObjectCategory::PROJECTILE)
+    {
+        shell->changeState(&KoopaShellKnockedState::getInstance());
     }
 }
 
