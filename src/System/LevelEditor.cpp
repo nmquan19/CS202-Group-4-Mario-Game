@@ -7,6 +7,7 @@
 #include <string>
 #include "../../include/System/LevelEditor.h"
 #include "../../include/Objects/ObjectFactory.h"
+#include "../../include/Objects/BLock.h"
 #include "../../include/System/Grid.h"
 #include "../../include/System/Interface.h"
 #include "../../include/Enemy/Enemy.h"
@@ -76,21 +77,32 @@ void LevelEditor::draw() {
     }
     if (!clearing) {    
         for (auto& it : gridBlocks) {
-            Object* obj = it.second.top().get();
-            if (!obj) continue;
 
-            Enemy* enemy = dynamic_cast<Enemy*>(obj);
-            bool shouldDraw = false;
-
-            if (enemy) {
-                shouldDraw = enemy->isAlive();
+            std::stack<std::shared_ptr<Object>> tempStack = it.second;
+            std::vector<std::shared_ptr<Object>> objectsInStack;
+            
+            while (!tempStack.empty()) {
+                objectsInStack.push_back(tempStack.top());
+                tempStack.pop();
             }
-            else {
-                shouldDraw = obj->isActive();
-            }
+            
+            for (auto objIt = objectsInStack.rbegin(); objIt != objectsInStack.rend(); ++objIt) {
+                Object* obj = objIt->get();
+                if (!obj) continue;
 
-            if (shouldDraw) {
-                obj->draw();
+                Enemy* enemy = dynamic_cast<Enemy*>(obj);
+                bool shouldDraw = false;
+
+                if (enemy) {
+                    shouldDraw = enemy->isAlive();
+                }
+                else {
+                    shouldDraw = obj->isActive();
+                }
+
+                if (shouldDraw) {
+                    obj->draw();
+                }
             }
         }
     }
@@ -277,52 +289,50 @@ bool LevelEditor::isInEditMode() const {
 }
 
 void LevelEditor::saveLevel(const std::string& filename) {
-    try {
-        json levelData;
-        levelData["version"] = "1.0";
-        levelData["gridSize"] = GridSystem::GRID_SIZE;
-        levelData["objects"] = json::array();
+    json levelData;
+    levelData["version"] = "1.0";
+    levelData["gridSize"] = GridSystem::GRID_SIZE;
+    levelData["objects"] = json::array();
 
-        for (const auto& it : gridBlocks) {
-            const auto& gridPos = it.first;
-            const auto& objectStack = it.second;
+    for (const auto& it : gridBlocks) {
+        const auto& gridPos = it.first;
+        const auto& objectStack = it.second;
 
-            if (objectStack.empty()) continue;
+        if (objectStack.empty()) continue;
 
-            std::stack<std::shared_ptr<Object>> tempStack = objectStack;
-            std::vector<json> stackJson;
-            while (!tempStack.empty()) {
-                auto obj = tempStack.top();
-                tempStack.pop();
+        std::stack<std::shared_ptr<Object>> tempStack = objectStack;
+        std::vector<json> stackJson;
+        while (!tempStack.empty()) {
+            auto obj = tempStack.top();
+            tempStack.pop();
 
-                if (obj && obj->isActive()) {
-                    json objectData;
-                    objectData["gridX"] = gridPos.first;
-                    objectData["gridY"] = gridPos.second;
-                    objectData["type"] = objectTypeToString(obj->getObjectType());
-                    objectData["sizeX"] = obj->getSize().x;
-                    objectData["sizeY"] = obj->getSize().y;
-                    stackJson.push_back(objectData);
-                } 
-            }
-            for (const auto& objData : stackJson) {
-                levelData["objects"].push_back(objData);
-            }
-        }
-        std::ofstream file(filename);
-        if (!file.is_open()) {
-            std::cerr << "Error when opening file to save level!\n";
-            return;
+            if (obj && obj->isActive()) {
+                json objectData;
+                objectData["gridX"] = gridPos.first;
+                objectData["gridY"] = gridPos.second;
+                objectData["type"] = objectTypeToString(obj->getObjectType());
+                objectData["sizeX"] = obj->getSize().x;
+                objectData["sizeY"] = obj->getSize().y;
+                stackJson.push_back(objectData);
+            } 
         }
 
-        file << levelData.dump(5);
-        file.close();
-
-        std::cout << "Level saved successfully to: " << filename << "\n";
-        std::cout << "Saved " << levelData["objects"].size() << "objects\n";
-    } catch (const std::exception& e) {
-        std::cerr << "Error saving level: " << e.what() << "\n";
+        // save from bottom to top of stack!!!
+        for (auto objIt = stackJson.rbegin(); objIt != stackJson.rend(); ++objIt) {
+            levelData["objects"].push_back(*objIt);
+        }
     }
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error when opening file to save level!\n";
+        return;
+    }
+
+    file << levelData.dump(5);
+    file.close();
+
+    std::cout << "Level saved successfully to: " << filename << "\n";
+    std::cout << "Saved " << levelData["objects"].size() << "objects\n";
 }
 
 void LevelEditor::loadLevel(const std::string& filename) {
@@ -331,7 +341,7 @@ void LevelEditor::loadLevel(const std::string& filename) {
         if (!file.is_open()) {
             std::cerr << "Error when opening file to load level\n";
             return;
-        }
+        }   
 
         json levelData;
         file >> levelData;
@@ -342,17 +352,22 @@ void LevelEditor::loadLevel(const std::string& filename) {
         if (levelData.contains("objects") && levelData["objects"].is_array()) {
             int loadedCount = 0;
             for (const auto& objData : levelData["objects"]) {
-                try {
-                    float gridX = objData["gridX"];
-                    float gridY = objData["gridY"];
-                    std::string typeStr = objData["type"];
+                float gridX = objData["gridX"];
+                float gridY = objData["gridY"];
+                std::string typeStr = objData["type"];
+                if ((typeStr == "FIRE_FLOWER" || typeStr == "MUSHROOM" || typeStr == "ONE_UP") && !editMode) {
+                    std::shared_ptr<Object> obj = findQuestionBlock({gridX, gridY});
+                    std::shared_ptr<Block> quesBlock = dynamic_pointer_cast<Block>(obj);
+                    if (quesBlock) {
+                        quesBlock->setItemType(typeStr);
+                    }
+                }
+                else { 
                     ObjectType objType = stringToObjectType(typeStr);
                     placeObject(objType, {gridX, gridY});
                     float sizeX = objData["sizeX"];
                     float sizeY = objData["sizeY"];
                     loadedCount++;
-                } catch (const std::exception& e) {
-                    std::cerr << "Error loading object: " << e.what() << "\n";
                 }
             }
             std::cout << "Level loaded successfully from: " << filename << "\n";
@@ -1972,4 +1987,34 @@ bool LevelEditor::isBlock(std::pair<int, int> coord)
         }
     }
     return false;
+}
+
+std::shared_ptr<Object> LevelEditor::findQuestionBlock(Vector2 gridPos) {
+    bool found = false;
+    std::shared_ptr<Object> res = nullptr;
+    auto key = std::make_pair((int)gridPos.x, (int)gridPos.y);
+    auto it = gridBlocks.find(key);
+    if (it != gridBlocks.end() && !it->second.empty()) {
+        std::stack<std::shared_ptr<Object>> tempStack;
+        while (!it->second.empty()) {
+            std::shared_ptr<Object> topObj = it->second.top();
+            std::shared_ptr<Block> obj = std::dynamic_pointer_cast<Block>(topObj);
+            it->second.pop();
+
+            if (obj && (obj->getType() == BlockType::BLOCK_1_1_3 || obj->getType() == BlockType::BLOCK_2_1_3 
+            || obj->getType() == BlockType::BLOCK_3_1_3 || obj->getType() == BlockType::BLOCK_4_1_3)) {
+                res = topObj;
+                found = true;
+            }
+            
+            tempStack.push(topObj);
+            if (found) break;
+        }
+
+        while (!tempStack.empty()) {
+            it->second.push(tempStack.top());
+            tempStack.pop();
+        }
+    }
+    return res;
 }

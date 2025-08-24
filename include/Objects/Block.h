@@ -36,6 +36,8 @@ public:
     Rectangle getSrcRect() const;
     Texture2D getTextureSprite() const;
 
+    void setItemType(std::string type);
+
 protected:
     Vector2 position;
     Rectangle hitbox;
@@ -49,6 +51,9 @@ protected:
 
     bool pendingImpulse;
     float impulseForce;
+
+    std::string itemType = ""; 
+    bool itemSpawned = false;
 };
 
 

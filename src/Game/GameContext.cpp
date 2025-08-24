@@ -137,7 +137,6 @@ void GameContext::update(float deltaTime) {
             AudioManager::getInstance().StopBackgroundMusic("theme1");
         }
     }
-    if(character01)std::cout << character01->getPosition().y << "\n";
     if (currentState) {
         currentState->update(*this, deltaTime);
     }
@@ -218,7 +217,7 @@ void GameContext::spawnObject() {
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
         ToDeleteObjects.push_back(object);
-        LevelEditor::getInstance().removeObject(object->getGridPos());
+        LevelEditor::getInstance().removeObject(object->getGridPos(), object);
     }
 }
 
