@@ -44,8 +44,7 @@ void Koopa::onCollision(std::shared_ptr<Object> other, Direction dir) {
     case ObjectCategory::BLOCK:
         handleEnvironmentCollision(other, dir);
         break;
-    case ObjectCategory::PROJECTILE:
-        this->changeState(&KoopaKnockState::GetInstance());
+    case ObjectCategory::PROJECTILE:this->changeState(&KoopaKnockState::GetInstance());
         break;
     }
 }

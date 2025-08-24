@@ -14,10 +14,10 @@ CollectableObject::CollectableObject(Vector2 pos, Vector2 sz,Texture2D texture):
     position = pos;
     size = sz;
 	hitBox = Rectangle{ pos.x, pos.y, sz.x*GridSystem::GRID_SIZE, sz.y * GridSystem::GRID_SIZE };
-    triggerZone = std::make_unique<TriggerZone>(this, pos, sz);
+    //triggerZone = std::make_unique<TriggerZone>(this, pos, sz);
     // add trigger zone
     //PhysicsManager::getInstance().addObject(triggerZone);
-    GameContext::getInstance().Objects.push_back(triggerZone);
+    //GameContext::getInstance().Objects.push_back(triggerZone);
     this->active = true;
 }
 

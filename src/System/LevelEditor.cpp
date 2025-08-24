@@ -59,28 +59,21 @@ void LevelEditor::update(float deltaTime) {
 }
 
 void LevelEditor::draw() {
+    
     BeginMode2D(GameContext::getInstance().camera);
     if (mapSelect == 1) {
-        for (int i = 0; i <= Constants::WORLDBOUNDS_HEIGHT / 512; i++) {
-            Background::getInstance().draw("Forest_2", { 0, 512.0f * i });
-        }
+        Background::getInstance().draw("Forest_1", { 0,0 });
+        Background::getInstance().draw("Forest_1", { 0, 512 });
+        Background::getInstance().draw("Ghost_house_1", { 0, 1024 });
     }
     if (mapSelect == 2) {
-        for (int i = 0; i <= Constants::WORLDBOUNDS_HEIGHT / 512; i++) {
-            Background::getInstance().draw("Ghost_house_3", { 0, 512.0f * i });
-        }
+        Background::getInstance().draw("Airship_night_3", { 0,0 });
+        Background::getInstance().draw("Airship_night_3", { 0, 512 });
     }
     if (mapSelect == 3) {
-        for (int i = 0; i <= Constants::WORLDBOUNDS_HEIGHT / 512; i++) {
-            Background::getInstance().draw("Airship_night_6", { 0, 512.0f * i });
-        }
+        Background::getInstance().draw("Snow_night_1", { 0,0 });
+        Background::getInstance().draw("Snow_night_1", { 0,512 });
     }
-    if (mapSelect == 4) {
-        for (int i = 0; i <= Constants::WORLDBOUNDS_HEIGHT / 512; i++) {
-            Background::getInstance().draw("Snow_night_1", { 0, 512.0f * i });
-        }
-    }
-    
     if (!clearing) {    
         for (auto& it : gridBlocks) {
             Object* obj = it.second.top().get();
@@ -365,6 +358,7 @@ void LevelEditor::loadLevel(const std::string& filename) {
             std::cout << "Level loaded successfully from: " << filename << "\n";
             std::cout << "Loaded " << loadedCount << " objects\n";
         }
+		NavGraph::getInstance().buildNodes({ 0,0,Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT });
     } catch (const std::exception& e) {
         std::cerr << "Error loading level: " << e.what() << "\n";
     }
