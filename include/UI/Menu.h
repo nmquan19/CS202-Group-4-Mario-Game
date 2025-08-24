@@ -207,10 +207,11 @@ public:
     vector<int> path;
     int movingIndex = -1;
     float speed = 300.0f;
+    int level = 1;
 
     int GetClickedIndex(const vector<Vector2>& positions, Vector2 mouse) {
         for (int i = 0; i < (int)positions.size(); i++) {
-            if (CheckCollisionPointCircle(mouse, positions[i], 50)) {
+            if (CheckCollisionPointCircle(mouse, positions[i], 25)) {
                 return i;
             }
         }
@@ -223,7 +224,7 @@ public:
             Vector2 dir = { target.x - pos.x, target.y - pos.y };
             float dist = sqrtf(dir.x * dir.x + dir.y * dir.y);
 
-            if (dist < 2.0f) {
+            if (dist < 5.0f) {
                 pos = target;
                 currentIndex = movingIndex;
 
@@ -246,7 +247,7 @@ public:
 
     void HandleClick(const vector<Vector2>& positions, Vector2 mouse) {
         int clicked = GetClickedIndex(positions, mouse);
-        if (clicked >= 0 && clicked != currentIndex) {
+        if (clicked != currentIndex && (clicked == 0 || clicked == 5 || clicked == 10)) {
             path.clear();
 
             if (clicked > currentIndex) {
@@ -260,6 +261,9 @@ public:
 
             movingIndex = path.front();
             path.erase(path.begin());
+            if (clicked == 0) level = 1;
+            else if (clicked == 5) level = 2;
+            else if (clicked == 10) level = 3;
         }
     }
 };
@@ -283,14 +287,15 @@ private:
     Vector2 origin1, origin2;
     std::vector<Vector2> positionList;
     float backgroundOffsetX = 0.0f;
-    MovingTexture mt;
+    
 public:
+    MovingTexture mt;
     Button playBoard, settingBoard, exitBoard, editingBoard;
     Button characterBoard, continueBoard, restartBoard, levelBoard, menuBoard;
     Button day_groundBoard, day_undergroundBoard, night_airshipBoard, night_snowBoard;
     Button OnePlayer, TwoPlayers;
-    SlideBar slideBarMusic, slideBarSound;
-    Vector2 slideBarMusicPosition, slideBarSoundPosition;
+    SlideBar slideBarMaster, slideBarMusic, slideBarSound;
+    Vector2 slideBarMasterPosition, slideBarMusicPosition, slideBarSoundPosition;
     int select, characterSelect;
     bool settingDialog, exitDialog, exit;
 

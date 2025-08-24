@@ -125,8 +125,8 @@ void GameContext::handleInput() {
 
 void GameContext::update(float deltaTime) {
     if (currentState == gamePlayState) {
-        AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue());
-        AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue());
+        AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue() * menuManager.slideBarMaster.getValue());
+        AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue() * menuManager.slideBarMaster.getValue());
         if (!AudioManager::getInstance().isPlaying()) {
             AudioManager::getInstance().PlayBackgroundMusic("theme1");
         }

@@ -67,11 +67,14 @@ MenuManager::MenuManager() {
     returnButtonPosition.x = boardPosition.x + board.width * scale / 2.0f;
     returnButtonPosition.y = boardPosition.y + board.height * scale * 3 / 4.0f;
 
+    slideBarMasterPosition.x = boardPosition.x + board.width * scale / 5.0f;
+    slideBarMasterPosition.y = boardPosition.y + board.height * scale * 3 / 10.0f;
+
     slideBarMusicPosition.x = boardPosition.x + board.width * scale / 5.0f;
-    slideBarMusicPosition.y = boardPosition.y + board.height * scale * 3 / 10.0f;
+    slideBarMusicPosition.y = boardPosition.y + board.height * scale * 4.5 / 10.0f;
 
     slideBarSoundPosition.x = boardPosition.x + board.width * scale / 5.0f;
-    slideBarSoundPosition.y = boardPosition.y + board.height * scale * 5 / 10.0f;
+    slideBarSoundPosition.y = boardPosition.y + board.height * scale * 6 / 10.0f;
 
     manager.Init(4, UIManager::getInstance().screenHeight / 2.0f, UIManager::getInstance().screenWidth / 6.0f, UIManager::getInstance().screenHeight, SKYBLUE, MARIO_COLOR, LUIGI_COLOR, TOAD_COLOR, TOADETTE_COLOR);
     
@@ -99,7 +102,8 @@ MenuManager::MenuManager() {
         {backgroundOffsetX + newWidth1 / 21.0f * 11.0f, newWidth1 / 21.0f * 5.5f},
         {backgroundOffsetX + newWidth1 / 21.0f * 13.0f, newWidth1 / 21.0f * 5.5f},
         {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 5.0f},
-        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 2.5f} //level 2
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 1.5f}, //level 2
+        {backgroundOffsetX + newWidth1 / 21.0f * 15.0f, newWidth1 / 21.0f * 1.5f}
     };
 
     mt.tex = mario;
@@ -133,9 +137,9 @@ void MenuManager::DrawMenu() {
     Font currentMenuFont = UIManager::getInstance().menuFont;
     if (!settingDialog && !exitDialog) {
         playBoard.draw({ width / 2.0f, height * 6.0f / 10.0f }, "Play");
-        settingBoard.draw({ width / 2.0f, height * 7.0f / 10.0f }, "Setting");
-        exitBoard.draw({ width / 2.0f, height * 8.0f / 10.0f }, "Exit");
-        editingBoard.draw({ width / 2.0f, height * 9.0f / 10.0f }, "Editing");
+        //settingBoard.draw({ width / 2.0f, height * 7.0f / 10.0f }, "Setting");
+        exitBoard.draw({ width / 2.0f, height * 7.0f / 10.0f }, "Exit");
+        editingBoard.draw({ width / 2.0f, height * 8.0f / 10.0f }, "Editing");
     }
 
     if (settingDialog) {
@@ -222,6 +226,9 @@ void MenuManager::DrawSetting() {
         DrawTextEx(currentMenuFont, "Setting", textPosition, 40, 1, BROWN);
 
         returnButton.draw(returnButtonPosition);
+
+        DrawTextEx(currentMenuFont, "Master: ", { slideBarMaster.getBorder().x - 100, slideBarMaster.getBorder().y + slideBarMaster.getBorder().height / 2 - 10 }, 20, 4, BORDER_BROWN);
+        slideBarMaster.DrawSlideBar(slideBarMasterPosition);
 
         DrawTextEx(currentMenuFont, "Music: ", { slideBarMusic.getBorder().x - 100, slideBarMusic.getBorder().y + slideBarMusic.getBorder().height / 2 - 10 }, 20, 4, BORDER_BROWN);
         slideBarMusic.DrawSlideBar(slideBarMusicPosition);
@@ -480,9 +487,12 @@ void MenuManager::DrawLevel() {
         mt.pos.x + backgroundOffsetX - mt.tex.width / 2,
         mt.pos.y - mt.tex.height / 2,
         WHITE);
+    Vector2 instruction = MeasureTextEx(UIManager::getInstance().menuFont, "Select level and press Enter", 30, 1.0f);
+    DrawTextEx(UIManager::getInstance().menuFont, "Select level and press Enter", {UIManager::getInstance().screenWidth / 2.0f - instruction.x / 2.0f, UIManager::getInstance().screenHeight * 4  /5.0f}, 30, 1.0f, BLACK);
 }
 
 void MenuManager::UpdateLevel(float deltaTime) {
+    /*
     Vector2 mouse = GetMousePosition();
     float speed = 300.0f;
 
@@ -497,8 +507,23 @@ void MenuManager::UpdateLevel(float deltaTime) {
     if (backgroundOffsetX > 0) backgroundOffsetX = 0;
     if (backgroundOffsetX < UIManager::getInstance().screenWidth - backgroundWidth)
         backgroundOffsetX = UIManager::getInstance().screenWidth - backgroundWidth;
-
+    */
     mt.UpdateMovingTexture(positionList, deltaTime);
+
+    positionList = {
+        {backgroundOffsetX + newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f, newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f, newWidth1 / 21.0f * 4.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 3.0f, newWidth1 / 21.0f * 4.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 7.0f, newWidth1 / 21.0f * 4.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 8.0f, newWidth1 / 21.0f * 3.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 8.5f, newWidth1 / 21.0f * 3.5f}, //level 1
+        {backgroundOffsetX + newWidth1 / 21.0f * 9.0f, newWidth1 / 21.0f * 3.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 11.0f, newWidth1 / 21.0f * 5.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.0f, newWidth1 / 21.0f * 5.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 5.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 1.5f}, //level 2
+        {backgroundOffsetX + newWidth1 / 21.0f + 15.0f, newWidth1 / 21.0f * 1.5f}
+    };
 }
 
 /*

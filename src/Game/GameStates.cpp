@@ -113,24 +113,11 @@ void CharacterSelectingState::draw(GameContext& context) {
 
 void LevelSelectingState::handleInput(GameContext& context) {
     context.menuManager.HandleLevel();
-    if (IsKeyPressed(KEY_ENTER)) {
-        context.setState(context.informationState);
-    }
-    if (IsKeyPressed(KEY_ONE)) {
-        context.level = 1;
-        context.gamePlayState->setLevel(context);
-        context.setState(context.informationState);
-    }
-    if (IsKeyPressed(KEY_TWO)) {
-        context.level = 2;
-        context.gamePlayState->setLevel(context);
-        context.setState(context.informationState);
-    }
-    if (IsKeyPressed(KEY_THREE)) {
-        context.level = 3;
-        context.gamePlayState->setLevel(context);
-        context.setState(context.informationState);
-    }
+    
+    context.level = context.menuManager.mt.level;
+    context.gamePlayState->setLevel(context);
+    if (IsKeyPressed(KEY_ENTER)) context.setState(context.informationState);
+    
 }
 
 void LevelSelectingState::update(GameContext& context, float deltaTime) {
