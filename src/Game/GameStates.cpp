@@ -241,27 +241,29 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 
     }
 
-    if (context.character01) {
-        std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
-        character01->update(deltaTime);
-    }
-    if (context.character02) {
-        std::shared_ptr<Character> character02 = std::dynamic_pointer_cast<Character>(context.character02);
-        character02->update(deltaTime);
-    }
-    for (auto& obj :context.Objects)
-    {
-		IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
-        if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
-            updatableObj->update(deltaTime);
+    if (!context.menuManager.settingDialog) {
+        if (context.character01) {
+            std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
+            character01->update(deltaTime);
+        }
+        if (context.character02) {
+            std::shared_ptr<Character> character02 = std::dynamic_pointer_cast<Character>(context.character02);
+            character02->update(deltaTime);
+        }
+        for (auto& obj :context.Objects)
+        {
+            IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
+            if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
+                updatableObj->update(deltaTime);
 
+        }
+        context.menuManager.UpdateSetting(deltaTime);
+        context.spawnObject();  
+        context.deleteObjects();
+        UIManager::getInstance().updateInformationBoard(deltaTime);
+        Box2DWorldManager::getInstance().step(deltaTime);
+        ParticleSystem::getInstance().update(deltaTime);
     }
-    context.menuManager.UpdateSetting(deltaTime);
-    context.spawnObject();  
-    context.deleteObjects();
-    UIManager::getInstance().updateInformationBoard(deltaTime);
-    Box2DWorldManager::getInstance().step(deltaTime);
-    ParticleSystem::getInstance().update(deltaTime);
 }
 void DrawParallaxBackground(Texture2D bg, Camera2D cam, float parallaxFactor) {
     Vector2 camPos = {

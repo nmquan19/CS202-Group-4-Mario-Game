@@ -125,7 +125,7 @@ void GameContext::handleInput() {
 }
 
 void GameContext::update(float deltaTime) {
-    if (currentState == gamePlayState) {
+    if (currentState == gamePlayState && !menuManager.settingDialog) {
         AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue() * menuManager.slideBarMaster.getValue());
         AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue() * menuManager.slideBarMaster.getValue());
         if (!AudioManager::getInstance().isPlaying()) {
@@ -138,7 +138,6 @@ void GameContext::update(float deltaTime) {
             AudioManager::getInstance().StopBackgroundMusic("theme1");
         }
     }
-    if(character01)std::cout << character01->getPosition().y << "\n";
     if (currentState) {
         currentState->update(*this, deltaTime);
     }
@@ -220,7 +219,7 @@ void GameContext::spawnObject() {
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
         ToDeleteObjects.push_back(object);
-        LevelEditor::getInstance().removeObject(object->getGridPos());
+        LevelEditor::getInstance().removeObject(object->getGridPos(), object);
     }
 }
 

@@ -42,11 +42,14 @@ void Item::update(float deltaTime) {
 }
 
 void Item::draw() {
-    // Draw the item using the animation frames
+    Rectangle tempHitbox = hitbox;
+    if (LevelEditor::getInstance().isInEditMode() && (type == ItemType::FIRE_FLOWER || type == ItemType::MUSHROOM || type == ItemType::ONE_UP) ) {
+        tempHitbox = { hitbox.x + hitbox.width * 0.5f, hitbox.y + hitbox.height * 0.5f, hitbox.width * 0.5f, hitbox.height * 0.5f };
+    }
     DrawTexturePro(
         TextureManager::getInstance().getItemTexture(),
         animation->GetFrame(),
-        hitbox,
+        tempHitbox,
         { 0, 0 },
         0,
         WHITE
