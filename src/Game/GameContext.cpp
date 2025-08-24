@@ -371,7 +371,7 @@ void GameContext::loadGameState(const std::string& filename) {
             } else if (saveType == "Interactive") {
                 Vector2 gridPos = {objData["gridPosition"][0], objData["gridPosition"][1]};
                 InteractiveType interactiveType = static_cast<InteractiveType>(objData["interactiveType"]);
-                
+                if (interactiveType == InteractiveType::SWITCH_CAMERA_TRIGGER_ZONE) continue;
                 LevelEditor::getInstance().placeObject(interactiveType, gridPos);
 
                 if (!Objects.empty()) {

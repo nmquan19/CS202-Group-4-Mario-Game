@@ -16,6 +16,7 @@ SwitchCameraTriggerZone::SwitchCameraTriggerZone(Vector2 position, Vector2 size,
             fixture->SetSensor(true);
         }
     }
+	interactiveType = InteractiveType::SWITCH_CAMERA_TRIGGER_ZONE; 
 }
 
 SwitchCameraTriggerZone::~SwitchCameraTriggerZone() {
