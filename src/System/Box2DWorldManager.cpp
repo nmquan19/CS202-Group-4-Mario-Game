@@ -1,7 +1,8 @@
 ﻿#include <iostream>
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/Characters/Character.h"
-
+#include "../../include/System/Interface.h"
+#include "../../include/Objects/InteractiveObjects/CameraTriggerZone.h"
 Box2DWorldManager* Box2DWorldManager::instance = nullptr;
 
 Box2DWorldManager& Box2DWorldManager::getInstance() {
@@ -157,10 +158,11 @@ void Box2DWorldManager::attachSensors(b2Body* body, Vector2 hitboxSize) {
 	float sensorWidth = hitboxSize.x * 0.6f;
 	float sensorHeight = hitboxSize.y * 0.6f;
 
-	// Bottom
-	b2PolygonShape botSensor;
-	botSensor.SetAsBox(raylibToB2(sensorWidth * 0.5f), raylibToB2(sensorThickness * 0.5f),
-		b2Vec2(0, raylibToB2(hitboxSize.y * 0.5f + sensorThickness * 0.5f)), 0);
+	// Bottom sensor
+	b2CircleShape botSensor;
+	float botSensorRadius = raylibToB2(sensorWidth * 0.25f);
+	botSensor.m_radius = botSensorRadius;
+	botSensor.m_p.Set(0, raylibToB2(hitboxSize.y * 0.5f + botSensorRadius));
 	b2FixtureDef botFixture;
 	botFixture.shape = &botSensor;
 	botFixture.isSensor = true;
@@ -207,6 +209,36 @@ void Box2DWorldManager::destroyBody(b2Body* body) {
 	}
 }
 
+void Box2DWorldManager::destroyJoint(b2Joint* joint) {
+	if (world && joint) {
+		world->DestroyJoint(joint);
+	}
+}
+
+b2Body* Box2DWorldManager::createKinematicBody(b2Vec2 b2_pos) {
+	if (!world) return nullptr;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_kinematicBody;
+	bodyDef.position = b2_pos;
+	bodyDef.allowSleep = false;
+	bodyDef.awake = true;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+	return body;
+}
+
+b2Body* Box2DWorldManager::createDynamicBody(b2Vec2 b2_pos) {
+	if (!world) return nullptr;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = b2_pos;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+	return body;
+}
+
 b2Body* Box2DWorldManager::createCharacterBody(Vector2 pos, Vector2 hitboxSize) {
 	if (!world) return nullptr;
 
@@ -219,7 +251,7 @@ b2Body* Box2DWorldManager::createCharacterBody(Vector2 pos, Vector2 hitboxSize) 
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position = b2_pos;
 	bodyDef.fixedRotation = true;
-	bodyDef.allowSleep = true;
+	bodyDef.allowSleep = false;
 	bodyDef.awake = true;
 
 	b2Body* body = world->CreateBody(&bodyDef);
@@ -254,24 +286,19 @@ b2Body* Box2DWorldManager::createProjectileBody(Vector2 pos, Vector2 hitboxSize)
 }
 
 b2Body* Box2DWorldManager::createBlockBody(Vector2 pos, Vector2 hitboxSize) {
-	if (!world) return nullptr;
 
 	b2Vec2 b2_size = raylibToB2(hitboxSize);
 	b2Vec2 b2_pos = raylibToB2(pos);
 	b2_pos.x += b2_size.x / 2;
 	b2_pos.y += b2_size.y / 2;
 
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_kinematicBody;
-	bodyDef.position = b2_pos;
-	bodyDef.fixedRotation = true;
-	bodyDef.allowSleep = true;
-	bodyDef.awake = true;
-
-	b2Body* body = world->CreateBody(&bodyDef);
+	b2Body* body = createKinematicBody(b2_pos);
+	if (!body) {
+		return nullptr;
+	}
 
 	attachRectangleFixtures(body, pos, hitboxSize);
-	attachSensors(body, hitboxSize);
+	//attachSensors(body, hitboxSize);
 
 	return body;
 }
@@ -308,7 +335,7 @@ b2Body* Box2DWorldManager::createItemStaticBody(Vector2 pos, Vector2 hitboxSize)
 	b2_pos.y += b2_size.y / 2;
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_staticBody;
+	bodyDef.type = b2_kinematicBody;
 	bodyDef.position = b2_pos;
 	bodyDef.fixedRotation = true;
 	bodyDef.allowSleep = true;
@@ -322,9 +349,6 @@ b2Body* Box2DWorldManager::createItemStaticBody(Vector2 pos, Vector2 hitboxSize)
 	mainShape.SetAsBox(b2_size2.x / 2, b2_size2.y / 2);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &mainShape;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.0f;
-	fixtureDef.restitution = 0.0f;
 	fixtureDef.isSensor = true;
 
 	body->CreateFixture(&fixtureDef);
@@ -390,6 +414,10 @@ void Box2DWorldManager::BeginContact(b2Contact* contact) {
 			directAtoB = Direction::RIGHT;
 			directBtoA = Direction::LEFT;
 			break;
+		case 5:
+			directAtoB = Direction::IN;
+			directBtoA = Direction::OUT;
+			break;
 		}
 	}
 	else if (fixtureB->IsSensor() && sensorIdB > 0) {
@@ -409,6 +437,10 @@ void Box2DWorldManager::BeginContact(b2Contact* contact) {
 		case 4:
 			directBtoA = Direction::RIGHT;
 			directAtoB = Direction::LEFT;
+			break;
+		case 5:
+			directBtoA = Direction::IN;
+			directAtoB = Direction::OUT;
 			break;
 		}
 	}
@@ -474,7 +506,7 @@ void Box2DWorldManager::EndContact(b2Contact* contact) {
 			if (auto character = dynamic_cast<Character*>(objB)) {
 				character->removeGroundContact();
 			}
-		}
+		}	
 	}
 
 	if (fixtureA->IsSensor() && sensorIdA == 1) { // Bottom sensor of objA
@@ -506,6 +538,96 @@ void Box2DWorldManager::EndContact(b2Contact* contact) {
 				}
 			}
 		}
+	}
+
+	Direction directAtoB = Direction::NONE;
+	Direction directBtoA = Direction::NONE;
+
+	if (fixtureA->IsSensor() && sensorIdA > 0) {
+		switch (sensorIdA) {
+		case 1:
+			directAtoB = Direction::DOWN;
+			directBtoA = Direction::UP;
+			break;
+		case 2:
+			directAtoB = Direction::UP;
+			directBtoA = Direction::DOWN;
+			break;
+		case 3:
+			directAtoB = Direction::LEFT;
+			directBtoA = Direction::RIGHT;
+			break;
+		case 4:
+			directAtoB = Direction::RIGHT;
+			directBtoA = Direction::LEFT;
+			break;
+		case 5:
+			directAtoB = Direction::IN;
+			directBtoA = Direction::OUT;
+			break;
+		}
+	}
+	else if (fixtureB->IsSensor() && sensorIdB > 0) {
+		switch (sensorIdB) {
+		case 1:
+			directBtoA = Direction::DOWN;
+			directAtoB = Direction::UP;
+			break;
+		case 2:
+			directBtoA = Direction::UP;
+			directAtoB = Direction::DOWN;
+			break;
+		case 3:
+			directBtoA = Direction::LEFT;
+			directAtoB = Direction::RIGHT;
+			break;
+		case 4:
+			directBtoA = Direction::RIGHT;
+			directAtoB = Direction::LEFT;
+			break;
+		case 5:
+			directBtoA = Direction::IN;
+			directAtoB = Direction::OUT;
+			break;
+		}
+	}
+	else {
+		b2WorldManifold worldManifold;
+		contact->GetWorldManifold(&worldManifold);
+		b2Vec2 normal = worldManifold.normal;
+
+		if (abs(normal.y) > abs(normal.x)) {
+			if (normal.y > 0) {
+				directAtoB = Direction::DOWN;
+				directBtoA = Direction::UP;
+			}
+			else {
+				directAtoB = Direction::UP;
+				directBtoA = Direction::DOWN;
+			}
+		}
+		else {
+			if (normal.x > 0) {
+				directAtoB = Direction::RIGHT;
+				directBtoA = Direction::LEFT;
+			}
+			else {
+				directAtoB = Direction::LEFT;
+				directBtoA = Direction::RIGHT;
+			}
+		}
+	}
+
+	auto sharedA = std::shared_ptr<Object>(objA, [](Object*) {});
+	auto sharedB = std::shared_ptr<Object>(objB, [](Object*) {});
+	IOnCollisionExit* exitA = dynamic_cast<IOnCollisionExit*>(objA);
+	IOnCollisionExit* exitB = dynamic_cast<IOnCollisionExit*>(objB);
+
+	if (exitA) {
+		exitA->onCollisionExit(sharedB, directBtoA);
+	}
+	if (exitB) {
+		exitB->onCollisionExit(sharedA,directAtoB);
 	}
 }
 
@@ -685,4 +807,74 @@ void Box2DWorldManager::drawChainShape(b2Body* body, b2Fixture* fixture, b2Chain
 		Vector2 worldVertex = b2ToRaylib(vertex);
 		DrawCircleV(worldVertex, 2, drawColor);
 	}
+}
+
+
+struct SimpleRayCastCallback : public b2RayCastCallback {
+	b2Vec2 hitPoint;
+	b2Body* hitBody = nullptr;
+	bool hit = false;
+
+	float ReportFixture(b2Fixture* fixture,
+		const b2Vec2& point,
+		const b2Vec2& normal,
+		float fraction) override {
+		hitPoint = point;
+		hitBody = fixture->GetBody();
+		hit = true;
+		return fraction; 
+	}
+};
+
+bool Box2DWorldManager::raycast(const Vector2& start,
+	const Vector2& end,
+	Vector2& outHitPoint,
+	b2Body** outBody) {
+	if (!world) return false;
+
+	SimpleRayCastCallback callback;
+	world->RayCast(&callback, raylibToB2(start), raylibToB2(end));
+
+	if (callback.hit) {
+		outHitPoint = b2ToRaylib(callback.hitPoint);
+		if (outBody) {
+			*outBody = callback.hitBody;
+		}
+		return true;
+	}
+	return false;
+}
+
+b2Body* Box2DWorldManager::createLaserBeamBody(Vector2 pos, float length, float thickness, float angle) {
+	if (!world) return nullptr;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_kinematicBody;
+	bodyDef.position = raylibToB2(pos);
+	bodyDef.angle = angle;
+
+	b2Body* body = world->CreateBody(&bodyDef);
+
+	b2PolygonShape beamShape;
+	beamShape.SetAsBox(
+		raylibToB2(length * 0.5f),  // half length
+		raylibToB2(thickness * 0.5f),
+		b2Vec2(raylibToB2(length * 0.5f), 0.0f), // offset to match start point
+		0.0f
+	);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &beamShape;
+	fixtureDef.isSensor = true;
+
+	b2Filter filter;
+	filter.categoryBits = static_cast<uint16>(ObjectCategory::PROJECTILE);
+	filter.maskBits =
+		static_cast<uint16>(ObjectCategory::CHARACTER) |
+		static_cast<uint16>(ObjectCategory::BLOCK) |
+		static_cast<uint16>(ObjectCategory::INTERACTIVE);
+	fixtureDef.filter = filter;
+
+	body->CreateFixture(&fixtureDef);
+	return body;
 }

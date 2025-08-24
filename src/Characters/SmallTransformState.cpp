@@ -36,7 +36,7 @@ void SmallTransformState::exit(Character* character) {
 	
 	Vector2 transformPos = { centerPos.x - character->size.x * Constants::TILE_SIZE * 0.5f, centerPos.y - character->size.y * Constants::TILE_SIZE };
 	
-	Vector2 ssize;
+	Vector2 ssize = { 0, 0 };
 	switch (character->characterType) {
 	case CharacterType::MARIO:
 		ssize = Constants::Character::Mario::SMALL_SIZE;
@@ -86,6 +86,7 @@ void SmallTransformState::exit(Character* character) {
 	}
 
 	character->powerState = PowerState::SMALL;
+	character->disableRainbowEffect();
 	character->hp = 1;
 	character->invincibleTimer = Constants::Character::INVINCIBLE_TIME_AFTER_TRANSFORM;
 	character->currentState = &IdleState::getInstance();

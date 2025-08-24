@@ -13,7 +13,9 @@ void JumpingState::enter(Character* character){
 }
 
 void JumpingState::update(Character* character, float deltaTime) {
-
+    if (character->starTimer > 0) {
+        character->starTimer -= deltaTime;
+    }
 }
 
 void JumpingState::exit(Character* character){
@@ -32,14 +34,14 @@ void JumpingState::handleInput(Character* character, const InputState& input) {
 
     b2Vec2 currentVel = character->physicsBody->GetLinearVelocity();
     float speed = character->getSpeed();
-    float airControlFactor = 0.8f;
+
 
     if (input.moveLeft) {
-        character->physicsBody->SetLinearVelocity(b2Vec2(-speed * airControlFactor, currentVel.y));
+        character->physicsBody->SetLinearVelocity(b2Vec2(-speed, currentVel.y));
         character->setFacingRight(false);
     }
     else if (input.moveRight) {
-        character->physicsBody->SetLinearVelocity(b2Vec2(speed * airControlFactor, currentVel.y));
+        character->physicsBody->SetLinearVelocity(b2Vec2(speed, currentVel.y));
         character->setFacingRight(true);
     }
     else {
@@ -54,13 +56,16 @@ void JumpingState::handleInput(Character* character, const InputState& input) {
 }
 
 void JumpingState::checkTransitions(Character* character, const InputState& input) {
-    if (character->isOnGround()) {
+    if (character->isOnGround() || character->physicsBody->GetLinearVelocity().y == 0) {
         if (input.moveLeft || input.moveRight) {
             character->changeState(MovingState::getInstance());
         }
         else {
             character->changeState(IdleState::getInstance());
         }
+    }
+    if (character->powerState == PowerState::STAR && character->starTimer <= 0) {
+        character->changeState(SmallTransformState::getInstance());
     }
 }
 

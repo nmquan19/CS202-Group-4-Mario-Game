@@ -3,8 +3,8 @@
 #include "raylib.h"
 #include "../Objects/ObjectFactory.h"
 #include "../System/Interface.h"
-#include "../Objects/Spring.h"
-#include "../Objects/MovingPlatform.h"
+#include "../Objects/InteractiveObjects/Spring.h"
+#include "../Objects/InteractiveObjects/MovingPlatform.h"
 
 struct PlayerInputMapping {
 	int moveLeft;
@@ -32,6 +32,7 @@ struct InputState {
 	bool jumpReleased = false;
 	bool superTransform = false;
 	bool fireTransform = false;
+	bool starTransform = false;
 	bool attack = false;
 
 	static InputState fromPlayer(PlayerID playerID) {
@@ -45,6 +46,7 @@ struct InputState {
 		input.jumpReleased = IsKeyReleased(mapping.jump);
 		input.superTransform = IsKeyPressed(mapping.superTransform);
 		input.fireTransform = IsKeyPressed(mapping.fireTransform);
+		input.starTransform = (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) && IsKeyPressed(mapping.fireTransform);
 		input.attack = IsKeyPressed(mapping.attack);
 		return input;
 	}
@@ -89,6 +91,7 @@ public:
 	ObjectCategory getObjectCategory() const override;
 	std::vector<ObjectCategory> getCollisionTargets() const override;
 	void onCollision(std::shared_ptr<Object> other, Direction direction) override;
+
 	bool isActive() const override;
 	void setActive(bool) override;
 	bool isCollided() const override;
@@ -116,10 +119,16 @@ public:
 	friend class SuperTransformState;
 	friend class SmallTransformState;
 	friend class FireTransformState;
+	friend class StarTransformState;
+	friend class RefreshPowerState;
 
 	void addGroundContact();
 	void removeGroundContact();
 	void setPlatform(std::shared_ptr<MovingPlatform> platform);
+
+	void enableRainbowEffect();
+	void disableRainbowEffect();
+	bool isRainbowEffectActive() const;
 
 private:
 	void handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction);
@@ -127,6 +136,7 @@ private:
 	void handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction);
 	void handleSpringCollision(std::shared_ptr<Spring> other, Direction direction);
 	void handleMovingPlatformCollision(std::shared_ptr<MovingPlatform> other, Direction direction);
+	void handleItemCollision(std::shared_ptr<Object> other, Direction direction);
 
 private:
 	ICharacterState* currentState;
@@ -156,9 +166,13 @@ private:
 	float reviveTimer;
 	float transformTimer;
 	float attackTimer;
+	float starTimer;
 
 	int projectilesLeft = 0;
 
 	MovingPlatform* platform;
 	int groundContactCount = 0;
+
+	bool rainbowEffect = false;
+	float rainbowTimer = 0.0f;
 };

@@ -10,6 +10,7 @@ MenuManager::MenuManager() {
 
     exit = false;
     board = LoadTexture("./assets/button/board1.png");
+    menuBackground = LoadTexture("./assets/menu background.jpg");
 
     check.load("./assets/button/check.png", "./assets/button/check_selected.png");
 
@@ -37,11 +38,16 @@ MenuManager::MenuManager() {
     night_airshipBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
     night_snowBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
 
+    OnePlayer.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    TwoPlayers.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
 
     mario = LoadTexture("./assets/Mario.png");
     luigi = LoadTexture("./assets/Luigi.png");
     toad = LoadTexture("./assets/Toad.png");
     toadette = LoadTexture("./assets/Toadette.png");
+
+    level_map1 = LoadTexture("./assets/level_map1.png");
+    level_map4 = LoadTexture("./assets/level_map4.png");
 
     const int screenWidth = UIManager::getInstance().screenWidth;
     const int screenHeight = UIManager::getInstance().screenHeight;
@@ -68,25 +74,61 @@ MenuManager::MenuManager() {
     slideBarSoundPosition.y = boardPosition.y + board.height * scale * 5 / 10.0f;
 
     manager.Init(4, UIManager::getInstance().screenHeight / 2.0f, UIManager::getInstance().screenWidth / 6.0f, UIManager::getInstance().screenHeight, SKYBLUE, MARIO_COLOR, LUIGI_COLOR, TOAD_COLOR, TOADETTE_COLOR);
+    
+
+
+    scale1 = (float)UIManager::getInstance().screenHeight / (float)level_map1.height;
+    newWidth1 = level_map1.width * scale1;
+    scale2 = (float)UIManager::getInstance().screenHeight / (float)level_map4.height;
+    newWidth2 = level_map4.width * scale2;
+    src1 = { 0, 0, (float)level_map1.width, (float)level_map1.height };
+    dst1 = { backgroundOffsetX, 0, newWidth1, (float)UIManager::getInstance().screenHeight };
+    origin1 = { 0, 0 };
+
+    src2 = { 0, 0, (float)level_map4.width, (float)level_map4.height };
+    dst2 = { backgroundOffsetX + newWidth1, 0, newWidth2, (float)UIManager::getInstance().screenHeight };
+    origin2 = { 0, 0 };
+    positionList = {
+        {backgroundOffsetX + newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f, newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f, newWidth1 / 21.0f * 4.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 3.0f, newWidth1 / 21.0f * 4.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 7.0f, newWidth1 / 21.0f * 4.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 8.0f, newWidth1 / 21.0f * 3.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 8.5f, newWidth1 / 21.0f * 3.5f}, //level 1
+        {backgroundOffsetX + newWidth1 / 21.0f * 9.0f, newWidth1 / 21.0f * 3.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 11.0f, newWidth1 / 21.0f * 5.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.0f, newWidth1 / 21.0f * 5.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 5.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 2.5f} //level 2
+    };
+
+    mt.tex = mario;
+    mt.pos = positionList[0];
+    mt.currentIndex = 0;
 }
 
 MenuManager::~MenuManager() {
     UnloadTexture(logo);
     UnloadTexture(board);
+    UnloadTexture(menuBackground);
     UnloadTexture(mario);
     UnloadTexture(luigi);
     UnloadTexture(toad);
     UnloadTexture(toadette);
+
+    UnloadTexture(level_map1);
+    UnloadTexture(level_map4);
 }
 
 void MenuManager::DrawMenu() {
     ClearBackground(SKYBLUE);
+    
     const float width = static_cast<float>(UIManager::getInstance().screenWidth);
     const float height = static_cast<float>(UIManager::getInstance().screenHeight);
+    DrawTexturePro(menuBackground, { 0, 0, (float)menuBackground.width, (float)menuBackground.height }, {0, 0, width, height}, {0,0}, 0, WHITE);
     Rectangle recLogo; recLogo.x = 0; recLogo.y = 0; recLogo.width = 886; recLogo.height = 352;
     float scale = 0.75;
     DrawTextureEx(logo, { (width - recLogo.width * scale) / 2, height / 5 }, 0, scale, WHITE); // center
-
 
     Font currentMenuFont = UIManager::getInstance().menuFont;
     if (!settingDialog && !exitDialog) {
@@ -356,20 +398,15 @@ void MenuManager::HandleRedirect() {
 void MenuManager::UpdateRedirect(float deltaTime) {
     characterBoard.update(deltaTime);
     continueBoard.update(deltaTime);
-    restartBoard.update(deltaTime);
-    levelBoard.update(deltaTime);
     menuBoard.update(deltaTime);
 
 }
 
 void MenuManager::DrawRedirect() {
-    characterBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 5 / 20.0f }, "Character", 1.5, 1.0);
-    continueBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 7 / 20.0f }, "Continue", 1.5, 1.0);
-    restartBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Restart", 1.5, 1.0);
-    levelBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Level", 1.5, 1.0);
-    menuBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 13 / 20.0f }, "Menu", 1.5, 1.0);
+    characterBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 7 / 20.0f }, "NewGame", 1.5, 1.0);
+    continueBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Continue", 1.5, 1.0);
+    menuBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Menu", 1.5, 1.0);
 }
-
 
 void MenuManager::HandleEditorSelecting() {
 
@@ -386,4 +423,142 @@ void MenuManager::DrawEditorSelecting() {
     day_undergroundBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Map 2", 1.5, 1.0);
     night_airshipBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Map 3", 1.5, 1.0);
     night_snowBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 13 / 20.0f }, "Map 4", 1.5, 1.0);
+}
+
+void MenuManager::DrawPlayer() {
+    Rectangle source1 = { 0, 0, (float)mario.width, (float)mario.height };
+    Rectangle dest1 = { UIManager::getInstance().screenWidth / 3.0f, UIManager::getInstance().screenHeight / 2.0f,
+                        (float)mario.width, (float)mario.height };
+    Vector2 origin = { (float)mario.width / 2, (float)mario.height / 2 };
+
+    DrawTexturePro(mario, source1, dest1, origin, 0.0f, WHITE);
+
+    // Texture 2: tâm tại (screen.x * 2/3, screen.y / 2)
+    Rectangle source2 = { 0,0,(float)mario.width * (-1), (float)mario.height };
+    Rectangle dest2 = { UIManager::getInstance().screenWidth * 2.0f / 3.0f, UIManager::getInstance().screenHeight / 2.0f,
+                        (float)mario.width, (float)mario.height };
+
+    Rectangle source3 = { 0,0,(float)luigi.width * (-1), (float)luigi.height };
+    Rectangle dest3 = { UIManager::getInstance().screenWidth * 2.0f / 3.0f + luigi.width / 2.0f, UIManager::getInstance().screenHeight / 2.0f,
+                        (float)luigi.width, (float)luigi.height };
+
+    DrawTexturePro(mario, source2, dest2, origin, 0.0f, WHITE);
+    DrawTexturePro(luigi, source3, dest3, origin, 0.0f, WHITE);
+    OnePlayer.draw({ dest1.x, dest1.y + mario.height }, "1 player", 1.5, 1.0);
+    TwoPlayers.draw({ (dest2.x + dest3.x) / 2.0f, (dest2.y + dest3.y) / 2.0f + mario.height }, "2 players", 1.5, 1.0);
+
+    /*
+    Vector2 Center1 = { UIManager::getInstance().screenWidth / 3.0f, UIManager::getInstance().screenHeight / 2.0f };
+    Vector2 Center2 = { UIManager::getInstance().screenWidth * 2 / 3.0f, UIManager::getInstance().screenHeight / 2.0f };
+    DrawTexturePro(mario, { 0, 0, (float)mario.width, (float)mario.height}, {Center1.x, Center1.y, (float)mario.width, (float)mario.height}, {1.5f * Center1.x, 1.5f * Center1.y}, 0.0f, WHITE);
+    DrawTexturePro(mario, { 0, 0, (float)mario.width * (-1), (float)mario.height }, { Center2.x, Center2.y, (float)mario.width, (float)mario.height }, { 1.5f * Center2.x, 1.5f * Center2.y }, 0.0f, WHITE);
+    */
+}
+
+void MenuManager::UpdatePlayer(float deltaTime) {
+    OnePlayer.update(deltaTime);
+    TwoPlayers.update(deltaTime);
+}
+
+void MenuManager::HandlePlayer() {
+
+}
+
+
+
+
+
+
+void MenuManager::DrawLevel() {
+    DrawTexturePro(level_map1, src1, { backgroundOffsetX, 0, newWidth1, (float)UIManager::getInstance().screenHeight }, origin1, 0.0f, WHITE);
+    DrawTexturePro(level_map4, src2, { backgroundOffsetX + newWidth1, 0, newWidth2, (float)UIManager::getInstance().screenHeight }, origin2, 0.0f, WHITE);
+
+    //float screenCenterX = UIManager::getInstance().screenWidth / 2.0f;
+    //float marioScreenX = (mt.pos.x < screenCenterX) ? mt.pos.x : screenCenterX;
+
+    DrawTexture(mt.tex,
+        mt.pos.x + backgroundOffsetX - mt.tex.width / 2,
+        mt.pos.y - mt.tex.height / 2,
+        WHITE);
+}
+
+void MenuManager::UpdateLevel(float deltaTime) {
+    Vector2 mouse = GetMousePosition();
+    float speed = 300.0f;
+
+    if (mouse.x < UIManager::getInstance().screenWidth / 3.0f) {
+        backgroundOffsetX += speed * deltaTime;
+    }
+    else if (mouse.x > UIManager::getInstance().screenWidth * 2.0f / 3.0f){
+        backgroundOffsetX -= speed * deltaTime;
+    }
+
+    float backgroundWidth = newWidth1 + newWidth2;
+    if (backgroundOffsetX > 0) backgroundOffsetX = 0;
+    if (backgroundOffsetX < UIManager::getInstance().screenWidth - backgroundWidth)
+        backgroundOffsetX = UIManager::getInstance().screenWidth - backgroundWidth;
+
+    mt.UpdateMovingTexture(positionList, deltaTime);
+}
+
+/*
+void MenuManager::DrawLevel() {
+    scale1 = (float)UIManager::getInstance().screenHeight / (float)level_map1.height;
+    newWidth1 = level_map1.width * scale1;
+    scale2 = (float)UIManager::getInstance().screenHeight / (float)level_map4.height;
+    newWidth2 = level_map4.width * scale2;
+    src1 = { 0, 0, (float)level_map1.width, (float)level_map1.height };
+    dst1 = { backgroundOffsetX, 0, newWidth1, (float)UIManager::getInstance().screenHeight };
+    origin1 = { 0, 0 };
+    DrawTexturePro(level_map1, src1, dst1, origin1, 0.0f, WHITE);
+
+    src2 = { 0, 0, (float)level_map4.width, (float)level_map4.height };
+    dst2 = { backgroundOffsetX + newWidth1, 0, newWidth2, (float)UIManager::getInstance().screenHeight };
+    origin2 = { 0, 0 };
+
+    positionList = {
+        {backgroundOffsetX + newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f, newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f, newWidth1 / 21.0f * 4.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 3.0f, newWidth1 / 21.0f * 4.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 7.0f, newWidth1 / 21.0f * 4.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 8.0f, newWidth1 / 21.0f * 3.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 8.5f, newWidth1 / 21.0f * 3.5f}, //level 1
+        {backgroundOffsetX + newWidth1 / 21.0f * 9.0f, newWidth1 / 21.0f * 3.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 11.0f, newWidth1 / 21.0f * 5.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.0f, newWidth1 / 21.0f * 5.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 5.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 2.5f} //level 2
+    };
+
+    DrawTexturePro(level_map4, src2, dst2, origin2, 0.0f, WHITE);
+    //DrawTexture(mt.tex, mt.pos.x - mt.tex.width / 2, mt.pos.y - mt.tex.height / 2, WHITE);
+    DrawTextureEx(mt.tex, {mt.pos.x - mt.tex.width / 2.0f,mt.pos.y - mt.tex.height / 2.0f}, 0, 0.5f, WHITE);
+    //DrawTextureEx(mario, {positionList[0].x - mario.width * 0.25f, positionList[0].y - mario.height * 0.25f}, 0, 0.5f, WHITE);
+    
+}
+
+void MenuManager::UpdateLevel(float deltaTime) {
+    //float delta = GetFrameTime();
+    Vector2 mouse = mt.pos;
+    float speed = 200.0f;
+    if (mouse.x < UIManager::getInstance().screenWidth / 2.0f - 20) {
+        backgroundOffsetX += speed * deltaTime;
+    }
+    else if (mouse.x > UIManager::getInstance().screenWidth / 2.0f + 20) {
+        backgroundOffsetX -= speed * deltaTime;
+    }
+
+    if (backgroundOffsetX > 0) backgroundOffsetX = 0;
+    float backgroundWidth = level_map1.width * (float)UIManager::getInstance().screenHeight / (float)level_map1.height + 
+							  level_map4.width * (float)UIManager::getInstance().screenHeight / (float)level_map4.height;
+    if (backgroundOffsetX < UIManager::getInstance().screenWidth - backgroundWidth)
+        backgroundOffsetX = UIManager::getInstance().screenWidth - backgroundWidth;
+
+    mt.UpdateMovingTexture(positionList, deltaTime);
+}
+*/
+void MenuManager::HandleLevel() {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        mt.HandleClick(positionList, GetMousePosition());
+    }
 }

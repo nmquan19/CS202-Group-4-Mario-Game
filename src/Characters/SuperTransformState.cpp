@@ -2,8 +2,10 @@
 #include "../../include/Characters/Character.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/Characters/IdleState.h"
+#include "../../include/UI/SoundEffect.h"
 
 void SuperTransformState::enter(Character* character) {
+	AudioManager::getInstance().PlaySoundEffect("level_up");
 	character->setAniTime(0.0f);
 	character->setAniSpeed(0.2f);
 	character->transformTimer = Constants::Character::TRANSFORM_DURATION;

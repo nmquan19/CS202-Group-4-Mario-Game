@@ -13,7 +13,9 @@ void MovingState::enter(Character* character) {
 }
 
 void MovingState::update(Character* character, float deltaTime) {
-
+	if (character->starTimer > 0) {
+		character->starTimer -= deltaTime;
+	}
 }
 
 void MovingState::exit(Character* character) {
@@ -46,7 +48,10 @@ void MovingState::handleInput(Character* character, const InputState& input) {
 }
 
 void MovingState::checkTransitions(Character* character, const InputState& input) {
-	if (input.jumpPressed && character->isOnGround()) {
+	if (character->powerState == PowerState::STAR && character->starTimer <= 0) {
+		character->changeState(SmallTransformState::getInstance());
+	}
+	else if (input.jumpPressed && character->isOnGround()) {
 		character->jump();
 		character->changeState(JumpingState::getInstance());
 	}

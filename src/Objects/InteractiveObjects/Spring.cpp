@@ -1,7 +1,7 @@
-#include "../../include/Objects/Spring.h"
-#include "../../include/System/Constant.h"
-#include "../../include/System/TextureManager.h"
-#include "../../include/System/Box2DWorldManager.h"
+#include "../../../include/Objects/InteractiveObjects/Spring.h"
+#include "../../../include/System/Constant.h"
+#include "../../../include/System/TextureManager.h"
+#include "../../../include/System/Box2DWorldManager.h"
 #include <iostream>
 
 Spring::Spring(Vector2 position, Vector2 size) : InteractiveObject(position, size) {
@@ -20,7 +20,7 @@ Spring::Spring(Vector2 position, Vector2 size) : InteractiveObject(position, siz
 			b2Filter filter = fixture->GetFilterData();
 			filter.maskBits = static_cast<uint16>(ObjectCategory::INTERACTIVE);
 			filter.categoryBits = static_cast<uint16>(ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::ENEMY) |
-				static_cast<uint16>(ObjectCategory::INTERACTIVE) | static_cast<uint16>(ObjectCategory::SHELL) |
+				static_cast<uint16>(ObjectCategory::SHELL) | static_cast<uint16>(ObjectCategory::ITEM) |
 				static_cast<uint16>(ObjectCategory::PROJECTILE);
 			fixture->SetFilterData(filter);
 		}

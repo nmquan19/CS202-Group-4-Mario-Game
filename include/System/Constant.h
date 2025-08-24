@@ -13,8 +13,8 @@ namespace Constants {
     constexpr float GRAVITY = 980.0f;
     constexpr int TILE_SIZE = 64;
     constexpr float KOOPA_SPEED = 200.0f;
-    constexpr float WORLDBOUNDS_WIDTH = 5000.0f;
-    constexpr float WORLDBOUNDS_HEIGHT = 5000.0f;
+    constexpr float WORLDBOUNDS_WIDTH = 15000.0f;
+    constexpr float WORLDBOUNDS_HEIGHT =15000.0f;
     constexpr float COYOTE_TIME_DURATION = 150.0f;
 
     namespace GreenKoopa {
@@ -53,15 +53,17 @@ namespace Constants {
         namespace Mario {
             const Vector2 SMALL_SIZE = { 0.75f, 1.0f };
             const Vector2 SUPER_SIZE = { 1.0f, 1.5f };
-            const CharacterStats STATS = { 3.0f, 12.0f };
+            const CharacterStats STATS = { 3.5f, 11.0f };
             const std::vector<std::vector<Rectangle>> SMALL_FRAME_DATA = {
                 {{11, 23, 12, 15}}, // idle state
                 {{118, 23, 12, 15}, {149, 22, 15, 16}, {186, 22, 16, 16}, {219, 22, 16, 16}}, // moving state
                 {{293, 22, 16, 16}, {326, 22, 16, 16}}, // jumping state
                 {{11, 23, 12, 15}, {49, 26, 11, 12}}, // stunned state
                 {{713, 22, 16, 16}}, // knocked state
-                {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 106, 16, 26}, {11, 106, 14, 27}}, // super transform
-                {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 262, 16, 26}, {11, 262, 14, 27}} // fire transform
+                {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 106, 16, 26}, {360, 106, 16, 26}}, // super transform
+                {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 262, 16, 26}, {360, 262, 16, 26}}, // fire transform
+                {}, // star transform
+                {{293, 22, 16, 16}} // refresh power state
             };
             const std::vector<std::vector<Rectangle>> SUPER_FRAME_DATA = {
                 {{11, 106, 14, 27}}, // idle state
@@ -69,8 +71,10 @@ namespace Constants {
                 {{360, 106, 16, 26}, {393, 106, 16, 26}}, // jumping state
                 {{11, 106, 14, 27}, {48, 115, 14, 18}}, // stunned state
                 {}, // none
-                {{11, 106, 14, 27}, {360, 106, 16, 26}, {293, 22, 16, 16}, {149, 22, 15, 16}, {11, 23, 12, 15}}, // small transform
-                {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 262, 16, 26}, {11, 262, 14, 27}} // fire transform
+                {{11, 106, 14, 27}, {360, 106, 16, 26}, {293, 22, 16, 16}, {149, 22, 15, 16}, {149, 22, 15, 16}}, // small transform
+                {{11, 23, 12, 15}, {149, 22, 15, 16}, {293, 22, 16, 16}, {360, 262, 16, 26}, {360, 262, 16, 26}}, // fire transform
+                {}, // star transform
+                {{360, 106, 16, 26}} // refresh power state
             };
             const std::vector<std::vector<Rectangle>> FIRE_FRAME_DATA = {
                 {{11, 262, 14, 27}}, // idle state
@@ -78,7 +82,10 @@ namespace Constants {
                 {{360, 262, 16, 26}, {393, 262, 16, 26}}, // jumping state
                 {{11, 262, 14, 27}, {48, 271, 14, 18}}, // stunned state 
                 {}, // none
-                {{11, 262, 14, 27}, {360, 262, 16, 26}, {293, 22, 16, 16}, {149, 22, 15, 16}, {11, 23, 12, 15}}, // small transform
+                {{11, 262, 14, 27}, {360, 262, 16, 26}, {293, 22, 16, 16}, {149, 22, 15, 16}, {149, 22, 15, 16}}, // small transform
+                {}, // none
+                {}, // star transform
+                {{360, 262, 16, 26}}, // refresh power state
                 {{11, 317, 14, 27}, {44, 317, 14, 27}} // attack state
             };
         }
@@ -86,15 +93,17 @@ namespace Constants {
         namespace Luigi {
             const Vector2 SMALL_SIZE = { 0.75f, 1.25f };
             const Vector2 SUPER_SIZE = { 1.0f, 1.75f };
-            const CharacterStats STATS = { 2.0f, 14.0f };
+            const CharacterStats STATS = { 3.0f, 13.0f };
             const std::vector<std::vector<Rectangle>> SMALL_FRAME_DATA = {
                 {{11, 893, 12, 15}}, // idle state
                 {{118, 893, 12, 15}, {149, 892, 15, 16}, {186, 892, 16, 16}, {219, 892, 16, 16}}, // moving state
                 {{293, 892, 16, 16}, {326, 892, 16, 16}}, // jumping state
                 {{11, 893, 12, 15}, {49, 896, 11, 12}}, // stunned state
                 {{713, 892, 16, 16}}, // knocked state
-                {{11, 893, 12, 15}, {149, 892, 15, 16}, {293, 892, 16, 16}, {360, 966, 16, 26}, {11, 966, 14, 27}}, // super transform
-                {{11, 893, 12, 15}, {149, 892, 15, 16}, {293, 892, 16, 16}, {360, 1122, 16, 26}, {11, 1122, 14, 27}}, // fire transform
+                {{11, 893, 12, 15}, {149, 892, 15, 16}, {293, 892, 16, 16}, {360, 966, 16, 26}, {360, 966, 16, 26}}, // super transform
+                {{11, 893, 12, 15}, {149, 892, 15, 16}, {293, 892, 16, 16}, {360, 1122, 16, 26}, {360, 1122, 16, 26}}, // fire transform
+                {}, // star transform
+                {{293, 892, 16, 16}} // refresh power state
             };
             const std::vector<std::vector<Rectangle>> SUPER_FRAME_DATA = {
                 {{11, 966, 14, 27}}, // idle state
@@ -102,8 +111,10 @@ namespace Constants {
                 {{360, 966, 16, 26}, {393, 966, 16, 26}}, // jumping state
                 {{11, 966, 14, 27}, {48, 975, 14, 18}}, // stunned state
                 {}, // none
-                {{11, 966, 14, 27}, {360, 966, 16, 26}, {293, 892, 16, 16}, {149, 892, 15, 16}, {11, 893, 12, 15}}, // small transform
-                {{11, 893, 12, 15}, {149, 892, 15, 16}, {293, 892, 16, 16}, {360, 1122, 16, 26}, {11, 1122, 14, 27}}, // fire transform
+                {{11, 966, 14, 27}, {360, 966, 16, 26}, {293, 892, 16, 16}, {149, 892, 15, 16}, {149, 892, 15, 16}}, // small transform
+                {{11, 893, 12, 15}, {149, 892, 15, 16}, {293, 892, 16, 16}, {360, 1122, 16, 26}, {360, 1122, 16, 26}}, // fire transform
+                {}, // star transform
+                {{360, 966, 16, 26}} // refresh power state
             };
             const std::vector<std::vector<Rectangle>> FIRE_FRAME_DATA = {
                 {{11, 1122, 14, 27}}, // idle state
@@ -111,7 +122,10 @@ namespace Constants {
                 {{360, 1122, 16, 26}, {393, 1122, 16, 26}}, // jumping state
                 {{11, 1122, 14, 27}, {48, 1131, 14, 18}}, // stunned state 
                 {}, // none
-                {{11, 1122, 14, 27}, {360, 1122, 16, 26}, {293, 892, 16, 16}, {149, 892, 15, 16}, {11, 893, 12, 15}}, // small transform
+                {{11, 1122, 14, 27}, {360, 1122, 16, 26}, {293, 892, 16, 16}, {149, 892, 15, 16}, {149, 892, 15, 16}}, // small transform
+                {}, // none
+                {}, // star transform
+                {{360, 1122, 16, 26}}, // refresh power state
                 {{11, 1177, 14, 27}, {44, 1177, 14, 27}} // attack state
             };
         }  
@@ -119,15 +133,17 @@ namespace Constants {
         namespace Toad {
             const Vector2 SMALL_SIZE = { 0.75f, 1.0f };
             const Vector2 SUPER_SIZE = { 1.0f, 1.5f };
-            const CharacterStats STATS = { 4.0f, 10.0f };
+            const CharacterStats STATS = { 4.0f, 11.0f };
             const std::vector<std::vector<Rectangle>> SMALL_FRAME_DATA = {
                 {{11, 1752, 12, 15}}, // idle state
                 {{118, 1752, 12, 15}, {149, 1751, 14, 16}, {186, 1751, 16, 16}, {219, 1751, 16, 16}}, // moving state
                 {{293, 1751, 16, 16}, {326, 1751, 16, 16}}, // jumping state
                 {{11, 1752, 12, 15}, {49, 1754, 14, 13}}, // stunned state
                 {{713, 1751, 16, 16}}, // knocked state
-                {{11, 1752, 12, 15}, {149, 1751, 14, 16}, {293, 1751, 16, 16}, {359, 1826, 18, 25}, {9, 1826, 15, 26}}, // super transform
-                {{11, 1752, 12, 15}, {149, 1751, 14, 16}, {293, 1751, 16, 16}, {359, 1982, 18, 25}, {9, 1982, 15, 26}} // fire transform
+                {{11, 1752, 12, 15}, {149, 1751, 14, 16}, {293, 1751, 16, 16}, {359, 1826, 18, 25}, {359, 1826, 18, 25}}, // super transform
+                {{11, 1752, 12, 15}, {149, 1751, 14, 16}, {293, 1751, 16, 16}, {359, 1982, 18, 25}, {359, 1982, 18, 25}}, // fire transform
+                {}, // star transform
+                {{293, 1751, 16, 16}} // refresh power state
             };
             const std::vector<std::vector<Rectangle>> SUPER_FRAME_DATA = {
                 {{9, 1826, 15, 26}}, // idle state
@@ -135,16 +151,21 @@ namespace Constants {
                 {{359, 1826, 18, 25}, {392, 1826, 16, 25}}, // jumping state
                 {{9, 1826, 15, 26}, {47, 1835, 15, 18}}, // stunned state
                 {}, // none
-                {{9, 1826, 15, 26}, {359, 1826, 18, 25}, {293, 1751, 16, 16}, {149, 1751, 14, 16}, {11, 1752, 12, 15}}, // small transform
-                {{11, 1752, 12, 15}, {149, 1751, 14, 16}, {293, 1751, 16, 16}, {359, 1982, 18, 25}, {9, 1982, 15, 26}} // fire transform
-                };
+                {{9, 1826, 15, 26}, {359, 1826, 18, 25}, {293, 1751, 16, 16}, {149, 1751, 14, 16}, {149, 1751, 14, 16}}, // small transform
+                {{11, 1752, 12, 15}, {149, 1751, 14, 16}, {293, 1751, 16, 16}, {359, 1982, 18, 25}, {359, 1982, 18, 25}}, // fire transform
+                {}, // star transform
+                {{359, 1826, 18, 25}} // refresh power state
+            };
             const std::vector<std::vector<Rectangle>> FIRE_FRAME_DATA = {
                 {{9, 1982, 15, 26}}, // idle state
                 {{116, 1982, 16, 26}, {149, 1982, 16, 25}, {182, 1982, 15, 26}}, // moving state
                 {{359, 1982, 18, 25}, {392, 1982, 16, 25}}, // jumping state
                 {{9, 1982, 15, 26}, {47, 1991, 15, 18}}, // stunned state 
                 {}, // none
-                {{9, 1982, 15, 26}, {359, 1982, 18, 25}, {293, 1751, 16, 16}, {149, 1751, 14, 16}, {11, 1752, 12, 15}}, // small transform
+                {{9, 1982, 15, 26}, {359, 1982, 18, 25}, {293, 1751, 16, 16}, {149, 1751, 14, 16}, {149, 1751, 14, 16}}, // small transform
+                {}, // none
+                {}, //star transform
+                {{359, 1982, 18, 25}}, // refresh power state
                 {{9, 2037, 15, 26}, {42, 2037, 15, 26}} // attack state
             };
         }
@@ -152,15 +173,17 @@ namespace Constants {
         namespace Toadette {
             const Vector2 SMALL_SIZE = { 1.0f, 1.0f };
             const Vector2 SUPER_SIZE = { 1.0f, 1.5f };
-            const CharacterStats STATS = { 3.5f, 10.0f };
+            const CharacterStats STATS = { 3.5f, 11.0f };
             const std::vector<std::vector<Rectangle>> SMALL_FRAME_DATA = {
                 {{6, 2611, 17, 15}, {39, 2611, 17, 15}}, // idle state
                 {{146, 2611, 17, 15}, {179, 2610, 17, 16}, {216, 2610, 19, 16}, {249, 2610, 19, 16}}, // moving state
                 {{323, 2610, 19, 16}, {355, 2610, 20, 16}}, // jumping state
                 {{6, 2611, 17, 15}, {76, 2613, 18, 13}}, // stunned state
                 {{743, 2610, 22, 16}}, // knocked state
-                {{6, 2611, 17, 15}, {179, 2610, 17, 16}, {323, 2610, 19, 16}, {423, 2685, 24, 25}, {5, 2685, 19, 26}}, // super transform
-                {{6, 2611, 17, 15}, {179, 2610, 17, 16}, {323, 2610, 19, 16}, {424, 2841, 23, 25}, {5, 2841, 19, 26}} // fire transform
+                {{6, 2611, 17, 15}, {179, 2610, 17, 16}, {323, 2610, 19, 16}, {423, 2685, 24, 25}, {423, 2685, 24, 25}}, // super transform
+                {{6, 2611, 17, 15}, {179, 2610, 17, 16}, {323, 2610, 19, 16}, {424, 2841, 23, 25}, {424, 2841, 23, 25}}, // fire transform
+                {}, // star transform
+                {{323, 2610, 19, 16}} // refresh power state
             };
             const std::vector<std::vector<Rectangle>> SUPER_FRAME_DATA = {
                 {{3, 2685, 21, 26}, {36, 2685, 21, 26}}, // idle state
@@ -168,8 +191,11 @@ namespace Constants {
                 {{423, 2685, 24, 25}, {455, 2685, 23, 25}}, // jumping state
                 {{5, 2685, 19, 26}, {74, 2693, 21, 18}}, // stunned state
                 {}, // none
-                {{5, 2685, 19, 26}, {423, 2685, 24, 25}, {323, 2610, 19, 16}, {179, 2610, 17, 16}, {6, 2611, 17, 15}}, // small transform
-                {{6, 2611, 17, 15}, {179, 2610, 17, 16}, {323, 2610, 19, 16}, {424, 2841, 23, 25}, {5, 2841, 19, 26}} // fire transform
+                {{5, 2685, 19, 26}, {423, 2685, 24, 25}, {323, 2610, 19, 16}, {179, 2610, 17, 16}, {179, 2610, 17, 16}}, // small transform
+                {{6, 2611, 17, 15}, {179, 2610, 17, 16}, {323, 2610, 19, 16}, {424, 2841, 23, 25}, {424, 2841, 23, 25}}, // fire transform
+                {}, // star transform
+                {{423, 2685, 24, 25}} // refresh power state
+
             };
             const std::vector<std::vector<Rectangle>> FIRE_FRAME_DATA = {
                 {{3, 2841, 21, 26}, {36, 2841, 21, 26}}, // idle state
@@ -177,7 +203,10 @@ namespace Constants {
                 {{424, 2841, 23, 25}, {455, 2841, 23, 25}}, // jumping state
                 {{5, 2841, 19, 26}, {74, 2849, 21, 18}}, // stunned state 
                 {}, // none
-                {{5, 2841, 19, 26}, {424, 2841, 23, 25}, {323, 2610, 19, 16}, {179, 2610, 17, 16}, {6, 2611, 17, 15}}, // small transform
+                {{5, 2841, 19, 26}, {424, 2841, 23, 25}, {323, 2610, 19, 16}, {179, 2610, 17, 16}, {179, 2610, 17, 16}}, // small transform
+                {}, // none
+                {}, // star transform
+                {{424, 2841, 23, 25}}, // refresh power stata
                 {{42, 2896, 19, 26}, {75, 2896, 19, 26}} // attack state
             };
         }
@@ -262,8 +291,8 @@ namespace Constants {
         constexpr float pausetime = 1.0f;
         constexpr float moveSpeed = 100.f;
         constexpr float dieDuration = 0.5f;
-        constexpr float attackDuration = 0.5f;
-        constexpr float attackCoolDown = 2.f;
+        constexpr float attackDuration = 1.f;
+        constexpr float attackCoolDown = 3.f;
     }
     namespace Torch {
         constexpr Vector2 STANDARD_SIZE = { 1, 1 };

@@ -10,6 +10,7 @@
 #include "../../../include/Game/GameContext.h"
 #include "../../../include/System/Box2DWorldManager.h"
 #include "../../../include/System/CameraSystem.h"
+#include  "../../../include/Enemy/LaserMechaKoopa/LaserBeam.h"
 #include <raymath.h>
 #include <raylib.h>
 #include <vector>
@@ -116,9 +117,11 @@ void LaserMechaKoopa::update(float dt) {
     animController.update(dt);
     curFrame = animController.getCurrentFrame();
     spritebox = TextureManager::Enemy_sprite_boxes[curFrame];
+    if (root) root->tick(this, dt);
     if (curAniName == "Attack" && animController.isFinished())
     {
         attackCoolDown = Constants::LaserMechaKoopa::attackCoolDown;
+        setAnimation("Idle");
     }
     if (curAniName == "Die" && animController.isFinished()) {
         die();
@@ -126,7 +129,6 @@ void LaserMechaKoopa::update(float dt) {
             GameContext::getInstance().getSharedPtrFromRaw(this)
         );
     }
-    if (root) root->tick(this,dt);
     if (physicsBody) {
         physicsBody->SetLinearVelocity(Box2DWorldManager::raylibToB2(velocity));
     }
@@ -157,7 +159,30 @@ void LaserMechaKoopa::setAnimation(const std::string& aniName)
 }
 void LaserMechaKoopa::attack() {
     setAnimation("Attack");
+    isChargingLaser = true;
+    isFiringLaser = false;
+    laserTimer = 0.0f;
+    Vector2 centerPos = { position.x + hitbox.width / 2, position.y + hitbox.height / 2 };
+
+    Vector2 dir = Vector2Normalize(targetPosition - centerPos);
+ 
+    GameContext::getInstance().addObject(
+        ProjectileType::LASER_BEAM,
+        { getCenter().x + hitbox.width / 2,position.y + 3*hitbox.height/2}, // spawn at center
+        { 1, 1 },      // size placeholder, LaserBeam can override
+        [dir](std::shared_ptr<Object> obj) {
+            auto laser = std::dynamic_pointer_cast<LaserBeam>(obj);
+            if (laser) {
+                laser->setDirection(dir);
+                laser->setChargeTime(0.5*Constants::LaserMechaKoopa::attackDuration);
+                laser->setBeamDuration(0.5 * Constants::LaserMechaKoopa::attackDuration);
+                laser->setMaxLength(Constants::LaserMechaKoopa::attackRange);
+            }
+        }
+    );
 }
+
+
 bool LaserMechaKoopa::isAttacking()
 {
     return curAniName == "Attack" && !animController.isFinished();

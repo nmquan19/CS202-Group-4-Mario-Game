@@ -29,7 +29,7 @@ Goomba::Goomba(Vector2 startPos, Vector2 size) : Enemy(startPos,TextureManager::
 void Goomba::onCollision(std::shared_ptr<Object> other, Direction dir) {
     switch (other->getObjectCategory()) {
     case ObjectCategory::CHARACTER:
-        if (dir == Direction::UP) {
+        if (dir == Direction::UP || std::dynamic_pointer_cast<Character>(other)->getPowerState() == PowerState::STAR) {
             this->changeState(&GoombaStompedState::GetInstance());
         }
     case ObjectCategory::ENEMY:

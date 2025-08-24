@@ -15,12 +15,16 @@
 #include "../../include/System/Interface.h"
 #include "../../include/Enemy/Koopa/KoopaShell.h"
 #include "../../include/System/Constant.h"
-#include "../../include/Objects/Spring.h"
-#include "../../include/Objects/MovingPlatform.h"
+#include "../../include/Objects/InteractiveObjects/Spring.h"
+#include "../../include/Objects/InteractiveObjects/MovingPlatform.h"
+#include "../../include/Objects/InteractiveObjects/FireBar.h"
+#include "../../include/Objects/InteractiveObjects/FireBarBase.h"
 #include "../../include/Objects/Projectile/FireBall.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/Enemy/Bob-ombs/Bob-ombs.h"
 #include "../../include/Enemy/LaserMechaKoopa/LaserMechaKoopa.h"
+#include "../../include/Enemy/LaserMechaKoopa/LaserBeam.h"
+
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
@@ -1093,6 +1097,7 @@ std::unique_ptr<Enemy> ObjectFactory::createSpecificEnemy(EnemyType type, Vector
         return std::make_unique<PiranhaPlant>(startPosition, size);
     case EnemyType::LASER_MECHA_KOOPA:
         return std::make_unique<LaserMechaKoopa>(startPosition, size);
+    
     default:
         return nullptr; 
     }
@@ -1150,7 +1155,8 @@ std::unique_ptr<Projectile> ObjectFactory::createSpecificProjectile(ProjectileTy
     switch (type) {
     case ProjectileType::FIRE_BALL:
         return std::make_unique<FireBall>(position, direction, size);
-      // case...
+    case ProjectileType::LASER_BEAM:
+        return std::make_unique<LaserBeam>(position, size);
     }
 }
 
@@ -1164,6 +1170,10 @@ std::unique_ptr<InteractiveObject> ObjectFactory::createSpecificInteractiveObjec
         return std::make_unique<Spring>(position, Vector2{1.0f, 1.0f});
     case InteractiveType::MOVING_PLATFORM:
         return std::make_unique<MovingPlatform>(position, Vector2{2.0f, 0.25f});
+    case InteractiveType::FIRE_BAR:
+        return std::make_unique<FireBar>(position, Vector2{ 1.0f, 1.0f });
+    case InteractiveType::FIRE_BAR_BASE:
+        return std::make_unique<FireBarBase>(position, Vector2{ 1.0f, 1.0f });
     }
 }
 

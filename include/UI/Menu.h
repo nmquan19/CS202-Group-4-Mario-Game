@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <raylib.h>
 #include <rlgl.h>
@@ -11,6 +11,7 @@
 #include "SoundEffect.h"
 #include "Button.h"
 #include "SlideBar.h"
+#include "../System/LevelEditor.h"
 #define MARIO_COLOR CLITERAL(Color){239, 83, 80, 255}
 #define TOADETTE_COLOR CLITERAL(Color){255, 128, 171, 255}
 #define LUIGI_COLOR CLITERAL(Color){178, 255, 89, 255}
@@ -198,24 +199,106 @@ public:
 };
 
 
+class MovingTexture {
+public:
+    Texture2D tex;
+    Vector2 pos;
+    int currentIndex = 0;
+    vector<int> path;
+    int movingIndex = -1;
+    float speed = 300.0f;
+
+    int GetClickedIndex(const vector<Vector2>& positions, Vector2 mouse) {
+        for (int i = 0; i < (int)positions.size(); i++) {
+            if (CheckCollisionPointCircle(mouse, positions[i], 50)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void UpdateMovingTexture(const vector<Vector2>& positions, float delta) {
+        if (movingIndex >= 0) {
+            Vector2 target = positions[movingIndex];
+            Vector2 dir = { target.x - pos.x, target.y - pos.y };
+            float dist = sqrtf(dir.x * dir.x + dir.y * dir.y);
+
+            if (dist < 2.0f) {
+                pos = target;
+                currentIndex = movingIndex;
+
+                if (!path.empty()) {
+                    movingIndex = path.front();
+                    path.erase(path.begin());
+                }
+                else {
+                    movingIndex = -1;
+                }
+            }
+            else {
+                dir.x /= dist;
+                dir.y /= dist;
+                pos.x += dir.x * speed * delta;
+                pos.y += dir.y * speed * delta;
+            }
+        }
+    }
+
+    void HandleClick(const vector<Vector2>& positions, Vector2 mouse) {
+        int clicked = GetClickedIndex(positions, mouse);
+        if (clicked >= 0 && clicked != currentIndex) {
+            path.clear();
+
+            if (clicked > currentIndex) {
+                for (int i = currentIndex + 1; i <= clicked; i++)
+                    path.push_back(i);
+            }
+            else {
+                for (int i = currentIndex - 1; i >= clicked; i--)
+                    path.push_back(i);
+            }
+
+            movingIndex = path.front();
+            path.erase(path.begin());
+        }
+    }
+};
+
+
+
 class MenuManager {
 private:
-    Texture2D logo, board;
+    Texture2D logo, board, menuBackground;
     Button check, cross, setting, returnButton;
     Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition;
 
     Texture2D mario, luigi, toad, toadette;
+    Texture2D level_map1, level_map4;
     float scale = 0.2f;
     bool isActive;
 
+
+    float scale1, newWidth1, scale2, newWidth2;
+    Rectangle src1, dst1, src2, dst2;
+    Vector2 origin1, origin2;
+    std::vector<Vector2> positionList;
+    float backgroundOffsetX = 0.0f;
+    MovingTexture mt;
 public:
     Button playBoard, settingBoard, exitBoard, editingBoard;
     Button characterBoard, continueBoard, restartBoard, levelBoard, menuBoard;
     Button day_groundBoard, day_undergroundBoard, night_airshipBoard, night_snowBoard;
+    Button OnePlayer, TwoPlayers;
     SlideBar slideBarMusic, slideBarSound;
     Vector2 slideBarMusicPosition, slideBarSoundPosition;
     int select, characterSelect;
     bool settingDialog, exitDialog, exit;
+
+    
+
+
+    
+
 
 
     ParallelogramHoverManager manager;
@@ -245,6 +328,14 @@ public:
     void DrawSetting();
     void UpdateSetting(float deltaTime);
     void HandleSetting();
+
+    void DrawPlayer();
+    void UpdatePlayer(float deltaTime);
+    void HandlePlayer();
+
+    void DrawLevel();
+    void UpdateLevel(float deltaiTime);
+    void HandleLevel();
 
 };
 
