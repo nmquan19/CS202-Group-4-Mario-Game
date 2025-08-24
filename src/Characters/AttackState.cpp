@@ -25,11 +25,16 @@ void AttackState::exit(Character* character) {
 	Vector2 centerPosition = Box2DWorldManager::b2ToRaylib(character->physicsBody->GetPosition());
 	int direction = (character->isFacingRight() ? 1 : -1);
 	Vector2 spawnPosition = {
-		centerPosition.x + direction * (character->size.x * Constants::TILE_SIZE * 0.5f + 20.0f),
+		centerPosition.x + direction * (character->size.x * Constants::TILE_SIZE * 0.5f + 30.0f),
 		centerPosition.y
 	};
 	GameContext::getInstance().setPlayerCallsRequest(character->id == PlayerID::PLAYER_01 ? 1 : 2);
-	GameContext::getInstance().addObject(ProjectileType::FIRE_BALL, spawnPosition, Constants::Projectile::STANDARD_SIZE);
+	if (character->characterType == CharacterType::MARIO) {
+		GameContext::getInstance().addObject(ProjectileType::FIRE_BALL, spawnPosition, Constants::Projectile::FireBall::STANDARD_SIZE);
+	}
+	else {
+		GameContext::getInstance().addObject(ProjectileType::FIRE_ORB, spawnPosition, Constants::Projectile::FireOrb::STANDARD_SIZE);
+	}
 }
 
 void AttackState::handleInput(Character* character, const InputState& input) {

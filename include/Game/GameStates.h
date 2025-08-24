@@ -80,8 +80,7 @@ public:
 		return;
 	}
 };
-
-
+ 
 
 class LevelSelectingState : public GameState {
 private:

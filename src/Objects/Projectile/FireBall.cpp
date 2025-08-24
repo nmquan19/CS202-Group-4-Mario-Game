@@ -4,10 +4,11 @@
 
 FireBall::FireBall(Vector2 position, int direction, Vector2 size) : Projectile(position, size) {
 	timer = 0.0f;
-	texture = LoadTexture("assets/Fireball_sprites.png");
+	size = { 0.75f, 0.75f };
+	texture = TextureManager::fireBallTexture;
 	frameData = { {14, 8, 9, 10}, {49, 9, 9, 9}, {84, 9, 9, 10}, {119, 9, 9, 9} };
 	spriteRec = frameData[0];
-	physicsBody = Box2DWorldManager::getInstance().createProjectileBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
+	physicsBody = Box2DWorldManager::getInstance().createFireBallBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
 	if (physicsBody) {
 		physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
 		for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {

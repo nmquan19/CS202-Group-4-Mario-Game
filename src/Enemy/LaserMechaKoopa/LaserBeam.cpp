@@ -13,7 +13,7 @@ LaserBeam::LaserBeam(Vector2 startPos, Vector2 dir, float chargeTime, float beam
     chargeColor({ 255, 255, 0, 180 }), beamColor(RED),
     hasImpact(false), Projectile(startPos,{1,1})
 {
-    physicsBody = Box2DWorldManager::getInstance().createProjectileBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
+    physicsBody = Box2DWorldManager::getInstance().createFireBallBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
@@ -31,7 +31,7 @@ LaserBeam::LaserBeam(Vector2 startPos, Vector2 size):startPoint(startPos),Projec
 chargeColor({ 255, 255, 0, 180 }), beamColor(RED),
 hasImpact(false)
 {
-    physicsBody = Box2DWorldManager::getInstance().createProjectileBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
+    physicsBody = Box2DWorldManager::getInstance().createFireBallBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {

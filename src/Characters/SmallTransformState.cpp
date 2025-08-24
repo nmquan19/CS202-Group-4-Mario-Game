@@ -11,7 +11,7 @@ void SmallTransformState::enter(Character* character) {
 	for (b2Fixture* fixture = character->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
 		b2Filter filter = fixture->GetFilterData();
 		filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);
-		filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK);
+		filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
 		fixture->SetFilterData(filter);
 	}
 }

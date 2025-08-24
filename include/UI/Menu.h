@@ -145,15 +145,9 @@ public:
         UpdateLayout();
     }
 
-    void Update(float deltaTime) {
-        Vector2 mouse = GetMousePosition();
-
-        for (auto& p : parallelograms) {
-            float halfW = (p.width * p.scale) / 2;
-            float halfH = (p.height * p.scale) / 2;
-            //Rectangle bounds = { p.center.x - halfW, p.center.y - halfH, p.width * p.scale, p.height * p.scale };
-            //p.targetScale = CheckCollisionPointRec(mouse, bounds) ? p.hoverScale : 1.0f;
-            p.targetScale = p.shape.CheckCollisionPointParallelogram(mouse) ? p.hoverScale : 1.0f;
+    void Update(float deltaTime, int character01Select, int character02Select) {
+        for (int i = 0; i < parallelograms.size(); ++i) {
+            parallelograms[i].targetScale = (i == character01Select || i == character02Select) ? parallelograms[i].hoverScale : 1.0f;
         }
 
         bool needRelayout = false;
@@ -297,17 +291,12 @@ public:
     Button day_groundBoard, day_undergroundBoard, night_airshipBoard, night_snowBoard;
     Button available, custom;
     Button OnePlayer, TwoPlayers;
+
     SlideBar slideBarMaster, slideBarMusic, slideBarSound;
     Vector2 slideBarMasterPosition, slideBarMusicPosition, slideBarSoundPosition;
-    int select, characterSelect;
+    int select;
+    int character01Select, character02Select;  
     bool settingDialog, exitDialog, exit;
-
-    
-
-
-    
-
-
 
     ParallelogramHoverManager manager;
     MenuManager();
@@ -348,6 +337,5 @@ public:
     void DrawLevel();
     void UpdateLevel(float deltaiTime);
     void HandleLevel();
-
 };
 
