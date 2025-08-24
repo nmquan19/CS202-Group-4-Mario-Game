@@ -124,7 +124,7 @@ void GameContext::handleInput() {
 }
 
 void GameContext::update(float deltaTime) {
-    if (currentState == gamePlayState) {
+    if (currentState == gamePlayState && !menuManager.settingDialog) {
         AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue() * menuManager.slideBarMaster.getValue());
         AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue() * menuManager.slideBarMaster.getValue());
         if (!AudioManager::getInstance().isPlaying()) {
