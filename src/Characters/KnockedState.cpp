@@ -3,9 +3,11 @@
 #include "../../include/Characters/IdleState.h"
 #include "../../include/System/Constant.h"
 #include "../../include/System/Box2DWorldManager.h"
+#include "../../include/UI/SoundEffect.h"
 #include <iostream>
 
 void KnockedState::enter(Character* character) {
+	AudioManager::getInstance().PlaySoundEffect("die");
 	character->setCurrentStateRow(4);
 	character->reviveTimer = Constants::Character::REVIVE_TIME;
 	b2Fixture* fixtures = character->physicsBody->GetFixtureList();

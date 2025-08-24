@@ -91,8 +91,11 @@ void GameContext::setState(GameState* newState) {
 
         if (newState == gamePlayState) {
             Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
-            LevelEditor::getInstance().setEditMode(false);
-            LevelEditor::getInstance().loadLevel("snowmap.json");
+            //LevelEditor::getInstance().setEditMode(false);
+            UIManager::getInstance().resetCoin();
+            UIManager::getInstance().resetTimer();
+            UIManager::getInstance().resetScore();
+            LevelEditor::getInstance().loadLevel("testlevel.json");
 			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
             character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
             character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
@@ -143,10 +146,12 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* character, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
     menuState = menu;
     redirectState = redirect;
+    playerSelectingState = player;
     characterSelectingState = character;
+    levelSelectingState = level;
     informationState = information;
     gamePlayState = game;
     editorState = editor;
