@@ -92,15 +92,14 @@ void GameContext::setState(GameState* newState) {
         if (newState == gamePlayState) {
             Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
             LevelEditor::getInstance().setEditMode(false);
-            LevelEditor::getInstance().loadLevel("snowmap.json");
+            LevelEditor::getInstance().loadLevel("testlevel.json");
 			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
             character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
             character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
-            for(const auto& triggerData : levelInfo[0].cameraTriggersData) {
+            /*for(const auto& triggerData : levelInfo[0].cameraTriggersData) {
                 std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position,triggerData.size,triggerData);
                 Objects.push_back(cameraTrigger);
-			}
-            //addObject(InteractiveType::FIRE_BAR, Vector2{ 700, 400 }, Vector2{});
+			}*/
             // CAMERA NEEDS CHANGING
             if (character01) {
                 camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};

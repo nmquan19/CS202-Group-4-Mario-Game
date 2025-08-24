@@ -66,9 +66,10 @@ protected:
 
 class BrokenBlockEffect : public ParticleEffect {
 public:
-	BrokenBlockEffect(Vector2 pos, Vector2 bounds, Vector2 minVelo, Vector2 maxVelo, Vector2 accelerate, float lifeSpan, float spawnSpeed, const char* texture);
-	BrokenBlockEffect(Vector2 pos, Vector2 bounds, Vector2 minVelo, Vector2 maxVelo, Vector2 accelerate, float lifeSpan, float spawnSpeed, Texture2D texture);
+	BrokenBlockEffect(Vector2 pos, Vector2 bounds, Vector2 minVelo, Vector2 maxVelo, Vector2 accelerate, float lifeSpan, float spawnSpeed, Texture2D texture, Rectangle srcRect);
 
 	void update(float deltaTime) override;
 	void draw() override;
+private:
+	Rectangle src;
 };

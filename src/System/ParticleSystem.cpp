@@ -127,11 +127,9 @@ float GetRandom(int decimal) {
 }
 
 // Broken Block Effect
-BrokenBlockEffect::BrokenBlockEffect(Vector2 pos, Vector2 bounds, Vector2 minVelo, Vector2 maxVelo, Vector2 accelerate, float lifeSpan, float spawnSpeed, const char* texture) 
-	: ParticleEffect(pos, bounds, minVelo, maxVelo, accelerate, lifeSpan, spawnSpeed, texture) {}
+BrokenBlockEffect::BrokenBlockEffect(Vector2 pos, Vector2 bounds, Vector2 minVelo, Vector2 maxVelo, Vector2 accelerate, float lifeSpan, float spawnSpeed, Texture2D texture, Rectangle srcRect) 
+	: ParticleEffect(pos, bounds, minVelo, maxVelo, accelerate, lifeSpan, spawnSpeed, texture), src(srcRect) {}
 
-BrokenBlockEffect::BrokenBlockEffect(Vector2 pos, Vector2 bounds, Vector2 minVelo, Vector2 maxVelo, Vector2 accelerate, float lifeSpan, float spawnSpeed, Texture2D texture) 
-	: ParticleEffect(pos, bounds, minVelo, maxVelo, accelerate, lifeSpan, spawnSpeed, texture) {}
 
 void BrokenBlockEffect::update(float deltaTime) {
 	timeElapsed += deltaTime;
@@ -170,9 +168,8 @@ void BrokenBlockEffect::draw() {
 	int i = 0;
 	std::vector<Particle*>::iterator it;
 	for (it = particles.begin(); it != particles.end(); it++) {
-		//DrawTextureEx(sprite, (*it)->getPosition(), 0.0f, 0.05f, WHITE);
 		Rectangle dest = { (*it)->getPosition().x, (*it)->getPosition().y, 64 * 0.3, 64 * 0.3 };
-		DrawTexturePro(sprite, Constants::PaletteResources::BLOCK_1_1_2, dest, { 0,0 }, degree[i++], WHITE);
+		DrawTexturePro(sprite, src, dest, { 0,0 }, degree[i++], WHITE);
 		if (i >= 4) i = 0;
 	}
 }
