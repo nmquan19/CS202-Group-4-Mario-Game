@@ -1195,6 +1195,7 @@ json Block::toJson() const {
     data["gridPosition"] = { gridPosition.x, gridPosition.y };
     data["size"] = { size.x, size.y };
     data["solid"] = solid;
+    data["spawn"] = itemSpawned;
     return data;
 }
 
@@ -1204,6 +1205,7 @@ void Block::fromJson(const json& data) {
     gridPosition = { data["gridPosition"][0], data["gridPosition"][1] };
     size = { data["size"][0], data["size"][1] };
     solid = data["solid"];
+    itemSpawned = data["spawn"];
 }
 
 std::string Block::getSaveType() const {

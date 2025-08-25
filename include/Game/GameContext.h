@@ -83,4 +83,5 @@ public:
     void loadGameState(const std::string& filename);
     
     Camera2D camera;
+    bool continueCheck = false;
 };

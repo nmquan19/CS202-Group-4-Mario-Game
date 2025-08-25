@@ -348,16 +348,16 @@ void GamePlayState::draw(GameContext& context) {
     }
     if (level == 4) {
         switch(LevelEditor::getInstance().mapSelect) {
-            case 1:
+            case 3:
                 Background::getInstance().draw("Forest_1", { 0,0 });
                 Background::getInstance().draw("Forest_1", { 0, 512 });
                 Background::getInstance().draw("Ghost_house_1", { 0, 1024 });
                 break;
-            case 2:
+            case 1:
                 Background::getInstance().draw("Airship_night_3", { 0,0 });
                 Background::getInstance().draw("Airship_night_3", { 0, 512 });
                 break;
-            case 3:
+            case 2:
                 Background::getInstance().draw("Snow_night_1", { 0,0 });
                 Background::getInstance().draw("Snow_night_1", { 0,512 });
                 break;
