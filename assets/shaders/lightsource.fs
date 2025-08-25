@@ -1,6 +1,6 @@
 #version 330
 
-#define MAX_LIGHTS 16
+#define MAX_LIGHTS 128
 #define MAX_DISTORTIONS 8
 
 in vec2 fragTexCoord;

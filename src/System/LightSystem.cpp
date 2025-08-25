@@ -80,6 +80,10 @@ void LightingManager::clearDistortions() {
     distortions.clear();
 }
 
+void LightingManager::clearLights() {
+    lights.clear();
+}
+
 void LightingManager::setAmbientColor(Color color) {
     ambientColor = color;
 }

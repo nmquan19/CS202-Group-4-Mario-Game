@@ -44,6 +44,7 @@ public:
     void updateDistortion( std::shared_ptr<DistortionEffect> effect);
     void removeDistortion(std::shared_ptr<DistortionEffect> effect);
     void clearDistortions();
+    void clearLights();
 
     // Lighting pipeline
     void setAmbientColor(Color color);

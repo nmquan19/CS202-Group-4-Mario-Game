@@ -235,6 +235,14 @@ void LevelEditor::placeObject(ObjectType type, Vector2 gridCoord) {
             }
             GameContext::getInstance().Objects.push_back(newShell);
         }
+        else if constexpr (std::is_same_v<T, BackGroundObjectType>) {
+            std::shared_ptr<Object> newTorch = ObjectFactory::createTorch(GridSystem::getWorldPosition(gridCoord), Constants::Torch::STANDARD_SIZE);
+            if (newTorch) {
+                gridBlocks[key].push(newTorch);
+                newTorch->setGridPos(gridCoord);
+            }
+            GameContext::getInstance().Objects.push_back(newTorch);
+        }
     }, type);
 }
 
@@ -1446,6 +1454,15 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
                 break;
         }
     }
+    else if (std::holds_alternative<BackGroundObjectType>(type)) {
+        BackGroundObjectType bgType = std::get<BackGroundObjectType>(type);
+        switch (bgType) {
+            case BackGroundObjectType::TORCH: return "TORCH";
+                break;
+            default: return "TORCH";
+                break;
+        }
+    }
     return "UNKNOWN";
 }
 
@@ -1973,6 +1990,8 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "MUSHROOM") return ItemType::MUSHROOM;
     if (typeStr == "ONE_UP") return ItemType::ONE_UP;
     if (typeStr == "STAR") return ItemType::STAR;
+
+    if (typeStr == "TORCH") return BackGroundObjectType::TORCH;
 
     return BlockType::BLOCK_1_1_2;
 }

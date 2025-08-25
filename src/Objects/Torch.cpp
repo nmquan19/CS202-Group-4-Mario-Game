@@ -61,3 +61,59 @@ void Torch::update(float deltaTime)
     animController.update(deltaTime);
     spriteBox = TextureManager::torch_sprite_boxes[curFrame];
 }
+
+json Torch::toJson() const {
+    json data;
+    data["saveType"] = getSaveType();
+    data["position"] = {position.x, position.y};
+    data["curFrame"] = curFrame;
+    
+    // Save light source data
+    if (source) {
+        data["lightSource"] = {
+            {"radius", source->radius},
+            {"brightness", source->brightness},
+            {"innerColor", { source->innerColor.r, source->innerColor.g, source->innerColor.b, source->innerColor.a }},
+            {"outerColor", { source->outerColor.r, source->outerColor.g, source->outerColor.b, source->outerColor.a }},
+            {"isActive", source->isActive}
+        };
+    }
+    
+    return data;
+}
+
+void Torch::fromJson(const json& data) {  
+    curFrame = data["curFrame"];
+    
+    // Restore light source
+    if (data.contains("lightSource")) {
+        const auto& lightData = data["lightSource"];
+        Color innerColor = { 
+            lightData["innerColor"][0], 
+            lightData["innerColor"][1], 
+            lightData["innerColor"][2], 
+            lightData["innerColor"][3] 
+        };
+        Color outerColor = { 
+            lightData["outerColor"][0], 
+            lightData["outerColor"][1], 
+            lightData["outerColor"][2], 
+            lightData["outerColor"][3] 
+        };
+        
+        LightSource s = { 
+            position, 
+            lightData["radius"], 
+            lightData["brightness"], 
+            innerColor, 
+            outerColor, 
+            lightData["isActive"] 
+        };
+        source = std::make_shared<LightSource>(s);
+        LightingManager::getInstance().addLight(source);
+    }
+}
+
+std::string Torch::getSaveType() const {
+    return "Torch";
+}

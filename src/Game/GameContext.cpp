@@ -27,6 +27,7 @@
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/LightingSystem.h"
 #include "../../include/Objects/InteractiveObjects/Endpoint.h"
+#include "../../include/Objects/Torch.h"
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
     camera.rotation = 0.0f;
@@ -56,6 +57,7 @@ void GameContext::setState(GameState* newState) {
             ParticleSystem::getInstance().cleanup();
             character01.reset();
             character02.reset();
+            LightingManager::getInstance().clearLights();
         }
 
         previousState = currentState;
@@ -547,6 +549,19 @@ void GameContext::loadGameState(const std::string& filename) {
                     auto koopaShell = std::dynamic_pointer_cast<KoopaShell>(lastObject);
                     if (koopaShell) {
                         koopaShell->fromJson(objData);
+                    }
+                }
+            } else if (saveType == "Torch") {
+                Vector2 pos = {objData["position"][0], objData["position"][1]};
+                BackGroundObjectType bgType = BackGroundObjectType::TORCH;
+
+                LevelEditor::getInstance().placeObject(bgType, GridSystem::getGridCoord(pos));
+                
+                if (!Objects.empty()) {
+                    auto lastObject = Objects.back();
+                    auto bg = std::dynamic_pointer_cast<Torch>(lastObject);
+                    if (bg) {
+                        bg->fromJson(objData);
                     }
                 }
             }

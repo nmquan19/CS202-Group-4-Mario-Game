@@ -3,7 +3,7 @@
 #include "../System/LightingSystem.h"
 #include "../System/InterpolationController.h"
 #include "../System/Interface.h"
-class Torch : public Object, public IUpdatable
+class Torch : public Object, public IUpdatable, public ISavable
 {
 private:
 	Rectangle spriteBox;  
@@ -32,4 +32,8 @@ public:
 	}
 	void onCollision(std::shared_ptr<Object> other, Direction direction) override {};
 	ObjectType getObjectType() const { return BackGroundObjectType::TORCH; }
+
+	json toJson() const override;
+	void fromJson(const json& data) override;
+	std::string getSaveType() const;
 };
