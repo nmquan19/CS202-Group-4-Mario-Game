@@ -55,7 +55,7 @@ class ObjectFactory {
 public:
 	static std::unique_ptr<Object> createBlock(BlockType type, Vector2 gridPos);
 	static std::unique_ptr<Object> createCharacter(CharacterType type, PlayerID id, Vector2 startPosition);
-	static std::unique_ptr<Object> createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size = Constants::Projectile::STANDARD_SIZE);
+	static std::unique_ptr<Object> createProjectile(ProjectileType type, Vector2 position, int direction, Vector2 size);
 	static std::unique_ptr<Object> createInteractiveObject(InteractiveType type, Vector2 position);
 	static std::unique_ptr<Object> createEnemy(EnemyType type, Vector2 startPosition, Vector2 size);
 	static std::unique_ptr<Object> createKoopaShell(KoopaShellType type, Vector2 position, Vector2 size);

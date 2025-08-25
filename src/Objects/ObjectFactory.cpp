@@ -20,6 +20,7 @@
 #include "../../include/Objects/InteractiveObjects/FireBar.h"
 #include "../../include/Objects/InteractiveObjects/FireBarBase.h"
 #include "../../include/Objects/Projectile/FireBall.h"
+#include "../../include/Objects/Projectile/FireOrb.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/Enemy/Bob-ombs/Bob-ombs.h"
 #include "../../include/Enemy/LaserMechaKoopa/LaserMechaKoopa.h"
@@ -1156,6 +1157,8 @@ std::unique_ptr<Projectile> ObjectFactory::createSpecificProjectile(ProjectileTy
     switch (type) {
     case ProjectileType::FIRE_BALL:
         return std::make_unique<FireBall>(position, direction, size);
+    case ProjectileType::FIRE_ORB:
+        return std::make_unique<FireOrb>(position, direction, size);
     case ProjectileType::LASER_BEAM:
         return std::make_unique<LaserBeam>(position, size);
     }

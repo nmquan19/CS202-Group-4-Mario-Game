@@ -213,16 +213,20 @@ namespace Constants {
     }
 
     namespace Projectile {
-        constexpr Vector2 STANDARD_SIZE = { 0.5f, 0.5f };
         namespace FireBall {
-            constexpr float DURATION = 5.0f;
-            constexpr Vector2 INITIAL_VELOCITY = { 7.0f, 5.0f };
+            const Vector2 STANDARD_SIZE = { 0.5f, 0.5f };
+            const float DURATION = 5.0f;
+            const Vector2 INITIAL_VELOCITY = { 7.0f, 5.0f };
+        }
+        namespace FireOrb {
+            const Vector2 STANDARD_SIZE = { 0.75f, 0.5f };
+            const Vector2 INITIAL_VELOCITY = { 5.0f, 0.0f };
         }
     }
 
     namespace Spring {
         constexpr float BOUNCE_VELOCITY = 14.0f;
-        constexpr Vector2 STANDARD_SIZE = { 1, 1 };
+        constexpr Vector2 STANDARD_SIZE = { 1.0f, 1.0f };
         constexpr float BOUNCE_DURATION = 0.8f;
     }
 

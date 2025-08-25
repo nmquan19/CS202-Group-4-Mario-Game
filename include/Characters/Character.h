@@ -62,6 +62,7 @@ public:
   
 	void update(float deltaTime) override;
 	void draw() override;
+	void drawIndicator();
 
 	Rectangle getCurrentStateFrame() const;
 	int getCurrentStateRow() const;
@@ -122,9 +123,10 @@ public:
 	friend class StarTransformState;
 	friend class RefreshPowerState;
 
-	void addGroundContact();
-	void removeGroundContact();
 	void setPlatform(std::shared_ptr<MovingPlatform> platform);
+	
+	// Raycast-based ground detection
+	bool isGroundedByRaycast() const;
 
 	void enableRainbowEffect();
 	void disableRainbowEffect();

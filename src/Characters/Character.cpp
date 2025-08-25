@@ -168,17 +168,31 @@ void Character::draw() {
 	}
 
 	DrawTexturePro(spriteSheet, sourceRec, destRec, { 0, 0 }, 0.0f, tintColor);
-	
-	Vector2 indicatorSize = MeasureTextEx(GetFontDefault(), id == PlayerID::PLAYER_01 ? "P1" : "P2", 20.0f, 1.5f);
+}
+
+void Character::drawIndicator() {
+	Vector2 centerPosition = Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
+	Vector2 drawPosition = { centerPosition.x - size.x * Constants::TILE_SIZE * 0.5f,
+		centerPosition.y - size.y * Constants::TILE_SIZE * 0.5f };
+	Rectangle reference = stateFrameData[0][0];
+
+	Rectangle destRec = {
+		drawPosition.x,
+		drawPosition.y + size.y * Constants::TILE_SIZE - spriteRec.height / reference.height * size.y * Constants::TILE_SIZE,
+		spriteRec.width / reference.width * size.x * Constants::TILE_SIZE,
+		spriteRec.height / reference.height * size.y * Constants::TILE_SIZE
+	};
+
+	Vector2 indicatorSize = MeasureTextEx(UIManager::getInstance().menuFont, id == PlayerID::PLAYER_01 ? "P1" : "P2", 20.0f, 1.5f);
 	Vector2 textPosition = { destRec.x + destRec.width * 0.5f - indicatorSize.x * 0.5f, destRec.y - indicatorSize.y * 0.5f - 10.0f };
-	DrawTextPro(GetFontDefault(),
+	DrawTextPro(UIManager::getInstance().menuFont,
 		id == PlayerID::PLAYER_01 ? "P1" : "P2",
 		textPosition,
 		{ 0, 0 },
 		0.0f,
 		20.0f,
 		1.5f,
-		BLACK
+		{110, 37, 30, 255}
 	);
 }
 
@@ -218,7 +232,7 @@ void Character::setAniSpeed(float newSpeed){
 }
 
 bool Character::isOnGround() const{
-	return groundContactCount > 0;
+	return isGroundedByRaycast();
 }
 
 bool Character::isOnPlatform() const {
@@ -226,26 +240,65 @@ bool Character::isOnPlatform() const {
 }
 
 void Character::jump(){
-	if (isOnGround()) {
-		b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
-		float mass = this->physicsBody->GetMass();
-		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-jumpVel - currentVel.y)), true);
-		groundContactCount = 0;
-		if (powerState == PowerState::SMALL) {
-			AudioManager::getInstance().PlaySoundEffect("jump_small");
-		}
-		else {
-			AudioManager::getInstance().PlaySoundEffect("jump_super");
-		}
+	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
+	float mass = this->physicsBody->GetMass();
+	this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-jumpVel - currentVel.y)), true);
+	groundContactCount = 0;
+	if (powerState == PowerState::SMALL) {
+		AudioManager::getInstance().PlaySoundEffect("jump_small");
+	}
+	else {
+		AudioManager::getInstance().PlaySoundEffect("jump_super");
 	}
 }
 
-void Character::addGroundContact() {
-	groundContactCount++;
-}
-
-void Character::removeGroundContact() {
-	groundContactCount--;
+bool Character::isGroundedByRaycast() const {
+	if (!physicsBody) return false;
+	
+	// Get character position and size
+	b2Vec2 position = physicsBody->GetPosition();
+	Vector2 charPos = Box2DWorldManager::b2ToRaylib(position);
+	float characterWidth = size.x * Constants::TILE_SIZE * 0.8f; // Slightly smaller than full width
+	float rayLength = 8.0f; // Short ray distance in Raylib units
+	
+	// Cast multiple rays from bottom of character
+	int numRays = 3;
+	
+	for (int i = 0; i < numRays; i++) {
+		float offsetX = (i - 1) * (characterWidth / 3.0f); // Left, center, right
+		Vector2 rayStart = Vector2{
+			charPos.x + offsetX, 
+			charPos.y + size.y * Constants::TILE_SIZE * 0.5f
+		};
+		Vector2 rayEnd = Vector2{
+			rayStart.x, 
+			rayStart.y + rayLength
+		};
+		
+		Vector2 hitPoint;
+		b2Body* hitBody = nullptr;
+		if (Box2DWorldManager::getInstance().raycast(rayStart, rayEnd, hitPoint, &hitBody)) {
+			// Check if the hit body contains a valid ground object
+			if (hitBody) {
+				Object* hitObject = reinterpret_cast<Object*>(hitBody->GetUserData().pointer);
+				if (hitObject) {
+					ObjectType objectType = hitObject->getObjectType();
+					
+					// Check if it's a BLOCK type
+					if (auto* blockType = std::get_if<BlockType>(&objectType)) {
+						return true; // Valid ground - BLOCK object
+					}
+					
+					// Check if it's an INTERACTIVE type
+					if (auto* interactiveType = std::get_if<InteractiveType>(&objectType)) {
+						return true; // Valid ground - INTERACTIVE object
+					}
+				}
+			}
+		}
+	}
+	
+	return false; // No valid ground detected
 }
 
 void Character::setPlatform(std::shared_ptr<MovingPlatform> platform) {
@@ -391,9 +444,7 @@ void Character::die() {
 }
 
 void Character::handleEnvironmentCollision(std::shared_ptr<Object> other, Direction direction) {
-	if (direction == Direction::DOWN) {
-		addGroundContact();
-	}
+	
 }
 
 void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction direction) {
@@ -413,9 +464,9 @@ void Character::handleEnemyCollision(std::shared_ptr<Object> other, Direction di
 
 void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direction direction) {
     ObjectType objectType = other->getObjectType();
-    if (auto* interactiveType = std::get_if<InteractiveType>(&objectType)) {
-        switch (*interactiveType) {
-		case InteractiveType::SPRING:	
+	if (auto* interactiveType = std::get_if<InteractiveType>(&objectType)) {
+		switch (*interactiveType) {
+		case InteractiveType::SPRING:
 			handleSpringCollision(std::dynamic_pointer_cast<Spring>(other), direction);
 			break;
 		case InteractiveType::MOVING_PLATFORM:
@@ -424,18 +475,14 @@ void Character::handleInteractiveCollision(std::shared_ptr<Object> other, Direct
 		case InteractiveType::FIRE_BAR:
 			takeDamage(1);
 			break;
-		case InteractiveType::FIRE_BAR_BASE:
-			if (direction == Direction::DOWN) {
-				addGroundContact();
-			}
-			break;
-        }
-    }
+		}
+	}
 }
 
 void Character::handleSpringCollision(std::shared_ptr<Spring> other, Direction direction) {
 	b2Vec2 currentVel = this->physicsBody->GetLinearVelocity();
 	if (direction == Direction::DOWN) {
+		AudioManager::getInstance().PlaySoundEffect("spring_jump");
 		float mass = this->physicsBody->GetMass();
 		this->physicsBody->ApplyLinearImpulseToCenter(b2Vec2(0, mass * (-Constants::Spring::BOUNCE_VELOCITY - currentVel.y)), true);
 		changeState(JumpingState::getInstance());
@@ -444,7 +491,6 @@ void Character::handleSpringCollision(std::shared_ptr<Spring> other, Direction d
 
 void Character::handleMovingPlatformCollision(std::shared_ptr<MovingPlatform> other, Direction direction) {
 	if (direction == Direction::DOWN) {
-		addGroundContact();
 		setPlatform(other);
 	}
 }
@@ -477,7 +523,6 @@ void Character::handleItemCollision(std::shared_ptr<Object> other, Direction dir
 		case ItemType::ONE_UP:
 			AudioManager::getInstance().PlaySoundEffect("one_up");
 			hp += 1;
-			changeState(RefreshPowerState::getInstance());
 			break;
 		case ItemType::STAR:
 			if (powerState == PowerState::STAR) {

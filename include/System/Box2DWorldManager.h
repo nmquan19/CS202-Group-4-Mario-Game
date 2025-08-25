@@ -15,7 +15,8 @@ public:
 	void step(float deltaTime);
 
 	b2Body* createCharacterBody(Vector2 pos, Vector2 hitboxSize);
-	b2Body* createProjectileBody(Vector2 pos, Vector2 hitboxSize);
+	b2Body* createFireBallBody(Vector2 pos, Vector2 hitboxSize);
+	b2Body* createFireOrbBody(Vector2 pos, Vector2 hithoxSize);
 	b2Body* createBlockBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createEnemyBody(Vector2 pos, Vector2 hitboxSize);
 	b2Body* createItemStaticBody(Vector2 pos, Vector2 hitboxSize);

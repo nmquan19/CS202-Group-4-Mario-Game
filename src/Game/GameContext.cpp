@@ -63,7 +63,7 @@ void GameContext::setState(GameState* newState) {
 
         if (newState == gamePlayState) {
             Box2DWorldManager::getInstance().initialize(Vector2{ 0, Constants::GRAVITY });
-
+//LevelEditor::getInstance().setEditMode(false);
             UIManager::getInstance().resetCoin();
             UIManager::getInstance().resetTimer();
             UIManager::getInstance().resetScore();
@@ -72,6 +72,7 @@ void GameContext::setState(GameState* newState) {
             if (level == 1) LevelEditor::getInstance().loadLevel("testlevel.json");
             if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
             if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
+            if (level == 4) LevelEditor::getInstance().loadLevel("testlevel.json");
 
             // Calculate ambient color
             Color base = { 85, 57, 204, 255 };
@@ -84,8 +85,39 @@ void GameContext::setState(GameState* newState) {
             };
             LightingManager::getInstance().setAmbientColor(brighter);
 
-            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 300, 400 });
-            //character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+
+            switch (menuManager.character01Select) {
+            case 0:
+                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            case 1:
+                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 300, 400 });
+                break;
+            case 2:
+                character01 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            case 3:
+                character01 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            default:
+                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            }
+
+            switch (menuManager.character02Select) {
+            case 0:
+                character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            case 1:
+                character02 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            case 2:
+                character02 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            case 3:
+                character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            }
+            
             GameCameraSystem::getInstance().init();
             Camera2D initialCam = {
                 .offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f },
@@ -173,6 +205,12 @@ void GameContext::setState(GameState* newState) {
 			GameContext::getInstance().Objects.push_back(endpoint);
             // Create an endpoint that goes to specific level
          
+			}
+            if (character01) {
+                camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
+                camera.target = character01->getPosition();
+            }
+            GameCameraSystem::getInstance().setCameraBounds(levelInfo[0].initialWorldBounds);
         }
     }
 }
@@ -184,7 +222,7 @@ void GameContext::handleInput() {
 }
 
 void GameContext::update(float deltaTime) {
-    if (currentState == gamePlayState) {
+    if (currentState == gamePlayState && !menuManager.settingDialog) {
         AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue() * menuManager.slideBarMaster.getValue());
         AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue() * menuManager.slideBarMaster.getValue());
         if (!AudioManager::getInstance().isPlaying()) {
@@ -216,11 +254,12 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* levelRedirect, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
     menuState = menu;
     redirectState = redirect;
     playerSelectingState = player;
     characterSelectingState = character;
+    levelRedirectState = levelRedirect;
     levelSelectingState = level;
     informationState = information;
     gamePlayState = game;

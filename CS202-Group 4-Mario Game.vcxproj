@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\Objects\Projectile\FireOrb.h" />
     <ClCompile Include="src\Characters\AttackState.cpp" />
     <ClCompile Include="src\Characters\Character.cpp" />
     <ClCompile Include="src\Characters\FireTransformState.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="src\Objects\InteractiveObjects\MovingPlatform.cpp" />
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
     <ClCompile Include="src\Objects\Projectile\FireBall.cpp" />
+    <ClCompile Include="src\Objects\Projectile\FireOrb.cpp" />
     <ClCompile Include="src\Objects\Projectile\Projectile.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\Spring.cpp" />
     <ClCompile Include="src\Objects\Torch.cpp" />
@@ -298,6 +300,7 @@
     <Image Include="assets\Ghost_house_3.png" />
     <Image Include="assets\level_map4.png" />
     <Image Include="assets\level_map_0.png" />
+    <Image Include="assets\redirect background.jpg" />
     <Image Include="assets\Snow_night_1.png" />
     <Image Include="assets\Snow_night_2.png" />
   </ItemGroup>

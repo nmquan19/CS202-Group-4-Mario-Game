@@ -6,6 +6,7 @@
 #include "../../include/Characters/JumpingState.h"
 #include "../../include/Characters/KnockedState.h"
 #include "../../include/Characters/SmallTransformState.h"
+#include "../../include/UI/SoundEffect.h"
 #include <iostream>
 
 void StunnedState::enter(Character* character) {
@@ -13,6 +14,8 @@ void StunnedState::enter(Character* character) {
 	character->aniTimer = 0.0f;
 	character->setCurrentStateRow(3);
 	character->invincibleTimer = 0.75f;
+	AudioManager::getInstance().PlaySoundEffect("hit");
+
 }
 
 void StunnedState::update(Character* character, float deltaTime) {

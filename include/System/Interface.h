@@ -584,7 +584,7 @@ enum class BackGroundObjectType {
 };
 enum class ProjectileType {
 	FIRE_BALL,
-	BLAST,
+	FIRE_ORB,
 	LASER_BEAM
 };
 

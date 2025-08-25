@@ -60,14 +60,14 @@ void IdleState::checkTransitions(Character* character, const InputState& input) 
 		}
 	}
 
-	/*if (input.fireTransform) {
+	if (input.fireTransform) {
 		if (character->powerState == PowerState::SMALL || character->powerState == PowerState::SUPER) {
 			character->changeState(FireTransformState::getInstance());
 		}
 		else if (character->powerState == PowerState::FIRE) {
 			character->changeState(SmallTransformState::getInstance());
 		}
-	}*/
+	}
 
 	if (input.starTransform) {
 		if (character->powerState == PowerState::SMALL) {

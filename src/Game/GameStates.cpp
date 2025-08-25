@@ -23,13 +23,11 @@ void MenuState::handleInput(GameContext& context) {
         exit(0);
     }
 
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
-        && context.menuManager.playBoard.checkCollision(GetMousePosition())) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && context.menuManager.playBoard.checkCollision(GetMousePosition())) {
         context.setState(context.redirectState);
     }
 
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)
-        && context.menuManager.editingBoard.checkCollision(GetMousePosition())) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && context.menuManager.editingBoard.checkCollision(GetMousePosition())) {
         context.setState(context.editorState);
     }
 }
@@ -48,9 +46,15 @@ void MenuState::draw(GameContext& context) {
 void RedirectState::handleInput(GameContext& context) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
-        if (context.menuManager.characterBoard.checkCollision(mousePos)) context.setState(context.playerSelectingState);
-        if (context.menuManager.continueBoard.checkCollision(mousePos)) context.setState(context.informationState);
-        if (context.menuManager.menuBoard.checkCollision(mousePos)) context.setState(context.menuState);
+        if (context.menuManager.characterBoard.checkCollision(mousePos)) {
+            context.setState(context.playerSelectingState);
+        }
+        else if (context.menuManager.continueBoard.checkCollision(mousePos)) {
+            context.setState(context.informationState);
+        }
+        else if (context.menuManager.menuBoard.checkCollision(mousePos)) {
+            context.setState(context.menuState);
+        }
     }
 }
 
@@ -64,8 +68,6 @@ void RedirectState::draw(GameContext& context) {
 void RedirectState::update(GameContext& context, float deltaTime) {
     context.menuManager.characterBoard.update(deltaTime);
     context.menuManager.continueBoard.update(deltaTime);
-    context.menuManager.restartBoard.update(deltaTime);
-    context.menuManager.levelBoard.update(deltaTime);
     context.menuManager.menuBoard.update(deltaTime);
 }
 
@@ -73,9 +75,11 @@ void PlayerSelectingState::handleInput(GameContext& context) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         if (context.menuManager.OnePlayer.checkCollision(mousePos)) {
+            context.menuManager.character02Select = -1;
             context.setState(context.characterSelectingState);
         }
-        if (context.menuManager.TwoPlayers.checkCollision(mousePos)) {
+        else if (context.menuManager.TwoPlayers.checkCollision(mousePos)) {
+            context.menuManager.character02Select = 0;
             context.setState(context.characterSelectingState);
         }
     }
@@ -94,7 +98,7 @@ void PlayerSelectingState::draw(GameContext& context) {
 
 void CharacterSelectingState::handleInput(GameContext& context) {
     context.menuManager.HandleSelecting();
-    if (IsKeyPressed(KEY_ENTER)) context.setState(context.levelSelectingState);
+    if (IsKeyPressed(KEY_ENTER)) context.setState(context.levelRedirectState);
 }
 
 void CharacterSelectingState::update(GameContext& context, float deltaTime) {
@@ -104,10 +108,37 @@ void CharacterSelectingState::update(GameContext& context, float deltaTime) {
 void CharacterSelectingState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(SKYBLUE);
-    //int screenWidth = UIManager::getInstance().screenWidth;
-    //int screenHeight = UIManager::getInstance().screenHeight;
-    //DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 1.0f - 0.5f));
     context.menuManager.DrawSelecting();
+    EndDrawing();
+}
+
+
+void LevelRedirectState::handleInput(GameContext& context) {
+    if (IsKeyPressed(KEY_ENTER)) {
+        context.setState(context.levelSelectingState);
+    }
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        if (context.menuManager.available.checkCollision(GetMousePosition())) {
+            context.setState(context.levelSelectingState);
+        }
+        if (context.menuManager.custom.checkCollision(GetMousePosition())) {
+            context.level = 4;
+            context.informationState->setLevel(context);
+            context.gamePlayState->setLevel(context);
+            context.setState(context.informationState);
+        }
+    }
+    
+}
+
+void LevelRedirectState::update(GameContext& context, float deltaTime) {
+    context.menuManager.UpdateLevelRedirect(deltaTime);
+}
+
+void LevelRedirectState::draw(GameContext& context) {
+    BeginDrawing();
+    ClearBackground(SKYBLUE);
+    context.menuManager.DrawLevelRedirect();
     EndDrawing();
 }
 
@@ -115,6 +146,7 @@ void LevelSelectingState::handleInput(GameContext& context) {
     context.menuManager.HandleLevel();
     
     context.level = context.menuManager.mt.level;
+    context.informationState->setLevel(context);
     context.gamePlayState->setLevel(context);
     if (IsKeyPressed(KEY_ENTER)) context.setState(context.informationState);
     
@@ -146,6 +178,10 @@ void InformationState::update(GameContext& context, float deltaTime) {
 void InformationState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(BLACK);
+    if (level == 1) UIManager::getInstance().setWorld("1");
+    if (level == 2) UIManager::getInstance().setWorld("2");
+    if (level == 3) UIManager::getInstance().setWorld("3");
+    if (level == 4) UIManager::getInstance().setWorld("");
     UIManager::getInstance().drawInformationBoard(WHITE);
     EndDrawing();
 }
@@ -209,27 +245,29 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
 
     }
 
-    if (context.character01) {
-        std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
-        character01->update(deltaTime);
-    }
-    if (context.character02) {
-        std::shared_ptr<Character> character02 = std::dynamic_pointer_cast<Character>(context.character02);
-        character02->update(deltaTime);
-    }
-    for (auto& obj :context.Objects)
-    {
-		IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
-        if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))
+    if (!context.menuManager.settingDialog) {
+        if (context.character01) {
+            std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
+            character01->update(deltaTime);
+        }
+        if (context.character02) {
+            std::shared_ptr<Character> character02 = std::dynamic_pointer_cast<Character>(context.character02);
+            character02->update(deltaTime);
+        }
+        for (auto& obj :context.Objects)
+        {
+            IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
+            //if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))               
             updatableObj->update(deltaTime);
 
+        }
+        context.menuManager.UpdateSetting(deltaTime);
+        context.spawnObject();  
+        context.deleteObjects();
+        UIManager::getInstance().updateInformationBoard(deltaTime);
+        Box2DWorldManager::getInstance().step(deltaTime);
+        ParticleSystem::getInstance().update(deltaTime);
     }
-    context.menuManager.UpdateSetting(deltaTime);
-    context.spawnObject();  
-    context.deleteObjects();
-    UIManager::getInstance().updateInformationBoard(deltaTime);
-    Box2DWorldManager::getInstance().step(deltaTime);
-    ParticleSystem::getInstance().update(deltaTime);
 }
 void DrawParallaxBackground(Texture2D bg, Camera2D cam, float parallaxFactor) {
     Vector2 camPos = {
@@ -272,7 +310,7 @@ void GamePlayState::draw(GameContext& context) {
     Camera2D cam = GameCameraSystem::getInstance().getCamera();
 
     //DrawParallaxBackground(bg, cam, 0.5f);
-    if (level == 1) {
+    if (level == 1 || level == 4) {
         Background::getInstance().draw("Forest_1", { 0,0 });
         Background::getInstance().draw("Forest_1", { 0, 512 });
         Background::getInstance().draw("Ghost_house_1", { 0, 1024 });
@@ -285,6 +323,7 @@ void GamePlayState::draw(GameContext& context) {
         Background::getInstance().draw("Snow_night_1", { 0,0 });
         Background::getInstance().draw("Snow_night_1", { 0,512 });
     }
+    
     BeginMode2D(GameCameraSystem::getInstance().getCamera());
     for (auto& obj : context.Objects) {
         if(isInCameraBound(GameCameraSystem::getInstance().getCamera(),obj->getPosition(),100.f)) {
@@ -292,12 +331,21 @@ void GamePlayState::draw(GameContext& context) {
 		}
     }
 
-    if (context.character01) {
+    if (context.character01 && context.character02) {
+        context.character01->draw();
+        std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
+        character01->drawIndicator();
+        context.character02->draw();
+        std::shared_ptr<Character> character02 = std::dynamic_pointer_cast<Character>(context.character02);
+        character02->drawIndicator();
+    }
+    else if (context.character01) {
         context.character01->draw();
     }
-    if (context.character02) {
+    else if (context.character02) {
         context.character02->draw();
     }
+
     ParticleSystem::getInstance().draw();
 
     Box2DWorldManager::getInstance().drawDebugBodies();
