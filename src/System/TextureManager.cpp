@@ -968,6 +968,12 @@ void ObjectPalette::drawPalette() {
         Rectangle fireBarBaseRectSource = { 239, 86, 16, 16 };
         DrawTexturePro(TextureManager::interactiveTextures, fireBarBaseRectSource, fireBarBaseRect, { 0, 0 }, 0.0f, WHITE);
         DrawRectangleLinesEx(fireBarBaseRect, 2, (isInteractive() && getInteractiveType() == InteractiveType::FIRE_BAR_BASE) ? RED : BLACK);
+
+        // Torch
+        Rectangle torchRect = { startX + spacingX, startY + spacingY, iconSize, iconSize };
+        Rectangle torchSource = tm.torch_sprite_boxes[0];
+        DrawTexturePro(TextureManager::torch_texture, torchSource, torchRect, { 0,0 }, 0.0f, WHITE);
+        DrawRectangleLinesEx(torchRect, 2, BLACK);
     }
     if (selectRect == 4) {
         // Coin
@@ -1048,6 +1054,7 @@ void ObjectPalette::handleSelection() {
     Rectangle springRect = { startX, startY, iconSize, iconSize };
     Rectangle movingPlatformRect = { startX + spacingX, startY, iconSize * 3.0f, iconSize * 0.25f };
     Rectangle fireBarBaseRect = { startX, startY + spacingY, iconSize, iconSize };
+    Rectangle torchRect = { startX + spacingX, startY + spacingY, iconSize, iconSize };
 
     Rectangle coinRect = { startX, startY, iconSize, iconSize };
     Rectangle ffRect = { startX + spacingX, startY, iconSize, iconSize };
@@ -1558,6 +1565,9 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, springRect) && selectRect == 3) selected = InteractiveType::SPRING;
         if (CheckCollisionPointRec(mousePos, movingPlatformRect) && selectRect == 3) selected = InteractiveType::MOVING_PLATFORM;
         if (CheckCollisionPointRec(mousePos, fireBarBaseRect) && selectRect == 3) selected = InteractiveType::FIRE_BAR_BASE;
+        if (CheckCollisionPointRec(mousePos, torchRect) && selectRect == 3) {
+            selected = BackGroundObjectType::TORCH;
+        }
         if (CheckCollisionPointRec(mousePos, coinRect) && selectRect == 4) selected = ItemType::COIN;
         if (CheckCollisionPointRec(mousePos, ffRect) && selectRect == 4) selected = ItemType::FIRE_FLOWER;
         if (CheckCollisionPointRec(mousePos, mushRoomRect) && selectRect == 4) selected = ItemType::MUSHROOM;
