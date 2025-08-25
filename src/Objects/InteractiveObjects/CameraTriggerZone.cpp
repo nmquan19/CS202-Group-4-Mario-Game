@@ -4,7 +4,7 @@
 #include "../../../include/Game/GameContext.h"
 #include "../../../include/Objects/ObjectFactory.h"
 #include "../../../include/System/CameraSystem.h"
-#include "../../include/System/Grid.h"
+#include "../../../include/System/Grid.h"
 SwitchCameraTriggerZone::SwitchCameraTriggerZone(Vector2 position, Vector2 size,SwitchCameraTriggerZoneData data) : InteractiveObject(position, size), data(data) {
     physicsBody = Box2DWorldManager::getInstance().createRectangleBody(position, Vector2{ size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
     if (physicsBody) {
