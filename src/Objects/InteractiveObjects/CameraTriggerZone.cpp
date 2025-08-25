@@ -59,7 +59,10 @@ void SwitchCameraTriggerZone::onCollision(std::shared_ptr<Object> other, Directi
         if (auto character = std::dynamic_pointer_cast<Character>(other)) {
             GameCameraSystem::getInstance().switchCamera(data.toIndex);
             GameCameraSystem::getInstance().setCameraBounds(data.outWorldBounds);
-            //GameCameraSystem::getInstance().setCamera(data.cameraOut);
+            if (data.toIndex)
+            {
+                GameCameraSystem::getInstance().setCamera(data.cameraOut);
+            }
         }
     }
 }
@@ -81,14 +84,30 @@ void SwitchCameraTriggerZone::onCollisionExit(std::shared_ptr<Object> other, Dir
 
                         GameCameraSystem::getInstance().switchCamera(data.toIndex);
                         GameCameraSystem::getInstance().setCameraBounds(data.outWorldBounds);
-                        //GameCameraSystem::getInstance().setCamera(data.cameraOut);
+                        if (data.toIndex)
+                        {
+                            GameCameraSystem::getInstance().setCamera(data.cameraOut);
+                        }
                         break;
-
                     case Direction::LEFT:
                     case Direction::UP:
                         GameCameraSystem::getInstance().switchCamera(data.fromIndex);
                         GameCameraSystem::getInstance().setCameraBounds(data.inWorldBounds);
-                        //GameCameraSystem::getInstance().setCamera(data.cameraIn);
+                        if (data.toIndex)
+                        {
+                            if (data.fromIndex == 0)
+                            {
+								Camera2D ncam = data.cameraIn;
+                                ncam.target = character->getCenterPos();
+                                GameCameraSystem::getInstance().setCamera(ncam);
+
+                            }
+                            else
+                            {
+                                GameCameraSystem::getInstance().setCamera(data.cameraIn);
+                            }
+                        }
+                   
                         break;
 
                     default:
@@ -105,6 +124,10 @@ void SwitchCameraTriggerZone::onCollisionExit(std::shared_ptr<Object> other, Dir
 
                     GameCameraSystem::getInstance().switchCamera(data.toIndex);
                     GameCameraSystem::getInstance().setCameraBounds(data.outWorldBounds);
+                    if (data.toIndex)
+                    {
+                        GameCameraSystem::getInstance().setCamera(data.cameraOut);
+                    }
                     //GameCameraSystem::getInstance().setCamera(data.cameraOut);
                     break;
 
@@ -112,6 +135,21 @@ void SwitchCameraTriggerZone::onCollisionExit(std::shared_ptr<Object> other, Dir
                 case Direction::DOWN:
                     GameCameraSystem::getInstance().switchCamera(data.fromIndex);
                     GameCameraSystem::getInstance().setCameraBounds(data.inWorldBounds);
+                    if (data.toIndex)
+                    {
+                        if (data.fromIndex == 0)
+                        {
+                            Camera2D ncam = data.cameraIn;
+                            ncam.target = character->getCenterPos();
+                            GameCameraSystem::getInstance().setCamera(ncam);
+
+                        }
+                        else
+                        {
+                            GameCameraSystem::getInstance().setCamera(data.cameraIn);
+                        }
+                    }
+                 
                     //GameCameraSystem::getInstance().setCamera(data.cameraIn);
                     break;
 

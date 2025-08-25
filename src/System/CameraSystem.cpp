@@ -135,7 +135,7 @@ void GameCameraSystem::switchCamera(int toIndex) {
     if (toIndex < 0 || toIndex >= cameras.size()||transition.timer!=0||curIndex == toIndex) return;
     transition.active = true;
     transition.timer = 0.0f;
-    transition.duration = 0.1f; 
+    transition.duration = 0.3f; 
 
     transition.from = cameras[curIndex]->GetCamera();
     transition.to = cameras[toIndex]->GetCamera();
