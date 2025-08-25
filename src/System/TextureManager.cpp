@@ -924,6 +924,31 @@ void ObjectPalette::drawPalette() {
         }
         DrawRectangleLinesEx(dryBRect, 2, (isEnemy() && getEnemyType() == EnemyType::DRY_BOWSER) ? RED : BLACK);
 
+        //Boo
+        Rectangle booRect = { startX, startY + spacingY, iconSize, iconSize };
+        if (tm.boo_texture.id != 0 && !tm.boo_sprite_boxes.empty()) {
+            Rectangle booSource = tm.boo_sprite_boxes[98];
+            DrawTexturePro(tm.boo_texture, booSource, booRect, { 0,0 }, 0.0f, WHITE);
+        }
+        DrawRectangleLinesEx(booRect, 2, (isEnemy() && getEnemyType() == EnemyType::BOO) ? RED : BLACK);
+
+        //Bob_ombs
+        Rectangle bob_ombsRect = { startX + spacingX, startY + spacingY, iconSize, iconSize };
+        if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
+            Rectangle bob_ombsSource = tm.Enemy_sprite_boxes[157];
+            DrawTexturePro(tm.enemyTextures, bob_ombsSource, bob_ombsRect, { 0,0 }, 0.0f, WHITE);
+        }
+        DrawRectangleLinesEx(bob_ombsRect, 2, (isEnemy() && getEnemyType() == EnemyType::BOB_OMBS) ? RED : BLACK);
+
+        //Laser_mecha_koopa
+        Rectangle laser_mecha_koopaRect = { startX + 2 * spacingX, startY + spacingY, iconSize, iconSize };
+        if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
+            Rectangle laser_mecha_koopaSource = tm.Enemy_sprite_boxes[169];
+            DrawTexturePro(tm.enemyTextures, laser_mecha_koopaSource, laser_mecha_koopaRect, { 0,0 }, 0.0f, WHITE);
+        }
+        DrawRectangleLinesEx(laser_mecha_koopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::LASER_MECHA_KOOPA) ? RED : BLACK);
+
+
     }
     if (selectRect == 3) {
         // Spring
@@ -1016,6 +1041,9 @@ void ObjectPalette::handleSelection() {
     Rectangle gkoopaRect = { startX + spacingX, startY, iconSize, iconSize };
     Rectangle rkoopaRect = { startX + 2 * spacingX, startY, iconSize, iconSize };
     Rectangle dryBRect = { startX + 3 * spacingX, startY, iconSize, iconSize };
+    Rectangle booRect = { startX, startY + spacingY, iconSize, iconSize };
+    Rectangle bob_ombsRect = { startX + spacingX, startY + spacingY, iconSize, iconSize };
+    Rectangle laser_mecha_koopaRect = { startX + 2 * spacingX, startY + spacingY, iconSize, iconSize };
 
     Rectangle springRect = { startX, startY, iconSize, iconSize };
     Rectangle movingPlatformRect = { startX + spacingX, startY, iconSize * 3.0f, iconSize * 0.25f };
@@ -1524,6 +1552,9 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, gkoopaRect) && selectRect == 2) selected = EnemyType::GREEN_KOOPA;
         if (CheckCollisionPointRec(mousePos, rkoopaRect) && selectRect == 2) selected = EnemyType::RED_KOOPA;
         if (CheckCollisionPointRec(mousePos, dryBRect) && selectRect == 2) selected = EnemyType::DRY_BOWSER;
+        if (CheckCollisionPointRec(mousePos, booRect) && selectRect == 2) selected = EnemyType::BOO;
+        if (CheckCollisionPointRec(mousePos, bob_ombsRect) && selectRect == 2) selected = EnemyType::BOB_OMBS;
+        if (CheckCollisionPointRec(mousePos, laser_mecha_koopaRect) && selectRect == 2) selected = EnemyType::LASER_MECHA_KOOPA;
         if (CheckCollisionPointRec(mousePos, springRect) && selectRect == 3) selected = InteractiveType::SPRING;
         if (CheckCollisionPointRec(mousePos, movingPlatformRect) && selectRect == 3) selected = InteractiveType::MOVING_PLATFORM;
         if (CheckCollisionPointRec(mousePos, fireBarBaseRect) && selectRect == 3) selected = InteractiveType::FIRE_BAR_BASE;
