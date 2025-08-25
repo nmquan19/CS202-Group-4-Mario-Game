@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "../../include/System/Constant.h"
+#include "../../include/Characters/Character.h"
 class GameCamera
 {
 protected: 
@@ -39,10 +40,20 @@ private:
 	std::vector<float> groundBounds;
 	int curGroundIndex = 0;
 	float currentLedgeBias = 0;
+	int playerRequest = 1;
 public: 
 	PlayerCenteredCamera(); 
+	PlayerCenteredCamera(int request);
+
 	void update(float deltaTime) override;  
-}; 
+	void updateCameraTarget(
+		float dt,
+		Vector2 desired,
+		Vector2 velocity,
+		bool isMultiPlayer,
+		std::shared_ptr<Character> refCharacter
+	);
+};
 class StaticGameCamera : public GameCamera
 {
 private:
@@ -66,6 +77,11 @@ public:
 		static GameCameraSystem instance;
 		return instance;
 	}
+	void reset()
+	{
+		cameras.clear();
+		init();
+	}
 	bool isInTransition() const { return transition.active; }
 	void init(); 
 	void addCamera(std::unique_ptr<GameCamera> camera);
@@ -82,6 +98,11 @@ public:
 	void setCameraBounds(const Rectangle& bounds) {
 		if (curIndex >= 0 && curIndex < cameras.size()) {
 			cameras[curIndex]->setBounds(bounds);
+		}
+	}
+	void setCameraBounds(const Rectangle& bounds,int index) {
+		if (index>= 0 && index < cameras.size()) {
+			cameras[index]->setBounds(bounds);
 		}
 	}
 	const Camera2D& getCamera() const; 

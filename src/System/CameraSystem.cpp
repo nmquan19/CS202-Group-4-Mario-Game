@@ -18,50 +18,95 @@ PlayerCenteredCamera::PlayerCenteredCamera()
     groundBounds.push_back(2*GetScreenHeight());
 
 }
+PlayerCenteredCamera::PlayerCenteredCamera(int request)
+{
+    cam.offset = { (float)GetScreenWidth() / 2.0f,(float)GetScreenHeight() / 2.0f };
+    cam.zoom = 1.0f;
+    cam.rotation = 0.0f;
+
+    groundBounds.push_back(GetScreenHeight());
+    groundBounds.push_back(2 * GetScreenHeight());
+	playerRequest = request;
+}
 void GameCamera::shake(float strength, float decay) {
     shakeIntensity = strength;
     shakeDecay = decay;
     shakeOffset = { 0, 0 };
 }
-void PlayerCenteredCamera::update(float dt) { 
-    
-    if (GameCameraSystem::getInstance().isInTransition()) return; 
-	std::shared_ptr<Character> character =std::dynamic_pointer_cast<Character>(GameContext::getInstance().getCharacter()); 
-    Vector2 desired = character->getCenterPos();
-    desired.x += character->isFacingRight() ? horizontalBias : -horizontalBias;
-	Vector2 velocity = character->getVelocity(); 
+void PlayerCenteredCamera::update(float dt) {
+    // Stop if in camera transition
+    if (GameCameraSystem::getInstance().isInTransition()) return;
+
+    Vector2 desired = { 0,0 };
+    std::shared_ptr<Character> character = nullptr;
+
+    // === Handle player selection ===
+    if (playerRequest == 3) {
+        // Midpoint of first 2 characters
+        auto characters = GameContext::getInstance().getAllCharacter();
+        if (characters.size() >= 2) {
+            auto c1 = std::dynamic_pointer_cast<Character>(characters[0]);
+            auto c2 = std::dynamic_pointer_cast<Character>(characters[1]);
+            if (c1 && c2) {
+                desired = Vector2Scale(Vector2Add(c1->getCenterPos(), c2->getCenterPos()), 0.5f);
+                // Use velocity from average of both
+                Vector2 avgVel = Vector2Scale(Vector2Add(c1->getVelocity(), c2->getVelocity()), 0.5f);
+                character = c1; // fallback ref for groundBounds
+                updateCameraTarget(dt, desired, avgVel, true,character);
+                return;
+            }
+        }
+    } else {
+        // Single player
+        character = std::dynamic_pointer_cast<Character>(
+            GameContext::getInstance().getCharacter(playerRequest)
+     );
+        if (!character) return;
+
+        desired = character->getCenterPos();
+        desired.x += character->isFacingRight() ? horizontalBias : -horizontalBias;
+        updateCameraTarget(dt, desired, character->getVelocity(), false, character);
+    }
+}
+void PlayerCenteredCamera::updateCameraTarget(
+    float dt,
+    Vector2 desired,
+    Vector2 velocity,
+    bool isMultiPlayer,
+    std::shared_ptr<Character> refCharacter
+) {
     // Interpolated Y
     float yLerpSpeed = verticalLerpSpeed * Clamp(fabsf(velocity.y) / 10.0f, 0.5f, 2.0f);
     cam.target.x = EaseApproach(cam.target.x, desired.x, 10.0f, dt);
-    if (velocity.y < 0)
-    {
-          cam.target.y = Lerp(cam.target.y, desired.y, dt * yLerpSpeed);
 
+    if (velocity.y < 0) {
+        cam.target.y = Lerp(cam.target.y, desired.y, dt * yLerpSpeed);
     }
-    else if(cam.target.y < desired.y)
-    {
-        cam.target.y = desired.y; 
+    else if (cam.target.y < desired.y) {
+        cam.target.y = desired.y;
     }
-    curGroundIndex = -1; 
-    for (int i = 0; i < groundBounds.size(); i++)
-    {
-        if (groundBounds[i] >= character->getPosition().y)
-        {
-            curGroundIndex = i; 
-            break; 
+    curGroundIndex = -1;    
+    // Ground bounds check
+   /* curGroundIndex = -1;
+    if (refCharacter&& isMultiPlayer) {
+        for (int i = 0; i < groundBounds.size(); i++) {
+            if (groundBounds[i] >= refCharacter->getPosition().y) {
+                curGroundIndex = i;
+                break;
+            }
         }
-    }
+    }*/
+
     // Optional: ledge bias
     bool wantLedgeBias = IsKeyDown(KEY_S);
     float targetLedgeBias = wantLedgeBias ? 250.0f : 0.0f;
     currentLedgeBias = Lerp(currentLedgeBias, targetLedgeBias, dt * 5.0f);
-    //std::cout<<groundBounds[curGroundIndex]<<" "<< character->getPosition().y << "\n";
-     curGroundIndex = -1;
+
     // Screen shake
     if (shakeIntensity > 0.01f) {
         shakeOffset = {
             GetRandomValue(-100, 100) / 100.0f * shakeIntensity,
-			GetRandomValue(-100, 100) / 100.0f * shakeIntensity
+            GetRandomValue(-100, 100) / 100.0f * shakeIntensity
         };
         shakeIntensity *= shakeDecay;
     }
@@ -71,9 +116,11 @@ void PlayerCenteredCamera::update(float dt) {
 
     Vector2 shaken = Vector2Add(cam.target, shakeOffset);
 
-    // === CLAMP CAMERA INSIDE WORLD BOUNDS BASED ON SCREEN SIZE ===
+    // === Clamp inside bounds ===
     Vector2 screenTopLeft = GetWorldToScreen2D({ 0, 0 }, cam);
-    Vector2 screenBottomRight = GetWorldToScreen2D({ (float)GetScreenWidth(), (float)GetScreenHeight() }, cam);
+    Vector2 screenBottomRight = GetWorldToScreen2D(
+        { (float)GetScreenWidth(), (float)GetScreenHeight() }, cam
+    );
 
     float cameraWidth = screenBottomRight.x - screenTopLeft.x;
     float cameraHeight = screenBottomRight.y - screenTopLeft.y;
@@ -86,21 +133,18 @@ void PlayerCenteredCamera::update(float dt) {
     float maxY = std::min(maxWorldY,
         (curGroundIndex != -1 ? groundBounds[curGroundIndex] : maxWorldY)
         + currentLedgeBias - cameraHeight * 0.5f);
-    Vector2 topLeft = GetWorldToScreen2D({ 0, maxY }, cam);
-    Vector2 bottomRight = GetWorldToScreen2D({ (float)GetScreenWidth(), maxY }, cam);
 
-    DrawLine((int)topLeft.x, (int)topLeft.y, (int)bottomRight.x, (int)bottomRight.y, RED);
-   
     shaken.x = Clamp(shaken.x, minX, maxX);
     shaken.y = Clamp(shaken.y, minY, maxY);
 
-    // Apply to raylib camera
+    // Apply final
     cam.target = shaken;
-} 
-
+}
 void GameCameraSystem::init() {
     cameras.emplace_back(std::make_unique<PlayerCenteredCamera>());
 	cameras.emplace_back(std::make_unique<StaticGameCamera>());
+    cameras.emplace_back(std::make_unique<PlayerCenteredCamera>(2));
+    cameras.emplace_back(std::make_unique<PlayerCenteredCamera>(3));
     curIndex = 0;
 }
 void GameCameraSystem::update(float dt) {
