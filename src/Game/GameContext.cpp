@@ -26,40 +26,12 @@
 #include "../../include/System/Grid.h"
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/LightingSystem.h"
+#include "../../include/Objects/InteractiveObjects/Endpoint.h"
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
     camera.rotation = 0.0f;
 	camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f }; 
     camera.zoom = 1.0f;
-    Color base = { 85, 57, 204, 255 };
-    float brightness = 2.5f;
-
-    Color brighter = {
-        (unsigned char)std::min(255.0f, base.r * brightness),
-        (unsigned char)std::min(255.0f, base.g * brightness),
-        (unsigned char)std::min(255.0f, base.b * brightness),
-        base.a
-    };
-    Camera2D ncamera = camera; 
-	ncamera.target = { 0,0 };
-   LeveLInfo info = {
-        .ambientColor = brighter,
-        .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, 6500},
-        .cameraTriggersData = {
-    {
-        Vector2{1000, 6300},     // position
-        Vector2{2,2},       // size
-        0,                       // fromIndex
-        1,                       // toIndex
-        Rectangle{ 0, 0, Constants::WORLDBOUNDS_WIDTH, 6500},   // inWorldBounds
-        Rectangle{1500, 1500, 500, 500},   // outWorldBounds
-        GameCameraSystem::getInstance().getCamera(), // cameraIn
-        ncamera                               // cameraOut
-    }
-    }
-
-   };
-    levelInfo.push_back(info);
 }
 
 GameContext::~GameContext() {
@@ -90,32 +62,168 @@ void GameContext::setState(GameState* newState) {
         currentState = newState;
 
         if (newState == gamePlayState) {
-            Box2DWorldManager::getInstance().initialize(Vector2{0, Constants::GRAVITY});
-            
+            Box2DWorldManager::getInstance().initialize(Vector2{ 0, Constants::GRAVITY });
+//LevelEditor::getInstance().setEditMode(false);
             UIManager::getInstance().resetCoin();
             UIManager::getInstance().resetTimer();
             UIManager::getInstance().resetScore();
 
             LevelEditor::getInstance().setEditMode(false);
-            if (level == 1) LevelEditor::getInstance().loadLevel("level1.json");
+            if (level == 1) LevelEditor::getInstance().loadLevel("testlevel.json");
             if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
             if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
-			LightingManager::getInstance().setAmbientColor(levelInfo[0].ambientColor);  
-            character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
-            character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
-            /*for(const auto& triggerData : levelInfo[0].cameraTriggersData) {
-                std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position,triggerData.size,triggerData);
+            if (level == 4) LevelEditor::getInstance().loadLevel("testlevel.json");
+
+            // Calculate ambient color
+            Color base = { 85, 57, 204, 255 };
+            float brightness = 2.5f;
+            Color brighter = {
+                (unsigned char)std::min(255.0f, base.r * brightness),
+                (unsigned char)std::min(255.0f, base.g * brightness),
+                (unsigned char)std::min(255.0f, base.b * brightness),
+                base.a
+            };
+            LightingManager::getInstance().setAmbientColor(brighter);
+
+
+            switch (menuManager.character01Select) {
+            case 0:
+                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            case 1:
+                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 300, 400 });
+                break;
+            case 2:
+                character01 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            case 3:
+                character01 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                break;
+            default:
+                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+            }
+
+            switch (menuManager.character02Select) {
+            case 0:
+                character02 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            case 1:
+                character02 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            case 2:
+                character02 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            case 3:
+                character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
+                break;
+            }
+            
+            GameCameraSystem::getInstance().init();
+            Camera2D initialCam = {
+                .offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f },
+                .target = character01->getPosition(),
+                .rotation = 0.0f,
+                .zoom = 1.0f
+            };
+            GameCameraSystem::getInstance().setCamera(initialCam);
+            levelInfo.clear();
+            Camera2D ncam;
+            ncam.target = { 11850.0f, 1450.0f };
+            ncam.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
+            ncam.zoom = 1.1f;
+            ncam.rotation = 0.0f;
+            LeveLInfo info = {
+                .ambientColor = WHITE,
+                .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, 1500 },
+                .cameraTriggersData = {
+                    {
+                        Vector2{4160,1300},
+                        Vector2{2.5,1.5},
+                        0,
+                        0,
+                        Rectangle{ 0, 0, 10000, 3000 },   // inWorldBounds
+                        Rectangle{ 0, 0, 10000, 3000 },   // outWorldBounds
+                        GameCameraSystem::getInstance().getCamera(),
+                        GameCameraSystem::getInstance().getCamera()
+                    },
+                    {
+                        Vector2{4160,700},
+                        Vector2{2.5,1.5},
+                        0,
+                        0,
+                        Rectangle{ 0, 0, Constants::WORLDBOUNDS_WIDTH, 2500 },   // inWorldBounds
+                        Rectangle{ 0,0, Constants::WORLDBOUNDS_WIDTH, 2500},   // outWorldBounds
+                        GameCameraSystem::getInstance().getCamera(),
+                        GameCameraSystem::getInstance().getCamera()
+                    },
+                    {
+                        Vector2{9816.5,700},
+                        Vector2{2.5,1.5},
+                        0,
+                        0,
+                        Rectangle{ 0, 0, Constants::WORLDBOUNDS_WIDTH, 3000 },   // inWorldBounds
+                        Rectangle{ 0,0, Constants::WORLDBOUNDS_WIDTH, 1500},   // outWorldBounds
+                        GameCameraSystem::getInstance().getCamera(),
+                        GameCameraSystem::getInstance().getCamera(),
+                        false
+                    },
+                  {
+                        Vector2{13500,700},
+                        Vector2{2.5,1.5},
+                        0,
+                        0,
+                        Rectangle{ 0, 0,  14000, 2500},   // inWorldBounds
+                        Rectangle{ 0,0,  14000, 2500},   // outWorldBounds
+                        GameCameraSystem::getInstance().getCamera(),
+                        GameCameraSystem::getInstance().getCamera(),
+                        false
+                    },
+                    {
+                        Vector2{13500,1200},
+                        Vector2{2.5,1.5},
+                        0,
+                        0,
+                        Rectangle{ 12500, 0, 14500, 3000 },   // inWorldBounds
+                        Rectangle{ 12500, 0, 14500, 3000 },   // outWorldBounds
+                        GameCameraSystem::getInstance().getCamera(),
+                        GameCameraSystem::getInstance().getCamera()
+                    },
+                    {
+                        Vector2{12620,1800},
+                        Vector2{1,2.5},
+                        0,
+                        1,
+                        Rectangle{ 13000, 0, 15000, 3000 },   // outWorldBounds
+                        Rectangle{ 10000, 2000, 14000, 3000 },   // outWorldBounds
+                        GameCameraSystem::getInstance().getCamera(),
+                        ncam,
+                        false
+                    },
+                }
+            };
+            levelInfo.push_back(info);
+
+            for (const auto& triggerData : levelInfo[0].cameraTriggersData) {
+                std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position, triggerData.size, triggerData);
                 Objects.push_back(cameraTrigger);
-			}*/
-            // CAMERA NEEDS CHANGING
+            }
+            EndpointData data;
+            data.position = { 500, 300 };
+            data.size = { 2, 3 };
+            data.targetLevel = -1; // Goes to level selector
+
+            auto endpoint = std::make_shared<Endpoint>(Vector2{ 500, 500 }, Vector2{ 2, 3 }, data);
+			GameContext::getInstance().Objects.push_back(endpoint);
+            // Create an endpoint that goes to specific level
             if (character01) {
-                camera.offset = {(float)GetScreenWidth()/2.0f, (float)GetScreenHeight()/2.0f};
+                camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
                 camera.target = character01->getPosition();
             }
             GameCameraSystem::getInstance().setCameraBounds(levelInfo[0].initialWorldBounds);
+			}
         }
-    }
 }
+
 
 void GameContext::handleInput() {
     if (currentState) {
@@ -124,9 +232,9 @@ void GameContext::handleInput() {
 }
 
 void GameContext::update(float deltaTime) {
-    if (currentState == gamePlayState) {
-        AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue());
-        AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue());
+    if (currentState == gamePlayState && !menuManager.settingDialog) {
+        AudioManager::getInstance().SetSoundEffectVolume(menuManager.slideBarSound.getValue() * menuManager.slideBarMaster.getValue());
+        AudioManager::getInstance().SetBackgroundMusicVolume(menuManager.slideBarMusic.getValue() * menuManager.slideBarMaster.getValue());
         if (!AudioManager::getInstance().isPlaying()) {
             AudioManager::getInstance().PlayBackgroundMusic("theme1");
         }
@@ -137,7 +245,14 @@ void GameContext::update(float deltaTime) {
             AudioManager::getInstance().StopBackgroundMusic("theme1");
         }
     }
-    if(character01)std::cout << character01->getPosition().y << "\n";
+
+    if (character01) {
+        auto character = std::dynamic_pointer_cast<Character>(character01);
+        if (character) {
+            std::cout << character->getCenterPos().x << " "
+                << character->getCenterPos().y << "\n";
+        }
+    }
     if (currentState) {
         currentState->update(*this, deltaTime);
     }
@@ -149,11 +264,12 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* levelRedirect, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
     menuState = menu;
     redirectState = redirect;
     playerSelectingState = player;
     characterSelectingState = character;
+    levelRedirectState = levelRedirect;
     levelSelectingState = level;
     informationState = information;
     gamePlayState = game;
@@ -218,7 +334,7 @@ void GameContext::spawnObject() {
 void GameContext::mark_for_deletion_Object(std::shared_ptr<Object> object) {
     if (object) {
         ToDeleteObjects.push_back(object);
-        LevelEditor::getInstance().removeObject(object->getGridPos());
+        LevelEditor::getInstance().removeObject(object->getGridPos(), object);
     }
 }
 
@@ -373,9 +489,7 @@ void GameContext::loadGameState(const std::string& filename) {
             } else if (saveType == "Interactive") {
                 Vector2 gridPos = {objData["gridPosition"][0], objData["gridPosition"][1]};
                 InteractiveType interactiveType = static_cast<InteractiveType>(objData["interactiveType"]);
-                
                 LevelEditor::getInstance().placeObject(interactiveType, gridPos);
-
                 if (!Objects.empty()) {
                     auto lastObject = Objects.back();
                     auto interactive = std::dynamic_pointer_cast<InteractiveObject>(lastObject);

@@ -71,6 +71,8 @@
     <ClCompile Include="src\Objects\InteractiveObjects\MovingPlatform.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\Spring.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\CameraTriggerZone.cpp" />
+    <ClCompile Include="include\Objects\Projectile\FireOrb.h" />
+    <ClCompile Include="src\Objects\Projectile\FireOrb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\AttackState.cpp">
@@ -350,5 +352,11 @@
     <Image Include="assets\Snow_night_1.png" />
     <Image Include="assets\Snow_night_2.png" />
     <Image Include="assets\level_map4.png" />
+    <Image Include="assets\level_map_0.png" />
+    <Image Include="assets\redirect background.jpg" />
+    <Image Include="assets\button\load.png" />
+    <Image Include="assets\button\load_selected.png" />
+    <Image Include="assets\button\save.png" />
+    <Image Include="assets\button\save_selected.png" />
   </ItemGroup>
 </Project>

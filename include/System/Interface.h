@@ -577,13 +577,14 @@ enum class InteractiveType {
 	FIRE_BAR_BASE,
 	SWITCH_CAMERA_TRIGGER_ZONE,
 	CHANGE_WORLD_BOUND_CAMERA_TRIGGER_ZONE,
+	ENDPOINT
 };
 enum class BackGroundObjectType {
 	TORCH
 };
 enum class ProjectileType {
 	FIRE_BALL,
-	BLAST,
+	FIRE_ORB,
 	LASER_BEAM
 };
 

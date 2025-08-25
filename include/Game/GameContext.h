@@ -34,11 +34,9 @@ struct LeveLInfo
 };
 class GameContext {
 public:
-    //AudioManager audioManager;
-    //UIManager uiManager;
     MenuManager menuManager;
-    std::shared_ptr<Object> character01;
-    std::shared_ptr<Object> character02;
+    std::shared_ptr<Object> character01 = nullptr;
+    std::shared_ptr<Object> character02 = nullptr;
     std::vector<std::shared_ptr<Object>> Objects;
     std::vector<std::shared_ptr<Object>> ToDeleteObjects;
     std::vector<ObjectInfo> ToSpawnObjects;
@@ -49,13 +47,14 @@ public:
     GameState* redirectState = nullptr;
     GameState* playerSelectingState = nullptr;
     GameState* characterSelectingState = nullptr;
+    GameState* levelRedirectState = nullptr;
     GameState* levelSelectingState = nullptr;
     GameState* informationState = nullptr;
     GameState* gamePlayState = nullptr;
     GameState* editorState = nullptr;
     GameState* editorSelectingState = nullptr;
     GameState* gameOverState = nullptr;
-    int playerCallsRequest;
+    int playerCallsRequest =1 ;
     int level = 1;
     GameContext();
     ~GameContext();
@@ -65,7 +64,7 @@ public:
     void update(float deltaTime);
     void draw();
 	void addObject(ObjectType type, Vector2 worldpos, Vector2 size, std::function<void(std::shared_ptr<Object>)> onSpawn = nullptr);
-    void setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver);
+    void setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* levelRedirect, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver);
     void mark_for_deletion_Object(std::shared_ptr<Object> object);
     void spawnObject();
 	void deleteObjects();

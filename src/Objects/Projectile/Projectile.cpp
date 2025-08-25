@@ -14,8 +14,6 @@ Projectile::~Projectile() {
 		Box2DWorldManager::getInstance().destroyBody(physicsBody);
 		physicsBody = nullptr;
 	}
-	// should be remove once moving to TextureManager
-	UnloadTexture(texture);
 }
 
 void Projectile::update(float deltaTime) {

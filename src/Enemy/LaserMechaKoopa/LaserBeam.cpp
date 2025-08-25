@@ -13,7 +13,7 @@ LaserBeam::LaserBeam(Vector2 startPos, Vector2 dir, float chargeTime, float beam
     chargeColor({ 255, 255, 0, 180 }), beamColor(RED),
     hasImpact(false), Projectile(startPos,{1,1})
 {
-    physicsBody = Box2DWorldManager::getInstance().createProjectileBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
+    physicsBody = Box2DWorldManager::getInstance().createFireBallBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
@@ -31,7 +31,7 @@ LaserBeam::LaserBeam(Vector2 startPos, Vector2 size):startPoint(startPos),Projec
 chargeColor({ 255, 255, 0, 180 }), beamColor(RED),
 hasImpact(false)
 {
-    physicsBody = Box2DWorldManager::getInstance().createProjectileBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
+    physicsBody = Box2DWorldManager::getInstance().createFireBallBody(position, { size.x * Constants::TILE_SIZE, size.y * Constants::TILE_SIZE });
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
@@ -129,8 +129,8 @@ void LaserBeam::performRaycast() {
         fixtureDef.isSensor = true;
 
         b2Filter filter;
-        filter.categoryBits = static_cast<uint16>(ObjectCategory::PROJECTILE);
-        filter.maskBits =
+        filter.maskBits = static_cast<uint16>(ObjectCategory::PROJECTILE);
+        filter.categoryBits =
             static_cast<uint16>(ObjectCategory::CHARACTER) |
             static_cast<uint16>(ObjectCategory::BLOCK) |
             static_cast<uint16>(ObjectCategory::INTERACTIVE);
@@ -138,6 +138,7 @@ void LaserBeam::performRaycast() {
 
         physicsBody->CreateFixture(&fixtureDef);
         physicsBody->SetTransform(Box2DWorldManager::raylibToB2(startPoint), atan2f(direction.y, direction.x));
+        
     }
 }
 

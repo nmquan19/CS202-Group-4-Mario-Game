@@ -20,6 +20,8 @@ AudioManager::AudioManager() {
     LoadSoundEffect("die", "assets/sound/die.wav");
     LoadSoundEffect("one_up", "assets/sound/one_up.wav");
     LoadSoundEffect("fireball", "assets/sound/fireball.wav");
+    LoadSoundEffect("hit", "assets/sound/hit.wav");
+    LoadSoundEffect("spring_jump", "assets/sound/spring_jump.wav");
     LoadBackgroundMusic("theme1", "./assets/sound/theme1.wav");
 }
 

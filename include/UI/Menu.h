@@ -145,15 +145,9 @@ public:
         UpdateLayout();
     }
 
-    void Update(float deltaTime) {
-        Vector2 mouse = GetMousePosition();
-
-        for (auto& p : parallelograms) {
-            float halfW = (p.width * p.scale) / 2;
-            float halfH = (p.height * p.scale) / 2;
-            //Rectangle bounds = { p.center.x - halfW, p.center.y - halfH, p.width * p.scale, p.height * p.scale };
-            //p.targetScale = CheckCollisionPointRec(mouse, bounds) ? p.hoverScale : 1.0f;
-            p.targetScale = p.shape.CheckCollisionPointParallelogram(mouse) ? p.hoverScale : 1.0f;
+    void Update(float deltaTime, int character01Select, int character02Select) {
+        for (int i = 0; i < parallelograms.size(); ++i) {
+            parallelograms[i].targetScale = (i == character01Select || i == character02Select) ? parallelograms[i].hoverScale : 1.0f;
         }
 
         bool needRelayout = false;
@@ -207,10 +201,11 @@ public:
     vector<int> path;
     int movingIndex = -1;
     float speed = 300.0f;
+    int level = 1;
 
     int GetClickedIndex(const vector<Vector2>& positions, Vector2 mouse) {
         for (int i = 0; i < (int)positions.size(); i++) {
-            if (CheckCollisionPointCircle(mouse, positions[i], 50)) {
+            if (CheckCollisionPointCircle(mouse, positions[i], 25)) {
                 return i;
             }
         }
@@ -223,7 +218,7 @@ public:
             Vector2 dir = { target.x - pos.x, target.y - pos.y };
             float dist = sqrtf(dir.x * dir.x + dir.y * dir.y);
 
-            if (dist < 2.0f) {
+            if (dist < 5.0f) {
                 pos = target;
                 currentIndex = movingIndex;
 
@@ -246,7 +241,7 @@ public:
 
     void HandleClick(const vector<Vector2>& positions, Vector2 mouse) {
         int clicked = GetClickedIndex(positions, mouse);
-        if (clicked >= 0 && clicked != currentIndex) {
+        if (clicked != currentIndex && (clicked == 0 || clicked == 5 || clicked == 10)) {
             path.clear();
 
             if (clicked > currentIndex) {
@@ -260,6 +255,9 @@ public:
 
             movingIndex = path.front();
             path.erase(path.begin());
+            if (clicked == 0) level = 1;
+            else if (clicked == 5) level = 2;
+            else if (clicked == 10) level = 3;
         }
     }
 };
@@ -268,9 +266,11 @@ public:
 
 class MenuManager {
 private:
-    Texture2D logo, board, menuBackground;
-    Button check, cross, setting, returnButton;
-    Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition;
+    Texture2D logo, board, menuBackground, redirectBackground;
+    Button check, cross, setting, returnButton, save, loadButton;
+    
+    Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition, savePosition, loadPosition;
+    
 
     Texture2D mario, luigi, toad, toadette;
     Texture2D level_map1, level_map4;
@@ -283,23 +283,24 @@ private:
     Vector2 origin1, origin2;
     std::vector<Vector2> positionList;
     float backgroundOffsetX = 0.0f;
-    MovingTexture mt;
+
+    string bg = "Snow_night_1"; float bg_timer = 0.0f;
+    
 public:
+    Button saveLevel, loadLevel;
+    Vector2 saveLevelPosition, loadLevelPosition;
+    MovingTexture mt;
     Button playBoard, settingBoard, exitBoard, editingBoard;
     Button characterBoard, continueBoard, restartBoard, levelBoard, menuBoard;
     Button day_groundBoard, day_undergroundBoard, night_airshipBoard, night_snowBoard;
+    Button available, custom;
     Button OnePlayer, TwoPlayers;
-    SlideBar slideBarMusic, slideBarSound;
-    Vector2 slideBarMusicPosition, slideBarSoundPosition;
-    int select, characterSelect;
+
+    SlideBar slideBarMaster, slideBarMusic, slideBarSound;
+    Vector2 slideBarMasterPosition, slideBarMusicPosition, slideBarSoundPosition;
+    int select;
+    int character01Select, character02Select;  
     bool settingDialog, exitDialog, exit;
-
-    
-
-
-    
-
-
 
     ParallelogramHoverManager manager;
     MenuManager();
@@ -312,6 +313,10 @@ public:
     void HandleRedirect();
     void UpdateRedirect(float deltaTime);
     void DrawRedirect();
+
+    void HandleLevelRedirect();
+    void UpdateLevelRedirect(float deltaTime);
+    void DrawLevelRedirect();
 
     void HandleEditorSelecting();
     void UpdateEditorSelecting(float deltaTime);
@@ -336,6 +341,5 @@ public:
     void DrawLevel();
     void UpdateLevel(float deltaiTime);
     void HandleLevel();
-
 };
 

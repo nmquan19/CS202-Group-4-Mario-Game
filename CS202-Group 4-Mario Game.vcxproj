@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\Objects\Projectile\FireOrb.h" />
     <ClCompile Include="src\Characters\AttackState.cpp" />
     <ClCompile Include="src\Characters\Character.cpp" />
     <ClCompile Include="src\Characters\FireTransformState.cpp" />
@@ -184,12 +185,14 @@
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\Objects\CollectableObject.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\CameraTriggerZone.cpp" />
+    <ClCompile Include="src\Objects\InteractiveObjects\EndPoint.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\FireBar.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\FireBarBase.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\InteractiveObject.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\MovingPlatform.cpp" />
     <ClCompile Include="src\Objects\ObjectFactory.cpp" />
     <ClCompile Include="src\Objects\Projectile\FireBall.cpp" />
+    <ClCompile Include="src\Objects\Projectile\FireOrb.cpp" />
     <ClCompile Include="src\Objects\Projectile\Projectile.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\Spring.cpp" />
     <ClCompile Include="src\Objects\Torch.cpp" />
@@ -269,6 +272,7 @@
     <ClInclude Include="include\Objects\InteractiveObjects\FireBarBase.h" />
     <ClInclude Include="include\Objects\InteractiveObjects\InteractiveObject.h" />
     <ClInclude Include="include\Objects\InteractiveObjects\MovingPlatform.h" />
+    <ClInclude Include="include\Objects\InteractiveObjects\EndPoint.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Objects\Projectile\FireBall.h" />
     <ClInclude Include="include\Objects\Projectile\Projectile.h" />
@@ -303,12 +307,18 @@
     <Image Include="assets\Airship_night_4.png" />
     <Image Include="assets\Airship_night_5.png" />
     <Image Include="assets\Airship_night_6.png" />
+    <Image Include="assets\button\load.png" />
+    <Image Include="assets\button\load_selected.png" />
+    <Image Include="assets\button\save.png" />
+    <Image Include="assets\button\save_selected.png" />
     <Image Include="assets\Forest_1.png" />
     <Image Include="assets\Forest_2.png" />
     <Image Include="assets\Ghost_house_1.png" />
     <Image Include="assets\Ghost_house_2.png" />
     <Image Include="assets\Ghost_house_3.png" />
     <Image Include="assets\level_map4.png" />
+    <Image Include="assets\level_map_0.png" />
+    <Image Include="assets\redirect background.jpg" />
     <Image Include="assets\Snow_night_1.png" />
     <Image Include="assets\Snow_night_2.png" />
   </ItemGroup>

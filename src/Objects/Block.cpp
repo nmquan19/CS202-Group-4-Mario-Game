@@ -69,7 +69,10 @@ Texture2D Block::getTextureSprite() const {
 Rectangle Block::getSrcRect() const {
     switch (blockType) {
         case BlockType::BLOCK_1_1_2: return Constants::PaletteResources::BLOCK_1_1_2;
-        case BlockType::BLOCK_1_1_3: return Constants::PaletteResources::BLOCK_1_1_3;
+        case BlockType::BLOCK_1_1_3: {
+            if (!itemSpawned) return Constants::PaletteResources::BLOCK_1_1_3;
+            return Constants::PaletteResources::BLOCK_1_1_4;
+        }
         case BlockType::BLOCK_1_1_12: return Constants::PaletteResources::BLOCK_1_1_12;
         case BlockType::BLOCK_1_1_13: return Constants::PaletteResources::BLOCK_1_1_13;
         case BlockType::BLOCK_1_1_14: return Constants::PaletteResources::BLOCK_1_1_14;
@@ -192,7 +195,10 @@ Rectangle Block::getSrcRect() const {
         case BlockType::BLOCK_1_16_16: return Constants::PaletteResources::BLOCK_1_16_16;
         
         case BlockType::BLOCK_2_1_2: return Constants::PaletteResources::BLOCK_1_1_2;
-        case BlockType::BLOCK_2_1_3: return Constants::PaletteResources::BLOCK_1_1_3;
+        case BlockType::BLOCK_2_1_3: {
+            if (!itemSpawned) return Constants::PaletteResources::BLOCK_1_1_3;
+            return Constants::PaletteResources::BLOCK_1_1_4;
+        }
         case BlockType::BLOCK_2_1_12: return Constants::PaletteResources::BLOCK_1_1_12;
         case BlockType::BLOCK_2_1_13: return Constants::PaletteResources::BLOCK_1_1_13;
         case BlockType::BLOCK_2_1_14: return Constants::PaletteResources::BLOCK_1_1_14;
@@ -315,7 +321,10 @@ Rectangle Block::getSrcRect() const {
         case BlockType::BLOCK_2_16_16: return Constants::PaletteResources::BLOCK_1_16_16;
 
         case BlockType::BLOCK_3_1_2: return Constants::PaletteResources::BLOCK_1_1_2;
-        case BlockType::BLOCK_3_1_3: return Constants::PaletteResources::BLOCK_1_1_3;
+        case BlockType::BLOCK_3_1_3: {
+            if (!itemSpawned) return Constants::PaletteResources::BLOCK_1_1_3;
+            return Constants::PaletteResources::BLOCK_1_1_4;
+        }
         case BlockType::BLOCK_3_1_12: return Constants::PaletteResources::BLOCK_1_1_12;
         case BlockType::BLOCK_3_1_13: return Constants::PaletteResources::BLOCK_1_1_13;
         case BlockType::BLOCK_3_1_14: return Constants::PaletteResources::BLOCK_1_1_14;
@@ -438,7 +447,10 @@ Rectangle Block::getSrcRect() const {
         case BlockType::BLOCK_3_16_16: return Constants::PaletteResources::BLOCK_1_16_16;
 
         case BlockType::BLOCK_4_1_2: return Constants::PaletteResources::BLOCK_1_1_2;
-        case BlockType::BLOCK_4_1_3: return Constants::PaletteResources::BLOCK_1_1_3;
+        case BlockType::BLOCK_4_1_3: {
+            if (!itemSpawned) return Constants::PaletteResources::BLOCK_1_1_3;
+            return Constants::PaletteResources::BLOCK_1_1_4;
+        }
         case BlockType::BLOCK_4_1_12: return Constants::PaletteResources::BLOCK_1_1_12;
         case BlockType::BLOCK_4_1_13: return Constants::PaletteResources::BLOCK_1_1_13;
         case BlockType::BLOCK_4_1_14: return Constants::PaletteResources::BLOCK_1_1_14;
@@ -588,6 +600,21 @@ void Block::onCollision(std::shared_ptr<Object> other, Direction direction) {
             ParticleSystem::getInstance().addEffect(p);
             GameContext::getInstance().mark_for_deletion_Object(GameContext::getInstance().getSharedPtrFromRaw(this));
         }
+        if (blockType == BlockType::BLOCK_1_1_3 || blockType == BlockType::BLOCK_2_1_3 || blockType == BlockType::BLOCK_3_1_3 || blockType == BlockType::BLOCK_4_1_3) {
+            itemSpawned = true;
+            if (itemType == "FIRE_FLOWER") {
+                GameContext::getInstance().addObject(ItemType::FIRE_FLOWER, {position.x + Constants::TILE_SIZE*0.5f, position.y}, {1, 1});
+                itemType = "";
+            }
+            else if (itemType == "MUSHROOM") {
+                GameContext::getInstance().addObject(ItemType::MUSHROOM, {position.x + Constants::TILE_SIZE*0.5f, position.y}, {1, 1});
+                itemType = "";
+            }
+            else if (itemType == "ONE_UP") {
+                GameContext::getInstance().addObject(ItemType::ONE_UP, {position.x + Constants::TILE_SIZE*0.5f, position.y}, {1, 1});
+                itemType = "";
+            }
+        } 
     }
 }
 
@@ -784,7 +811,7 @@ Block_1_16_16Block::Block_1_16_16Block(Vector2 gridPos) : Block(gridPos, BlockTy
 
 
 Block_2_1_2Block::Block_2_1_2Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_2_1_2, { 1,1 }) { solid = false; }
-Block_2_1_3Block::Block_2_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_2_1_3, { 1,1 }) { solid = false; }
+Block_2_1_3Block::Block_2_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_2_1_3, { 1,1 }) { solid = true; }
 Block_2_1_12Block::Block_2_1_12Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_2_1_12, { 1,1 }) { solid = false; }
 Block_2_1_13Block::Block_2_1_13Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_2_1_13, { 1,1 }) { solid = false; }
 Block_2_1_14Block::Block_2_1_14Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_2_1_14, { 1,1 }) { solid = false; }
@@ -911,7 +938,7 @@ Block_2_16_16Block::Block_2_16_16Block(Vector2 gridPos) : Block(gridPos, BlockTy
 
 
 Block_3_1_2Block::Block_3_1_2Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_3_1_2, { 1,1 }) { solid = false; }
-Block_3_1_3Block::Block_3_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_3_1_3, { 1,1 }) { solid = false; }
+Block_3_1_3Block::Block_3_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_3_1_3, { 1,1 }) { solid = true; }
 Block_3_1_12Block::Block_3_1_12Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_3_1_12, { 1,1 }) { solid = false; }
 Block_3_1_13Block::Block_3_1_13Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_3_1_13, { 1,1 }) { solid = false; }
 Block_3_1_14Block::Block_3_1_14Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_3_1_14, { 1,1 }) { solid = false; }
@@ -1038,7 +1065,7 @@ Block_3_16_16Block::Block_3_16_16Block(Vector2 gridPos) : Block(gridPos, BlockTy
 
 
 Block_4_1_2Block::Block_4_1_2Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_4_1_2, { 1,1 }) { solid = false; }
-Block_4_1_3Block::Block_4_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_4_1_3, { 1,1 }) { solid = false; }
+Block_4_1_3Block::Block_4_1_3Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_4_1_3, { 1,1 }) { solid = true; }
 Block_4_1_12Block::Block_4_1_12Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_4_1_12, { 1,1 }) { solid = false; }
 Block_4_1_13Block::Block_4_1_13Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_4_1_13, { 1,1 }) { solid = false; }
 Block_4_1_14Block::Block_4_1_14Block(Vector2 gridPos) : Block(gridPos, BlockType::BLOCK_4_1_14, { 1,1 }) { solid = false; }
@@ -1182,3 +1209,7 @@ void Block::fromJson(const json& data) {
 std::string Block::getSaveType() const {
     return "Block";
 }
+
+void Block::setItemType(std::string type) {
+    itemType = type;
+} 

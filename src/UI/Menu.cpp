@@ -4,13 +4,14 @@ MenuManager::MenuManager() {
     isActive = true;
 
     logo = LoadTexture("./assets/Super Mario Bros.png");
-    select = 0; characterSelect = 0;
+    select = 0; character01Select = 0;
     settingDialog = false;
     exitDialog = false;
 
     exit = false;
     board = LoadTexture("./assets/button/board1.png");
     menuBackground = LoadTexture("./assets/menu background.jpg");
+    redirectBackground = LoadTexture("./assets/redirect background.jpg");
 
     check.load("./assets/button/check.png", "./assets/button/check_selected.png");
 
@@ -19,6 +20,11 @@ MenuManager::MenuManager() {
     setting.load("./assets/button/option.png", "./assets/button/option_selected.png");
 
     returnButton.load("./assets/button/back.png", "./assets/button/back_selected.png");
+    save.load("./assets/button/save.png", "./assets/button/save_selected.png");
+    loadButton.load("./assets/button/load.png", "./assets/button/load_selected.png");
+
+    saveLevel.load("./assets/button/save.png", "./assets/button/save_selected.png");
+    loadLevel.load("./assets/button/load.png", "./assets/button/load_selected.png");
 
     playBoard.load("./assets/button/thin_board.png", "./assets/button/thin_board_selected.png");
     settingBoard.load("./assets/button/thin_board.png", "./assets/button/thin_board_selected.png");
@@ -37,6 +43,9 @@ MenuManager::MenuManager() {
     day_undergroundBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
     night_airshipBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
     night_snowBoard.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+
+    available.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
+    custom.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
 
     OnePlayer.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
     TwoPlayers.load("./assets/button/small_board.png", "./assets/button/small_board_selected.png");
@@ -64,14 +73,26 @@ MenuManager::MenuManager() {
     settingPosition.x = screenWidth * 9 / 10.0f;
     settingPosition.y = screenHeight / 10.0f;
 
-    returnButtonPosition.x = boardPosition.x + board.width * scale / 2.0f;
-    returnButtonPosition.y = boardPosition.y + board.height * scale * 3 / 4.0f;
+    returnButtonPosition.x = boardPosition.x + board.width * scale / 3.0f;
+    returnButtonPosition.y = boardPosition.y + board.height * scale * 4 / 5.0f;
+
+    savePosition.x = boardPosition.x + board.width * scale * 2.0f / 3.0f;
+    savePosition.y = boardPosition.y + board.height * scale * 4 / 5.0f;
+
+    saveLevelPosition.x = UIManager::getInstance().screenWidth / 20.0f * 1.0f;
+    saveLevelPosition.y = UIManager::getInstance().screenHeight / 20.0f * 1.0f;
+
+    loadLevelPosition.x = UIManager::getInstance().screenWidth / 20.0f * 2.5f;
+    loadLevelPosition.y = UIManager::getInstance().screenHeight / 20.0f * 1.0f;
+
+    slideBarMasterPosition.x = boardPosition.x + board.width * scale / 5.0f;
+    slideBarMasterPosition.y = boardPosition.y + board.height * scale * 3 / 10.0f;
 
     slideBarMusicPosition.x = boardPosition.x + board.width * scale / 5.0f;
-    slideBarMusicPosition.y = boardPosition.y + board.height * scale * 3 / 10.0f;
+    slideBarMusicPosition.y = boardPosition.y + board.height * scale * 4.5 / 10.0f;
 
     slideBarSoundPosition.x = boardPosition.x + board.width * scale / 5.0f;
-    slideBarSoundPosition.y = boardPosition.y + board.height * scale * 5 / 10.0f;
+    slideBarSoundPosition.y = boardPosition.y + board.height * scale * 6 / 10.0f;
 
     manager.Init(4, UIManager::getInstance().screenHeight / 2.0f, UIManager::getInstance().screenWidth / 6.0f, UIManager::getInstance().screenHeight, SKYBLUE, MARIO_COLOR, LUIGI_COLOR, TOAD_COLOR, TOADETTE_COLOR);
     
@@ -99,7 +120,8 @@ MenuManager::MenuManager() {
         {backgroundOffsetX + newWidth1 / 21.0f * 11.0f, newWidth1 / 21.0f * 5.5f},
         {backgroundOffsetX + newWidth1 / 21.0f * 13.0f, newWidth1 / 21.0f * 5.5f},
         {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 5.0f},
-        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 2.5f} //level 2
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 1.5f}, //level 2
+        {backgroundOffsetX + newWidth1 / 21.0f * 15.0f, newWidth1 / 21.0f * 1.5f}
     };
 
     mt.tex = mario;
@@ -111,6 +133,7 @@ MenuManager::~MenuManager() {
     UnloadTexture(logo);
     UnloadTexture(board);
     UnloadTexture(menuBackground);
+    UnloadTexture(redirectBackground);
     UnloadTexture(mario);
     UnloadTexture(luigi);
     UnloadTexture(toad);
@@ -133,9 +156,9 @@ void MenuManager::DrawMenu() {
     Font currentMenuFont = UIManager::getInstance().menuFont;
     if (!settingDialog && !exitDialog) {
         playBoard.draw({ width / 2.0f, height * 6.0f / 10.0f }, "Play");
-        settingBoard.draw({ width / 2.0f, height * 7.0f / 10.0f }, "Setting");
-        exitBoard.draw({ width / 2.0f, height * 8.0f / 10.0f }, "Exit");
-        editingBoard.draw({ width / 2.0f, height * 9.0f / 10.0f }, "Editing");
+        //settingBoard.draw({ width / 2.0f, height * 7.0f / 10.0f }, "Setting");
+        exitBoard.draw({ width / 2.0f, height * 7.0f / 10.0f }, "Exit");
+        editingBoard.draw({ width / 2.0f, height * 8.0f / 10.0f }, "Editing");
     }
 
     if (settingDialog) {
@@ -221,13 +244,19 @@ void MenuManager::DrawSetting() {
         Vector2 textPosition = { boardPosition.x + (board.width * scale - textSize.x) / 2, boardPosition.y + 60 };
         DrawTextEx(currentMenuFont, "Setting", textPosition, 40, 1, BROWN);
 
-        returnButton.draw(returnButtonPosition);
+        
+
+        DrawTextEx(currentMenuFont, "Master: ", { slideBarMaster.getBorder().x - 100, slideBarMaster.getBorder().y + slideBarMaster.getBorder().height / 2 - 10 }, 20, 4, BORDER_BROWN);
+        slideBarMaster.DrawSlideBar(slideBarMasterPosition);
 
         DrawTextEx(currentMenuFont, "Music: ", { slideBarMusic.getBorder().x - 100, slideBarMusic.getBorder().y + slideBarMusic.getBorder().height / 2 - 10 }, 20, 4, BORDER_BROWN);
         slideBarMusic.DrawSlideBar(slideBarMusicPosition);
 
         DrawTextEx(currentMenuFont, "Sound: ", { slideBarSound.getBorder().x - 100, slideBarSound.getBorder().y + slideBarSound.getBorder().height / 2 - 10 }, 20, 4, BORDER_BROWN);
         slideBarSound.DrawSlideBar(slideBarSoundPosition);
+
+        returnButton.draw(returnButtonPosition);
+        save.draw(savePosition);
     }
 }
 void MenuManager::HandleSetting() {
@@ -238,7 +267,7 @@ void MenuManager::HandleSetting() {
 
     if (settingDialog && IsKeyPressed(KEY_ENTER)) settingDialog = false;
 
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && returnButton.checkCollision(mousePos)) {
+    if ((IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && returnButton.checkCollision(mousePos)) || IsKeyPressed(KEY_S)) {
         settingDialog = false;
     }
 }
@@ -248,7 +277,7 @@ void MenuManager::UpdateMenu(float deltaTime) {
     settingBoard.update(deltaTime);
     exitBoard.update(deltaTime);
     editingBoard.update(deltaTime);
-}
+} 
 
 void MenuManager::UpdateExit(float deltaTime) {
     if (exitDialog) {
@@ -258,57 +287,49 @@ void MenuManager::UpdateExit(float deltaTime) {
 }
 void MenuManager::UpdateSetting(float deltaTime) {
     setting.update(deltaTime);
+    
     if (settingDialog) {
         returnButton.update(deltaTime);
+        save.update(deltaTime);
+        slideBarMaster.HandleSlideBar();
         slideBarMusic.HandleSlideBar();
         slideBarSound.HandleSlideBar();
     }
+    bg_timer += deltaTime;
 }
 
 void MenuManager::HandleSelecting() {
-    if (IsKeyPressed(KEY_LEFT) && characterSelect != 0) {
-        characterSelect--;
+    if (IsKeyPressed(KEY_A) && character01Select != 0) {
+        --character01Select;
         AudioManager::getInstance().PlaySoundEffect("click");
     }
-    if (IsKeyPressed(KEY_RIGHT) && characterSelect != 3) {
-        characterSelect++;
+    if (IsKeyPressed(KEY_D) && character01Select != 3) {
+        ++character01Select;
         AudioManager::getInstance().PlaySoundEffect("click");
     }
+    if (character02Select == -1) {
+        return;
+    }
+    if (IsKeyPressed(KEY_LEFT) && character02Select != 0) {
+        --character02Select;
+        AudioManager::getInstance().PlaySoundEffect("click");
+    }
+    if (IsKeyPressed(KEY_RIGHT) && character02Select != 3) {
+        ++character02Select;
+        AudioManager::getInstance().PlaySoundEffect("click");
+    }
+
 }
 
 void MenuManager::DrawSelecting() {
     Vector2 mousePos = GetMousePosition();
     Vector2 screen = { UIManager::getInstance().screenWidth, UIManager::getInstance().screenHeight };
-    // this code check a single parallelogram
-    /*
-    Parallelogram p11, p12;
-
-    p11.DrawParallelogramGradient(
-        { screen.x / 4.0f, screen.y / 4.0f },
-        { screen.x / 2.0f, screen.y / 4.0f },
-        { screen.x * 3.0f / 4.0f, screen.y / 2.0f },
-        { screen.x / 2.0f, screen.y / 2.0f }, SKYBLUE, MARIO_COLOR);
-
-
-    if (p11.CheckCollisionPointParallelogram(mousePos)) DrawText("Collide", 100, 100, 50, WHITE);
-    */
-
-
-
-
 
     manager.Draw();
-    Vector2 textSize = MeasureTextEx(UIManager::getInstance().menuFont, "Select a player", 50, 10);
     DrawText("Press Enter", 50, 100, 25, BLACK);
+    Vector2 textSize = MeasureTextEx(UIManager::getInstance().menuFont, "Select a player", 50, 10); // need changing
     DrawTextEx(UIManager::getInstance().menuFont, "Select a player", { (screen.x - textSize.x) / 2.0f, screen.y / 5.0f }, 50, 10, WHITE);
-    //Vector2 marioPosition = { screen.x / 5.0f - mario.width / 2.0f, screen.y / 3.0f };
-    //Vector2 luigiPosition = { screen.x * 2.0f / 5.0f - luigi.width / 2.0f, screen.y / 3.0f };
-    //Vector2 toadPosition = { screen.x * 3.0f / 5.0f - toad.width / 2.0f, screen.y / 3.0f };
-    //Vector2 toadettePosition = { screen.x * 4.0f / 5.0f - toadette.width / 2.0f, screen.y / 3.0f };
-    //DrawTextureEx(mario, marioPosition, 0, 1.0f, WHITE);
-    //DrawTextureEx(luigi, luigiPosition, 0, 1.0f, WHITE);
-    //DrawTextureEx(toad, toadPosition, 0, 1.0f, WHITE);
-    //DrawTextureEx(toadette, toadettePosition, 0, 1.0f, WHITE);
+
     Vector2 marioPosition = { manager.getCenter(0).x - mario.width / 2.0f, manager.getCenter(0).y - mario.height / 2.0f };
     Vector2 luigiPosition = { manager.getCenter(1).x - luigi.width / 2.0f, manager.getCenter(1).y - luigi.height / 2.0f };
     Vector2 toadPosition = { manager.getCenter(2).x - toad.width / 2.0f, manager.getCenter(2).y - toad.height / 2.0f };
@@ -323,17 +344,54 @@ void MenuManager::DrawSelecting() {
     Vector2 toadText = MeasureTextEx(UIManager::getInstance().menuFont, "TOAD", 50, 10);
     Vector2 toadetteText = MeasureTextEx(UIManager::getInstance().menuFont, "TOADETTE", 50, 10);
 
+    Vector2 aa = { -1, -1 };
+    Vector2 bb = { -1, -1 };
 
-
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        for (int i = 0; i < manager.getSize(); i++) {
-            if (manager.checkCollision(GetMousePosition(), i)) characterSelect = i;
+    for (int i = 0; i < manager.getSize(); i++) {
+        if (character01Select == i) {
+            manager.textColor[i] = YELLOW;
+            switch (i) {
+            case 0:
+                aa = marioPosition;
+                break;
+            case 1:
+                aa = luigiPosition;
+                break;
+            case 2:
+                aa = toadPosition;
+                break;
+            case 3:
+                aa = toadettePosition;
+                break;
+            }
+        }
+        if (character02Select == i) {
+            if (character01Select == character02Select) {
+                manager.textColor[i] = BLUE;
+            }
+            else {
+                manager.textColor[i] = DARKPURPLE;
+            }
+            switch (i) {
+            case 0:
+                bb = marioPosition;
+                break;
+            case 1:
+                bb = luigiPosition;
+                break;
+            case 2:
+                bb = toadPosition;
+                break;
+            case 3:
+                bb = toadettePosition;
+                break;
+            }
+        }
+        if (i != character01Select && i != character02Select) {
+            manager.textColor[i] = WHITE;
         }
     }
-    for (int i = 0; i < manager.getSize(); i++) {
-        if (characterSelect == i) manager.textColor[i] = YELLOW;
-        else manager.textColor[i] = WHITE;
-    }
+
     DrawTextEx(UIManager::getInstance().menuFont, "MARIO",
         { marioPosition.x + mario.width / 2.0f - marioText.x / 2.0f, marioPosition.y + mario.height + marioText.y }, 50, 10, manager.textColor[0]);
     DrawTextEx(UIManager::getInstance().menuFont, "LUIGI",
@@ -343,53 +401,17 @@ void MenuManager::DrawSelecting() {
     DrawTextEx(UIManager::getInstance().menuFont, "TOADETTE",
         { toadettePosition.x + toadette.width / 2.0f - toadetteText.x / 2.0f, toadettePosition.y + toadette.height + toadetteText.y }, 50, 10, manager.textColor[3]);
 
-    /*
-    if (characterSelect == 0) {
-        DrawTextEx(UIManager::getInstance().menuFont, "MARIO",
-            { marioPosition.x + mario.width / 2.0f - marioText.x / 2.0f, marioPosition.y + mario.height }, 50, 10, YELLOW);
-        DrawTextEx(UIManager::getInstance().menuFont, "LUIGI",
-            { luigiPosition.x + luigi.width / 2.0f - luigiText.x / 2.0f, luigiPosition.y + luigi.height }, 50, 10, WHITE);
-        DrawTextEx(UIManager::getInstance().menuFont, "TOAD",
-            { toadPosition.x + toad.width / 2.0f - toadText.x / 2.0f, toadPosition.y + toad.height }, 50, 10, WHITE);
-        DrawTextEx(UIManager::getInstance().menuFont, "TOADETTE",
-            { toadettePosition.x + toadette.width / 2.0f - toadetteText.x / 2.0f, toadettePosition.y + toadette.height }, 50, 10, WHITE);
+    if (character01Select != -1 && character02Select != -1) {
+        DrawTextEx(UIManager::getInstance().menuFont, "P1",
+            { aa.x + mario.width / 2.0f - marioText.x / 2.0f - 20.0f, marioPosition.y + mario.height + marioText.y + 200.0f }, 50, 10, YELLOW);
+        DrawTextEx(UIManager::getInstance().menuFont, "P2",
+            { bb.x + mario.width / 2.0f - marioText.x / 2.0f + 150.0f, marioPosition.y + mario.height + marioText.y + 200.0f }, 50, 10, DARKPURPLE);
     }
-    if (characterSelect == 1) {
-        DrawTextEx(UIManager::getInstance().menuFont, "MARIO",
-            { marioPosition.x + mario.width / 2.0f - marioText.x / 2.0f, marioPosition.y + mario.height }, 50, 10, WHITE);
-        DrawTextEx(UIManager::getInstance().menuFont, "LUIGI",
-            { luigiPosition.x + luigi.width / 2.0f - luigiText.x / 2.0f, luigiPosition.y + luigi.height }, 50, 10, YELLOW);
-        DrawTextEx(UIManager::getInstance().menuFont, "TOAD",
-            { toadPosition.x + toad.width / 2.0f - toadText.x / 2.0f, toadPosition.y + toad.height }, 50, 10, WHITE);
-        DrawTextEx(UIManager::getInstance().menuFont, "TOADETTE",
-            { toadettePosition.x + toadette.width / 2.0f - toadetteText.x / 2.0f, toadettePosition.y + toadette.height }, 50, 10, WHITE);
-    }
-    if (characterSelect == 2) {
-        DrawTextEx(UIManager::getInstance().menuFont, "MARIO",
-            { marioPosition.x + mario.width / 2.0f - marioText.x / 2.0f, marioPosition.y + mario.height }, 50, 10, WHITE);
-        DrawTextEx(UIManager::getInstance().menuFont, "LUIGI",
-            { luigiPosition.x + luigi.width / 2.0f - luigiText.x / 2.0f, luigiPosition.y + luigi.height }, 50, 10, WHITE);
-        DrawTextEx(UIManager::getInstance().menuFont, "TOAD",
-            { toadPosition.x + toad.width / 2.0f - toadText.x / 2.0f, toadPosition.y + toad.height }, 50, 10, YELLOW);
-        DrawTextEx(UIManager::getInstance().menuFont, "TOADETTE",
-            { toadettePosition.x + toadette.width / 2.0f - toadetteText.x / 2.0f, toadettePosition.y + toadette.height }, 50, 10, WHITE);
-    }
-    if (characterSelect == 3) {
-        DrawTextEx(UIManager::getInstance().menuFont, "MARIO",
-            { marioPosition.x + mario.width / 2.0f - marioText.x / 2.0f, marioPosition.y + mario.height }, 50, 10, WHITE);
-        DrawTextEx(UIManager::getInstance().menuFont, "LUIGI",
-            { luigiPosition.x + luigi.width / 2.0f - luigiText.x / 2.0f, luigiPosition.y + luigi.height }, 50, 10, WHITE);
-        DrawTextEx(UIManager::getInstance().menuFont, "TOAD",
-            { toadPosition.x + toad.width / 2.0f - toadText.x / 2.0f, toadPosition.y + toad.height }, 50, 10, WHITE);
-        DrawTextEx(UIManager::getInstance().menuFont, "TOADETTE",
-            { toadettePosition.x + toadette.width / 2.0f - toadetteText.x / 2.0f, toadettePosition.y + toadette.height }, 50, 10, YELLOW);
-    }
-    */
-}
-void MenuManager::UpdateSelecting(float deltaTime) {
-    manager.Update(deltaTime);
 }
 
+void MenuManager::UpdateSelecting(float deltaTime) {
+    manager.Update(deltaTime, character01Select, character02Select);
+}
 
 void MenuManager::HandleRedirect() {
 
@@ -403,10 +425,40 @@ void MenuManager::UpdateRedirect(float deltaTime) {
 }
 
 void MenuManager::DrawRedirect() {
+    float scale = UIManager::getInstance().screenHeight / (float)redirectBackground.height;
+    float newWidth = redirectBackground.width * scale;
+    float newHeight = UIManager::getInstance().screenHeight;
+
+    // Vị trí để căn giữa theo trục dọc
+    float posX = (UIManager::getInstance().screenWidth - newWidth) / 2.0f;
+    float posY = 0;
+
+    Rectangle src = { 0, 0, (float)redirectBackground.width, (float)redirectBackground.height };
+    Rectangle dst = { posX, posY, newWidth, newHeight };
+    Vector2 origin = { 0, 0 };
+
+    DrawTexturePro(redirectBackground, src, dst, origin, 0.0f, WHITE);
+
     characterBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 7 / 20.0f }, "NewGame", 1.5, 1.0);
     continueBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 9 / 20.0f }, "Continue", 1.5, 1.0);
     menuBoard.draw({ UIManager::getInstance().screenWidth / 2.0f, UIManager::getInstance().screenHeight * 11 / 20.0f }, "Menu", 1.5, 1.0);
 }
+
+void MenuManager::HandleLevelRedirect() {
+    
+}
+
+void MenuManager::DrawLevelRedirect() {
+    available.draw({ UIManager::getInstance().screenWidth / 4.0f, UIManager::getInstance().screenHeight / 2.0f }, "Available", 1.5, 1.0);
+    custom.draw({ UIManager::getInstance().screenWidth * 3.0f / 4.0f, UIManager::getInstance().screenHeight / 2.0f }, "Custom", 1.5, 1.0);
+}
+
+void MenuManager::UpdateLevelRedirect(float deltaTime) {
+    available.update(deltaTime);
+    custom.update(deltaTime);
+}
+
+
 
 void MenuManager::HandleEditorSelecting() {
 
@@ -475,14 +527,17 @@ void MenuManager::DrawLevel() {
 
     //float screenCenterX = UIManager::getInstance().screenWidth / 2.0f;
     //float marioScreenX = (mt.pos.x < screenCenterX) ? mt.pos.x : screenCenterX;
-
-    DrawTexture(mt.tex,
-        mt.pos.x + backgroundOffsetX - mt.tex.width / 2,
-        mt.pos.y - mt.tex.height / 2,
+    
+    DrawTextureEx(mt.tex,
+        { mt.pos.x + backgroundOffsetX - mt.tex.width / 2 * 0.5f,
+        mt.pos.y - mt.tex.height / 2 * 0.5f }, 0.0f, 0.5f,
         WHITE);
+    Vector2 instruction = MeasureTextEx(UIManager::getInstance().menuFont, "Select level and press Enter", 30, 1.0f);
+    DrawTextEx(UIManager::getInstance().menuFont, "Select level and press Enter", {UIManager::getInstance().screenWidth / 2.0f - instruction.x / 2.0f, UIManager::getInstance().screenHeight * 4  /5.0f}, 30, 1.0f, BLACK);
 }
 
 void MenuManager::UpdateLevel(float deltaTime) {
+    /*
     Vector2 mouse = GetMousePosition();
     float speed = 300.0f;
 
@@ -497,8 +552,23 @@ void MenuManager::UpdateLevel(float deltaTime) {
     if (backgroundOffsetX > 0) backgroundOffsetX = 0;
     if (backgroundOffsetX < UIManager::getInstance().screenWidth - backgroundWidth)
         backgroundOffsetX = UIManager::getInstance().screenWidth - backgroundWidth;
-
+    */
     mt.UpdateMovingTexture(positionList, deltaTime);
+
+    positionList = {
+        {backgroundOffsetX + newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f, newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 2.0f + newWidth1 / 42.0f, newWidth1 / 21.0f * 4.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 3.0f, newWidth1 / 21.0f * 4.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 7.0f, newWidth1 / 21.0f * 4.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 8.0f, newWidth1 / 21.0f * 3.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 8.5f, newWidth1 / 21.0f * 3.5f}, //level 1
+        {backgroundOffsetX + newWidth1 / 21.0f * 9.0f, newWidth1 / 21.0f * 3.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 11.0f, newWidth1 / 21.0f * 5.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.0f, newWidth1 / 21.0f * 5.5f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 5.0f},
+        {backgroundOffsetX + newWidth1 / 21.0f * 13.5f, newWidth1 / 21.0f * 1.5f}, //level 2
+        {backgroundOffsetX + newWidth1 / 21.0f + 15.0f, newWidth1 / 21.0f * 1.5f}
+    };
 }
 
 /*

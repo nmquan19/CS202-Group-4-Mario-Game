@@ -8,27 +8,64 @@
 #include <raymath.h>
 #include <iostream>
 #include "../../include/System/Grid.h"
+#include "../../include/System/Box2DWorldManager.h"
 TriggerZone::TriggerZone(CollectableObject* ownerItem, Vector2 pos, Vector2 sz)
     : owner(ownerItem) {
     position = pos;
     size = sz*2;
+    hitBox = Rectangle{ position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
     position.x = owner->getPosition().x + (owner->getHitBox()[0].width - size.x * GridSystem::GRID_SIZE) / 2;
     position.y = owner->getPosition().y + (owner->getHitBox()[0].height - size.y * GridSystem::GRID_SIZE) / 2;
-
-    hitBox = Rectangle{ position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
+    physicsBody = Box2DWorldManager::getInstance().createRectangleBody(position, { hitBox.width, hitBox.height });
+    if (physicsBody) {
+        physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+        for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext())
+        {
+            b2Filter filter = fixture->GetFilterData();
+            filter.maskBits = static_cast<uint16>(ObjectCategory::TRIGGER);
+            fixture->SetSensor(true);
+        }
+    }
     this->active = true;
+
 } 
 
 void TriggerZone::update(float deltaTime) {
-    if (!isActive()) return;
-    std::vector<Rectangle> ownerHitBoxes = owner->getHitBox();
-    if (!ownerHitBoxes.empty()) {
-        Rectangle ownerHitBox = ownerHitBoxes[0];
-        position.x = owner->getPosition().x+ (ownerHitBox.width - size.x*GridSystem::GRID_SIZE)/2 ;
-        position.y = owner->getPosition().y + (ownerHitBox.height - size.y*GridSystem::GRID_SIZE)/2;
+
+    if (!isActive())
+    {
+        return;
     }
-	hitBox = Rectangle{ position.x, position.y, size.x * GridSystem::GRID_SIZE, size.y * GridSystem::GRID_SIZE };
+    if (owner) {
+        std::vector<Rectangle> ownerHitBoxes = owner->getHitBox();
+        if (!ownerHitBoxes.empty()) {
+            Rectangle ownerHitBox = ownerHitBoxes[0];
+
+            Vector2 zoneCenter;
+            zoneCenter.x = owner->getPosition().x + ownerHitBox.width * 0.5f;
+            zoneCenter.y = owner->getPosition().y + ownerHitBox.height * 0.5f;
+
+            zoneCenter.x += (ownerHitBox.width - size.x * GridSystem::GRID_SIZE) * 0.5f;
+            zoneCenter.y += (ownerHitBox.height - size.y * GridSystem::GRID_SIZE) * 0.5f;
+
+            if (physicsBody) {
+                b2Vec2 b2Pos = Box2DWorldManager::raylibToB2(zoneCenter);
+                physicsBody->SetTransform(b2Pos, physicsBody->GetAngle());
+            }
+
+            position.x = zoneCenter.x - size.x * GridSystem::GRID_SIZE * 0.5f;
+            position.y = zoneCenter.y - size.y * GridSystem::GRID_SIZE * 0.5f;
+
+            hitBox = Rectangle{
+                position.x,
+                position.y,
+                size.x * GridSystem::GRID_SIZE,
+                size.y * GridSystem::GRID_SIZE
+            };
+        }
+    }
 }
+
 
 void TriggerZone::draw() {
 }
@@ -46,9 +83,9 @@ std::vector<ObjectCategory> TriggerZone::getCollisionTargets() const {
 }
 
 void TriggerZone::onCollision(std::shared_ptr<Object> other, Direction direction) {
-    if (!owner->isCollectable() || !other->isActive()) return;
+    if (!owner->isCollectable()) return;
     setCollided(true);
-    if (IsKeyDown(KEY_E))
+    if (IsKeyPressed(KEY_E))
     {
         if (!owner || !other) return;
         if (other->getObjectCategory() != ObjectCategory::CHARACTER) return;

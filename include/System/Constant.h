@@ -213,16 +213,20 @@ namespace Constants {
     }
 
     namespace Projectile {
-        constexpr Vector2 STANDARD_SIZE = { 0.5f, 0.5f };
         namespace FireBall {
-            constexpr float DURATION = 5.0f;
-            constexpr Vector2 INITIAL_VELOCITY = { 7.0f, 5.0f };
+            const Vector2 STANDARD_SIZE = { 0.5f, 0.5f };
+            const float DURATION = 5.0f;
+            const Vector2 INITIAL_VELOCITY = { 7.0f, 5.0f };
+        }
+        namespace FireOrb {
+            const Vector2 STANDARD_SIZE = { 0.75f, 0.5f };
+            const Vector2 INITIAL_VELOCITY = { 5.0f, 0.0f };
         }
     }
 
     namespace Spring {
         constexpr float BOUNCE_VELOCITY = 14.0f;
-        constexpr Vector2 STANDARD_SIZE = { 1, 1 };
+        constexpr Vector2 STANDARD_SIZE = { 1.0f, 1.0f };
         constexpr float BOUNCE_DURATION = 0.8f;
     }
 
@@ -302,6 +306,7 @@ namespace Constants {
     namespace PaletteResources {
         constexpr Rectangle BLOCK_1_1_2 = { 18, 1, 16, 16 };
         constexpr Rectangle BLOCK_1_1_3 = { 35, 1, 16, 16 };
+        constexpr Rectangle BLOCK_1_1_4 = { 52, 1, 16, 16 };
         constexpr Rectangle BLOCK_1_1_12 = { 188, 1, 16, 16 };
         constexpr Rectangle BLOCK_1_1_13 = { 205, 1, 16, 16 };
         constexpr Rectangle BLOCK_1_1_14 = { 222, 1, 16, 16 };

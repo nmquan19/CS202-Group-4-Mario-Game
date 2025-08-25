@@ -22,6 +22,7 @@ KoopaShell::KoopaShell(KoopaShellType type, Vector2 pos, Vector2 sz): type(type)
     }
     currentState = &KoopaShellIdleState::getInstance();
     currentState->enter(this);
+    triggerZone = nullptr;
 }
 
 
@@ -80,6 +81,12 @@ void KoopaShell::draw() {
         sourceRec.height *= -1;
     }
     Vector2 origin = { 0, 0 };
+
+    DrawLineV(
+        { position.x+hitBox.width/2 , 0},                           // top of screen
+        { position.x + hitBox.width/2, (float)GetScreenHeight() },    // bottom of screen
+        GREEN                                      // line color
+    );
     DrawTexturePro(this->texture, sourceRec, hitBox, origin, 0.0f, WHITE);
 }
 
