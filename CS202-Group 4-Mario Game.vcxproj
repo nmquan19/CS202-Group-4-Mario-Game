@@ -308,6 +308,8 @@
     <Image Include="assets\Airship_night_5.png" />
     <Image Include="assets\Airship_night_6.png" />
     <Image Include="assets\button\load.png" />
+    <Image Include="assets\button\load1.png" />
+    <Image Include="assets\button\load1_selected.png" />
     <Image Include="assets\button\load_selected.png" />
     <Image Include="assets\button\save.png" />
     <Image Include="assets\button\save_selected.png" />

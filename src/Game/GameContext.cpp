@@ -64,12 +64,13 @@ void GameContext::setState(GameState* newState) {
         if (newState == gamePlayState) {
             Box2DWorldManager::getInstance().initialize(Vector2{ 0, Constants::GRAVITY });
 //LevelEditor::getInstance().setEditMode(false);
+            UIManager::getInstance().setAttempts(5);
             UIManager::getInstance().resetCoin();
             UIManager::getInstance().resetTimer();
             UIManager::getInstance().resetScore();
 
             LevelEditor::getInstance().setEditMode(false);
-            if (level == 1) LevelEditor::getInstance().loadLevel("testlevel.json");
+            if (level == 1) LevelEditor::getInstance().loadLevel("level1.json");
             if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
             if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
             if (level == 4) LevelEditor::getInstance().loadLevel("testlevel.json");
@@ -91,7 +92,7 @@ void GameContext::setState(GameState* newState) {
                 character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
                 break;
             case 1:
-                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 300, 400 });
+                character01 = ObjectFactory::createCharacter(CharacterType::LUIGI, PlayerID::PLAYER_01, Vector2{ 400, 400 });
                 break;
             case 2:
                 character01 = ObjectFactory::createCharacter(CharacterType::TOAD, PlayerID::PLAYER_01, Vector2{ 400, 400 });
@@ -264,7 +265,7 @@ void GameContext::draw() {
     }
 }
 
-void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* levelRedirect, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver) {
+void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* levelRedirect, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver, GameState* score) {
     menuState = menu;
     redirectState = redirect;
     playerSelectingState = player;
@@ -276,6 +277,7 @@ void GameContext::setGameStates(GameState* menu, GameState* redirect, GameState*
     editorState = editor;
     editorSelectingState = editorSelecting;
     gameOverState = gameOver;
+    scoreState = score;
     currentState = menuState;
 }
 void GameContext::addObject(ObjectType type, Vector2 worldPos, Vector2 size, std::function<void(std::shared_ptr<Object>)> onSpawn)
@@ -370,6 +372,10 @@ void GameContext::clearGame() {
 void GameContext::saveGameState(const std::string& filename) {
     json gameData;
     json objectsArray = json::array();
+
+    // Save map
+    gameData["level"] = level;
+    gameData["mapSelect"] = LevelEditor::getInstance().mapSelect;
     
     // Save character01
     if (character01) {
@@ -432,6 +438,15 @@ void GameContext::loadGameState(const std::string& filename) {
     clearGame();
     character01.reset();
     character02.reset();
+
+    // Load map 
+    if (gameData.contains("level")) {
+        level = gameData["level"];
+    }
+
+    if (gameData.contains("mapSelect")) {
+        LevelEditor::getInstance().mapSelect = gameData["mapSelect"];
+    }
     
     // Load player calls request
     if (gameData.contains("playerCallsRequest")) {

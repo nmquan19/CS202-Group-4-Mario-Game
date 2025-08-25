@@ -8,12 +8,14 @@
 #include <memory>
 #include <cstdlib>
 #include <iostream>
+#include <algorithm>
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
 #include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../include/System/LightingSystem.h"
 #include <raymath.h>
+#include <string>
 void handleCamera();
 
 void MenuState::handleInput(GameContext& context) {
@@ -47,12 +49,15 @@ void RedirectState::handleInput(GameContext& context) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         if (context.menuManager.characterBoard.checkCollision(mousePos)) {
+            AudioManager::getInstance().PlaySoundEffect("click");
             context.setState(context.playerSelectingState);
         }
         else if (context.menuManager.continueBoard.checkCollision(mousePos)) {
+            AudioManager::getInstance().PlaySoundEffect("click");
             context.setState(context.informationState);
         }
         else if (context.menuManager.menuBoard.checkCollision(mousePos)) {
+            AudioManager::getInstance().PlaySoundEffect("click");
             context.setState(context.menuState);
         }
     }
@@ -75,10 +80,12 @@ void PlayerSelectingState::handleInput(GameContext& context) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         if (context.menuManager.OnePlayer.checkCollision(mousePos)) {
+            AudioManager::getInstance().PlaySoundEffect("click");
             context.menuManager.character02Select = -1;
             context.setState(context.characterSelectingState);
         }
         else if (context.menuManager.TwoPlayers.checkCollision(mousePos)) {
+            AudioManager::getInstance().PlaySoundEffect("click");
             context.menuManager.character02Select = 0;
             context.setState(context.characterSelectingState);
         }
@@ -125,7 +132,7 @@ void LevelRedirectState::handleInput(GameContext& context) {
             context.level = 4;
             context.informationState->setLevel(context);
             context.gamePlayState->setLevel(context);
-            context.setState(context.informationState);
+            context.setState(context.gamePlayState);
         }
     }
     
@@ -244,7 +251,7 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
         GameContext::getInstance().addObject(BackGroundObjectType::TORCH, mousePos, { 1,1});
 
     }
-
+    context.menuManager.UpdateSetting(deltaTime);
     if (!context.menuManager.settingDialog) {
         if (context.character01) {
             std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
@@ -272,7 +279,7 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
             }
 
         }
-        context.menuManager.UpdateSetting(deltaTime);
+        
         context.spawnObject();  
         context.deleteObjects();
         UIManager::getInstance().updateInformationBoard(deltaTime);
@@ -305,7 +312,6 @@ void DrawParallaxBackground(Texture2D bg, Camera2D cam, float parallaxFactor) {
 void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
-    DrawText("Press Enter", 500, 100, 20, WHITE);
     DrawText("F5 - Save game", 1200, 500, 50, BLACK);
     DrawText("F6 - Load current game", 1200, 600, 50, BLACK);
     Vector2 camPos = GameCameraSystem::getInstance().getCamera().target;
@@ -321,7 +327,7 @@ void GamePlayState::draw(GameContext& context) {
     Camera2D cam = GameCameraSystem::getInstance().getCamera();
 
     //DrawParallaxBackground(bg, cam, 0.5f);
-    if (level == 1 || level == 4) {
+    if (level == 1) {
         Background::getInstance().draw("Forest_1", { 0,0 });
         Background::getInstance().draw("Forest_1", { 0, 512 });
         Background::getInstance().draw("Ghost_house_1", { 0, 1024 });
@@ -333,6 +339,23 @@ void GamePlayState::draw(GameContext& context) {
     if (level == 3) {
         Background::getInstance().draw("Snow_night_1", { 0,0 });
         Background::getInstance().draw("Snow_night_1", { 0,512 });
+    }
+    if (level == 4) {
+        switch(LevelEditor::getInstance().mapSelect) {
+            case 1:
+                Background::getInstance().draw("Forest_1", { 0,0 });
+                Background::getInstance().draw("Forest_1", { 0, 512 });
+                Background::getInstance().draw("Ghost_house_1", { 0, 1024 });
+                break;
+            case 2:
+                Background::getInstance().draw("Airship_night_3", { 0,0 });
+                Background::getInstance().draw("Airship_night_3", { 0, 512 });
+                break;
+            case 3:
+                Background::getInstance().draw("Snow_night_1", { 0,0 });
+                Background::getInstance().draw("Snow_night_1", { 0,512 });
+                break;
+        }
     }
     
     BeginMode2D(GameCameraSystem::getInstance().getCamera());
@@ -510,43 +533,326 @@ void EditorSelectingState::draw(GameContext& context) {
 }
 
 void GameOverState::handleInput(GameContext& context) {
-    if (IsKeyPressed(KEY_ENTER)) {
-        context.setState(context.menuState);
-    }
-    if (IsKeyPressed(KEY_ONE)) {
-        context.level = 2;
-        context.gamePlayState->setLevel(context);
-        context.setState(context.gamePlayState);
-    }
-    if (IsKeyPressed(KEY_THREE)) {
-        context.level = 3;
-        context.gamePlayState->setLevel(context);
-        context.setState(context.gamePlayState);
-    }
-  
+    
 }
 
 void GameOverState::update(GameContext& context, float deltaTime) {
-    // To be implemented
- 
+    if (IsKeyPressed(KEY_ENTER)) {
+        context.setState(context.menuState);
+    }
+    blinkTimer += deltaTime;
 }
 
 void GameOverState::draw(GameContext& context) {
     BeginDrawing();
-    if (level == 1) {
-        Background::getInstance().draw("Forest_1", { 0,0 });
-        Background::getInstance().draw("Forest_1", { 0, 512 });
+    ClearBackground(BLACK);
+
+    int screenWidth = GetScreenWidth();
+    int screenHeight = GetScreenHeight();
+
+    // Get UIManager instance
+    UIManager& uiManager = UIManager::getInstance();
+
+    // Level complete banner
+    const char* levelCompleteText = "OOPS! NICE TRY!";
+    Vector2 titleSize = MeasureTextEx(uiManager.menuFont, levelCompleteText, 60, 3);
+    Vector2 titlePos = { (screenWidth - titleSize.x) / 2, screenHeight * 0.1f };
+
+    // Draw title with glow effect
+    DrawTextEx(uiManager.menuFont, levelCompleteText, { titlePos.x + 2, titlePos.y + 2 }, 60, 3, DARKBLUE);
+    DrawTextEx(uiManager.menuFont, levelCompleteText, titlePos, 60, 3, GOLD);
+
+    // Score section
+    float sectionY = screenHeight * 0.3f;
+    float lineHeight = 80;
+
+    // Draw decorative border
+    Rectangle borderRect = {
+        screenWidth * 0.1f,
+        sectionY - 40,
+        screenWidth * 0.8f,
+        lineHeight * 4 + 80
+    };
+    DrawRectangleRounded(borderRect, 0.1f, 16, Fade(BLUE, 0.3f));
+    // Draw border outline manually
+    DrawRectangleLinesEx(borderRect, 4, WHITE);
+
+    // Score breakdown
+    float textX = screenWidth * 0.25f;
+    float valueX = screenWidth * 0.7f;
+
+    // Get current values
+    int currentScore = uiManager.getScore();
+    int coinCount = uiManager.getCoinCount();
+    float timeLeft = uiManager.getTimeLeft();
+
+    // Calculate bonuses
+    int coinBonus = coinCount * 200; // 200 points per coin
+    int timeBonus = (int)(timeLeft * 50); // 50 points per remaining second
+    int totalScore = currentScore + coinBonus + timeBonus;
+
+    // Current Score
+    const char* currentScoreText = "CURRENT SCORE:";
+    DrawTextEx(uiManager.menuFont, currentScoreText, { textX, sectionY }, 40, 2, WHITE);
+    const char* scoreValue = TextFormat("%06d", currentScore);
+    DrawTextEx(uiManager.menuFont, scoreValue, { valueX, sectionY }, 40, 2, YELLOW);
+
+    sectionY += lineHeight;
+
+    // Coins collected
+    const char* coinsText = "COINS COLLECTED:";
+    DrawTextEx(uiManager.menuFont, coinsText, { textX, sectionY }, 40, 2, WHITE);
+    const char* coinValue = TextFormat("x %02d (+%d pts)", coinCount, coinBonus);
+    DrawTextEx(uiManager.menuFont, coinValue, { valueX, sectionY }, 40, 2, YELLOW);
+
+    // Draw coin icons to visualize collection
+    for (int i = 0; i < std::min(coinCount, 8); i++) {
+        float coinX = textX + 280 + i * 25;
+        DrawCircle(coinX, sectionY + 20, 10, GOLD);
+        DrawCircle(coinX, sectionY + 20, 8, YELLOW);
+        DrawText("$", coinX - 3, sectionY + 15, 12, ORANGE);
     }
-    if (level == 2) {
-        Background::getInstance().draw("Airship_night_3", { 0,0 });
-        Background::getInstance().draw("Airship_night_3", { 0,0 });
+    if (coinCount > 8) {
+        DrawTextEx(uiManager.menuFont, "...", { textX + 280 + 8 * 25, sectionY + 10 }, 20, 1, YELLOW);
     }
-    if (level == 3) {
-        Background::getInstance().draw("Snow_night_1", { 0,0 });
-        Background::getInstance().draw("Snow_night_1", { 0,0 });
+
+    sectionY += lineHeight;
+
+    // Line separator
+    DrawLine(textX, sectionY - 20, valueX + 200, sectionY - 20, WHITE);
+
+    // Total score
+    const char* totalText = "TOTAL SCORE:";
+    DrawTextEx(uiManager.menuFont, totalText, { textX, sectionY }, 45, 2, GOLD);
+    const char* totalValue = TextFormat("%06d", totalScore);
+    DrawTextEx(uiManager.menuFont, totalValue, { valueX, sectionY }, 45, 2, GOLD);
+
+    // Continue prompt
+    const char* continueText = "PRESS ENTER TO RETURN TO MENU";
+    Vector2 continueSize = MeasureTextEx(uiManager.menuFont, continueText, 25, 2);
+    Vector2 continuePos = { (screenWidth - continueSize.x) / 2, screenHeight * 0.9f };
+
+    // Blinking effect
+    if (fmod(blinkTimer, 1.0f) < 0.5f) {
+        DrawTextEx(uiManager.menuFont, continueText, continuePos, 25, 2, WHITE);
     }
-    UIManager::getInstance().drawInformationBoard(WHITE);
+
+    EndDrawing();
+}
+
+ScoreState::ScoreState() {
+    for (int i = 1; i <= 16; ++i) {
+        std::string filePath = "assets/gif/frame_00" + (i < 10 ? std::to_string(0) : "") + std::to_string(i) + ".png";
+        gif1.push_back(LoadTexture(filePath.c_str()));
+    }
+    for (int i = 1; i <= 21; ++i) {
+        std::string filePath = "assets/gif/frame2_00" + (i < 10 ? std::to_string(0) : "") + std::to_string(i) + ".png";
+        gif2.push_back(LoadTexture(filePath.c_str()));
+    }
+    background = LoadTexture("assets/cc.jpg");
+}
+
+ScoreState::~ScoreState() {
+    for (auto& t : gif1) {
+        UnloadTexture(t);
+    }
+    for (auto& t : gif2) {
+        UnloadTexture(t);
+    }
+    UnloadTexture(background);
+}
+
+void ScoreState::handleInput(GameContext& context) {
+
+}
+
+void ScoreState::update(GameContext& context, float deltaTime) {
+    if (IsKeyPressed(KEY_ENTER)) {
+        context.setState(context.levelSelectingState);
+    }
+
+    blinkTimer += deltaTime;
+
+    gif1Timer += deltaTime;
+    if (gif1Timer > 1.0f/60.0f) {
+        gif1Frame = (gif1Frame + 1) % gif1.size();
+        gif1Timer = 0.0f;
+    }
+
+    gif2Timer += deltaTime;
+    if (gif2Timer > 1.0f / 30.0f) {
+        gif2Frame = (gif2Frame + 1) % gif2.size();
+        gif2Timer = 0.0f;
+    }
+}
+
+void ScoreState::draw(GameContext& context) {
+    BeginDrawing();
+    ClearBackground(BLACK);
     
+    int screenWidth = GetScreenWidth();
+    int screenHeight = GetScreenHeight();
+
+    DrawTexturePro(background, { 0, 0, (float)background.width, (float)background.height }, { 0, 0, (float)screenWidth, (float)screenHeight }, { 0, 0 }, 0.0f, WHITE);
+    
+    // Get UIManager instance
+    UIManager& uiManager = UIManager::getInstance();
+    
+    // Level complete banner
+    const char* levelCompleteText = "LEVEL COMPLETE!";
+    Vector2 titleSize = MeasureTextEx(uiManager.menuFont, levelCompleteText, 60, 3);
+    Vector2 titlePos = { (screenWidth - titleSize.x) / 2, screenHeight * 0.1f };
+    
+    // Draw title with glow effect
+    DrawTextEx(uiManager.menuFont, levelCompleteText, { titlePos.x + 2, titlePos.y + 2 }, 60, 3, DARKBLUE);
+    DrawTextEx(uiManager.menuFont, levelCompleteText, titlePos, 60, 3, GOLD);
+    
+    // Score section
+    float sectionY = screenHeight * 0.3f;
+    float lineHeight = 80;
+    
+    // Draw decorative border
+    Rectangle borderRect = { 
+        screenWidth * 0.1f, 
+        sectionY - 40, 
+        screenWidth * 0.8f, 
+        lineHeight * 4 + 80 
+    };
+    DrawRectangleRounded(borderRect, 0.1f, 16, Fade(BLUE, 0.3f));
+    // Draw border outline manually
+    DrawRectangleLinesEx(borderRect, 4, WHITE);
+    
+    // Score breakdown
+    float textX = screenWidth * 0.25f;
+    float valueX = screenWidth * 0.7f;
+    
+    // Get current values
+    int currentScore = uiManager.getScore();
+    int coinCount = uiManager.getCoinCount();
+    float timeLeft = uiManager.getTimeLeft();
+    
+    // Calculate bonuses
+    int coinBonus = coinCount * 200; // 200 points per coin
+    int timeBonus = (int)(timeLeft * 50); // 50 points per remaining second
+    int totalScore = currentScore + coinBonus + timeBonus;
+    
+    // Current Score
+    const char* currentScoreText = "CURRENT SCORE:";
+    DrawTextEx(uiManager.menuFont, currentScoreText, { textX, sectionY }, 40, 2, WHITE);
+    const char* scoreValue = TextFormat("%06d", currentScore);
+    DrawTextEx(uiManager.menuFont, scoreValue, { valueX, sectionY }, 40, 2, YELLOW);
+    
+    sectionY += lineHeight;
+    
+    // Coins collected
+    const char* coinsText = "COINS COLLECTED:";
+    DrawTextEx(uiManager.menuFont, coinsText, { textX, sectionY }, 40, 2, WHITE);
+    const char* coinValue = TextFormat("x %02d (+%d pts)", coinCount, coinBonus);
+    DrawTextEx(uiManager.menuFont, coinValue, { valueX, sectionY }, 40, 2, YELLOW);
+    
+    // Draw coin icons to visualize collection
+    for (int i = 0; i < std::min(coinCount, 8); i++) {
+        float coinX = textX + 280 + i * 25;
+        DrawCircle(coinX, sectionY + 20, 10, GOLD);
+        DrawCircle(coinX, sectionY + 20, 8, YELLOW);
+        DrawText("$", coinX - 3, sectionY + 15, 12, ORANGE);
+    }
+    if (coinCount > 8) {
+        DrawTextEx(uiManager.menuFont, "...", { textX + 280 + 8 * 25, sectionY + 10 }, 20, 1, YELLOW);
+    }
+    
+    sectionY += lineHeight;
+    
+    // Time bonus
+    const char* timeBonusText = "TIME BONUS:";
+    DrawTextEx(uiManager.menuFont, timeBonusText, { textX, sectionY }, 40, 2, WHITE);
+    const char* timeBonusValue = TextFormat("%06d", timeBonus);
+    
+    // Color code the time bonus based on performance
+    Color timeColor = YELLOW; // Default
+    if (timeLeft >= 300) timeColor = LIME;      // Excellent time
+    else if (timeLeft >= 200) timeColor = GREEN;    // Good time  
+    else if (timeLeft >= 100) timeColor = YELLOW;   // Average time
+    else if (timeLeft >= 50) timeColor = ORANGE;    // Poor time
+    else timeColor = RED;                            // Very poor time
+    
+    DrawTextEx(uiManager.menuFont, timeBonusValue, { valueX, sectionY }, 40, 2, timeColor);
+    
+    // Add time performance text
+    const char* timePerformance = "";
+    if (timeLeft >= 300) timePerformance = "SPEED RUN!";
+    else if (timeLeft >= 200) timePerformance = "FAST!";
+    else if (timeLeft >= 100) timePerformance = "GOOD";
+    else if (timeLeft >= 50) timePerformance = "SLOW";
+    else timePerformance = "TOO SLOW";
+    
+    if (strlen(timePerformance) > 0) {
+        DrawTextEx(uiManager.menuFont, timePerformance, { valueX + 180, sectionY + 15 }, 30, 1, timeColor);
+    }
+    
+    sectionY += lineHeight;
+    
+    // Line separator
+    DrawLine(textX, sectionY - 20, valueX + 200, sectionY - 20, WHITE);
+    
+    // Total score
+    const char* totalText = "TOTAL SCORE:";
+    DrawTextEx(uiManager.menuFont, totalText, { textX, sectionY }, 45, 2, GOLD);
+    const char* totalValue = TextFormat("%06d", totalScore);
+    DrawTextEx(uiManager.menuFont, totalValue, { valueX, sectionY }, 45, 2, GOLD);
+    
+    // Star rating based on performance
+    float starY = screenHeight * 0.75f;
+    const char* ratingText = "PERFORMANCE RATING:";
+    Vector2 ratingSize = MeasureTextEx(uiManager.menuFont, ratingText, 35, 2);
+    Vector2 ratingPos = { (screenWidth - ratingSize.x) / 2, starY };
+    DrawTextEx(uiManager.menuFont, ratingText, ratingPos, 35, 2, WHITE);
+    
+    // Draw stars (example: 3 out of 5 stars)
+    float starSize = 40;
+    float starSpacing = 60;
+    float starsStartX = (screenWidth - (5 * starSpacing - (starSpacing - starSize))) / 2;
+    // Calculate star rating based on performance
+    int earnedStars = 1; // Base star for completing the level
+    
+    // Additional stars based on performance criteria
+    if (totalScore >= 10000) earnedStars++; // High score star
+    if (coinCount >= 5) earnedStars++; // Coin collector star  
+    if (timeLeft >= 200) earnedStars++; // Speed completion star
+    if (totalScore >= 20000) earnedStars++; // Perfect score star
+    
+    earnedStars = std::min(earnedStars, 5); // Cap at 5 stars
+    
+    for (int i = 0; i < 5; i++) {
+        float starX = starsStartX + i * starSpacing;
+        float starYPos = starY + 60;
+        Color starColor = (i < earnedStars) ? GOLD : GRAY;
+        
+        // Draw simple star shape
+        Vector2 center = { starX + starSize/2, starYPos + starSize/2 };
+        DrawPoly(center, 5, starSize/2, 0, starColor);
+        DrawPolyLines(center, 5, starSize/2, 0, DARKGRAY);
+    }
+    
+    // Continue prompt
+    const char* continueText = "PRESS ENTER TO CONTINUE";
+    Vector2 continueSize = MeasureTextEx(uiManager.menuFont, continueText, 25, 2);
+    Vector2 continuePos = { (screenWidth - continueSize.x) / 2, screenHeight * 0.9f };
+    
+    // Blinking effect
+
+    if (fmod(blinkTimer, 1.0f) < 0.5f) {
+        DrawTextEx(uiManager.menuFont, continueText, continuePos, 25, 2, WHITE);
+    }
+
+    Rectangle src1 = { 0, 0, gif1[gif1Frame].width, gif1[gif1Frame].height };
+    Rectangle dest1 = { screenWidth * 0.1f, screenHeight * 0.75f, gif1[gif1Frame].width * 0.5f, gif1[gif1Frame].height * 0.5f };
+    DrawTexturePro(gif1[gif1Frame], src1, dest1, { 0, 0 }, 0.0f, WHITE);
+
+    Rectangle src2 = { 0, 0, gif2[gif2Frame].width, gif2[gif2Frame].height };
+    Rectangle dest2 = { screenWidth * 0.8f, screenHeight * 0.75f, gif2[gif2Frame].width * 0.5f, gif2[gif2Frame].height * 0.5f };
+    DrawTexturePro(gif2[gif2Frame], src2, dest2, { 0, 0 }, 0.0f, WHITE);
+
     EndDrawing();
 }
 
