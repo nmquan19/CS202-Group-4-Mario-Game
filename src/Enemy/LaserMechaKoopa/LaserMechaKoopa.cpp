@@ -25,6 +25,7 @@ LaserMechaKoopa::LaserMechaKoopa(Vector2 startPos, Vector2 velocity, Vector2 acc
     setAnimation("Idle");
     if (physicsBody) physicsBody->SetGravityScale(1.0f);
     direction = { 1,0 };
+    spritebox = TextureManager::getInstance().Enemy_sprite_boxes[379];
 
 }
 LaserMechaKoopa::LaserMechaKoopa(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size)
@@ -36,6 +37,7 @@ LaserMechaKoopa::LaserMechaKoopa(Vector2 startPos, Vector2 size) : Enemy(startPo
     if (physicsBody) physicsBody->SetGravityScale(1.0f);
    
     direction = { 1,0 };
+    spritebox = TextureManager::getInstance().Enemy_sprite_boxes[379];
 
 }
 

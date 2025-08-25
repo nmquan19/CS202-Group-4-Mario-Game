@@ -23,6 +23,7 @@ Bob_ombs::Bob_ombs(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : 
     setAnimation("Patrol");
     direction = { 1, 0 };
     initialPos = startPos;
+    spritebox = TextureManager::getInstance().Enemy_sprite_boxes[157];
 }
 Bob_ombs::Bob_ombs(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size)
 {
@@ -32,6 +33,7 @@ Bob_ombs::Bob_ombs(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureMana
     direction = { 1, 0 };
 
     initialPos = startPos;
+    spritebox = TextureManager::getInstance().Enemy_sprite_boxes[157];
 }
 
 void Bob_ombs::onCollision(std::shared_ptr<Object> other, Direction dir) {

@@ -22,6 +22,7 @@ Boo::Boo(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(star
     if (physicsBody) physicsBody->SetGravityScale(0.0f);
     setAnimation("Flying");
     initialPos = startPos;
+    spritebox = TextureManager::getInstance().boo_sprite_boxes[98];
 } 
 Boo::Boo(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::boo_texture, size)
 {
@@ -30,8 +31,7 @@ Boo::Boo(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::boo_t
     if (physicsBody) physicsBody->SetGravityScale(0.0f);
     setAnimation("Flying");
     initialPos = startPos;
-
-
+    spritebox = TextureManager::getInstance().boo_sprite_boxes[98];   
 }
 
 void Boo::onCollision(std::shared_ptr<Object> other, Direction dir) {

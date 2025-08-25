@@ -124,7 +124,7 @@ void GameContext::setState(GameState* newState) {
 
 
             EndpointData data2;
-            data2.position = { 400, 800 };
+            data2.position = { 5000, 800 };
             data2.size = { 2, 3 };
             data2.targetLevel = -1; // Goes to level selector
 

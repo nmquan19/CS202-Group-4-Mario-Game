@@ -22,7 +22,7 @@ PiranhaPlant::PiranhaPlant(Vector2 startPos, Vector2 velocity, Vector2 accellera
     setAnimation("Attack");
     direction = { 1, 0 };
     initialPos = startPos;
-    physicsBody->SetGravityScale(0.0f);
+    if (physicsBody) physicsBody->SetGravityScale(0.0f);
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
@@ -33,6 +33,7 @@ PiranhaPlant::PiranhaPlant(Vector2 startPos, Vector2 velocity, Vector2 accellera
             fixture->SetFilterData(filter);
         }
     }
+    spritebox = TextureManager::getInstance().Enemy_sprite_boxes[121];
 }
 PiranhaPlant::PiranhaPlant(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::enemyTextures, size)
 {
@@ -40,7 +41,7 @@ PiranhaPlant::PiranhaPlant(Vector2 startPos, Vector2 size) : Enemy(startPos, Tex
     setAnimation("Attack");
     direction = { 1, 0 };
     initialPos = startPos;
-    physicsBody->SetGravityScale(0.0f);
+    if (physicsBody) physicsBody->SetGravityScale(0.0f);
     if (physicsBody) {
         physicsBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
         for (b2Fixture* fixture = physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
@@ -51,6 +52,7 @@ PiranhaPlant::PiranhaPlant(Vector2 startPos, Vector2 size) : Enemy(startPos, Tex
             fixture->SetFilterData(filter);
         }
     }
+    spritebox = TextureManager::getInstance().Enemy_sprite_boxes[121];
 }
 
 void PiranhaPlant::onCollision(std::shared_ptr<Object> other, Direction dir) {

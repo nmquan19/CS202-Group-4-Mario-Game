@@ -1,6 +1,7 @@
 #include "../../include/Objects/Torch.h"
 #include "../../include/System/Constant.h"
 #include "../../include/System/TextureManager.h"
+#include "../../include/System/LevelEditor.h"
 Torch::Torch(Vector2 position, Vector2 size, const LightSource& light) :texture(TextureManager::torch_texture), source(std::make_shared<LightSource>(light))
 {
    this->size = size; 
@@ -8,7 +9,7 @@ Torch::Torch(Vector2 position, Vector2 size, const LightSource& light) :texture(
    source->position = this->position;
    //LightingManager::getInstance().addLight(source);
    curFrame = 0; 
-   spriteBox = { 0,0,0,0 };
+   spriteBox = TextureManager::getInstance().torch_sprite_boxes[0];
    animController.set(0,5,1,Easing::linear, false, true);
   
 }
@@ -20,7 +21,7 @@ Torch::Torch(Vector2 position, Vector2 size, float radius, float brightness, Col
     source = std::make_shared<LightSource>(s);
     LightingManager::getInstance().addLight(source);
     curFrame = 0;
-    spriteBox = { 0,0,0,0 };
+    spriteBox = TextureManager::getInstance().torch_sprite_boxes[0];
     animController.set(0, 5, 1, Easing::linear, false, true);
 }
 Vector2 Torch::getSize() const {
@@ -53,7 +54,7 @@ void Torch::draw()
 {
     Rectangle sourceRec = this->spriteBox;
     Vector2 origin = { 0, 0 };
-   DrawTexturePro(this->texture, sourceRec, { this->position.x,this->position.y, size.x * Constants::TILE_SIZE,size.y * Constants::TILE_SIZE }, origin, 0.0f, WHITE);
+    DrawTexturePro(this->texture, sourceRec, { this->position.x,this->position.y, size.x * Constants::TILE_SIZE,size.y * Constants::TILE_SIZE }, origin, 0.0f, WHITE);
 }
 void Torch::update(float deltaTime)
 {

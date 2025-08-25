@@ -2216,717 +2216,717 @@
           },
           {
                "gridX": 60,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 60,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 60,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 60,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 60,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 60,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 60,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 61,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 61,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 61,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 61,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 61,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 61,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 61,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 62,
+               "gridY": 15,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "LASER_MECHA_KOOPA"
+          },
+          {
+               "gridX": 62,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 62,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 62,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 62,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 62,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 62,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 62,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 63,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 63,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 63,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 63,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 63,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 63,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 63,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 63,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 64,
+               "gridY": 10,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "COIN"
+          },
+          {
+               "gridX": 64,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 64,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 64,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 64,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 64,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 64,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 64,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 64,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 65,
+               "gridY": 10,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "COIN"
+          },
+          {
+               "gridX": 65,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 65,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 65,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 65,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 65,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 65,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 65,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 65,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 66,
+               "gridY": 9,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 66,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_3"
+          },
+          {
+               "gridX": 66,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "ONE_UP"
+          },
+          {
+               "gridX": 66,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 66,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 66,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 66,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 66,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 66,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 66,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 67,
+               "gridY": 7,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "COIN"
+          },
+          {
+               "gridX": 67,
+               "gridY": 9,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 67,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 67,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 67,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 67,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 67,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 67,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 67,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 67,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 68,
+               "gridY": 7,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "COIN"
+          },
+          {
+               "gridX": 68,
+               "gridY": 9,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 68,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_3"
+          },
+          {
+               "gridX": 68,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "ONE_UP"
+          },
+          {
+               "gridX": 68,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 68,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 68,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 68,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 68,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 68,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 68,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 69,
+               "gridY": 7,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "COIN"
+          },
+          {
+               "gridX": 69,
+               "gridY": 9,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 69,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 69,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 69,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 69,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 69,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 69,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 69,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 69,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 70,
+               "gridY": 9,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 70,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_3"
+          },
+          {
+               "gridX": 70,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "ONE_UP"
+          },
+          {
+               "gridX": 70,
+               "gridY": 16,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_4_12"
+          },
+          {
+               "gridX": 70,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 70,
+               "gridY": 18,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 70,
+               "gridY": 19,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 70,
+               "gridY": 20,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 70,
+               "gridY": 21,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_5_12"
+          },
+          {
+               "gridX": 70,
+               "gridY": 22,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_7_12"
+          },
+          {
+               "gridX": 71,
+               "gridY": 10,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "COIN"
+          },
+          {
+               "gridX": 71,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_4_1_2"
+          },
+          {
+               "gridX": 71,
                "gridY": 15,
                "sizeX": 0.75,
-               "sizeY": 1.0,
-               "type": "GREEN_KOOPA"
-          },
-          {
-               "gridX": 60,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 60,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 60,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 60,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 60,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 60,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 60,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 61,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 61,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 61,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 61,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 61,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 61,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 61,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 62,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 62,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 62,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 62,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 62,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 62,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 62,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 63,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 63,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 63,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 63,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 63,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 63,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 63,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 63,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 64,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 64,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 64,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 64,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 64,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 64,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 64,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 64,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 64,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 65,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 65,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 65,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 65,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 65,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 65,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 65,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 65,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 65,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 66,
-               "gridY": 9,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 66,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_3"
-          },
-          {
-               "gridX": 66,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "ONE_UP"
-          },
-          {
-               "gridX": 66,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 66,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 66,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 66,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 66,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 66,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 66,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 67,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 67,
-               "gridY": 9,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 67,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 67,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 67,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 67,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 67,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 67,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 67,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 67,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 68,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 68,
-               "gridY": 9,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 68,
-               "gridY": 11,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BOB_OMBS"
-          },
-          {
-               "gridX": 68,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_3"
-          },
-          {
-               "gridX": 68,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "ONE_UP"
-          },
-          {
-               "gridX": 68,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 68,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 68,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 68,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 68,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 68,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 68,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 69,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 69,
-               "gridY": 9,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 69,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 69,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 69,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 69,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 69,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 69,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 69,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 69,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 70,
-               "gridY": 9,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
-          },
-          {
-               "gridX": 70,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_3"
-          },
-          {
-               "gridX": 70,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "ONE_UP"
-          },
-          {
-               "gridX": 70,
-               "gridY": 16,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_4_12"
-          },
-          {
-               "gridX": 70,
-               "gridY": 17,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 70,
-               "gridY": 18,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 70,
-               "gridY": 19,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 70,
-               "gridY": 20,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 70,
-               "gridY": 21,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_5_12"
-          },
-          {
-               "gridX": 70,
-               "gridY": 22,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 71,
-               "gridY": 10,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "COIN"
-          },
-          {
-               "gridX": 71,
-               "gridY": 12,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_4_1_2"
+               "sizeY": 0.75,
+               "type": "GOOMBA"
           },
           {
                "gridX": 71,
@@ -3193,13 +3193,6 @@
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_4_7_12"
-          },
-          {
-               "gridX": 76,
-               "gridY": 15,
-               "sizeX": 0.75,
-               "sizeY": 1.0,
-               "type": "RED_KOOPA"
           },
           {
                "gridX": 76,

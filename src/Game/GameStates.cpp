@@ -319,8 +319,6 @@ void DrawParallaxBackground(Texture2D bg, Camera2D cam, float parallaxFactor) {
 void GamePlayState::draw(GameContext& context) {
     BeginDrawing();
     ClearBackground(WHITE);
-    DrawText("F5 - Save game", 1200, 500, 50, BLACK);
-    DrawText("F6 - Load current game", 1200, 600, 50, BLACK);
     Vector2 camPos = GameCameraSystem::getInstance().getCamera().target;
     Texture2D bg = TextureManager::getInstance().background_lv1;
     
@@ -372,10 +370,7 @@ void GamePlayState::draw(GameContext& context) {
     
     BeginMode2D(GameCameraSystem::getInstance().getCamera());
     for (auto& obj : context.Objects) {
-        if(isInCameraBound(GameCameraSystem::getInstance().getCamera(),obj->getPosition(),100.f)) {
-            obj->draw();
-		}
-
+        obj->draw();
     }
 
     if (context.character01 && context.character02) {

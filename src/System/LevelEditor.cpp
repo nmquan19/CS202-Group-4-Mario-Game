@@ -1997,6 +1997,7 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
     if (typeStr == "BOO") return EnemyType::BOO;
     if (typeStr == "BOB_OMBS") return EnemyType::BOB_OMBS;
     if (typeStr == "LASER_MECHA_KOOPA") return EnemyType::LASER_MECHA_KOOPA;
+    if (typeStr == "PIRANHA_PLANT") return EnemyType::PIRANHA_PLANT;
 
     if (typeStr == "SPRING") return InteractiveType::SPRING;
     if (typeStr == "MOVING_PLATFORM") return InteractiveType::MOVING_PLATFORM;
