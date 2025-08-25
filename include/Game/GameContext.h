@@ -14,6 +14,7 @@
 #include <fstream>
 #include "../System/json.hpp"
 #include "../../include/Objects/InteractiveObjects/CameraTriggerZone.h"
+#include "../../include/Objects/InteractiveObjects/Endpoint.h"
 using json = nlohmann::json;
 
 class GameState;
@@ -31,6 +32,7 @@ struct LeveLInfo
 	Color ambientColor; 
 	Rectangle initialWorldBounds;
 	std::vector<SwitchCameraTriggerZoneData> cameraTriggersData; 
+	EndpointData endpointData; 
 };
 class GameContext {
 public:
