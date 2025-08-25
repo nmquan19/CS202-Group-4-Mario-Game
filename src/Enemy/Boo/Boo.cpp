@@ -19,7 +19,7 @@ Boo::Boo(Vector2 startPos, Vector2 velocity, Vector2 accelleration) : Enemy(star
 {
     root = BTFactory::getInstance().createTree(EnemyType::BOO);
     HP = 1;
-    physicsBody->SetGravityScale(0.0f);
+    if (physicsBody) physicsBody->SetGravityScale(0.0f);
     setAnimation("Flying");
     initialPos = startPos;
 } 
@@ -27,7 +27,7 @@ Boo::Boo(Vector2 startPos, Vector2 size) : Enemy(startPos, TextureManager::boo_t
 {
     HP = 1;
     root = BTFactory::getInstance().createTree(EnemyType::BOO);
-    physicsBody->SetGravityScale(0.0f);
+    if (physicsBody) physicsBody->SetGravityScale(0.0f);
     setAnimation("Flying");
     initialPos = startPos;
 

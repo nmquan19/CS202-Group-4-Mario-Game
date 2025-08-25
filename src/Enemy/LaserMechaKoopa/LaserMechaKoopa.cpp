@@ -23,7 +23,7 @@ LaserMechaKoopa::LaserMechaKoopa(Vector2 startPos, Vector2 velocity, Vector2 acc
 
     HP = 1;
     setAnimation("Idle");
-    physicsBody->SetGravityScale(1.0f);
+    if (physicsBody) physicsBody->SetGravityScale(1.0f);
     direction = { 1,0 };
 
 }
@@ -33,7 +33,7 @@ LaserMechaKoopa::LaserMechaKoopa(Vector2 startPos, Vector2 size) : Enemy(startPo
 
     HP = 1;
     setAnimation("Idle");
-    physicsBody->SetGravityScale(1.0f);
+    if (physicsBody) physicsBody->SetGravityScale(1.0f);
    
     direction = { 1,0 };
 
