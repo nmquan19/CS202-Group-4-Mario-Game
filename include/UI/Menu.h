@@ -267,8 +267,10 @@ public:
 class MenuManager {
 private:
     Texture2D logo, board, menuBackground, redirectBackground;
-    Button check, cross, setting, returnButton;
-    Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition;
+    Button check, cross, setting, returnButton, save, loadButton;
+    
+    Vector2 boardPosition, crossPosition, checkPosition, settingPosition, returnButtonPosition, savePosition, loadPosition;
+    
 
     Texture2D mario, luigi, toad, toadette;
     Texture2D level_map1, level_map4;
@@ -285,6 +287,8 @@ private:
     string bg = "Snow_night_1"; float bg_timer = 0.0f;
     
 public:
+    Button saveLevel, loadLevel;
+    Vector2 saveLevelPosition, loadLevelPosition;
     MovingTexture mt;
     Button playBoard, settingBoard, exitBoard, editingBoard;
     Button characterBoard, continueBoard, restartBoard, levelBoard, menuBoard;

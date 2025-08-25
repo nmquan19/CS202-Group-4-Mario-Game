@@ -20,6 +20,11 @@ MenuManager::MenuManager() {
     setting.load("./assets/button/option.png", "./assets/button/option_selected.png");
 
     returnButton.load("./assets/button/back.png", "./assets/button/back_selected.png");
+    save.load("./assets/button/save.png", "./assets/button/save_selected.png");
+    loadButton.load("./assets/button/load.png", "./assets/button/load_selected.png");
+
+    saveLevel.load("./assets/button/save.png", "./assets/button/save_selected.png");
+    loadLevel.load("./assets/button/load.png", "./assets/button/load_selected.png");
 
     playBoard.load("./assets/button/thin_board.png", "./assets/button/thin_board_selected.png");
     settingBoard.load("./assets/button/thin_board.png", "./assets/button/thin_board_selected.png");
@@ -68,8 +73,17 @@ MenuManager::MenuManager() {
     settingPosition.x = screenWidth * 9 / 10.0f;
     settingPosition.y = screenHeight / 10.0f;
 
-    returnButtonPosition.x = boardPosition.x + board.width * scale / 2.0f;
-    returnButtonPosition.y = boardPosition.y + board.height * scale * 5 / 6.0f;
+    returnButtonPosition.x = boardPosition.x + board.width * scale / 3.0f;
+    returnButtonPosition.y = boardPosition.y + board.height * scale * 4 / 5.0f;
+
+    savePosition.x = boardPosition.x + board.width * scale * 2.0f / 3.0f;
+    savePosition.y = boardPosition.y + board.height * scale * 4 / 5.0f;
+
+    saveLevelPosition.x = UIManager::getInstance().screenWidth / 20.0f * 1.0f;
+    saveLevelPosition.y = UIManager::getInstance().screenHeight / 20.0f * 1.0f;
+
+    loadLevelPosition.x = UIManager::getInstance().screenWidth / 20.0f * 2.5f;
+    loadLevelPosition.y = UIManager::getInstance().screenHeight / 20.0f * 1.0f;
 
     slideBarMasterPosition.x = boardPosition.x + board.width * scale / 5.0f;
     slideBarMasterPosition.y = boardPosition.y + board.height * scale * 3 / 10.0f;
@@ -230,7 +244,7 @@ void MenuManager::DrawSetting() {
         Vector2 textPosition = { boardPosition.x + (board.width * scale - textSize.x) / 2, boardPosition.y + 60 };
         DrawTextEx(currentMenuFont, "Setting", textPosition, 40, 1, BROWN);
 
-        returnButton.draw(returnButtonPosition);
+        
 
         DrawTextEx(currentMenuFont, "Master: ", { slideBarMaster.getBorder().x - 100, slideBarMaster.getBorder().y + slideBarMaster.getBorder().height / 2 - 10 }, 20, 4, BORDER_BROWN);
         slideBarMaster.DrawSlideBar(slideBarMasterPosition);
@@ -240,6 +254,9 @@ void MenuManager::DrawSetting() {
 
         DrawTextEx(currentMenuFont, "Sound: ", { slideBarSound.getBorder().x - 100, slideBarSound.getBorder().y + slideBarSound.getBorder().height / 2 - 10 }, 20, 4, BORDER_BROWN);
         slideBarSound.DrawSlideBar(slideBarSoundPosition);
+
+        returnButton.draw(returnButtonPosition);
+        save.draw(savePosition);
     }
 }
 void MenuManager::HandleSetting() {
@@ -250,7 +267,7 @@ void MenuManager::HandleSetting() {
 
     if (settingDialog && IsKeyPressed(KEY_ENTER)) settingDialog = false;
 
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && returnButton.checkCollision(mousePos)) {
+    if ((IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && returnButton.checkCollision(mousePos)) || IsKeyPressed(KEY_S)) {
         settingDialog = false;
     }
 }
@@ -270,8 +287,11 @@ void MenuManager::UpdateExit(float deltaTime) {
 }
 void MenuManager::UpdateSetting(float deltaTime) {
     setting.update(deltaTime);
+    
     if (settingDialog) {
         returnButton.update(deltaTime);
+        save.update(deltaTime);
+        slideBarMaster.HandleSlideBar();
         slideBarMusic.HandleSlideBar();
         slideBarSound.HandleSlideBar();
     }

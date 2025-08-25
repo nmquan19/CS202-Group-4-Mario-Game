@@ -2,57 +2,64 @@
      "gridSize": 64,
      "objects": [
           {
-               "gridX": 3,
-               "gridY": 4,
+               "gridX": 0,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 1,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 2,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"
           },
           {
                "gridX": 3,
-               "gridY": 6,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_1_1_2"
-          },
-          {
-               "gridX": 3,
-               "gridY": 8,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"
           },
           {
                "gridX": 4,
-               "gridY": 5,
+               "gridY": 12,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"
           },
           {
                "gridX": 4,
-               "gridY": 7,
-               "sizeX": 1.0,
-               "sizeY": 1.0,
-               "type": "BLOCK_1_1_2"
-          },
-          {
-               "gridX": 4,
-               "gridY": 9,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"
           },
           {
                "gridX": 5,
-               "gridY": 10,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"
           },
           {
                "gridX": 6,
-               "gridY": 10,
+               "gridY": 7,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 6,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"
@@ -66,21 +73,35 @@
           },
           {
                "gridX": 7,
-               "gridY": 10,
+               "gridY": 7,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 7,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"
           },
           {
                "gridX": 8,
-               "gridY": 6,
+               "gridY": 7,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"
           },
           {
                "gridX": 8,
-               "gridY": 8,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 8,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"
@@ -88,6 +109,125 @@
           {
                "gridX": 9,
                "gridY": 7,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 9,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 10,
+               "gridY": 7,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 10,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 11,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 12,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 13,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 13,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 14,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 15,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 16,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 17,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 18,
+               "gridY": 12,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 18,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 19,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 20,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 21,
+               "gridY": 17,
+               "sizeX": 1.0,
+               "sizeY": 1.0,
+               "type": "BLOCK_1_1_2"
+          },
+          {
+               "gridX": 22,
+               "gridY": 17,
                "sizeX": 1.0,
                "sizeY": 1.0,
                "type": "BLOCK_1_1_2"

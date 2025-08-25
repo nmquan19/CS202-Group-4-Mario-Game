@@ -423,10 +423,10 @@ void EditorState::handleInput(GameContext& context) {
         if (IsKeyPressed(KEY_F9) && LevelEditor::getInstance().isInEditMode()) {
             LevelEditor::getInstance().clearLevel();
         }
-        if (IsKeyPressed(KEY_F7) && LevelEditor::getInstance().isInEditMode()) {
+        if ((IsKeyPressed(KEY_F7) || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && context.menuManager.saveLevel.checkCollision(GetMousePosition()))) && LevelEditor::getInstance().isInEditMode()) {
             LevelEditor::getInstance().saveLevel("testlevel.json");
         }
-        if (IsKeyPressed(KEY_F8) && LevelEditor::getInstance().isInEditMode()) {
+        if ((IsKeyPressed(KEY_F8) || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && context.menuManager.loadLevel.checkCollision(GetMousePosition()))) && LevelEditor::getInstance().isInEditMode()) {
             LevelEditor::getInstance().loadLevel("testlevel.json");
         }
     }
@@ -439,6 +439,8 @@ void EditorState::update(GameContext& context, float deltaTime) {
     }
     else if (stateSelect == 2) {
         handleCamera();
+        context.menuManager.loadLevel.update(deltaTime);
+        context.menuManager.saveLevel.update(deltaTime);
         LevelEditor::getInstance().update(deltaTime);
         Box2DWorldManager::getInstance().step(deltaTime);
         NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
@@ -456,10 +458,13 @@ void EditorState::draw(GameContext& context) {
     else if (stateSelect == 2) {
         BeginDrawing();
         ClearBackground(WHITE); // Clear main buffer
-
+        
          ClearBackground(BLANK); // Transparent clear for light accumulation
+         
          LevelEditor::getInstance().mapSelect = mapSelect;
          LevelEditor::getInstance().draw();
+         context.menuManager.loadLevel.draw(context.menuManager.loadLevelPosition);
+         context.menuManager.saveLevel.draw(context.menuManager.saveLevelPosition);
         DrawFPS(20, 50);
         EndDrawing();
     }

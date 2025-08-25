@@ -354,5 +354,9 @@
     <Image Include="assets\level_map4.png" />
     <Image Include="assets\level_map_0.png" />
     <Image Include="assets\redirect background.jpg" />
+    <Image Include="assets\button\load.png" />
+    <Image Include="assets\button\load_selected.png" />
+    <Image Include="assets\button\save.png" />
+    <Image Include="assets\button\save_selected.png" />
   </ItemGroup>
 </Project>
