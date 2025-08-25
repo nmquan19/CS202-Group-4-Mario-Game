@@ -291,6 +291,7 @@ bool LevelEditor::isInEditMode() const {
 void LevelEditor::saveLevel(const std::string& filename) {
     json levelData;
     levelData["version"] = "1.0";
+    levelData["mapSelect"] = mapSelect;
     levelData["gridSize"] = GridSystem::GRID_SIZE;
     levelData["objects"] = json::array();
 
@@ -348,6 +349,8 @@ void LevelEditor::loadLevel(const std::string& filename) {
         file.close();
 
         clearLevel();
+
+        if (levelData.contains("mapSelect")) mapSelect = levelData["mapSelect"];
         
         if (levelData.contains("objects") && levelData["objects"].is_array()) {
             int loadedCount = 0;
