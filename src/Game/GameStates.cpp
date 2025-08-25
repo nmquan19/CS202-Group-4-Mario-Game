@@ -206,6 +206,7 @@ void GamePlayState::handleInput(GameContext& context) {
         Box2DWorldManager::getInstance().setDebugDraw(!Box2DWorldManager::getInstance().isDebugDrawEnabled());
     }
     if (IsKeyPressed(KEY_ONE)) {
+		GameCameraSystem::getInstance().switchCamera(0);
        /* Camera2D ncam = {};
         ncam.target = { 11750.0f, 1450.0f };
         ncam.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
@@ -216,7 +217,13 @@ void GamePlayState::handleInput(GameContext& context) {
     }
     else if(IsKeyPressed(KEY_TWO))
     {
-		GameCameraSystem::getInstance().switchCamera(0);
+		if (context.character02)
+		GameCameraSystem::getInstance().switchCamera(2);
+    }
+    else if (IsKeyPressed(KEY_THREE))
+    {
+		if (context.character02)
+        GameCameraSystem::getInstance().switchCamera(3);
     }
 }
 bool isInCameraBound(const Camera2D& cam, Vector2 pos, float padding = 0.0f) {
@@ -257,7 +264,7 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
         for (auto& obj :context.Objects)
         {   
             IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
-            if (updatableObj && isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(), 300.f))
+            if (updatableObj)
             {
                 if (auto dry = dynamic_cast<DryBowser*>(obj.get())) {
                     if (isInCameraBound(GameCameraSystem::getInstance().getCamera(), dry->getPosition(), 100.f)) {
@@ -309,6 +316,7 @@ void GamePlayState::draw(GameContext& context) {
     DrawText("F5 - Save game", 1200, 500, 50, BLACK);
     DrawText("F6 - Load current game", 1200, 600, 50, BLACK);
     Vector2 camPos = GameCameraSystem::getInstance().getCamera().target;
+    Texture2D bg = TextureManager::getInstance().background_lv1;
     
     LightingManager& lm = LightingManager::getInstance();
 
@@ -316,21 +324,25 @@ void GamePlayState::draw(GameContext& context) {
     BeginTextureMode(lm.getLightMap());
     {
         ClearBackground(BLANK); // Transparent clear for light accumulation
+     
     }
-    Texture2D bg = TextureManager::getInstance().background_lv1;
-    Camera2D cam = GameCameraSystem::getInstance().getCamera();
 
+    Camera2D cam = GameCameraSystem::getInstance().getCamera();
+    
     //DrawParallaxBackground(bg, cam, 0.5f);
-    if (level == 1) {
+   
+    
+    BeginMode2D(GameCameraSystem::getInstance().getCamera());
+    if (level == 3) {
         Background::getInstance().draw("Forest_1", { 0,0 });
         Background::getInstance().draw("Forest_1", { 0, 512 });
         Background::getInstance().draw("Ghost_house_1", { 0, 1024 });
     }
-    if (level == 2) {
+    if (level == 1) {
         Background::getInstance().draw("Airship_night_3", { 0,0 });
         Background::getInstance().draw("Airship_night_3", { 0, 512 });
     }
-    if (level == 3) {
+    if (level == 2) {
         Background::getInstance().draw("Snow_night_1", { 0,0 });
         Background::getInstance().draw("Snow_night_1", { 0,512 });
     }
@@ -357,6 +369,7 @@ void GamePlayState::draw(GameContext& context) {
         if(isInCameraBound(GameCameraSystem::getInstance().getCamera(),obj->getPosition(),100.f)) {
             obj->draw();
 		}
+
     }
 
     if (context.character01 && context.character02) {
@@ -408,6 +421,7 @@ void GamePlayState::draw(GameContext& context) {
             }
         }
     }
+   
     context.menuManager.DrawSetting();
     UIManager::getInstance().drawInformationBoard(WHITE);
     EndDrawing();
@@ -566,6 +580,7 @@ void GameOverState::draw(GameContext& context) {
     
     EndDrawing();
 }
+
 
 void handleCamera() {
     Camera2D& cam = GameContext::getInstance().camera;

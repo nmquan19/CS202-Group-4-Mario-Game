@@ -16,6 +16,7 @@
 #include "../../include/Item/Item.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/Game/GameContext.h"
+#include "../../include/System/CameraSystem.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -137,7 +138,10 @@ void Character::update(float deltaTime) {
 			physicsBody->SetLinearVelocity(b2Vec2(platformVel.x, characterVel.y));
 		}
 	}
-
+	if(getCenterPos().y> Constants::WORLDBOUNDS_HEIGHT) {
+		hp = 0;
+		changeState(KnockedState::getInstance());
+	}
 	gridPosition = GridSystem::getGridCoord(getPosition());	
 }
 
@@ -342,7 +346,7 @@ Vector2 Character::getPosition() const {
 	};
 	return topLeftPosition;
 }
-Vector2 Character::getCenterPos()const
+Vector2 Character::getCenterPos() const
 {
 	return Box2DWorldManager::b2ToRaylib(this->physicsBody->GetPosition());
 }
@@ -401,7 +405,6 @@ std::vector<ObjectCategory> Character::getCollisionTargets() const {
 void Character::onCollision(std::shared_ptr<Object> other, Direction direction) {
 	switch (other->getObjectCategory()) {
 	case ObjectCategory::PROJECTILE:
-		takeDamage(1);
 		break;
 	case ObjectCategory::ENEMY:
 		handleEnemyCollision(other, direction);

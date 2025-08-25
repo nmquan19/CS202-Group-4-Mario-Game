@@ -71,9 +71,9 @@ void GameContext::setState(GameState* newState) {
             UIManager::getInstance().resetScore();
 
             LevelEditor::getInstance().setEditMode(false);
-            if (level == 1) LevelEditor::getInstance().loadLevel("level1.json");
-            if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
-            if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
+            if (level == 1) LevelEditor::getInstance().loadLevel("Level3.json");
+            if (level == 2) LevelEditor::getInstance().loadLevel("snowmap.json");
+            if (level == 3) LevelEditor::getInstance().loadLevel("level1_new.json");
             if (level == 4) LevelEditor::getInstance().loadLevel("testlevel.json");
 
             // Calculate ambient color
@@ -85,12 +85,9 @@ void GameContext::setState(GameState* newState) {
                 (unsigned char)std::min(255.0f, base.b * brightness),
                 base.a
             };
-            LightingManager::getInstance().setAmbientColor(brighter);
-
-
             switch (menuManager.character01Select) {
             case 0:
-                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 400, 400 });
+                character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{400, 400 });
                 break;
             case 1:
                 character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 300, 400 });
@@ -134,7 +131,7 @@ void GameContext::setState(GameState* newState) {
             ncam.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
             ncam.zoom = 1.1f;
             ncam.rotation = 0.0f;
-            LeveLInfo info = {
+            LeveLInfo info3 = {
                 .ambientColor = WHITE,
                 .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, 1500 },
                 .cameraTriggersData = {
@@ -143,8 +140,8 @@ void GameContext::setState(GameState* newState) {
                         Vector2{2.5,1.5},
                         0,
                         0,
-                        Rectangle{ 0, 0, 10000, 3000 },   // inWorldBounds
-                        Rectangle{ 0, 0, 10000, 3000 },   // outWorldBounds
+                        Rectangle{ 0, 0, 10000, 2750 },   // inWorldBounds
+                        Rectangle{ 0, 0, 10000, 2750},   // outWorldBounds
                         GameCameraSystem::getInstance().getCamera(),
                         GameCameraSystem::getInstance().getCamera()
                     },
@@ -163,7 +160,7 @@ void GameContext::setState(GameState* newState) {
                         Vector2{2.5,1.5},
                         0,
                         0,
-                        Rectangle{ 0, 0, Constants::WORLDBOUNDS_WIDTH, 3000 },   // inWorldBounds
+                        Rectangle{ 0, 0, Constants::WORLDBOUNDS_WIDTH, 2500 },   // inWorldBounds
                         Rectangle{ 0,0, Constants::WORLDBOUNDS_WIDTH, 1500},   // outWorldBounds
                         GameCameraSystem::getInstance().getCamera(),
                         GameCameraSystem::getInstance().getCamera(),
@@ -194,21 +191,50 @@ void GameContext::setState(GameState* newState) {
                         Vector2{12620,1800},
                         Vector2{1,2.5},
                         0,
-                        1,
-                        Rectangle{ 13000, 0, 15000, 3000 },   // outWorldBounds
-                        Rectangle{ 10000, 2000, 14000, 3000 },   // outWorldBounds
+                        0,
+                        Rectangle{ 10000, 700, 11000, 2000 },   // outWorldBounds
+                        Rectangle{ 10000, 700, 11000, 2000 },   // outWorldBounds
                         GameCameraSystem::getInstance().getCamera(),
-                        ncam,
+                        GameCameraSystem::getInstance().getCamera(),
                         false
                     },
                 }
             };
-            levelInfo.push_back(info);
+            LeveLInfo info2 = {
+                .ambientColor = brighter,
+                .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT},
+                .cameraTriggersData = {
 
-            for (const auto& triggerData : levelInfo[0].cameraTriggersData) {
-                std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position, triggerData.size, triggerData);
-                Objects.push_back(cameraTrigger);
+                }
+            };
+            LeveLInfo info1= {
+              .ambientColor = brighter,
+              .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT},
+              .cameraTriggersData = {
+
+              }
+            };
+            LeveLInfo info4 = {
+           .ambientColor = brighter,
+           .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT},
+           .cameraTriggersData = {
+
+           }
+            };
+            levelInfo.push_back(info1);
+            levelInfo.push_back(info2);
+            levelInfo.push_back(info3);
+            levelInfo.push_back(info4);
+
+            LightingManager::getInstance().setAmbientColor(levelInfo[level-1].ambientColor);
+            if (GameContext::getInstance().character02 == nullptr) {
+                for (const auto& triggerData : levelInfo[level - 1].cameraTriggersData) {
+                    std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position, triggerData.size, triggerData);
+                    Objects.push_back(cameraTrigger);
+                }
+
             }
+            
             EndpointData data;
             data.position = { 500, 300 };
             data.size = { 2, 3 };
@@ -221,7 +247,16 @@ void GameContext::setState(GameState* newState) {
                 camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
                 camera.target = character01->getPosition();
             }
-            GameCameraSystem::getInstance().setCameraBounds(levelInfo[0].initialWorldBounds);
+            if (GameContext::getInstance().character02 == nullptr)
+            {
+                GameCameraSystem::getInstance().setCameraBounds(levelInfo[level - 1].initialWorldBounds, 0);
+            }
+            else
+            {
+                GameCameraSystem::getInstance().setCameraBounds({0,0,Constants::WORLDBOUNDS_WIDTH,Constants::WORLDBOUNDS_HEIGHT}, 0);
+                GameCameraSystem::getInstance().setCameraBounds({ 0,0,Constants::WORLDBOUNDS_WIDTH,Constants::WORLDBOUNDS_HEIGHT },2);
+                GameCameraSystem::getInstance().setCameraBounds({ 0,0,Constants::WORLDBOUNDS_WIDTH,Constants::WORLDBOUNDS_HEIGHT }, 3);
+            }
 			}
         }
 }

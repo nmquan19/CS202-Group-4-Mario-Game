@@ -73,7 +73,12 @@ public:
 
     void setPlayerCallsRequest(int id) { playerCallsRequest = id; }
     std::shared_ptr<Object> getCharacter() { return character01; }
-    
+    std::shared_ptr<Object> getCharacter(int playerRequest)
+    {
+        if(playerRequest == 1) return character01;
+		else return character02;
+    }
+    std::vector<shared_ptr<Object>> getAllCharacter() { return { character01,character02 }; }
     void saveGameState(const std::string& filename);
     void loadGameState(const std::string& filename);
     

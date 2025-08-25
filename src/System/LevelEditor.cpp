@@ -62,16 +62,16 @@ void LevelEditor::update(float deltaTime) {
 void LevelEditor::draw() {
     
     BeginMode2D(GameContext::getInstance().camera);
-    if (mapSelect == 1) {
+    if (mapSelect == 3) {
         Background::getInstance().draw("Forest_1", { 0,0 });
         Background::getInstance().draw("Forest_1", { 0, 512 });
         Background::getInstance().draw("Ghost_house_1", { 0, 1024 });
     }
-    if (mapSelect == 2) {
+    if (mapSelect == 1) {
         Background::getInstance().draw("Airship_night_3", { 0,0 });
         Background::getInstance().draw("Airship_night_3", { 0, 512 });
     }
-    if (mapSelect == 3) {
+    if (mapSelect == 2) {
         Background::getInstance().draw("Snow_night_1", { 0,0 });
         Background::getInstance().draw("Snow_night_1", { 0,512 });
     }

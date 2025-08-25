@@ -5,7 +5,7 @@
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/UI/SoundEffect.h"
 #include <iostream>
-
+#include "../../include/System/CameraSystem.h"
 void KnockedState::enter(Character* character) {
 	AudioManager::getInstance().PlaySoundEffect("die");
 	character->setCurrentStateRow(4);
@@ -16,6 +16,7 @@ void KnockedState::enter(Character* character) {
 		filter.maskBits = 0x0000;
 		fixture->SetFilterData(filter);
 	}
+
 }
 
 void KnockedState::update(Character* character, float deltaTime) {
@@ -34,6 +35,8 @@ void KnockedState::exit(Character* character) {
 	}
 	character->physicsBody->SetLinearVelocity(b2Vec2(0, 0));
 	character->physicsBody->SetTransform(Box2DWorldManager::raylibToB2(Vector2{ 500, 500 }), 0);
+	GameCameraSystem::getInstance().reset();
+
 }
 
 void KnockedState::handleInput(Character* character, const InputState& input) {
