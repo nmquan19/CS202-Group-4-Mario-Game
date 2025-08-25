@@ -1,6 +1,6 @@
 #pragma once
 #include "../ObjectFactory.h"
-#include "../System/Interface.h"
+#include "../../System/Interface.h"
 
 class InteractiveObject : public Object, public IUpdatable, public ISavable {
 public:
