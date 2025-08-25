@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 class UIManager;
+class GameContext;
 
 class ScoreDisplay {
 public:
@@ -139,6 +140,7 @@ private:
     CoinDisplay coin;
     WorldDisplay world;
     TimerDisplay timer;
+    int attempts = 2;
 
 public:
 
@@ -157,6 +159,8 @@ public:
     }
 
     void drawInformationBoard(Color color) {
+        const char* attemptsText = TextFormat("Attempts x %d", attempts);
+        DrawTextEx(menuFont, attemptsText, { GetScreenWidth() * 7.0f / 10.0f, GetScreenHeight() / 10.0f }, 40, 2, color);
         score.Draw(menuFont, color);
         coin.Draw(menuFont, color);
         world.Draw(menuFont, color);
@@ -167,17 +171,26 @@ public:
     bool IsGameOver() const;
     void DrawGameOver();
 
+    void setAttempts(int a) {
+        attempts = a;
+    }
+    void removeAttempts(int a);
+    void addAttempts(int a) { attempts += a; }
+     
     void setScore(int s) { score.score = s; }
     void addScore(int s = 100) { score.score += s; }
     void resetScore() { score.score = 0; }
+    int getScore() const { return score.score; }
 
     void setCoin(int c) { coin.coinCount = c; }
     void addCoin(int c = 1) { coin.coinCount += c; }
     void resetCoin() { coin.coinCount = 0; }
+    int getCoinCount() const { return coin.coinCount; }
 
     void setWorld(const char* w) { world.worldStr = w; }
     void setTime(float t) { timer.timeLeft = t; }
     void resetTimer() { timer.timeLeft = 400; }
+    float getTimeLeft() const { return timer.timeLeft; }
 
     void DrawTypewriterText(const char* text, Vector2 position, float fontSize, float spacing, Color color, float delay, float& timer, int& visibleChars) {
         timer += GetFrameTime();

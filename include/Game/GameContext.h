@@ -54,6 +54,7 @@ public:
     GameState* editorState = nullptr;
     GameState* editorSelectingState = nullptr;
     GameState* gameOverState = nullptr;
+    GameState* scoreState = nullptr;
     int playerCallsRequest =1 ;
     int level = 1;
     GameContext();
@@ -64,7 +65,7 @@ public:
     void update(float deltaTime);
     void draw();
 	void addObject(ObjectType type, Vector2 worldpos, Vector2 size, std::function<void(std::shared_ptr<Object>)> onSpawn = nullptr);
-    void setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* levelRedirect, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver);
+    void setGameStates(GameState* menu, GameState* redirect, GameState* player, GameState* character, GameState* levelRedirect, GameState* level, GameState* information, GameState* game, GameState* editor, GameState* editorSelecting, GameState* gameOver, GameState* score);
     void mark_for_deletion_Object(std::shared_ptr<Object> object);
     void spawnObject();
 	void deleteObjects();

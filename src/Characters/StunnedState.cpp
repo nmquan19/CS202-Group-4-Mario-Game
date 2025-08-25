@@ -7,6 +7,7 @@
 #include "../../include/Characters/KnockedState.h"
 #include "../../include/Characters/SmallTransformState.h"
 #include "../../include/UI/SoundEffect.h"
+#include "../../include/UI/UI.h"
 #include <iostream>
 
 void StunnedState::enter(Character* character) {
@@ -15,7 +16,12 @@ void StunnedState::enter(Character* character) {
 	character->setCurrentStateRow(3);
 	character->invincibleTimer = 0.75f;
 	AudioManager::getInstance().PlaySoundEffect("hit");
-
+	for (b2Fixture* fixture = character->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+		b2Filter filter = fixture->GetFilterData();
+		filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);
+		filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
+		fixture->SetFilterData(filter);
+	}
 }
 
 void StunnedState::update(Character* character, float deltaTime) {
