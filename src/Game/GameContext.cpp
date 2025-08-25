@@ -70,7 +70,7 @@ void GameContext::setState(GameState* newState) {
             UIManager::getInstance().resetScore();
 
             LevelEditor::getInstance().setEditMode(false);
-            if (level == 1) LevelEditor::getInstance().loadLevel("testlevel.json");
+            if (level == 1) LevelEditor::getInstance().loadLevel("level1.json");
             if (level == 2) LevelEditor::getInstance().loadLevel("Level3.json");
             if (level == 3) LevelEditor::getInstance().loadLevel("snowmap.json");
             if (level == 4) LevelEditor::getInstance().loadLevel("testlevel.json");
@@ -372,6 +372,10 @@ void GameContext::clearGame() {
 void GameContext::saveGameState(const std::string& filename) {
     json gameData;
     json objectsArray = json::array();
+
+    // Save map
+    gameData["level"] = level;
+    gameData["mapSelect"] = LevelEditor::getInstance().mapSelect;
     
     // Save character01
     if (character01) {
@@ -434,6 +438,15 @@ void GameContext::loadGameState(const std::string& filename) {
     clearGame();
     character01.reset();
     character02.reset();
+
+    // Load map 
+    if (gameData.contains("level")) {
+        level = gameData["level"];
+    }
+
+    if (gameData.contains("mapSelect")) {
+        LevelEditor::getInstance().mapSelect = gameData["mapSelect"];
+    }
     
     // Load player calls request
     if (gameData.contains("playerCallsRequest")) {

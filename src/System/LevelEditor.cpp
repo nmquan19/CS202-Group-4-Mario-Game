@@ -291,6 +291,7 @@ bool LevelEditor::isInEditMode() const {
 void LevelEditor::saveLevel(const std::string& filename) {
     json levelData;
     levelData["version"] = "1.0";
+    levelData["mapSelect"] = mapSelect;
     levelData["gridSize"] = GridSystem::GRID_SIZE;
     levelData["objects"] = json::array();
 
@@ -348,6 +349,8 @@ void LevelEditor::loadLevel(const std::string& filename) {
         file.close();
 
         clearLevel();
+
+        if (levelData.contains("mapSelect")) mapSelect = levelData["mapSelect"];
         
         if (levelData.contains("objects") && levelData["objects"].is_array()) {
             int loadedCount = 0;
@@ -1411,6 +1414,12 @@ std::string LevelEditor::objectTypeToString(const ObjectType& type) {
                 break;
             case EnemyType::DRY_BOWSER: return "DRY_BOWSER";
 				break;
+            case EnemyType::BOO: return "BOO";
+                break;
+            case EnemyType::BOB_OMBS: return "BOB_OMBS";
+                break;
+            case EnemyType::LASER_MECHA_KOOPA: return "LASER_MECHA_KOOPA";
+                break;
             default: return "GOOMBA";
                 break;
         }
@@ -1961,6 +1970,9 @@ ObjectType LevelEditor::stringToObjectType(const std::string& typeStr) {
 	if (typeStr == "RED_KOOPA") return EnemyType::RED_KOOPA;
     if (typeStr == "GOOMBA") return EnemyType::GOOMBA;
     if (typeStr == "DRY_BOWSER") return EnemyType::DRY_BOWSER;
+    if (typeStr == "BOO") return EnemyType::BOO;
+    if (typeStr == "BOB_OMBS") return EnemyType::BOB_OMBS;
+    if (typeStr == "LASER_MECHA_KOOPA") return EnemyType::LASER_MECHA_KOOPA;
 
     if (typeStr == "SPRING") return InteractiveType::SPRING;
     if (typeStr == "MOVING_PLATFORM") return InteractiveType::MOVING_PLATFORM;
