@@ -117,7 +117,17 @@ void GameContext::setState(GameState* newState) {
                 character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
                 break;
             }
-            
+            EndpointData data1;
+            data1.position = { 500, 3000 };
+            data1.size = { 2, 3 };
+            data1.targetLevel = 2; // Goes to level selector
+
+
+            EndpointData data2;
+            data1.position = { 500, 1800 };
+            data1.size = { 2, 3 };
+            data1.targetLevel = 3; // Goes to level selector
+
             GameCameraSystem::getInstance().init();
             Camera2D initialCam = {
                 .offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f },
@@ -199,21 +209,23 @@ void GameContext::setState(GameState* newState) {
                         GameCameraSystem::getInstance().getCamera(),
                         false
                     },
-                }
+                },
+                //.endpointData= data1
             };
             LeveLInfo info2 = {
                 .ambientColor = brighter,
                 .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT},
                 .cameraTriggersData = {
 
-                }
+                },.endpointData = data2
             };
-            LeveLInfo info1= {
+            LeveLInfo info1 = {
               .ambientColor = brighter,
               .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, Constants::WORLDBOUNDS_HEIGHT},
               .cameraTriggersData = {
 
-              }
+              },
+              .endpointData = data1
             };
             LeveLInfo info4 = {
            .ambientColor = brighter,
@@ -231,19 +243,13 @@ void GameContext::setState(GameState* newState) {
             if (GameContext::getInstance().character02 == nullptr) {
                 for (const auto& triggerData : levelInfo[level - 1].cameraTriggersData) {
                     std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position, triggerData.size, triggerData);
+
                     Objects.push_back(cameraTrigger);
                 }
 
             }
-            
-            EndpointData data;
-            data.position = { 500, 300 };
-            data.size = { 2, 3 };
-            data.targetLevel = -1; // Goes to level selector
-
-            auto endpoint = std::make_shared<Endpoint>(Vector2{ 500, 500 }, Vector2{ 2, 3 }, data);
-			GameContext::getInstance().Objects.push_back(endpoint);
-            // Create an endpoint that goes to specific level
+            auto endpoint = std::make_shared<Endpoint>(levelInfo[level - 1].endpointData.position, levelInfo[level - 1].endpointData.size, levelInfo[level - 1].endpointData);
+			Objects.push_back(endpoint);
             if (character01) {
                 camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
                 camera.target = character01->getPosition();
