@@ -401,6 +401,8 @@ std::vector<ObjectCategory> Character::getCollisionTargets() const {
 void Character::onCollision(std::shared_ptr<Object> other, Direction direction) {
 	switch (other->getObjectCategory()) {
 	case ObjectCategory::PROJECTILE:
+		takeDamage(1);
+		break;
 	case ObjectCategory::ENEMY:
 		handleEnemyCollision(other, direction);
 		break;

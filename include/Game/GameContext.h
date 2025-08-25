@@ -54,7 +54,7 @@ public:
     GameState* editorState = nullptr;
     GameState* editorSelectingState = nullptr;
     GameState* gameOverState = nullptr;
-    int playerCallsRequest;
+    int playerCallsRequest =1 ;
     int level = 1;
     GameContext();
     ~GameContext();

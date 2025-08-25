@@ -18,6 +18,8 @@ public:
 	const Camera2D& GetCamera() const { return cam; }
 	void setCamera(const Camera2D& camera) { cam = camera; } 
 	void setBounds(const Rectangle& newBounds) { bounds = newBounds;}
+	Rectangle getBounds() const { return bounds; }
+
 };
 struct CameraTransition {
 	bool active = false;
@@ -58,19 +60,23 @@ private:
 	std::vector<std::unique_ptr<GameCamera>> cameras; 
 	int curIndex = 0 ;  
 	CameraTransition transition;
+
 public: 
 	static GameCameraSystem& getInstance() {
 		static GameCameraSystem instance;
 		return instance;
 	}
+	bool isInTransition() const { return transition.active; }
 	void init(); 
 	void addCamera(std::unique_ptr<GameCamera> camera);
 	void switchCamera(int toIndex); 
 	void update(float deltaTime);
+	void applyBoundsOnSwitch();
 	void shakeCurrentCamera(float strength, float decay);  
 	void setCamera(const Camera2D& camera) {
 		if (curIndex >= 0 && curIndex < cameras.size()) {
 			cameras[curIndex]->setCamera(camera);
+
 		}
 	}
 	void setCameraBounds(const Rectangle& bounds) {
