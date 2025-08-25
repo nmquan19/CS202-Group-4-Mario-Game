@@ -73,6 +73,7 @@
     <ClCompile Include="src\Objects\InteractiveObjects\CameraTriggerZone.cpp" />
     <ClCompile Include="include\Objects\Projectile\FireOrb.h" />
     <ClCompile Include="src\Objects\Projectile\FireOrb.cpp" />
+    <ClCompile Include="src\Objects\InteractiveObjects\EndPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Characters\AttackState.cpp">
@@ -332,6 +333,7 @@
     <ClInclude Include="include\UI\UI.h" />
     <ClInclude Include="include\Enemy\LaserMechaKoopa\LaserBeam.h" />
     <ClInclude Include="include\Objects\InteractiveObjects\CameraTriggerZone.h" />
+    <ClInclude Include="include\Objects\InteractiveObjects\EndPoint.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="level1.json" />
@@ -358,5 +360,7 @@
     <Image Include="assets\button\load_selected.png" />
     <Image Include="assets\button\save.png" />
     <Image Include="assets\button\save_selected.png" />
+    <Image Include="assets\button\load1.png" />
+    <Image Include="assets\button\load1_selected.png" />
   </ItemGroup>
 </Project>

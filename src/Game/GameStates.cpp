@@ -244,7 +244,7 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
         GameContext::getInstance().addObject(BackGroundObjectType::TORCH, mousePos, { 1,1});
 
     }
-
+    context.menuManager.UpdateSetting(deltaTime);
     if (!context.menuManager.settingDialog) {
         if (context.character01) {
             std::shared_ptr<Character> character01 = std::dynamic_pointer_cast<Character>(context.character01);
@@ -272,7 +272,7 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
             }
 
         }
-        context.menuManager.UpdateSetting(deltaTime);
+        
         context.spawnObject();  
         context.deleteObjects();
         UIManager::getInstance().updateInformationBoard(deltaTime);

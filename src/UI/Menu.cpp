@@ -24,7 +24,7 @@ MenuManager::MenuManager() {
     loadButton.load("./assets/button/load.png", "./assets/button/load_selected.png");
 
     saveLevel.load("./assets/button/save.png", "./assets/button/save_selected.png");
-    loadLevel.load("./assets/button/load.png", "./assets/button/load_selected.png");
+    loadLevel.load("./assets/button/load1.png", "./assets/button/load1_selected.png");
 
     playBoard.load("./assets/button/thin_board.png", "./assets/button/thin_board_selected.png");
     settingBoard.load("./assets/button/thin_board.png", "./assets/button/thin_board_selected.png");
