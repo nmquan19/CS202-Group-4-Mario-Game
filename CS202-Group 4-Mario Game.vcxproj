@@ -171,6 +171,7 @@
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\Objects\CollectableObject.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\CameraTriggerZone.cpp" />
+    <ClCompile Include="src\Objects\InteractiveObjects\EndPoint.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\FireBar.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\FireBarBase.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\InteractiveObject.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="include\Objects\InteractiveObjects\FireBarBase.h" />
     <ClInclude Include="include\Objects\InteractiveObjects\InteractiveObject.h" />
     <ClInclude Include="include\Objects\InteractiveObjects\MovingPlatform.h" />
+    <ClInclude Include="include\Objects\InteractiveObjects\EndPoint.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Objects\Projectile\FireBall.h" />
     <ClInclude Include="include\Objects\Projectile\Projectile.h" />
@@ -291,6 +293,10 @@
     <Image Include="assets\Airship_night_4.png" />
     <Image Include="assets\Airship_night_5.png" />
     <Image Include="assets\Airship_night_6.png" />
+    <Image Include="assets\button\load.png" />
+    <Image Include="assets\button\load_selected.png" />
+    <Image Include="assets\button\save.png" />
+    <Image Include="assets\button\save_selected.png" />
     <Image Include="assets\Forest_1.png" />
     <Image Include="assets\Forest_2.png" />
     <Image Include="assets\Ghost_house_1.png" />

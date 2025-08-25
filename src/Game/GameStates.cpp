@@ -11,6 +11,7 @@
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/Constant.h"
 #include "../../include/Enemy/EnemyAI/EnemyNavigator.h"
+#include "../../include/Enemy/Boss/DryBowser/DryBowser.h"
 #include "../../include/System/LightingSystem.h"
 #include <raymath.h>
 void handleCamera();
@@ -205,13 +206,13 @@ void GamePlayState::handleInput(GameContext& context) {
         Box2DWorldManager::getInstance().setDebugDraw(!Box2DWorldManager::getInstance().isDebugDrawEnabled());
     }
     if (IsKeyPressed(KEY_ONE)) {
-        Camera2D cam = {};
-        cam.target = { 2000.0f, 2000.0f };
-        cam.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
-        cam.zoom = 0.5f;
-        cam.rotation = 0.0f;
-        GameCameraSystem::getInstance().addCamera(std::make_unique<StaticGameCamera>(cam));
-        GameCameraSystem::getInstance().switchCamera(1);
+       /* Camera2D ncam = {};
+        ncam.target = { 11750.0f, 1450.0f };
+        ncam.offset = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
+        ncam.zoom = 1.1f;
+        ncam.rotation = 0.0f;
+        GameCameraSystem::getInstance().addCamera(std::make_unique<StaticGameCamera>(ncam));
+        GameCameraSystem::getInstance().switchCamera(2);*/
     }
     else if(IsKeyPressed(KEY_TWO))
     {
@@ -254,10 +255,21 @@ void GamePlayState::update(GameContext& context, float deltaTime) {
             character02->update(deltaTime);
         }
         for (auto& obj :context.Objects)
-        {
+        {   
             IUpdatable* updatableObj = dynamic_cast<IUpdatable*>(obj.get());
-            //if(updatableObj&& isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(),100.f))               
-            updatableObj->update(deltaTime);
+            if (updatableObj && isInCameraBound(GameCameraSystem::getInstance().getCamera(), obj->getPosition(), 300.f))
+            {
+                if (auto dry = dynamic_cast<DryBowser*>(obj.get())) {
+                    if (isInCameraBound(GameCameraSystem::getInstance().getCamera(), dry->getPosition(), 100.f)) {
+                        dry->update(deltaTime);
+                    }
+                }
+                else
+                {
+                    updatableObj->update(deltaTime);
+
+                }
+            }
 
         }
         context.menuManager.UpdateSetting(deltaTime);
@@ -325,10 +337,9 @@ void GamePlayState::draw(GameContext& context) {
     
     BeginMode2D(GameCameraSystem::getInstance().getCamera());
     for (auto& obj : context.Objects) {
-       /* if(isInCameraBound(GameCameraSystem::getInstance().getCamera(),obj->getPosition(),100.f)) {
+        if(isInCameraBound(GameCameraSystem::getInstance().getCamera(),obj->getPosition(),100.f)) {
             obj->draw();
-		}*/
-        obj->draw();
+		}
     }
 
     if (context.character01 && context.character02) {
@@ -373,7 +384,13 @@ void GamePlayState::draw(GameContext& context) {
     } else {
         DrawText("Box2D Debug Mode: OFF (Key F10 to toggle)", 520, 80, 20, RED);
     }
-    
+    for (auto& obj : context.Objects) {
+        if (auto dry = dynamic_cast<DryBowser*>(obj.get())) {
+            if (isInCameraBound(GameCameraSystem::getInstance().getCamera(), dry->getPosition(), 100.f)) {
+                dry->drawHealthBar();
+            }
+        }
+    }
     context.menuManager.DrawSetting();
     UIManager::getInstance().drawInformationBoard(WHITE);
     EndDrawing();
@@ -423,10 +440,10 @@ void EditorState::handleInput(GameContext& context) {
         if (IsKeyPressed(KEY_F9) && LevelEditor::getInstance().isInEditMode()) {
             LevelEditor::getInstance().clearLevel();
         }
-        if (IsKeyPressed(KEY_F7) && LevelEditor::getInstance().isInEditMode()) {
+        if ((IsKeyPressed(KEY_F7) || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && context.menuManager.saveLevel.checkCollision(GetMousePosition()))) && LevelEditor::getInstance().isInEditMode()) {
             LevelEditor::getInstance().saveLevel("testlevel.json");
         }
-        if (IsKeyPressed(KEY_F8) && LevelEditor::getInstance().isInEditMode()) {
+        if ((IsKeyPressed(KEY_F8) || (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && context.menuManager.loadLevel.checkCollision(GetMousePosition()))) && LevelEditor::getInstance().isInEditMode()) {
             LevelEditor::getInstance().loadLevel("testlevel.json");
         }
     }
@@ -439,6 +456,8 @@ void EditorState::update(GameContext& context, float deltaTime) {
     }
     else if (stateSelect == 2) {
         handleCamera();
+        context.menuManager.loadLevel.update(deltaTime);
+        context.menuManager.saveLevel.update(deltaTime);
         LevelEditor::getInstance().update(deltaTime);
         Box2DWorldManager::getInstance().step(deltaTime);
         NavGraph::getInstance().buildNodes({ 0,0,2000,2000 });
@@ -456,10 +475,13 @@ void EditorState::draw(GameContext& context) {
     else if (stateSelect == 2) {
         BeginDrawing();
         ClearBackground(WHITE); // Clear main buffer
-
+        
          ClearBackground(BLANK); // Transparent clear for light accumulation
+         
          LevelEditor::getInstance().mapSelect = mapSelect;
          LevelEditor::getInstance().draw();
+         context.menuManager.loadLevel.draw(context.menuManager.loadLevelPosition);
+         context.menuManager.saveLevel.draw(context.menuManager.saveLevelPosition);
         DrawFPS(20, 50);
         EndDrawing();
     }

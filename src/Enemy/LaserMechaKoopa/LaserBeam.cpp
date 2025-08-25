@@ -129,8 +129,8 @@ void LaserBeam::performRaycast() {
         fixtureDef.isSensor = true;
 
         b2Filter filter;
-        filter.categoryBits = static_cast<uint16>(ObjectCategory::PROJECTILE);
-        filter.maskBits =
+        filter.maskBits = static_cast<uint16>(ObjectCategory::PROJECTILE);
+        filter.categoryBits =
             static_cast<uint16>(ObjectCategory::CHARACTER) |
             static_cast<uint16>(ObjectCategory::BLOCK) |
             static_cast<uint16>(ObjectCategory::INTERACTIVE);
@@ -138,6 +138,7 @@ void LaserBeam::performRaycast() {
 
         physicsBody->CreateFixture(&fixtureDef);
         physicsBody->SetTransform(Box2DWorldManager::raylibToB2(startPoint), atan2f(direction.y, direction.x));
+        
     }
 }
 

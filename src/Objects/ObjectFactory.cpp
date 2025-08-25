@@ -25,7 +25,7 @@
 #include "../../include/Enemy/Bob-ombs/Bob-ombs.h"
 #include "../../include/Enemy/LaserMechaKoopa/LaserMechaKoopa.h"
 #include "../../include/Enemy/LaserMechaKoopa/LaserBeam.h"
-
+#include "../../include/Objects/InteractiveObjects/CameraTriggerZone.h"
 #include <raylib.h>
 #include <vector>
 #include <algorithm>
@@ -33,6 +33,7 @@
 #include <numbers>
 #include "../../include/Objects/Torch.h"
 #include "../../include/Enemy/PiranhaPlant/PiranhaPlant.h"
+#include "../../include/Objects/InteractiveObjects/Endpoint.h"
 Object::~Object() {
     if (physicsBody) {
         Box2DWorldManager::getInstance().destroyBody(physicsBody);
@@ -1177,7 +1178,12 @@ std::unique_ptr<InteractiveObject> ObjectFactory::createSpecificInteractiveObjec
         return std::make_unique<FireBar>(position, Vector2{ 1.0f, 1.0f });
     case InteractiveType::FIRE_BAR_BASE:
         return std::make_unique<FireBarBase>(position, Vector2{ 1.0f, 1.0f });
+    case InteractiveType::SWITCH_CAMERA_TRIGGER_ZONE:
+		return std::make_unique<SwitchCameraTriggerZone>(position,Vector2{2.0f,2.0f});
+    case InteractiveType::ENDPOINT:
+        return std::make_unique<Endpoint>(position, Vector2{1.5,1.5});
     }
+   
 }
 
 std::unique_ptr<Object> ObjectFactory::createTorch(Vector2 position, Vector2 size, float brightness, float radius, Color innerColor, Color outerColor) {
