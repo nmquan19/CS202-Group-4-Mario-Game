@@ -26,6 +26,7 @@
 #include "../../include/System/Grid.h"
 #include "../../include/System/CameraSystem.h"
 #include "../../include/System/LightingSystem.h"
+#include "../../include/Objects/InteractiveObjects/Endpoint.h"
 GameContext::GameContext() {
     TextureManager::getInstance().loadTextures();
     camera.rotation = 0.0f;
@@ -83,7 +84,7 @@ void GameContext::setState(GameState* newState) {
             };
             LightingManager::getInstance().setAmbientColor(brighter);
 
-            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 13400, 400 });
+            character01 = ObjectFactory::createCharacter(CharacterType::MARIO, PlayerID::PLAYER_01, Vector2{ 300, 400 });
             //character02 = ObjectFactory::createCharacter(CharacterType::TOADETTE, PlayerID::PLAYER_02, Vector2{ 500, 400 });
             GameCameraSystem::getInstance().init();
             Camera2D initialCam = {
@@ -163,8 +164,15 @@ void GameContext::setState(GameState* newState) {
                 std::shared_ptr<SwitchCameraTriggerZone> cameraTrigger = std::make_shared<SwitchCameraTriggerZone>(triggerData.position, triggerData.size, triggerData);
                 Objects.push_back(cameraTrigger);
             }
+            EndpointData data;
+            data.position = { 500, 300 };
+            data.size = { 2, 3 };
+            data.targetLevel = -1; // Goes to level selector
 
-            GameCameraSystem::getInstance().setCameraBounds(levelInfo[0].initialWorldBounds);
+            auto endpoint = std::make_shared<Endpoint>(Vector2{ 500, 500 }, Vector2{ 2, 3 }, data);
+			GameContext::getInstance().Objects.push_back(endpoint);
+            // Create an endpoint that goes to specific level
+         
         }
     }
 }

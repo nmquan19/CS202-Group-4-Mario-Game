@@ -170,6 +170,7 @@
     <ClCompile Include="src\Objects\Block.cpp" />
     <ClCompile Include="src\Objects\CollectableObject.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\CameraTriggerZone.cpp" />
+    <ClCompile Include="src\Objects\InteractiveObjects\EndPoint.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\FireBar.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\FireBarBase.cpp" />
     <ClCompile Include="src\Objects\InteractiveObjects\InteractiveObject.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="include\Objects\InteractiveObjects\FireBarBase.h" />
     <ClInclude Include="include\Objects\InteractiveObjects\InteractiveObject.h" />
     <ClInclude Include="include\Objects\InteractiveObjects\MovingPlatform.h" />
+    <ClInclude Include="include\Objects\InteractiveObjects\EndPoint.h" />
     <ClInclude Include="include\Objects\ObjectFactory.h" />
     <ClInclude Include="include\Objects\Projectile\FireBall.h" />
     <ClInclude Include="include\Objects\Projectile\Projectile.h" />
