@@ -122,6 +122,7 @@ public:
 class GameOverState : public GameState {
 private:
     int level = 1;
+    float blinkTimer = 0.0f;
 public:
     void handleInput(GameContext& context) override;
     void update(GameContext& context, float deltaTime) override;
@@ -129,4 +130,28 @@ public:
     void setLevel(GameContext& context) override {
 		return;
 	}
+};
+
+class ScoreState : public GameState {
+private:
+    float timer = 0.0f;
+    float blinkTimer = 0.0f;
+    std::vector<Texture2D> gif1;
+    std::vector<Texture2D> gif2;
+    int gif1Frame = 0;
+    int gif2Frame = 0;
+    float gif1Timer = 0.0f;
+    float gif2Timer = 0.0f;
+    Texture2D background;
+
+public:
+    ScoreState();
+    ~ScoreState();
+    void resetTimer() { timer = 0.0f; }
+    void handleInput(GameContext& context) override;
+    void update(GameContext& context, float deltaTime) override;
+    void draw(GameContext& context) override;
+    void setLevel(GameContext& context) override {
+        return;
+    }
 };

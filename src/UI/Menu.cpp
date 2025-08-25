@@ -327,8 +327,14 @@ void MenuManager::DrawSelecting() {
 
     manager.Draw();
     DrawText("Press Enter", 50, 100, 25, BLACK);
-    Vector2 textSize = MeasureTextEx(UIManager::getInstance().menuFont, "Select a player", 50, 10); // need changing
-    DrawTextEx(UIManager::getInstance().menuFont, "Select a player", { (screen.x - textSize.x) / 2.0f, screen.y / 5.0f }, 50, 10, WHITE);
+    if (character02Select != -1) {
+        Vector2 textSize = MeasureTextEx(UIManager::getInstance().menuFont, "Choose your characters", 50, 10);
+        DrawTextEx(UIManager::getInstance().menuFont, "Choose your characters", { (screen.x - textSize.x) / 2.0f, screen.y / 5.0f }, 50, 10, WHITE);
+    }
+    else {
+        Vector2 textSize = MeasureTextEx(UIManager::getInstance().menuFont, "Choose your character", 50, 10);
+        DrawTextEx(UIManager::getInstance().menuFont, "Choose your character", { (screen.x - textSize.x) / 2.0f, screen.y / 5.0f }, 50, 10, WHITE);
+    }
 
     Vector2 marioPosition = { manager.getCenter(0).x - mario.width / 2.0f, manager.getCenter(0).y - mario.height / 2.0f };
     Vector2 luigiPosition = { manager.getCenter(1).x - luigi.width / 2.0f, manager.getCenter(1).y - luigi.height / 2.0f };

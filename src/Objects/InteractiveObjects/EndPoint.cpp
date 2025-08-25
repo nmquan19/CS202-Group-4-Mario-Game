@@ -6,6 +6,7 @@
 #include "../../../include/System/CameraSystem.h"
 #include "../../../include/UI/UI.h"
 #include "../../../include/Game/GameStates.h"
+
 Endpoint::Endpoint(Vector2 position, Vector2 size, EndpointData data)
     : InteractiveObject(position, size), data(data) {
 
@@ -76,7 +77,7 @@ void Endpoint::update(float deltaTime) {
 
             if (data.targetLevel == -1) {
                 // Go to level selector
-                context.setState(context.levelSelectingState);
+                context.setState(context.scoreState);
             }
             else {
                 // Go to specific level
