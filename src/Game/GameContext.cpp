@@ -65,7 +65,7 @@ void GameContext::setState(GameState* newState) {
 
         if (newState == gamePlayState) {
             Box2DWorldManager::getInstance().initialize(Vector2{ 0, Constants::GRAVITY });
-//LevelEditor::getInstance().setEditMode(false);
+            //LevelEditor::getInstance().setEditMode(false);
             UIManager::getInstance().setAttempts(5);
             UIManager::getInstance().resetCoin();
             UIManager::getInstance().resetTimer();
@@ -124,9 +124,9 @@ void GameContext::setState(GameState* newState) {
 
 
             EndpointData data2;
-            data1.position = { 500, 1800 };
-            data1.size = { 2, 3 };
-            data1.targetLevel = 3; // Goes to level selector
+            data2.position = { 400, 800 };
+            data2.size = { 2, 3 };
+            data2.targetLevel = -1; // Goes to level selector
 
             GameCameraSystem::getInstance().init();
             Camera2D initialCam = {
@@ -144,15 +144,15 @@ void GameContext::setState(GameState* newState) {
             ncam.rotation = 0.0f;
             LeveLInfo info3 = {
                 .ambientColor = WHITE,
-                .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, 1500 },
+                .initialWorldBounds = { 0, 0, Constants::WORLDBOUNDS_WIDTH, 1700 },
                 .cameraTriggersData = {
                     {
                         Vector2{4160,1300},
                         Vector2{2.5,1.5},
                         0,
                         0,
-                        Rectangle{ 0, 0, 10000, 2750 },   // inWorldBounds
-                        Rectangle{ 0, 0, 10000, 2750},   // outWorldBounds
+                        Rectangle{ 0, 0, 10000, 3000 },   // inWorldBounds
+                        Rectangle{ 0, 0, 10000, 3000},   // outWorldBounds
                         GameCameraSystem::getInstance().getCamera(),
                         GameCameraSystem::getInstance().getCamera()
                     },
@@ -190,7 +190,7 @@ void GameContext::setState(GameState* newState) {
                     },
                     {
                         Vector2{13500,1200},
-                        Vector2{2.5,1.5},
+                        Vector2{2.5,1.5},   
                         0,
                         0,
                         Rectangle{ 12500, 0, 14500, 3000 },   // inWorldBounds

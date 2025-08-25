@@ -943,10 +943,18 @@ void ObjectPalette::drawPalette() {
         //Laser_mecha_koopa
         Rectangle laser_mecha_koopaRect = { startX + 2 * spacingX, startY + spacingY, iconSize, iconSize };
         if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
-            Rectangle laser_mecha_koopaSource = tm.Enemy_sprite_boxes[169];
+            Rectangle laser_mecha_koopaSource = tm.Enemy_sprite_boxes[379];
             DrawTexturePro(tm.enemyTextures, laser_mecha_koopaSource, laser_mecha_koopaRect, { 0,0 }, 0.0f, WHITE);
         }
         DrawRectangleLinesEx(laser_mecha_koopaRect, 2, (isEnemy() && getEnemyType() == EnemyType::LASER_MECHA_KOOPA) ? RED : BLACK);
+
+        // Piranha
+        Rectangle pinRect = { startX + 3 * spacingX, startY + spacingY, iconSize, iconSize };
+        if (tm.enemyTextures.id != 0 && !tm.Enemy_sprite_boxes.empty()) {
+            Rectangle pinSource = tm.Enemy_sprite_boxes[121];
+            DrawTexturePro(tm.enemyTextures, pinSource, pinRect, { 0,0 }, 0.0f, WHITE);
+        }
+        DrawRectangleLinesEx(pinRect, 2, (isEnemy() && getEnemyType() == EnemyType::PIRANHA_PLANT) ? RED : BLACK);
 
 
     }
@@ -1044,6 +1052,7 @@ void ObjectPalette::handleSelection() {
     Rectangle booRect = { startX, startY + spacingY, iconSize, iconSize };
     Rectangle bob_ombsRect = { startX + spacingX, startY + spacingY, iconSize, iconSize };
     Rectangle laser_mecha_koopaRect = { startX + 2 * spacingX, startY + spacingY, iconSize, iconSize };
+    Rectangle pinRect = { startX + 3 * spacingX, startY + spacingY, iconSize, iconSize };
 
     Rectangle springRect = { startX, startY, iconSize, iconSize };
     Rectangle movingPlatformRect = { startX + spacingX, startY, iconSize * 3.0f, iconSize * 0.25f };
@@ -1555,6 +1564,7 @@ void ObjectPalette::handleSelection() {
         if (CheckCollisionPointRec(mousePos, booRect) && selectRect == 2) selected = EnemyType::BOO;
         if (CheckCollisionPointRec(mousePos, bob_ombsRect) && selectRect == 2) selected = EnemyType::BOB_OMBS;
         if (CheckCollisionPointRec(mousePos, laser_mecha_koopaRect) && selectRect == 2) selected = EnemyType::LASER_MECHA_KOOPA;
+        if (CheckCollisionPointRec(mousePos, pinRect) && selectRect == 2) selected = EnemyType::PIRANHA_PLANT;
         if (CheckCollisionPointRec(mousePos, springRect) && selectRect == 3) selected = InteractiveType::SPRING;
         if (CheckCollisionPointRec(mousePos, movingPlatformRect) && selectRect == 3) selected = InteractiveType::MOVING_PLATFORM;
         if (CheckCollisionPointRec(mousePos, fireBarBaseRect) && selectRect == 3) selected = InteractiveType::FIRE_BAR_BASE;
