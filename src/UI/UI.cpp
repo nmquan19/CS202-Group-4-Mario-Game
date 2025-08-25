@@ -1,4 +1,5 @@
 #include "../../include/UI/UI.h"
+#include "../../include/Game/GameContext.h"
 #include <raylib.h>
 
 UIManager& UIManager::getInstance() {
@@ -7,11 +8,11 @@ UIManager& UIManager::getInstance() {
 }
 
 UIManager::UIManager() : score({ GetScreenWidth() / 10.0f, GetScreenHeight() / 10.0f }),
-coin({ GetScreenWidth() * 3 / 10.0f, GetScreenHeight() / 10.0f }, "./assets/coin_sprite.png"),
-world({ GetScreenWidth() * 5 / 10.0f, GetScreenHeight() / 10.0f }, "1 - 1"),
-timer({ GetScreenWidth() * 7 / 10.0f, GetScreenHeight() / 10.0f }, 400.0f),
-isGameOver(false) {
-    menuFont = LoadFont("./assets/font_sprites.png");
+    coin({ GetScreenWidth() * 2.5f / 10.0f, GetScreenHeight() / 10.0f }, "./assets/coin_sprite.png"),
+    world({ GetScreenWidth() * 4.0f / 10.0f, GetScreenHeight() / 10.0f }, "1 - 1"),
+    timer({ GetScreenWidth() * 5.5f / 10.0f, GetScreenHeight() / 10.0f }, 400.0f),
+    isGameOver(false) {
+        menuFont = LoadFont("./assets/font_sprites.png");
 }
 
 
@@ -32,4 +33,11 @@ bool UIManager::IsGameOver() const {
 void UIManager::DrawGameOver() {
     if (!isGameOver) return;
     DrawTextEx(menuFont, "Game Over", { 300, 200 }, 40, 2, RED);
+}
+
+void UIManager::removeAttempts(int a) {
+    attempts -= a;
+    if (attempts <= 0) {
+        GameContext::getInstance().setState(GameContext::getInstance().gameOverState);
+    }
 }

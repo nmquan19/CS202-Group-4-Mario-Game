@@ -47,6 +47,7 @@ private:
       bool isKnocked; 
       bool onGround; 
       float timer;
+      float activeTimer;    
       Rectangle spritebox;
       Vector2 velocity; 
 	  KoopaShellState* currentState;

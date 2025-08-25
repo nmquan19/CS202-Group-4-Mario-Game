@@ -525,7 +525,7 @@ void Character::handleItemCollision(std::shared_ptr<Object> other, Direction dir
 			break;
 		case ItemType::ONE_UP:
 			AudioManager::getInstance().PlaySoundEffect("one_up");
-			hp += 1;
+			UIManager::getInstance().addAttempts(1);
 			break;
 		case ItemType::STAR:
 			if (powerState == PowerState::STAR) {
