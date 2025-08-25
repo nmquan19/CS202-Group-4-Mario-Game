@@ -539,7 +539,7 @@ enum class EnemyType {
 	DRY_BOWSER,
 	BOO,
 	BOB_OMBS,
-	LASER_MECHA_KOOPA,
+	LASER_MECHA_KOOPA
 	
 };
 
