@@ -4,6 +4,7 @@
 #include "../../include/System/Constant.h"
 #include "../../include/System/Box2DWorldManager.h"
 #include "../../include/UI/SoundEffect.h"
+#include "../../include/UI/UI.h"
 #include <iostream>
 
 void KnockedState::enter(Character* character) {
@@ -30,10 +31,15 @@ void KnockedState::exit(Character* character) {
 	for (b2Fixture* fixture = fixtures; fixture != nullptr; fixture = fixture->GetNext()) {
 		b2Filter filter = fixture->GetFilterData();
 		filter.maskBits = static_cast<uint16>(ObjectCategory::CHARACTER);
+		filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::CHARACTER) |
+			static_cast<uint16>(ObjectCategory::ENEMY) | static_cast<uint16>(ObjectCategory::INTERACTIVE) |
+			static_cast<uint16>(ObjectCategory::ITEM) | static_cast<uint16>(ObjectCategory::SHELL) |
+			static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::TRIGGER);
 		fixture->SetFilterData(filter);
 	}
 	character->physicsBody->SetLinearVelocity(b2Vec2(0, 0));
 	character->physicsBody->SetTransform(Box2DWorldManager::raylibToB2(Vector2{ 500, 500 }), 0);
+	UIManager::getInstance().removeAttempts(1);
 }
 
 void KnockedState::handleInput(Character* character, const InputState& input) {

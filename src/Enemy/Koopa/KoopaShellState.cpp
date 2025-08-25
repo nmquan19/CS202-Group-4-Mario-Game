@@ -14,14 +14,15 @@ void KoopaShellIdleState::enter(KoopaShell* shell) {
     shell->timer = 0.0f; 
     shell->curFrame = 0;
     shell->spritebox = TextureManager::Enemy_sprite_boxes[shell->getSpriteData()[0].first];
+    shell->activeTimer = 0.0f;
+    shell->active = false;
     for (b2Fixture* fixture = shell->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
         b2Filter filter = fixture->GetFilterData();
-        filter.maskBits = static_cast<uint16>(ObjectCategory::SHELL);
-        filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) | 
-            static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
+        filter.maskBits = static_cast<uint16>(ObjectCategory::BLOCK);
+        filter.categoryBits = static_cast<uint16>(ObjectCategory::BLOCK) | static_cast<uint16>(ObjectCategory::PROJECTILE) | 
+            static_cast<uint16>(ObjectCategory::INTERACTIVE);
         fixture->SetFilterData(filter);
     }
-
 }
 
 void KoopaShellIdleState::exit(KoopaShell* shell) {
@@ -30,6 +31,16 @@ void KoopaShellIdleState::exit(KoopaShell* shell) {
 
 void KoopaShellIdleState::update(KoopaShell* shell, float deltaTime) {
 	shell->timer += deltaTime;
+    shell->activeTimer += deltaTime;
+    if (!shell->active && shell->activeTimer > 0.05f) {
+        for (b2Fixture* fixture = shell->physicsBody->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+            b2Filter filter = fixture->GetFilterData();
+            filter.maskBits = static_cast<uint16>(ObjectCategory::SHELL);
+            filter.categoryBits = static_cast<uint16> (ObjectCategory::CHARACTER) | static_cast<uint16>(ObjectCategory::BLOCK) |
+                static_cast<uint16>(ObjectCategory::PROJECTILE) | static_cast<uint16>(ObjectCategory::INTERACTIVE);
+            fixture->SetFilterData(filter);
+        }
+    }
     shell->curFrame %= shell->getSpriteData()[0].second - shell->getSpriteData()[0].first + 1 ;
     shell->spritebox = TextureManager::Enemy_sprite_boxes[shell->getSpriteData()[0].first + shell->curFrame];
     if (shell->timer > Constants::KoopaShell::IDLE_DURATION) { 

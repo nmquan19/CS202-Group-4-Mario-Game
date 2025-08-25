@@ -37,14 +37,14 @@ int main() {
     EditorState editorState;
     EditorSelectingState editorSelectingState;
     GameOverState gameOverState;
+    ScoreState scoreState;
     GameCameraSystem::getInstance().init();
 
-    context->setGameStates(&menuState, &redirectState, &playerSelectingState, &characterSelectingState, &levelRedirectState, &levelSelectingState, &informationState, &gamePlayState, &editorState, &editorSelectingState, &gameOverState);
+    context->setGameStates(&menuState, &redirectState, &playerSelectingState, &characterSelectingState, &levelRedirectState, &levelSelectingState, &informationState, &gamePlayState, &editorState, &editorSelectingState, &gameOverState, &scoreState);
     LightingManager::getInstance().loadShader("assets/shaders/lightsource.fs");
     LightingManager::getInstance().setAmbientColor(WHITE); // Dark blue 
     while (!WindowShouldClose()) {
         //Box2DWorldManager::getInstance().setDebugDraw(true);
-
         float deltaTime = GetFrameTime();
         context->handleInput();
         context->update(deltaTime);
